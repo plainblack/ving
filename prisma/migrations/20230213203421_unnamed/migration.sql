@@ -1,0 +1,8 @@
+-- DropForeignKey
+ALTER TABLE "APIKey" DROP CONSTRAINT "APIKey_userId_fkey";
+
+-- AlterTable
+ALTER TABLE "APIKey" ALTER COLUMN "privateKey" DROP NOT NULL;
+
+-- AddForeignKey
+ALTER TABLE "APIKey" ADD CONSTRAINT "APIKey_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
