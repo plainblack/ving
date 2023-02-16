@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { VingKind, VingRecord, TProps } from "./Base";
+import { VingKind, VingRecord, TProps } from "./_Base";
 import Users from "./Users";
 import crypto from 'crypto';
 

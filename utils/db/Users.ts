@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { VingKind, VingRecord, TProps, DescribeParams } from "./Base";
+import { VingKind, VingRecord, TProps, DescribeParams } from "./_Base";
 import { APIKeys, APIKey } from "./APIKeys";
 import { Ouch } from '../utils';
 import bcrypt from 'bcrypt';
