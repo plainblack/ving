@@ -1,6 +1,6 @@
 import Users from './Users';
 import { describe, test, expect } from "vitest";
-import { TProps } from "./Base";
+import { TProps } from "./_Base";
 
 
 
@@ -64,11 +64,11 @@ describe('Users', async () => {
     });
     test('set password', async () => {
         warden.setPassword('foo');
-        expect(await warden.validatePassword('foo')).toBe(true);
+        expect(await warden.testPassword('foo')).toBe(true);
     });
     test('set password via posted params', async () => {
         warden.verifyPostedParams({ password: 'food' });
-        expect(await warden.validatePassword('food')).toBe(true);
+        expect(await warden.testPassword('food')).toBe(true);
     });
     const guard = captain.copy();
     test("clone a record", () => {

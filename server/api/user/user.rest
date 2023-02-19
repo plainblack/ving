@@ -1,0 +1,19 @@
+### create
+POST http://localhost:3000/api/user
+Content-Type: application/json
+
+{
+    "username": "tommy", 
+    "realName" : "Tommy Williams",
+    "email" : "tommy@shawshank.jail",
+    "password": "testpass" 
+}
+
+### login
+POST http://localhost:3000/api/user/login
+Content-Type: application/json
+
+{
+    "login": "tommy", 
+    "password": "testpass" 
+}

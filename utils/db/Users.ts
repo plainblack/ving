@@ -21,7 +21,7 @@ export class User extends VingRecord<'User'> {
         }
     }
 
-    public async validatePassword(password: string) {
+    public async testPassword(password: string) {
         if (password == undefined || password == '' || this.props.password == undefined)
             throw new Ouch(441, 'You must specify a password.');
         let passed = false;

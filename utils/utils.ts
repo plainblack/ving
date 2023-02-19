@@ -33,6 +33,10 @@ export const bleep = (error: any): string => {
     return error;
 }
 
-export const useFoo = () => {
-	return { foo : 'bar' }
+export const testRequired = (list: string[], params: Record<string, any>) => {
+    for (const field of list) {
+        if (!(field in params) || params[field] === undefined || params[field] == '') {
+            throw new Ouch(441, `${field} is required.`, field);
+        }
+    }
 }
