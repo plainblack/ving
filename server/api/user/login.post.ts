@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { db } from '~/utils/db';
+import { Users } from '~/utils/db';
 import { testRequired } from '~/utils/utils';
 export default defineEventHandler(async (event) => {
     const query = getQuery(event);
@@ -7,11 +7,11 @@ export default defineEventHandler(async (event) => {
     testRequired(['login', 'password'], body);
     let user;
     try {
-        user = await db.Users.findUnique({ where: { email: body.login } });
+        user = await Users.findUnique({ where: { email: body.login } });
     }
     catch {
         try {
-            user = await db.Users.findUnique({ where: { username: body.login } });
+            user = await Users.findUnique({ where: { username: body.login } });
         }
         catch {
             throw new Ouch(440, 'User not found.')

@@ -1,3 +1,4 @@
+import { Users } from '~/utils/db';
 export default defineEventHandler(async (event) => {
   //const query = getQuery(event);
   //	return useFoo();
@@ -9,6 +10,6 @@ export default defineEventHandler(async (event) => {
   // users[0].boop();
   // return Object.getPrototypeOf(users[0])
   //return users[0].isOwner(users[1])
-  return await db.Users.describeList();
+  return await Users.describeList();
   //return { foo : 1}
 })

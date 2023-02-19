@@ -1,10 +1,10 @@
-import { db } from '~/utils/db';
+import { Users } from '~/utils/db';
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const body = await readBody(event);
   // return body;
-  const user = db.Users.mint({});
+  const user = Users.mint({});
   user.verifyCreationParams(body);
   user.verifyPostedParams(body);
   user.insert();

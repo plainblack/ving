@@ -1,5 +1,5 @@
-import APIKeys from './APIKeys';
-import Users from './Users';
+import { APIKeys } from './APIKeys';
+import { Users } from './Users';
 import { describe, test, expect } from "vitest";
 
 

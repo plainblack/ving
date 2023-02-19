@@ -1,4 +1,4 @@
-import Users from './Users';
+import { Users } from './Users';
 import { describe, test, expect } from "vitest";
 import { TProps } from "./_Base";
 

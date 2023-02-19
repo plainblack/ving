@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { VingKind, VingRecord, TProps, DescribeParams } from "./_Base";
-import { APIKeys, APIKey } from "./APIKeys";
+import { APIKeyKind, APIKeyRecord } from "./APIKeys";
 import { Ouch } from '../utils';
 import bcrypt from 'bcrypt';
 
@@ -8,7 +8,7 @@ export type Roles = Pick<TProps<'User'>, "admin" | "developer">;
 export type ExplicitRoleOptions = keyof Roles;
 export type RoleOptions = ExplicitRoleOptions | "public" | "owner" | string;
 
-export class User extends VingRecord<'User'> {
+export class UserRecord extends VingRecord<'User'> {
 
     public get displayName() {
         switch (this.props.useAsDisplayName) {
@@ -56,7 +56,7 @@ export class User extends VingRecord<'User'> {
         return out;
     }
 
-    public verifyPostedParams(params: TProps<'User'>, currentUser?: User) {
+    public verifyPostedParams(params: TProps<'User'>, currentUser?: UserRecord) {
         super.verifyPostedParams(params, currentUser);
         if ('password' in params && params.password) {
             this.setPassword(params.password);
@@ -91,13 +91,13 @@ export class User extends VingRecord<'User'> {
     }
 
     public get apiKeys() {
-        return new APIKeys(new PrismaClient().aPIKey, APIKey, { userId: this.props.id });
+        return new APIKeyKind(new PrismaClient().aPIKey, APIKeyRecord, { userId: this.props.id });
     }
 
 }
 
-export class Users extends VingKind<'User', User>  {
+export class UserKind extends VingKind<'User', UserRecord>  {
     // add custom Kind code here
 }
 
-export default new Users(new PrismaClient().user, User);
+export const Users = new UserKind(new PrismaClient().user, UserRecord);

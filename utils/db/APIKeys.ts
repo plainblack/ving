@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { VingKind, VingRecord, TProps } from "./_Base";
-import Users from "./Users";
+import { Users } from "./Users";
 import crypto from 'crypto';
 
-export class APIKey extends VingRecord<'APIKey'> {
+export class APIKeyRecord extends VingRecord<'APIKey'> {
 
     public get user(): any {
         return Users.findUnique({ where: { id: this.props.userId } });
@@ -11,7 +11,7 @@ export class APIKey extends VingRecord<'APIKey'> {
 
 }
 
-export class APIKeys extends VingKind<'APIKey', APIKey>  {
+export class APIKeyKind extends VingKind<'APIKey', APIKeyRecord>  {
 
     public mint(props: TProps<'APIKey'>) {
         const obj = super.mint(props);
@@ -20,4 +20,4 @@ export class APIKeys extends VingKind<'APIKey', APIKey>  {
     }
 }
 
-export default new APIKeys(new PrismaClient().aPIKey, APIKey);
+export const APIKeys = new APIKeyKind(new PrismaClient().aPIKey, APIKeyRecord);
