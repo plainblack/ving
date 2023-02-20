@@ -12,8 +12,9 @@ generator custom_generator {
 }
 
 datasource db {
-  provider = "cockroachdb"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl      = env("SHADOW_DATABASE_URL")
 }
 
 /// @ving.owner: $id
