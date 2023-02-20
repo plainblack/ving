@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { UserRecord, Roles, RoleOptions } from "./Users";
+import { UserRecord, TRoles, TRoleOptions } from "./Users";
 import vingSchemas from './ving-schema.json';
 import { findObject, Ouch } from '../utils';
 import crypto from 'crypto';
@@ -19,8 +19,8 @@ export type TVingOption = {
 }
 
 export type TVingFieldProp = {
-    editBy: RoleOptions[]
-    viewBy: RoleOptions[];
+    editBy: TRoleOptions[]
+    viewBy: TRoleOptions[];
     options: TVingOption[]
 }
 export type TVingField<T extends TModelName> = {
@@ -156,7 +156,7 @@ export class VingRecord<T extends TModelName> {
             }
             found = owner.match(/^([A-Za-z]+)$/);
             if (found) {
-                if (found[1] && currentUser.isRole(found[1] as keyof Roles) == true) {
+                if (found[1] && currentUser.isRole(found[1] as keyof TRoles) == true) {
                     return true;
                 }
             }

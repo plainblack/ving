@@ -1,12 +1,23 @@
 import { PrismaClient } from "@prisma/client";
-import { VingKind, VingRecord, TProps, DescribeParams } from "./_Base";
+import { VingKind, VingRecord, TProps, DescribeParams, IConstructable } from "./_Base";
 import { APIKeyKind, APIKeyRecord } from "./APIKeys";
 import { Ouch } from '../utils';
 import bcrypt from 'bcrypt';
 
-export type Roles = Pick<TProps<'User'>, "admin" | "developer">;
-export type ExplicitRoleOptions = keyof Roles;
-export type RoleOptions = ExplicitRoleOptions | "public" | "owner" | string;
+/* export type TRoleProps = TRoles & Pick<TProps<'User'>, 'id'>;
+
+export function RoleMixin<T extends IConstructable<{ props: TRoleProps }>>(Base: T) {
+    return class RoleMixin extends Base {
+    };
+}
+
+export class UserRecord extends RoleMixin(VingRecord<'User'>) { }
+
+*/
+
+export type TRoles = Pick<TProps<'User'>, "admin" | "developer">;
+export type TExplicitRoleOptions = keyof TRoles;
+export type TRoleOptions = TExplicitRoleOptions | "public" | "owner" | string;
 
 export class UserRecord extends VingRecord<'User'> {
 
@@ -64,16 +75,16 @@ export class UserRecord extends VingRecord<'User'> {
         return true;
     }
 
-    public isRole(role: RoleOptions): boolean {
+    public isRole(role: TRoleOptions): boolean {
         if (role == 'public') return true;
         if (role == 'owner') return false; // can't do owner check this way, use isOwner() instead
         if (role in this.props) {
-            return this.props[role as keyof Roles] || this.props.admin || false;
+            return this.props[role as keyof TRoles] || this.props.admin || false;
         }
         return false;
     }
 
-    public isaRole(roles: RoleOptions[]): boolean {
+    public isaRole(roles: TRoleOptions[]): boolean {
         for (const role of roles) {
             const result = this.isRole(role);
             if (result) {
@@ -83,11 +94,11 @@ export class UserRecord extends VingRecord<'User'> {
         return false;
     }
 
-    public isRoleOrThrow(role: keyof Roles): boolean {
+    public isRoleOrThrow(role: keyof TRoles): boolean {
         if (this.isRole(role)) {
             return true;
         }
-        throw new Ouch(450, `${this.props.username} is not a member of ${role}`);
+        throw new Ouch(450, `Not a member of ${role}`, role);
     }
 
     public get apiKeys() {
