@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "./client";
 import { VingKind, VingRecord, TProps } from "./_Base";
 import { Users } from "./Users";
 import crypto from 'crypto';
@@ -20,4 +20,4 @@ export class APIKeyKind extends VingKind<'APIKey', APIKeyRecord>  {
     }
 }
 
-export const APIKeys = new APIKeyKind(new PrismaClient().aPIKey, APIKeyRecord);
+export const APIKeys = new APIKeyKind(prisma.aPIKey, APIKeyRecord);

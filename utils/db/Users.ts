@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "./client";
 import { VingKind, VingRecord, TProps, DescribeParams, IConstructable } from "./_Base";
 import { APIKeyKind, APIKeyRecord } from "./APIKeys";
 import { Ouch } from '../utils';
@@ -102,7 +102,7 @@ export class UserRecord extends VingRecord<'User'> {
     }
 
     public get apiKeys() {
-        return new APIKeyKind(new PrismaClient().aPIKey, APIKeyRecord, { userId: this.props.id });
+        return new APIKeyKind(prisma.aPIKey, APIKeyRecord, { userId: this.props.id });
     }
 
 }
@@ -111,4 +111,4 @@ export class UserKind extends VingKind<'User', UserRecord>  {
     // add custom Kind code here
 }
 
-export const Users = new UserKind(new PrismaClient().user, UserRecord);
+export const Users = new UserKind(prisma.user, UserRecord);
