@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import { Users } from '~/utils/db';
 import { testRequired } from '~/utils/utils';
 export default defineEventHandler(async (event) => {
@@ -17,8 +16,5 @@ export default defineEventHandler(async (event) => {
             throw new Ouch(440, 'User not found.')
         }
     }
-    await user.testPassword(body.password);
-    const runtimeConfig = useRuntimeConfig()
-    //return runtimeConfig;
-    return jwt.sign({ id: user.props.id, username: user.props.username }, runtimeConfig.accessTokenSecret);
+    return await user.testPassword(body.password);
 })
