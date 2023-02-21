@@ -40,3 +40,5 @@ export const testRequired = (list: string[], params: Record<string, any>) => {
         }
     }
 }
+
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
