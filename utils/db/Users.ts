@@ -3,8 +3,9 @@ import { VingKind, VingRecord, TProps, DescribeParams, IConstructable } from "./
 import { APIKeyKind, APIKeyRecord } from "./APIKeys";
 import { Ouch, ArrayToTuple } from '../utils';
 import bcrypt from 'bcrypt';
+import { cache } from '../cache';
 
-export type TRoleProps = TRoles & Pick<TProps<'User'>, 'id'>;
+export type TRoleProps = TRoles & Pick<TProps<'User'>, 'id' | 'password'>;
 
 export function RoleMixin<T extends IConstructable<{ props: TRoleProps }>>(Base: T) {
     return class RoleMixin extends Base {
@@ -100,6 +101,11 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
 
     public get apiKeys() {
         return new APIKeyKind(prisma.aPIKey, APIKeyRecord, { userId: this.props.id });
+    }
+
+    public async update() {
+        cache.set('user-changed-' + this.props.id, true, 1000 * 60 * 60 * 24 * 7);
+        return await super.update();
     }
 
 }

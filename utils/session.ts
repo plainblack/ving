@@ -1,11 +1,11 @@
-import { Users, UserRecord } from './db';
+import { Users, UserRecord, TRoleProps, RoleMixin, RoleOptions } from './db';
 import { Ouch } from './utils';
 import { cache } from './cache';
 import crypto from 'crypto';
 
-export class Session {
+class ProtoSession {
 
-    constructor(public userId: string, private passwordHash?: string, public id = crypto.randomUUID()) { }
+    constructor(public props: TRoleProps, public id = crypto.randomUUID()) { }
 
     private userObj: UserRecord | undefined;
 
@@ -16,7 +16,7 @@ export class Session {
         if (this.userObj !== undefined) {
             return this.userObj;
         }
-        return this.userObj = await Users.findUnique({ where: { id: this.userId } });
+        return this.userObj = await Users.findUnique({ where: { id: this.props.id } });
     }
 
     public async end() {
@@ -24,28 +24,35 @@ export class Session {
     }
 
     public async extend() {
-        const user = await this.user();
-        if (this.passwordHash != user.props.password) { // password changed since session created
-            throw new Ouch(451, 'Session expired.');
+        const userChanged = await cache.get('user-changed-' + this.props.id);
+        if (userChanged) {
+            const user = await this.user();
+            if (this.props.password != user.props.password) { // password changed since session created
+                throw new Ouch(451, 'Session expired.');
+            }
+            else {
+                for (const role of RoleOptions) {
+                    this.props[role] = user.props[role];
+                }
+            }
         }
-        await cache.set('session-' + this.id, {
-            userId: this.userId,
-            passwordHash: this.passwordHash,
-        }, 1000 * 60 * 60 * 24 * 7);
+        await cache.set('session-' + this.id, this.props, 1000 * 60 * 60 * 24 * 7);
     }
 
     static start(user: UserRecord) {
-        const session = new Session(user.props.id as string, user.props.password || '');
+        const session = new Session(user.props);
         session.extend();
         return session;
     }
 
     static async fetch(id: string) {
-        const data: { userId: string, passwordHash: string } | undefined = await cache.get('session-' + id);
+        const data: TRoleProps | undefined = await cache.get('session-' + id);
         if (data !== undefined) {
-            return new Session(data.userId, data.passwordHash, id);
+            return new Session(data, id);
         }
         throw new Ouch(451, 'Session expired.');
     }
 
 }
+
+export class Session extends RoleMixin(ProtoSession) { }

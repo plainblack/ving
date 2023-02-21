@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { UserRecord, TRoles, TExtendedRoleOptions } from "./Users";
+import { Session } from "../session";
 import vingSchemas from './ving-schema.json';
 import { findObject, Ouch } from '../utils';
 import crypto from 'crypto';
@@ -41,7 +42,7 @@ export type TModelName = keyof TModel;
 export type TProps<T extends TModelName> = Partial<TModel[T]['create']['payload']['scalars']>;
 
 export type DescribeParams = {
-    currentUser?: UserRecord;
+    currentUser?: Session | UserRecord;
     include?: {
         options?: boolean,
         related?: string[],
@@ -145,7 +146,7 @@ export class VingRecord<T extends TModelName> {
         return this.props = await this.kind.prisma.findUniqueOrThrow({ where: { id: this.props.id } }) as TProps<T>
     }
 
-    public isOwner(currentUser: UserRecord) {
+    public isOwner(currentUser: Session | UserRecord) {
         const table = this.kind.vingSchema;
         for (let owner of table.ving.owner) {
             let found = owner.match(/^\$(.*)$/);
@@ -255,7 +256,7 @@ export class VingRecord<T extends TModelName> {
         return true;
     }
 
-    public verifyPostedParams(params: TProps<T>, currentUser?: UserRecord) {
+    public verifyPostedParams(params: TProps<T>, currentUser?: Session | UserRecord) {
         const schema = this.kind.vingSchema;
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
 
