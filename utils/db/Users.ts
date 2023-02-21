@@ -1,25 +1,48 @@
 import { prisma } from "./client";
 import { VingKind, VingRecord, TProps, DescribeParams, IConstructable } from "./_Base";
 import { APIKeyKind, APIKeyRecord } from "./APIKeys";
-import { Ouch } from '../utils';
+import { Ouch, ArrayToTuple } from '../utils';
 import bcrypt from 'bcrypt';
 
-/* export type TRoleProps = TRoles & Pick<TProps<'User'>, 'id'>;
+export type TRoleProps = TRoles & Pick<TProps<'User'>, 'id'>;
 
 export function RoleMixin<T extends IConstructable<{ props: TRoleProps }>>(Base: T) {
     return class RoleMixin extends Base {
+
+        public isRole(role: TExtendedRoleOptions): boolean {
+            if (role == 'public') return true;
+            if (role == 'owner') return false; // can't do owner check this way, use isOwner() instead
+            if (role in this.props) {
+                return this.props[role as keyof TRoles] || this.props.admin || false;
+            }
+            return false;
+        }
+
+        public isaRole(roles: TExtendedRoleOptions[]): boolean {
+            for (const role of roles) {
+                const result = this.isRole(role);
+                if (result) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public isRoleOrThrow(role: keyof TRoles): boolean {
+            if (this.isRole(role)) {
+                return true;
+            }
+            throw new Ouch(450, `Not a member of ${role}`, role);
+        }
+
     };
 }
 
-export class UserRecord extends RoleMixin(VingRecord<'User'>) { }
+export const RoleOptions = ["admin", "developer"] as const;
+export type TRoles = Pick<TProps<'User'>, ArrayToTuple<typeof RoleOptions>>;
+export type TExtendedRoleOptions = keyof TRoles | "public" | "owner" | string;
 
-*/
-
-export type TRoles = Pick<TProps<'User'>, "admin" | "developer">;
-export type TExplicitRoleOptions = keyof TRoles;
-export type TRoleOptions = TExplicitRoleOptions | "public" | "owner" | string;
-
-export class UserRecord extends VingRecord<'User'> {
+export class UserRecord extends RoleMixin(VingRecord<'User'>) {
 
     public get displayName() {
         switch (this.props.useAsDisplayName) {
@@ -73,32 +96,6 @@ export class UserRecord extends VingRecord<'User'> {
             this.setPassword(params.password);
         }
         return true;
-    }
-
-    public isRole(role: TRoleOptions): boolean {
-        if (role == 'public') return true;
-        if (role == 'owner') return false; // can't do owner check this way, use isOwner() instead
-        if (role in this.props) {
-            return this.props[role as keyof TRoles] || this.props.admin || false;
-        }
-        return false;
-    }
-
-    public isaRole(roles: TRoleOptions[]): boolean {
-        for (const role of roles) {
-            const result = this.isRole(role);
-            if (result) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public isRoleOrThrow(role: keyof TRoles): boolean {
-        if (this.isRole(role)) {
-            return true;
-        }
-        throw new Ouch(450, `Not a member of ${role}`, role);
     }
 
     public get apiKeys() {

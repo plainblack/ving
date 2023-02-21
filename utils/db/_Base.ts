@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { UserRecord, TRoles, TRoleOptions } from "./Users";
+import { UserRecord, TRoles, TExtendedRoleOptions } from "./Users";
 import vingSchemas from './ving-schema.json';
 import { findObject, Ouch } from '../utils';
 import crypto from 'crypto';
@@ -19,8 +19,8 @@ export type TVingOption = {
 }
 
 export type TVingFieldProp = {
-    editBy: TRoleOptions[]
-    viewBy: TRoleOptions[];
+    editBy: TExtendedRoleOptions[]
+    viewBy: TExtendedRoleOptions[];
     options: TVingOption[]
 }
 export type TVingField<T extends TModelName> = {
