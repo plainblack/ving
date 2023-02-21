@@ -26,8 +26,7 @@ export class Session {
     public async extend() {
         const user = await this.user();
         if (this.passwordHash != user.props.password) { // password changed since session created
-            this.end();
-            return;
+            throw new Ouch(451, 'Session expired.');
         }
         await cache.set('session-' + this.id, {
             userId: this.userId,
