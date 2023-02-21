@@ -24,8 +24,10 @@
         "vitest": "^0.28.5"
     },
     "dependencies": {
+        "@keyv/redis": "^2.5.5",
         "bcrypt": "^5.1.0",
         "csv-parse": "^5.3.5",
+        "keyv": "^4.5.2",
         "lodash": "^4.17.21"
     }
 }
