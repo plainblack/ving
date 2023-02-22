@@ -6,7 +6,7 @@ import crypto from 'crypto';
 export class APIKeyRecord extends VingRecord<'APIKey'> {
 
     public get user(): any {
-        return Users.findUnique({ where: { id: this.props.userId } });
+        return Users.findUnique({ where: { id: this.get('userId') } });
     }
 
 }
@@ -15,7 +15,7 @@ export class APIKeyKind extends VingKind<'APIKey', APIKeyRecord>  {
 
     public mint(props: TProps<'APIKey'>) {
         const obj = super.mint(props);
-        obj.props.privateKey = 'pk_' + crypto.randomUUID();
+        obj.set('privateKey', 'pk_' + crypto.randomUUID());
         return obj;
     }
 }

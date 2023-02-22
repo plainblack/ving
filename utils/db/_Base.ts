@@ -26,7 +26,7 @@ export type TVingFieldProp = {
 }
 export type TVingField<T extends TModelName> = {
     ving: TVingFieldProp
-    name: keyof TModel[T]['findUniqueOrThrow']['result'],
+    name: keyof TProps<T>,
     [key: string]: any
 }
 
@@ -40,6 +40,10 @@ export type TVingSchema<T extends TModelName> = {
 export type TModel = Prisma.TypeMap['model'];
 export type TModelName = keyof TModel;
 export type TProps<T extends TModelName> = Partial<TModel[T]['create']['payload']['scalars']>;
+//export type TProps<T extends TModelName> = { [P in T]?: TModel[P]['create']['payload']['scalars'] }
+//export type TProps<T extends keyof TModel> = Partial<Pick<TModel[T]['create']['payload']['scalars'], T>>;
+type x = TProps<'User'>
+//type y = TPropsY<'User'>
 
 export type DescribeParams = {
     currentUser?: Session | UserRecord;
@@ -109,10 +113,28 @@ export interface IPrisma<T extends TModelName> {
 
 export class VingRecord<T extends TModelName> {
 
-    constructor(protected kind: VingKind<T, VingRecord<T>>, public props: TProps<T>, private inserted = true) { }
+    constructor(protected kind: VingKind<T, VingRecord<T>>, private props: TProps<T>, private inserted = true) { }
 
     public get id() {
         return this.props.id;
+    }
+
+    public get<K extends keyof TProps<T>>(key: K): TProps<T>[K] {
+        return this.props[key];
+    }
+
+    public getAll() {
+        return this.props;
+    }
+
+    public set<K extends keyof TProps<T>>(key: K, value: TProps<T>[K]) {
+        return this.props[key] = value;
+    }
+
+    public setAll(props: TProps<T>) {
+        for (const key in props) {
+            this.set(key, props[key])
+        }
     }
 
     public copy(): this {
@@ -151,7 +173,7 @@ export class VingRecord<T extends TModelName> {
         for (let owner of table.ving.owner) {
             let found = owner.match(/^\$(.*)$/);
             if (found) {
-                if (this.props[found[1] as keyof TProps<T>] == currentUser.props.id) {
+                if (this.props[found[1] as keyof TProps<T>] == currentUser.get('id')) {
                     return true;
                 }
             }

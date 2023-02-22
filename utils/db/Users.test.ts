@@ -15,7 +15,7 @@ describe('Users', async () => {
     test("can create ving record", async () => {
         expect(warden).toHaveProperty('kind');
         expect(warden).toHaveProperty('props');
-        expect(warden.props.email).toBe('warden@shawshank.jail');
+        expect(warden.get('email')).toBe('warden@shawshank.jail');
     });
     test("is owner by id", async () => {
         expect(warden.isOwner(warden)).toBe(true);
@@ -29,13 +29,13 @@ describe('Users', async () => {
         expect(warden.isOwner(captain)).toBe(false);
     });
     test("can update ving record", async () => {
-        warden.props.admin = true;
-        expect(warden.props.admin).toBe(true);
+        warden.set('admin', true);
+        expect(warden.get('admin')).toBe(true);
         await warden.update();
     });
     test("can refetch ving record", async () => {
         await warden.refetch();
-        expect(warden.props.admin).toBe(true);
+        expect(warden.get('admin')).toBe(true);
     });
     test("is owner by role", async () => {
         expect(captain.isOwner(warden)).toBe(true);
@@ -72,12 +72,14 @@ describe('Users', async () => {
     });
     const guard = captain.copy();
     test("clone a record", () => {
-        guard.props.username = 'guard';
-        guard.props.email = 'guard@shawshank.jail';
-        guard.props.realName = 'Dekins';
+        guard.setAll({
+            username: 'guard',
+            email: 'guard@shawshank.jail',
+            realName: 'Dekins',
+        });
         guard.insert();
-        expect(guard.props.realName).toBe('Dekins');
-        expect(guard.props.id).not.toBe(captain.props.id);
+        expect(guard.get('realName')).toBe('Dekins');
+        expect(guard.get('id')).not.toBe(captain.get('id'));
         expect(guard).toHaveProperty('isRole');
     });
 
@@ -87,7 +89,7 @@ describe('Users', async () => {
 
     test("can delete ving record", async () => {
         await warden.delete()
-        expect(warden.props.username).toBe('warden');
+        expect(warden.get('username')).toBe('warden');
         expect(await Users.count({ where: { email: 'warden@shawshank.jail' } })).toBe(0);
         await captain.delete()
         await guard.delete()
@@ -105,6 +107,6 @@ describe('Users', async () => {
         expect(() => rita.verifyCreationParams(params)).toThrowError();
         params.username = 'rita';
         expect(rita.verifyPostedParams(params)).toBe(true);
-        expect(rita.props.username).toBe('rita');
+        expect(rita.get('username')).toBe('rita');
     });
 })

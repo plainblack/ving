@@ -18,7 +18,7 @@ describe('APIKeys', async () => {
 
     test('privateKey generated', async () => {
         await apikey.insert();
-        expect(apikey.props.privateKey).toMatch(/^pk_/);
+        expect(apikey.get('privateKey')).toMatch(/^pk_/);
     })
 
     test('user can reference their keys', async () => {
@@ -28,7 +28,7 @@ describe('APIKeys', async () => {
 
     test('records can mint without referenceing the relationship key', () => {
         const userKey2 = user.apiKeys.mint({ name: 'Test' } as any);
-        expect(userKey2.props.userId).toBe(user.id);
+        expect(userKey2.get('userId')).toBe(user.id);
     })
 
     const keyUser = await apikey.user;

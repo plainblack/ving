@@ -7,14 +7,15 @@ import { cache } from '../cache';
 
 export type TRoleProps = TRoles & Pick<TProps<'User'>, 'id' | 'password'>;
 
-export function RoleMixin<T extends IConstructable<{ props: TRoleProps }>>(Base: T) {
-    return class RoleMixin extends Base {
+export function RoleMixin<T extends IConstructable<{ getAll(): any, get<K extends keyof TRoleProps>(key: K): TRoleProps[K] }>>(Base: T) {
+    class RoleMixin extends Base {
 
         public isRole(role: TExtendedRoleOptions): boolean {
             if (role == 'public') return true;
             if (role == 'owner') return false; // can't do owner check this way, use isOwner() instead
-            if (role in this.props) {
-                return this.props[role as keyof TRoles] || this.props.admin || false;
+            let props = this.getAll();
+            if (role in props) {
+                return props[role as keyof TRoles] || props.admin || false;
             }
             return false;
         }
@@ -37,6 +38,10 @@ export function RoleMixin<T extends IConstructable<{ props: TRoleProps }>>(Base:
         }
 
     };
+    return RoleMixin as {
+        new(...args: any): RoleMixin;
+        prototype: any;
+    } & T;
 }
 
 export const RoleOptions = ["admin", "developer"] as const;
@@ -46,26 +51,26 @@ export type TExtendedRoleOptions = keyof TRoles | "public" | "owner" | string;
 export class UserRecord extends RoleMixin(VingRecord<'User'>) {
 
     public get displayName() {
-        switch (this.props.useAsDisplayName) {
+        switch (this.get('useAsDisplayName')) {
             case 'realName':
-                return this.props.realName;
+                return this.get('realName');
             case 'email':
-                return this.props.email;
+                return this.get('email');
             default:
-                return this.props.username;
+                return this.get('username');
         }
     }
 
     public async testPassword(password: string) {
-        if (password == undefined || password == '' || this.props.password == undefined)
+        if (password == undefined || password == '' || this.get('password') == undefined)
             throw new Ouch(441, 'You must specify a password.');
         let passed = false;
-        if (this.props.passwordType == 'bcrypt')
-            passed = bcrypt.compareSync(password, this.props.password);
+        if (this.get('passwordType') == 'bcrypt')
+            passed = bcrypt.compareSync(password, this.get('password') || '');
         else
             throw new Ouch(440, 'validating other password types not implemented');
         if (passed) {
-            if (this.props.passwordType != 'bcrypt') {
+            if (this.get('passwordType') != 'bcrypt') {
                 this.setPassword(password)
                 await this.update();
             }
@@ -75,8 +80,8 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
     }
 
     public setPassword(password: string) {
-        this.props.password = bcrypt.hashSync(password, 10);
-        this.props.passwordType = 'bcrypt';
+        this.set('password', bcrypt.hashSync(password, 10));
+        this.set('passwordType', 'bcrypt');
     }
 
     public async describe(params?: DescribeParams) {
@@ -100,12 +105,19 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
     }
 
     public get apiKeys() {
-        return new APIKeyKind(prisma.aPIKey, APIKeyRecord, { userId: this.props.id });
+        return new APIKeyKind(prisma.aPIKey, APIKeyRecord, { userId: this.id });
     }
 
     public async update() {
-        cache.set('user-changed-' + this.props.id, true, 1000 * 60 * 60 * 24 * 7);
+        cache.set('user-changed-' + this.id, true, 1000 * 60 * 60 * 24 * 7);
         return await super.update();
+    }
+
+    public set<K extends keyof TProps<'User'>>(key: K, value: TProps<'User'>[K]) {
+        if (key in ['password', ...RoleOptions]) {
+            cache.set('user-changed-' + this.id, true, 1000 * 60 * 60 * 24 * 7);
+        }
+        return super.set(key, value);
     }
 
 }

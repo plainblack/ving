@@ -19,6 +19,14 @@ class ProtoSession {
         return this.userObj = await Users.findUnique({ where: { id: this.props.id } });
     }
 
+    public get<K extends keyof TRoleProps>(key: K): TRoleProps[K] {
+        return this.props[key];
+    }
+
+    public getAll() {
+        return this.props;
+    }
+
     public async end() {
         await cache.delete('session-' + this.id);
     }
@@ -27,12 +35,12 @@ class ProtoSession {
         const userChanged = await cache.get('user-changed-' + this.props.id);
         if (userChanged) {
             const user = await this.user();
-            if (this.props.password != user.props.password) { // password changed since session created
+            if (this.props.password != user.get('password')) { // password changed since session created
                 throw new Ouch(451, 'Session expired.');
             }
             else {
                 for (const role of RoleOptions) {
-                    this.props[role] = user.props[role];
+                    this.props[role] = user.get(role);
                 }
             }
         }
@@ -40,7 +48,7 @@ class ProtoSession {
     }
 
     static start(user: UserRecord) {
-        const session = new Session(user.props);
+        const session = new Session(user.getAll());
         session.extend();
         return session;
     }
