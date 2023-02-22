@@ -40,10 +40,6 @@ export type TVingSchema<T extends TModelName> = {
 export type TModel = Prisma.TypeMap['model'];
 export type TModelName = keyof TModel;
 export type TProps<T extends TModelName> = Partial<TModel[T]['create']['payload']['scalars']>;
-//export type TProps<T extends TModelName> = { [P in T]?: TModel[P]['create']['payload']['scalars'] }
-//export type TProps<T extends keyof TModel> = Partial<Pick<TModel[T]['create']['payload']['scalars'], T>>;
-type x = TProps<'User'>
-//type y = TPropsY<'User'>
 
 export type DescribeParams = {
     currentUser?: Session | UserRecord;
