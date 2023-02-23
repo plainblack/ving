@@ -1,5 +1,5 @@
 import { Users, UserRecord, TRoleProps, RoleMixin, RoleOptions } from './db';
-import { Ouch } from './utils';
+import { ouch } from './utils';
 import { cache } from './cache';
 import crypto from 'crypto';
 
@@ -36,7 +36,7 @@ class ProtoSession {
         if (userChanged) {
             const user = await this.user();
             if (this.props.password != user.get('password')) { // password changed since session created
-                throw new Ouch(451, 'Session expired.');
+                throw ouch(401, 'Session expired.');
             }
             else {
                 for (const role of RoleOptions) {
@@ -58,7 +58,7 @@ class ProtoSession {
         if (data !== undefined) {
             return new Session(data, id);
         }
-        throw new Ouch(451, 'Session expired.');
+        throw ouch(401, 'Session expired.');
     }
 
 }

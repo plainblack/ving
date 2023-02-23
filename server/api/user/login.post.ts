@@ -1,5 +1,5 @@
 import { Users } from '~/utils/db';
-import { testRequired } from '~/utils/utils';
+import { testRequired, ouch } from '~/utils/utils';
 export default defineEventHandler(async (event) => {
     const query = getQuery(event);
     const body = await readBody(event);
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
             user = await Users.findUnique({ where: { username: body.login } });
         }
         catch {
-            throw new Ouch(440, 'User not found.')
+            throw ouch(404, 'User not found.')
         }
     }
     return await user.testPassword(body.password);

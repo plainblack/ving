@@ -1,7 +1,7 @@
 import { prisma } from "./client";
 import { VingKind, VingRecord, TProps, DescribeParams, IConstructable } from "./_Base";
 import { APIKeyKind, APIKeyRecord } from "./APIKeys";
-import { Ouch, ArrayToTuple } from '../utils';
+import { ouch, ArrayToTuple } from '../utils';
 import bcrypt from 'bcrypt';
 import { cache } from '../cache';
 
@@ -34,7 +34,7 @@ export function RoleMixin<T extends IConstructable<{ getAll(): any, get<K extend
             if (this.isRole(role)) {
                 return true;
             }
-            throw new Ouch(450, `Not a member of ${role}`, role);
+            throw ouch(403, `Not a member of ${role}`, role);
         }
 
     };
@@ -63,12 +63,12 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
 
     public async testPassword(password: string) {
         if (password == undefined || password == '' || this.get('password') == undefined)
-            throw new Ouch(441, 'You must specify a password.');
+            throw ouch(441, 'You must specify a password.');
         let passed = false;
         if (this.get('passwordType') == 'bcrypt')
             passed = bcrypt.compareSync(password, this.get('password') || '');
         else
-            throw new Ouch(440, 'validating other password types not implemented');
+            throw ouch(404, 'validating other password types not implemented');
         if (passed) {
             if (this.get('passwordType') != 'bcrypt') {
                 this.setPassword(password)
@@ -76,7 +76,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
             }
             return true;
         }
-        throw new Ouch(454, 'Password does not match.');
+        throw ouch(454, 'Password does not match.');
     }
 
     public setPassword(password: string) {

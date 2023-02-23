@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { UserRecord, TRoles, TExtendedRoleOptions } from "./Users";
 import { Session } from "../session";
 import vingSchemas from './ving-schema.json';
-import { findObject, Ouch } from '../utils';
+import { findObject, ouch } from '../utils';
 import crypto from 'crypto';
 import _ from 'lodash';
 
@@ -146,7 +146,7 @@ export class VingRecord<T extends TModelName> {
 
     public async insert() {
         if (this.inserted) {
-            throw new Ouch(443, `${this.kind.name} already inserted`);
+            throw ouch(409, `${this.kind.name} already inserted`);
         }
         this.inserted = true;
         return this.props = await this.kind.prisma.create({ data: this.props as any }) as TProps<T>
@@ -269,7 +269,7 @@ export class VingRecord<T extends TModelName> {
             const fieldName = field.name.toString();
             if (params[field.name] !== undefined && params[field.name] != '')
                 continue;
-            throw new Ouch(441, `${fieldName} is required.`, fieldName);
+            throw ouch(441, `${fieldName} is required.`, fieldName);
         }
         return true;
     }
@@ -289,7 +289,7 @@ export class VingRecord<T extends TModelName> {
             if (params[field.name] === undefined || field.relationName)
                 continue;
             if (params[field.name] == '' && field.isRequired) {
-                throw new Ouch(441, `${fieldName} is required.`, fieldName);
+                throw ouch(441, `${fieldName} is required.`, fieldName);
             }
             if (field.name !== undefined && params[field.name] !== undefined) {
                 this.props[field.name] = params[field.name];
@@ -434,7 +434,7 @@ export class VingKind<T extends TModelName, R extends VingRecord<T>> {
             return findObject('name', nameToFind, vingSchemas) as TVingSchema<T>;
         }
         catch {
-            throw new Ouch(440, 'ving schema ' + this.name + ' not found');
+            throw ouch(404, 'ving schema ' + this.name + ' not found');
         }
 
     }
