@@ -92,3 +92,9 @@ class ProtoSession {
 }
 
 export class Session extends RoleMixin(ProtoSession) { }
+
+export const testSession = (session: Session | undefined) => {
+    if (session === undefined) {
+        throw ouch(401, 'Session expired.');
+    }
+}
