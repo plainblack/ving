@@ -50,6 +50,9 @@ export const bleep = (error: any): string => {
 }
 
 export const testRequired = (list: string[], params: Record<string, any>) => {
+    if (params === undefined) {
+        throw ouch(400, 'No params detected.');
+    }
     for (const field of list) {
         if (!(field in params) || params[field] === undefined || params[field] == '') {
             throw ouch(441, `${field} is required.`, field);

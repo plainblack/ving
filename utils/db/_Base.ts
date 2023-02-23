@@ -48,6 +48,7 @@ export type DescribeParams = {
         related?: string[],
         extra?: string[],
         links?: boolean,
+        meta?: boolean,
         private?: boolean,
     }
 }
@@ -79,6 +80,7 @@ export type Describe<T extends TModelName> = {
         [key: string]: any
     }
     links?: Record<string, string>
+    meta?: Record<string, any>
     options?: {
         [property in keyof TProps<T>]?: TVingOption[]
     }
@@ -195,6 +197,11 @@ export class VingRecord<T extends TModelName> {
         }
         if (include !== undefined && include.options) {
             out.options = {};
+        }
+        if (include !== undefined && include.meta) {
+            out.meta = {
+                type: this.kind.name,
+            };
         }
         if (include !== undefined && include.related && include.related.length) {
             out.related = {};

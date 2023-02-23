@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ### login
-POST http://localhost:3000/api/user/login
+POST http://localhost:3000/api/session
 Content-Type: application/json
 
 {

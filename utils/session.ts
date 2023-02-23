@@ -1,11 +1,11 @@
-import { Users, UserRecord, TRoleProps, RoleMixin, RoleOptions } from './db';
+import { Users, UserRecord, TRoleProps, RoleMixin, RoleOptions, DescribeParams, TProps } from './db';
 import { ouch } from './utils';
 import { cache } from './cache';
 import crypto from 'crypto';
 
 class ProtoSession {
 
-    constructor(public props: TRoleProps, public id = crypto.randomUUID()) { }
+    constructor(private props: TRoleProps, public id = crypto.randomUUID()) { }
 
     private userObj: UserRecord | undefined;
 
@@ -47,9 +47,37 @@ class ProtoSession {
         await cache.set('session-' + this.id, this.props, 1000 * 60 * 60 * 24 * 7);
     }
 
-    static start(user: UserRecord) {
+    public async describe(params: DescribeParams = {}) {
+        const out: { props: { id: string, userId?: string }, related?: { user: TProps<'User'> }, links?: Record<string, string>, meta?: Record<string, any> } = {
+            props: {
+                id: this.id,
+                userId: this.get('id'),
+            }
+        };
+        if ('include' in params && params.include !== undefined) {
+            if (params.include.related && params.include.related.length) {
+                out.related = {
+                    user: this.getAll()
+                }
+            }
+            if (params.include.links) {
+                out.links = {
+                    base: '/api/user/session',
+                    self: '/api/user/session/' + this.id,
+                }
+            }
+            if (params.include.meta) {
+                out.meta = {
+                    type: 'Session',
+                }
+            }
+        }
+        return out;
+    }
+
+    static async start(user: UserRecord) {
         const session = new Session(user.getAll());
-        session.extend();
+        await session.extend();
         return session;
     }
 

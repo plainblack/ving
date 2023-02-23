@@ -2,7 +2,6 @@ import { DescribeParams } from '~/utils/db';
 export default defineEventHandler((event) => {
     if ('ving' in event.context) {
         const params = getQuery(event);
-        console.log('VING' + params);
         const include: DescribeParams['include'] = { options: false, links: false, related: [], extra: [] };
         if ('includeOptions' in params && params.includeOptions !== undefined && params.includeOptions !== null && !Array.isArray(params.includeOptions)) {
             include.options = /^true$/i.test(params.includeOptions);
