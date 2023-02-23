@@ -18,5 +18,6 @@ Content-Type: application/json
     "password": "testpass" 
 }
 
-### test
-GET http://localhost:3000/api/test
+### list
+GET http://localhost:3000/api/user?includeLinks=true
+Content-Type: application/json

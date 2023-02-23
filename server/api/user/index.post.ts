@@ -8,5 +8,5 @@ export default defineEventHandler(async (event) => {
   user.verifyCreationParams(body);
   user.verifyPostedParams(body);
   user.insert();
-  return user.describe({ currentUser: user });
+  return user.describe({ currentUser: user, include: event.context.ving.include });
 });

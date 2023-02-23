@@ -5,6 +5,6 @@ export default defineEventHandler(async (event) => {
     console.log(query);
     //console.log(body);
     let error = createError({ statusCode: 911, data: { foo: 'bar' }, message: 'this is the message', statusMessage: 'status message' });
-    throw ouch(403, 'fooey', 'baz');
+    // throw ouch(403, 'fooey', 'baz');
     return { foo: 'bar', bar: 'baddy' };
 });

@@ -10,6 +10,6 @@ export default defineEventHandler(async (event) => {
   // users[0].boop();
   // return Object.getPrototypeOf(users[0])
   //return users[0].isOwner(users[1])
-  return await Users.describeList();
+  return await Users.describeList({ objectParams: { include: event.context.ving.include } });
   //return { foo : 1}
 })

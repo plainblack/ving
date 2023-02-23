@@ -196,7 +196,7 @@ export class VingRecord<T extends TModelName> {
         if (include !== undefined && include.options) {
             out.options = {};
         }
-        if (include !== undefined && include.related) {
+        if (include !== undefined && include.related && include.related.length) {
             out.related = {};
         }
 
