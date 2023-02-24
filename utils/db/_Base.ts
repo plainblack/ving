@@ -398,6 +398,14 @@ export class VingKind<T extends TModelName, R extends VingRecord<T>> {
         return obj;
     }
 
+    public async createAndVerify(props: TProps<T>, currentUser?: Session | UserRecord) {
+        const obj = this.mint({});
+        obj.verifyCreationParams(props);
+        obj.verifyPostedParams(props, currentUser);
+        await obj.insert();
+        return obj;
+    }
+
     private getDefaultArgs(args?: object) {
         const defaultArgs = Object.keys(this.propDefaults).length ? { where: { ...this.propDefaults } } : {};
         return _.defaults(defaultArgs, args);
