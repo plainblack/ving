@@ -1,13 +1,13 @@
 ### create
-# @name user
-POST http://localhost:3000/api/user
+# @name brooks
+POST http://localhost:3000/api/user?includeMeta=true
 Content-Type: application/json
 
 {
-    "username": "tommy", 
-    "realName" : "Tommy Williams",
-    "email" : "tommy@shawshank.jail",
-    "password": "Elmo Blatch"
+    "username": "brooks", 
+    "realName" : "Brooks Hatlen",
+    "email" : "brooks@shawshank.jail",
+    "password": "Rock Hammer"
 }
 
 ### login
@@ -16,24 +16,24 @@ POST http://localhost:3000/api/session
 Content-Type: application/json
 
 {
-    "login": "tommy", 
-    "password": "Elmo Blatch" 
+    "login": "brooks", 
+    "password": "Rock Hammer" 
 }
 
 ### list
-GET http://localhost:3000/api/user?includeLinks=true
+GET http://localhost:3000/api/user
 Content-Type: application/json
 
 ### get
-GET http://localhost:3000/api/user/{{user.response.body.$.props.id}}?includeLinks=true 
+GET http://localhost:3000/api/user/{{brooks.response.body.$.props.id}}?includeLinks=true 
 Content-Type: application/json
 
 ### get with auth
-GET http://localhost:3000/api/user/{{user.response.body.$.props.id}} 
+GET http://localhost:3000/api/user/{{brooks.response.body.$.props.id}} 
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 
 
 ### delete
-DELETE http://localhost:3000/api/user/{{user.response.body.$.props.id}} 
+DELETE http://localhost:3000/api/user/{{brooks.response.body.$.props.id}} 
 Content-Type: application/json
-//Cookie: vingSessionId={{login.response.body.$.props.id}} 
+Cookie: vingSessionId={{login.response.body.$.props.id}} 
