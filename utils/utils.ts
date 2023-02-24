@@ -84,3 +84,7 @@ export const vingInclude = (event: H3Event) => {
 export const vingDescribe = (event: H3Event) => {
     return { currentUser: vingSession(event), include: vingInclude(event) };
 }
+
+export const vingDescribeList = (event: H3Event) => {
+    return { objectParams: { currentUser: vingSession(event), include: vingInclude(event) } };
+}

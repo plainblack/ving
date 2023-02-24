@@ -1,15 +1,9 @@
 import { Users } from '~/utils/db';
+import { vingDescribeList, vingSession, ouch } from '~/utils/utils';
 export default defineEventHandler(async (event) => {
-  //const query = getQuery(event);
-  //	return useFoo();
-  //  const users = await db.Users.findMany()
-  //  return await db.Users.findUnique({ where: { email: 'andy@shawshank.jail' } });
-  //users[0].test();
-  //prisma.test();
-  //prisma.user.test();
-  // users[0].boop();
-  // return Object.getPrototypeOf(users[0])
-  //return users[0].isOwner(users[1])
-  return await Users.describeList({ objectParams: { include: event.context.ving.include } });
-  //return { foo : 1}
+  const session = vingSession(event);
+  // comment the 2 lines below out if you want to allow mere users to access the user list
+  if (session === undefined || !session.isRole('admin'))
+    throw ouch(403, 'You must be an admin to do that.');
+  return await Users.describeList(vingDescribeList(event));
 })
