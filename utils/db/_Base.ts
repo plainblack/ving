@@ -167,6 +167,8 @@ export class VingRecord<T extends TModelName> {
     }
 
     public isOwner(currentUser: Session | UserRecord) {
+        if (currentUser === undefined)
+            return false;
         const table = this.kind.vingSchema;
         for (let owner of table.ving.owner) {
             let found = owner.match(/^\$(.*)$/);

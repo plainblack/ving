@@ -1,4 +1,5 @@
 ### create
+# @name user
 POST http://localhost:3000/api/user
 Content-Type: application/json
 
@@ -6,9 +7,33 @@ Content-Type: application/json
     "username": "tommy", 
     "realName" : "Tommy Williams",
     "email" : "tommy@shawshank.jail",
-    "password": "testpass" // Elmo Blatch
+    "password": "Elmo Blatch"
+}
+
+### login
+# @name login
+POST http://localhost:3000/api/session
+Content-Type: application/json
+
+{
+    "login": "tommy", 
+    "password": "Elmo Blatch" 
 }
 
 ### list
 GET http://localhost:3000/api/user?includeLinks=true
 Content-Type: application/json
+
+### get
+GET http://localhost:3000/api/user/{{user.response.body.$.props.id}} 
+Content-Type: application/json
+
+### get with auth
+GET http://localhost:3000/api/user/{{user.response.body.$.props.id}} 
+Content-Type: application/json
+Cookie: vingSessionId={{login.response.body.$.props.id}} 
+
+### delete
+DELETE http://localhost:3000/api/user/{{user.response.body.$.props.id}} 
+Content-Type: application/json
+//Cookie: vingSessionId={{login.response.body.$.props.id}} 

@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
     const session = event.context.ving.session;
     testSession(session);
     const { id } = getRouterParams(event);
-    console.log(session.id + ' == ' + id)
     if (session.id == id || session.get('admin')) {
         session.end();
         return session.describe({ currentUser: session, include: event.context.ving.include });

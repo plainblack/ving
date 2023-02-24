@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
     "login": "tommy", 
-    "password": "testpass" 
+    "password": "Elmo Blatch" 
 }
 
 ### get
