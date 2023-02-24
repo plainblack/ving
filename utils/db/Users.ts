@@ -62,7 +62,9 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
     }
 
     public async testPassword(password: string) {
-        if (password == undefined || password == '' || this.get('password') == undefined)
+        if (this.get('password') == undefined)
+            throw ouch(400, 'User has no password, you must log in via another provider.');
+        if (password == undefined || password == '')
             throw ouch(441, 'You must specify a password.');
         let passed = false;
         if (this.get('passwordType') == 'bcrypt')
@@ -98,7 +100,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
 
     public verifyPostedParams(params: TProps<'User'>, currentUser?: UserRecord) {
         super.verifyPostedParams(params, currentUser);
-        if ('password' in params && params.password) {
+        if (params !== undefined && params.password && (currentUser === undefined || currentUser.get('id') == this.id)) {
             this.setPassword(params.password);
         }
         return true;

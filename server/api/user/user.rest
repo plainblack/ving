@@ -19,6 +19,7 @@ Content-Type: application/json
     "password": "Rock Hammer" 
 }
 
+
 ### list
 GET http://localhost:3000/api/user
 Content-Type: application/json
@@ -26,6 +27,15 @@ Content-Type: application/json
 ### get
 GET http://localhost:3000/api/user/{{login.response.body.$.props.userId}}?includeLinks=true 
 Content-Type: application/json
+
+### put
+PUT http://localhost:3000/api/user/{{login.response.body.$.props.userId}} 
+Content-Type: application/json
+Cookie: vingSessionId={{login.response.body.$.props.id}} 
+
+{
+    "useAsDisplayName": "email"
+}
 
 ### get with auth
 GET http://localhost:3000/api/user/{{login.response.body.$.props.userId}} 

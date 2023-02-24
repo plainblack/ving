@@ -300,18 +300,25 @@ export class VingRecord<T extends TModelName> {
             const roles = [...field.ving.editBy];
             const editable = (roles.includes('owner') && (isOwner || !this.isInserted))
                 || (currentUser !== undefined && currentUser.isaRole(roles));
-            if (!editable)
+            if (!editable) {
                 continue;
-            if (params[field.name] === undefined || field.relationName)
+            }
+            if (params[field.name] === undefined || field.relationName) {
                 continue;
+            }
             if (params[field.name] == '' && field.isRequired) {
                 throw ouch(441, `${fieldName} is required.`, fieldName);
             }
             if (field.name !== undefined && params[field.name] !== undefined) {
-                this.props[field.name] = params[field.name];
+                this.set(field.name, params[field.name]);
             }
         }
         return true;
+    }
+
+    public async updateAndVerify(params: TProps<T>, currentUser?: Session | UserRecord) {
+        this.verifyPostedParams(params, currentUser);
+        await this.update();
     }
 
 }

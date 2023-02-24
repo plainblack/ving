@@ -67,8 +67,12 @@ describe('Users', async () => {
         expect(await warden.testPassword('foo')).toBe(true);
     });
     test('set password via posted params', async () => {
-        warden.verifyPostedParams({ password: 'food' });
+        warden.verifyPostedParams({ password: 'food' }, warden);
         expect(await warden.testPassword('food')).toBe(true);
+    });
+    test('set useAsDisplayName via posted params', () => {
+        warden.verifyPostedParams({ useAsDisplayName: 'email' }, warden);
+        expect(warden.get('useAsDisplayName')).toBe('email');
     });
     const guard = captain.copy();
     test("clone a record", () => {
