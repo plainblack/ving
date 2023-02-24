@@ -1,5 +1,4 @@
 ### create
-# @name brooks
 POST http://localhost:3000/api/user?includeMeta=true
 Content-Type: application/json
 
@@ -25,15 +24,15 @@ GET http://localhost:3000/api/user
 Content-Type: application/json
 
 ### get
-GET http://localhost:3000/api/user/{{brooks.response.body.$.props.id}}?includeLinks=true 
+GET http://localhost:3000/api/user/{{login.response.body.$.props.userId}}?includeLinks=true 
 Content-Type: application/json
 
 ### get with auth
-GET http://localhost:3000/api/user/{{brooks.response.body.$.props.id}} 
+GET http://localhost:3000/api/user/{{login.response.body.$.props.userId}} 
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 
 
 ### delete
-DELETE http://localhost:3000/api/user/{{brooks.response.body.$.props.id}} 
+DELETE http://localhost:3000/api/user/{{login.response.body.$.props.userId}} 
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 

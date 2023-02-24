@@ -17,3 +17,21 @@ Cookie: vingSessionId={{login.response.body.$.props.id}}
 DELETE http://localhost:3000/api/session/{{login.response.body.$.props.id}} 
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 
+
+
+
+### create user
+POST http://localhost:3000/api/user?includeMeta=true
+Content-Type: application/json
+
+{
+    "username": "tommy", 
+    "realName" : "Tommy Williams",
+    "email" : "tommy@shawshank.jail",
+    "password": "Elmo Blatch"
+}
+
+### delete user
+DELETE http://localhost:3000/api/user/{{login.response.body.$.props.userId}} 
+Content-Type: application/json
+Cookie: vingSessionId={{login.response.body.$.props.id}} 
