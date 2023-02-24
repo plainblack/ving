@@ -1,5 +1,5 @@
 import { cache } from './cache';
-import { sleep } from './utils';
+import { sleep } from './helpers';
 import { test, expect } from "vitest";
 
 const data = [

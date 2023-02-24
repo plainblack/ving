@@ -1,5 +1,5 @@
 import { Users, UserRecord, TRoleProps, RoleMixin, RoleOptions, DescribeParams, TProps } from './db';
-import { ouch } from './utils';
+import { ouch } from './helpers';
 import { cache } from './cache';
 import crypto from 'crypto';
 

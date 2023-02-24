@@ -1,5 +1,5 @@
 import { Users } from '~/utils/db';
-import { testRequired, ouch } from '~/utils/utils';
+import { testRequired, ouch } from '~~/utils/helpers';
 import { Session } from '~/utils/session';
 export default defineEventHandler(async (event) => {
     const query = getQuery(event);

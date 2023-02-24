@@ -1,4 +1,4 @@
-import { findObject, ucFirst } from './utils';
+import { findObject, ucFirst } from './helpers';
 import { test, expect } from "vitest";
 
 const data = [
