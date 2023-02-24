@@ -4,7 +4,7 @@ export default defineEventHandler((event) => {
         const params = getQuery(event);
         const include: DescribeParams['include'] = { options: false, links: false, related: [], extra: [] };
         if ('includeOptions' in params && params.includeOptions !== undefined && params.includeOptions !== null && !Array.isArray(params.includeOptions)) {
-            include.options = /^true$/i.test(params.includeOptions);
+            include.options = /^true$/i.test(params.includeOptions as string);
         }
         if ('includeLinks' in params && params.includeLinks !== undefined && params.includeLinks !== null && !Array.isArray(params.includeLinks)) {
             include.links = true;
@@ -14,7 +14,7 @@ export default defineEventHandler((event) => {
                 include.related = params.includeRelated as string[];
             }
             else if (include.related !== undefined) {
-                include.related.push(params.includeRelated);
+                include.related.push(params.includeRelated as string);
             }
         }
         if ('includeExtra' in params && params.includeExtra !== undefined && params.includeExtra !== null) {
@@ -22,7 +22,7 @@ export default defineEventHandler((event) => {
                 include.extra = params.includeExtra as string[];
             }
             else if (include.extra !== undefined) {
-                include.extra.push(params.includeExtra);
+                include.extra.push(params.includeExtra as string);
             }
         }
         event.context.ving.include = include;
