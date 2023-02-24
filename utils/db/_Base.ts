@@ -205,7 +205,7 @@ export class VingRecord<T extends TModelName> {
             out.links.self = `${out.links.base}/${this.props.id}`;
         }
         if (include !== undefined && include.options) {
-            out.options = {};
+            out.options = this.propOptions(params);
         }
         if (include !== undefined && include.meta) {
             out.meta = {
@@ -242,14 +242,6 @@ export class VingRecord<T extends TModelName> {
                 out.links[lower] = `${out.links.self}/${lower}`;
             }
 
-            // options
-            if (typeof out.options === 'object'
-                && include.options
-                && field.ving.options.length > 0
-            ) {
-                out.options[field.name] = field.ving.options;
-            }
-
             // related
             if (typeof out.related === 'object'
                 && include.related !== undefined && include.related.length > 0
@@ -275,6 +267,25 @@ export class VingRecord<T extends TModelName> {
         }
 
         return out;
+    }
+
+    public propOptions(params: DescribeParams = {}) {
+        const options: Describe<T>['options'] = {};
+        const currentUser = params.currentUser;
+        const include = params.include || {};
+        const isOwner = currentUser !== undefined && this.isOwner(currentUser);
+        for (const field of this.kind.vingSchema.fields) {
+            const roles = [...field.ving.viewBy, ...field.ving.editBy];
+            const visible = roles.includes('public')
+                || (include !== undefined && include.private)
+                || (roles.includes('owner') && isOwner)
+                || (currentUser !== undefined && currentUser.isaRole(roles));
+            if (!visible) continue;
+            if (field.ving.options.length > 0) {
+                options[field.name] = field.ving.options;
+            }
+        }
+        return options;
     }
 
     public verifyCreationParams(params: TProps<T>) {
@@ -376,7 +387,7 @@ export class VingKind<T extends TModelName, R extends VingRecord<T>> {
         return out;
     }
 
-    public mint(props: TProps<T>) {
+    public mint(props: TProps<T> = {}) {
         let data = { ...this.propDefaults, ...props };
         for (const field of this.vingSchema.fields) {
             if (data[field.name as keyof TProps<T>] !== undefined) {

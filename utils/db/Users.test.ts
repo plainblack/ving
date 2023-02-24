@@ -41,15 +41,33 @@ describe('Users', async () => {
         expect(captain.isOwner(warden)).toBe(true);
     });
     test("described by owner", async () => {
-        const description = await warden.describe({ currentUser: warden, include: { links: true, options: true } });
-        expect(description.props.displayName).toBe('warden');
-        expect(description.props.username).toBe('warden');
-        expect(description.props.admin).toBe(true);
+        const description = await captain.describe({ currentUser: captain, include: { links: true, options: true } });
+        expect(description.props.displayName).toBe('captain');
+        expect(description.props.username).toBe('captain');
         if (description.links !== undefined) {
             expect(description.links.base).toBe('/api/user');
         }
         if (description.options !== undefined) {
             expect(description.options.useAsDisplayName).toBeTypeOf('object');
+            expect(Object.keys(description.options).length).toBe(3);
+        }
+    });
+    test("propOptions by owner", async () => {
+        const options = await captain.propOptions({ currentUser: captain });
+        expect(options.useAsDisplayName).toBeTypeOf('object');
+        expect(Object.keys(options).length).toBe(3);
+    });
+    test("described by admin", async () => {
+        const description = await captain.describe({ currentUser: warden, include: { links: true, options: true } });
+        expect(description.props.displayName).toBe('captain');
+        expect(description.props.username).toBe('captain');
+        expect(description.props.admin).toBe(false);
+        if (description.links !== undefined) {
+            expect(description.links.base).toBe('/api/user');
+        }
+        if (description.options !== undefined) {
+            expect(description.options.useAsDisplayName).toBeTypeOf('object');
+            expect(Object.keys(description.options).length).toBe(3);
         }
     });
     test("described by visitor", async () => {
@@ -61,6 +79,9 @@ describe('Users', async () => {
             expect(description.links.base).toBe('/api/user');
         }
         expect(description.options).toEqual({});
+        if (description.options !== undefined) {
+            expect(Object.keys(description.options).length).toBe(0);
+        }
     });
     test('set password', async () => {
         warden.setPassword('foo');

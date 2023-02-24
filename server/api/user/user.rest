@@ -28,6 +28,11 @@ Content-Type: application/json
 GET http://localhost:3000/api/user/{{login.response.body.$.props.userId}}?includeLinks=true 
 Content-Type: application/json
 
+### get options
+GET http://localhost:3000/api/user/options
+Content-Type: application/json
+Cookie: vingSessionId={{login.response.body.$.props.id}} 
+
 ### put
 PUT http://localhost:3000/api/user/{{login.response.body.$.props.userId}} 
 Content-Type: application/json
@@ -38,9 +43,10 @@ Cookie: vingSessionId={{login.response.body.$.props.id}}
 }
 
 ### get with auth
-GET http://localhost:3000/api/user/{{login.response.body.$.props.userId}} 
+GET http://localhost:3000/api/user/{{login.response.body.$.props.userId}}?includeOptions=true
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 
+
 
 ### delete
 DELETE http://localhost:3000/api/user/{{login.response.body.$.props.userId}} 
