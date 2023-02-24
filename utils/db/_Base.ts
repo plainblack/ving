@@ -187,6 +187,13 @@ export class VingRecord<T extends TModelName> {
         return false;
     }
 
+    public canEdit(currentUser: Session | UserRecord) {
+        if (this.isOwner(currentUser)) {
+            return true;
+        }
+        throw ouch(403, `You do not have the privileges to access ${this.kind.name}.`)
+    }
+
     public async describe(params: DescribeParams = {}) {
         const currentUser = params.currentUser;
         const include = params.include || {};
