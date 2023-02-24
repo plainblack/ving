@@ -56,8 +56,8 @@ export type DescribeParams = {
 export type DescribeListParams = {
     itemsPerPage?: number;
     pageNumber?: number;
-    orderBy?: number;
-    sortBy?: number;
+    orderBy?: string;
+    sortOrder?: 'asc' | 'desc';
     maxItems?: number;
     objectParams?: DescribeParams;
 }

@@ -1,3 +1,7 @@
+import { DescribeListParams } from './db';
+import _ from 'lodash';
+import { H3Event } from 'h3';
+
 export const findObject = <T>(field: keyof T, value: string, list: T[]): T => {
     const index = list.findIndex((obj: T) => obj[field] == value);
     if (index >= 0) {
@@ -66,7 +70,6 @@ export type ArrayToTuple<T extends ReadonlyArray<string>, V = string> = keyof {
     [K in (T extends ReadonlyArray<infer U> ? U : never)]: V
 };
 
-import { H3Event } from 'h3';
 export const vingSession = (event: H3Event) => {
     if (event && event.context && event.context.ving && event.context.ving.session) {
         return event.context.ving.session;
@@ -86,5 +89,21 @@ export const vingDescribe = (event: H3Event) => {
 }
 
 export const vingDescribeList = (event: H3Event) => {
-    return { objectParams: { currentUser: vingSession(event), include: vingInclude(event) } };
+    return { ...vingPaging(event), objectParams: { currentUser: vingSession(event), include: vingInclude(event) } };
+}
+
+export const vingPaging = (event: H3Event) => {
+    const params = getQuery(event);
+    const paging: DescribeListParams = { itemsPerPage: 10, pageNumber: 1, orderBy: 'dateCreated', sortOrder: 'asc' };
+    if (params !== undefined) {
+        if (params.itemsPerPage && _.isNumber(params.itemsPerPage))
+            paging.itemsPerPage = params.itemsPerPage;
+        if (params.pageNumber && _.isNumber(params.pageNumber))
+            paging.pageNumber = params.pageNumber;
+        if (params.orderBy && _.isString(params.orderBy))
+            paging.orderBy = params.orderBy;
+        if (params.sortOrder && _.isString(params.sortOrder) && params.sortOrder in ['asc', 'desc'])
+            paging.sortOrder = params.sortOrder as 'asc' | 'desc';
+    }
+    return paging;
 }
