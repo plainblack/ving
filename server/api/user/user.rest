@@ -25,7 +25,7 @@ GET http://localhost:3000/api/user?includeLinks=true
 Content-Type: application/json
 
 ### get
-GET http://localhost:3000/api/user/{{user.response.body.$.props.id}} 
+GET http://localhost:3000/api/user/{{user.response.body.$.props.id}}?includeLinks=true 
 Content-Type: application/json
 
 ### get with auth
