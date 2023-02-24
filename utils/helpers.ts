@@ -131,3 +131,10 @@ export const vingPaging = (event: H3Event) => {
     }
     return paging;
 }
+
+export const vingBody = async (event: H3Event) => {
+    const body = await readBody(event);
+    if (body === undefined || (body && _.isObjectLike(body)))
+        return body;
+    throw ouch(400, 'Malformed body JSON. Perhaps you have a dangling comma.');
+}

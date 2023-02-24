@@ -1,9 +1,9 @@
 import { Users } from '~/utils/db';
-import { testRequired, ouch } from '~~/utils/helpers';
+import { testRequired, ouch, vingBody } from '~~/utils/helpers';
 import { Session } from '~/utils/session';
 export default defineEventHandler(async (event) => {
     const query = getQuery(event);
-    const body = await readBody(event);
+    const body = await vingBody(event)
     testRequired(['login', 'password'], body);
     let user;
     try {
