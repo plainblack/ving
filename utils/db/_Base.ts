@@ -421,6 +421,11 @@ export class VingKind<T extends TModelName, R extends VingRecord<T>> {
         return new this.recordClass(this, props);
     }
 
+    public async find(id: TModel[T]['findUniqueOrThrow']['payload']['scalars']['id']) {
+        const props = await this.prisma.findUniqueOrThrow({ where: { id: id } });
+        return new this.recordClass(this, props);
+    }
+
     public async findMany(args?: TModel[T]['findMany']['args']) {
         const customArgs = this.getDefaultArgs(args) as TModel[T]['findMany']['args'];
         const results = await this.prisma.findMany(customArgs);
