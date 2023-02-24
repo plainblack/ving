@@ -1,4 +1,4 @@
-import { DescribeListParams } from './db';
+import { DescribeListParams, DescribeParams } from './db';
 import _ from 'lodash';
 import { H3Event } from 'h3';
 
@@ -16,7 +16,7 @@ export const ucFirst = (string: string): string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const codes = {
+const errorCodes = {
     400: 'Bad Request',
     401: 'Unauthorized',
     402: 'Payment Required',
@@ -37,10 +37,10 @@ const codes = {
     504: 'Could Not Connect',
 };
 
-export const ouch = (code: keyof typeof codes, message: string, data?: any) => {
+export const ouch = (code: keyof typeof errorCodes, message: string, data?: any) => {
     return createError({
         statusCode: code,
-        statusMessage: codes[code || 500],
+        statusMessage: errorCodes[code || 500],
         message,
         data,
     })
@@ -78,10 +78,34 @@ export const vingSession = (event: H3Event) => {
 }
 
 export const vingInclude = (event: H3Event) => {
-    if (event && event.context && event.context.ving && event.context.ving.include) {
-        return event.context.ving.include;
+    const params = getQuery(event);
+    const include: DescribeParams['include'] = { options: false, links: false, related: [], extra: [], meta: false };
+    if ('includeOptions' in params && params.includeOptions !== undefined && params.includeOptions !== null && !Array.isArray(params.includeOptions)) {
+        include.options = /^true$/i.test(params.includeOptions as string);
     }
-    return undefined;
+    if ('includeLinks' in params && params.includeLinks !== undefined && params.includeLinks !== null && !Array.isArray(params.includeLinks)) {
+        include.links = true;
+    }
+    if ('includeMeta' in params && params.includeMeta !== undefined && params.includeMeta !== null && !Array.isArray(params.includeMeta)) {
+        include.meta = true;
+    }
+    if ('includeRelated' in params && params.includeRelated !== undefined && params.includeRelated !== null) {
+        if (Array.isArray(params.includeRelated)) {
+            include.related = params.includeRelated as string[];
+        }
+        else if (include.related !== undefined) {
+            include.related.push(params.includeRelated as string);
+        }
+    }
+    if ('includeExtra' in params && params.includeExtra !== undefined && params.includeExtra !== null) {
+        if (Array.isArray(params.includeExtra)) {
+            include.extra = params.includeExtra as string[];
+        }
+        else if (include.extra !== undefined) {
+            include.extra.push(params.includeExtra as string);
+        }
+    }
+    return include;
 }
 
 export const vingDescribe = (event: H3Event) => {
