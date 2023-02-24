@@ -100,7 +100,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
 
     public verifyPostedParams(params: TProps<'User'>, currentUser?: UserRecord) {
         super.verifyPostedParams(params, currentUser);
-        if (params !== undefined && params.password && (currentUser === undefined || currentUser.get('id') == this.id)) {
+        if (params !== undefined && params.password && (currentUser === undefined || this.isOwner(currentUser))) {
             this.setPassword(params.password);
         }
         return true;
