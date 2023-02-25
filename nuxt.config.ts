@@ -3,10 +3,9 @@ export default defineNuxtConfig({
     app: {
         head: {
             link: [
-                { // pro subscription to font-awesome, will only work on my domains and localhost
+                {
                     rel: 'stylesheet',
-                    href: 'https://pro.fontawesome.com/releases/v5.15.4/css/all.css',
-                    integrity: 'sha384-rqn26AG5Pj86AF4SO72RK5fyefcQ/x32DNQfChxWvbXIyXFePlEktwD18fEz+kQU',
+                    href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css',
                     crossorigin: 'anonymous'
                 }
             ]

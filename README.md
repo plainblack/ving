@@ -84,5 +84,4 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 ## TODOS
 
  - Talk about cache setup
- - Replace font awesome pro with the public version
  - Add all the missing features from Wing
