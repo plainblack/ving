@@ -19,5 +19,6 @@ export default defineEventHandler(async (event) => {
     }
     await user.testPassword(body.password);
     const session = await Session.start(user);
+    setCookie(event, 'vingSessionId', session.id, { maxAge: 60 * 24 * 365 * 5, httpOnly: true });
     return await session.describe({ currentUser: user, include: event.context.ving.include })
 })
