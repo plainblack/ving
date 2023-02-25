@@ -1,6 +1,6 @@
 import { generatorHandler, GeneratorOptions } from '@prisma/generator-helper';
-import path from 'path';
-import fs from 'fs';
+import * as path from 'path';
+import * as fs from 'fs';
 const GENERATOR_NAME = 'ving-schema-generator';
 import { parse } from 'csv-parse/sync';
 
@@ -45,7 +45,7 @@ generatorHandler({
       for (let enumValue of value.values) {
         options.push({
           value: enumValue.name,
-          text: typeof labels[i] != 'undefined' ? labels[i] : enumValue.name,
+          label: typeof labels[i] != 'undefined' ? labels[i] : enumValue.name,
         })
         i++
       }
@@ -79,10 +79,10 @@ generatorHandler({
             if (field.type == 'Boolean') {
               field.ving.options = [{
                 value: true,
-                text: (values !== undefined && values[0] !== undefined) ? values[0] : 'True',
+                label: (values !== undefined && values[0] !== undefined) ? values[0] : 'True',
               }, {
                 value: false,
-                text: (values !== undefined && values[1] !== undefined) ? values[1] : 'False',
+                label: (values !== undefined && values[1] !== undefined) ? values[1] : 'False',
               }];
             }
           }

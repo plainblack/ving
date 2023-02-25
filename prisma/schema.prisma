@@ -8,13 +8,13 @@ generator client {
 
 generator custom_generator {
   provider = "node ./prisma/ving-schema-generator"
-  output   = "../utils/db/"
+  output   = "../app/db/"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-  shadowDatabaseUrl      = env("SHADOW_DATABASE_URL")
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 /// @ving.owner: $id

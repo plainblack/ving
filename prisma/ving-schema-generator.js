@@ -35,13 +35,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
 var generator_helper_1 = require("@prisma/generator-helper");
-var path_1 = __importDefault(require("path"));
-var fs_1 = __importDefault(require("fs"));
+var path = require("path");
+var fs = require("fs");
 var GENERATOR_NAME = 'ving-schema-generator';
 var sync_1 = require("csv-parse/sync");
 var version = require('../package.json').version;
@@ -74,7 +71,7 @@ var version = require('../package.json').version;
                             enumValue = _c[_b];
                             options_1.push({
                                 value: enumValue.name,
-                                text: typeof labels[i] != 'undefined' ? labels[i] : enumValue.name
+                                label: typeof labels[i] != 'undefined' ? labels[i] : enumValue.name
                             });
                             i++;
                         }
@@ -102,10 +99,10 @@ var version = require('../package.json').version;
                                     if (field.type == 'Boolean') {
                                         field.ving.options = [{
                                                 value: true,
-                                                text: (values !== undefined && values[0] !== undefined) ? values[0] : 'True'
+                                                label: (values !== undefined && values[0] !== undefined) ? values[0] : 'True'
                                             }, {
                                                 value: false,
-                                                text: (values !== undefined && values[1] !== undefined) ? values[1] : 'False'
+                                                label: (values !== undefined && values[1] !== undefined) ? values[1] : 'False'
                                             }];
                                     }
                                 }
@@ -142,10 +139,10 @@ function parseDirectives(string) {
 }
 var writeFileSafely = function (writeLocation, content) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        fs_1["default"].mkdirSync(path_1["default"].dirname(writeLocation), {
+        fs.mkdirSync(path.dirname(writeLocation), {
             recursive: true
         });
-        fs_1["default"].writeFileSync(writeLocation, content);
+        fs.writeFileSync(writeLocation, content);
         return [2 /*return*/];
     });
 }); };

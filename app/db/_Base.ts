@@ -16,7 +16,7 @@ export type TVingModelProp = {
 
 export type TVingOption = {
     value: string | boolean
-    text: string
+    label: string
 }
 
 export type TVingFieldProp = {

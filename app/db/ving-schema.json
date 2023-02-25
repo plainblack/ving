@@ -155,7 +155,7 @@
           "options": [
             {
               "value": "bcrypt",
-              "text": "B-Crypt"
+              "label": "B-Crypt"
             }
           ],
           "editBy": [],
@@ -201,15 +201,15 @@
           "options": [
             {
               "value": "username",
-              "text": "Username"
+              "label": "Username"
             },
             {
               "value": "realName",
-              "text": "Real Name"
+              "label": "Real Name"
             },
             {
               "value": "email",
-              "text": "Email Address"
+              "label": "Email Address"
             }
           ],
           "editBy": [
@@ -236,11 +236,11 @@
           "options": [
             {
               "value": true,
-              "text": "Admin"
+              "label": "Admin"
             },
             {
               "value": false,
-              "text": "Not Admin"
+              "label": "Not Admin"
             }
           ],
           "editBy": [
@@ -269,11 +269,11 @@
           "options": [
             {
               "value": true,
-              "text": "Software Developer"
+              "label": "Software Developer"
             },
             {
               "value": false,
-              "text": "Not Software Developer"
+              "label": "Not Software Developer"
             }
           ],
           "editBy": [

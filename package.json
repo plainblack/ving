@@ -10,7 +10,8 @@
         "postinstall": "nuxt prepare",
         "db:build": "prisma generate",
         "db:studio": "prisma studio",
-        "test": "vitest"
+        "test": "vitest",
+        "build:schema-generator": "tsc prisma/ving-schema-generator.ts"
     },
     "devDependencies": {
         "@nuxt/test-utils": "^3.2.2",
