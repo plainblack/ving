@@ -11,6 +11,17 @@ export default defineNuxtConfig({
             ]
         }
     },
+    modules: [
+        '@huntersofbook/naive-ui-nuxt'
+    ],
+    naiveUI: {
+        themeOverrides: {
+            common: {
+                //   primaryColor: '#ff0000',
+                // primaryColorHover: '#8b0000'
+            }
+        }
+    },
     runtimeConfig: {
     }
 })

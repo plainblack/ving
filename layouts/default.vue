@@ -1,17 +1,21 @@
 <template>
-    <div>
-        <header>
-            <NuxtLink to="/">
-                <h1>Ving</h1>
-            </NuxtLink>
-            <NuxtLink to="/user/login">
-                <i class="fa-regular fa-circle-user"></i>
-            </NuxtLink>
-        </header>
+    <NConfigProvider>
+        <NGlobalStyle />
         <div>
-            <slot />
+            <header>
+                <NuxtLink to="/">
+                    <h1>Ving</h1>
+                </NuxtLink>
+                <NuxtLink to="/user/login">
+                    <i class="fa-regular fa-circle-user"></i>
+                </NuxtLink>
+            </header>
+            <div>
+                <NButton>Default</NButton>
+                <slot />
+            </div>
         </div>
-    </div>
+    </NConfigProvider>
 </template>
 
 <script setup lang="ts">
