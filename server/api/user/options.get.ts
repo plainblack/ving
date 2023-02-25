@@ -1,5 +1,5 @@
-import { Users } from '~/utils/db';
-import { vingDescribe } from '~~/utils/helpers';
+import { Users } from '~~/app/db';
+import { vingDescribe } from '~~/app/helpers';
 export default defineEventHandler(async (event) => {
     return Users.mint().propOptions(vingDescribe(event));
 })

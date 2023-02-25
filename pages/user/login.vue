@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { Describe } from '~/utils/db';
+import { Describe } from '~~/app/db';
 let login = ref('');
 let password = ref('');
 let user = ref<Describe<'User'>>({ props: {} });
