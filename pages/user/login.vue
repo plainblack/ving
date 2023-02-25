@@ -10,14 +10,17 @@ let login = ref('');
 let password = ref('');
 
 async function tryLogin() {
-    const result = await useFetch('/api/session', {
+    const session = await useFetch('/api/session?includeRelated=user', {
         method: 'POST',
         body: {
             login,
             password
         }
-    })
-    console.log(result)
+    });
+    if (session.data.value) {
+        const user = session.data.value.related?.user;
+        console.log(user);
+    }
 }
 </script>
 
