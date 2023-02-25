@@ -12,16 +12,9 @@ export default defineNuxtConfig({
         }
     },
     modules: [
-        '@huntersofbook/naive-ui-nuxt'
+        '@nuxtjs/tailwindcss',
+        '@element-plus/nuxt'
     ],
-    naiveUI: {
-        themeOverrides: {
-            common: {
-                //   primaryColor: '#ff0000',
-                // primaryColorHover: '#8b0000'
-            }
-        }
-    },
-    runtimeConfig: {
-    }
+    elementPlus: { themes: ['dark'] },
+    runtimeConfig: {}
 })
