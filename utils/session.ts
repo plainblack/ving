@@ -1,4 +1,4 @@
-import { Users, UserRecord, TRoleProps, RoleMixin, RoleOptions, DescribeParams, TProps } from './db';
+import { Users, UserRecord, TRoleProps, RoleMixin, RoleOptions, DescribeParams, Describe } from './db';
 import { ouch } from './helpers';
 import { cache } from './cache';
 import crypto from 'crypto';
@@ -48,7 +48,7 @@ class ProtoSession {
     }
 
     public async describe(params: DescribeParams = {}) {
-        const out: { props: { id: string, userId?: string }, related?: { user: TProps<'User'> }, links?: Record<string, string>, meta?: Record<string, any> } = {
+        const out: { props: { id: string, userId?: string }, related?: { user: Describe<'User'> }, links?: Record<string, string>, meta?: Record<string, any> } = {
             props: {
                 id: this.id,
                 userId: this.get('id'),
@@ -57,7 +57,7 @@ class ProtoSession {
         if ('include' in params && params.include !== undefined) {
             if (params.include.related && params.include.related.length) {
                 out.related = {
-                    user: this.getAll()
+                    user: await (await this.user()).describe(params)
                 }
             }
             if (params.include.links) {
