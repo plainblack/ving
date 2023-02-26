@@ -81,7 +81,14 @@ npm run preview
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
 
+## Private Repos Only
+
+There are commercial Font Awesome icons and commercial licenses for Tailwind UI in this repo, thus the repo and all forks must remain private.
+
 ## TODOS
 
  - Talk about cache setup
  - Add all the missing features from Wing
+
+
+
