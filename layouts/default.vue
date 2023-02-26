@@ -96,4 +96,12 @@ const navigation = [
     { name: 'Projects', href: '#', current: false },
     { name: 'Calendar', href: '#', current: false },
 ]
+useHead({
+    bodyAttrs: {
+        class: 'h-full',
+    },
+    htmlAttrs: {
+        class: 'h-full bg-gray-50'
+    },
+});
 </script>
