@@ -3,8 +3,7 @@
 
     <div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
-            <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company" />
+            <img class="mx-auto h-12 w-auto" :src="config.public.logoUrl" :alt="config.public.companyName" />
             <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
         </div>
 
@@ -125,6 +124,7 @@ import { Describe } from '~~/app/db';
 let login = ref('');
 let password = ref('');
 let user = ref<Describe<'User'>>({ props: {} });
+const config = useRuntimeConfig();
 
 async function tryLogin() {
     const session = await useFetch('/api/session?includeRelated=user', {
