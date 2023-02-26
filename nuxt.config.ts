@@ -13,8 +13,10 @@ export default defineNuxtConfig({
     },
     modules: [
         '@nuxtjs/tailwindcss',
-        '@element-plus/nuxt'
+        'nuxt-headlessui'
     ],
-    elementPlus: { themes: ['dark'] },
+    headlessui: {
+        prefix: '' // we'll just use the default headless component names with no prefix
+    },
     runtimeConfig: {}
 })
