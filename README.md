@@ -15,12 +15,12 @@ You might be wondering why REST in a world with tRPC and GraphQL. It's because R
 
 
 ### VSCode
-
 Develop using [VSCode](https://code.visualstudio.com) and these plugins:
 
  - [Prisma](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma)
  - [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
  - [Typescript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
+ - [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) - be sure to review the VSCode settings recommendations on that page
 
 ### Setup
 

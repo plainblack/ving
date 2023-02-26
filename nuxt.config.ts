@@ -53,8 +53,15 @@ export default defineNuxtConfig({
         prefix: '' // we'll just use the default headless component names with no prefix
     },
     css: [
-        '@fortawesome/fontawesome-svg-core/styles.css'
+        '@fortawesome/fontawesome-svg-core/styles.css',
+        '~/assets/css/main.css',
     ],
+    postcss: {
+        plugins: {
+            tailwindcss: {},
+            autoprefixer: {},
+        },
+    },
     runtimeConfig: {
         public: {
             companyName: 'ving',
