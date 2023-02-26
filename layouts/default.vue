@@ -7,8 +7,11 @@
                     <DisclosureButton
                         class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                         <span class="sr-only">Open main menu</span>
-                        <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
-                        <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
+                        <client-only>
+                            <font-awesome-icon icon="fa-solid fa-bars" v-if="!open" class="block h-6 w-6"
+                                aria-hidden="true" />
+                            <font-awesome-icon icon="fa-solid fa-xmark" v-else class="block h-6 w-6" aria-hidden="true" />
+                        </client-only>
                     </DisclosureButton>
                 </div>
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
@@ -30,7 +33,9 @@
                     <button type="button"
                         class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span class="sr-only">View notifications</span>
-                        <BellIcon class="h-6 w-6" aria-hidden="true" />
+                        <client-only>
+                            <font-awesome-icon icon="fa-solid fa-bell" class="h-6 w-6" aria-hidden="true" />
+                        </client-only>
                     </button>
 
                     <!-- Profile dropdown -->
@@ -87,13 +92,6 @@
 </template>
 
 <script setup lang="ts">
-//import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-//import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { ref } from 'vue'
-
-const activeIndex = ref('1');
-
-
 const navigation = [
     { name: 'Ving', href: '/', current: true },
     { name: 'Team', href: '#', current: false },
@@ -101,9 +99,3 @@ const navigation = [
     { name: 'Calendar', href: '#', current: false },
 ]
 </script>
-
-<style>
-.flex-grow {
-    flex-grow: 1;
-}
-</style>

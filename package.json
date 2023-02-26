@@ -28,6 +28,18 @@
         "vitest": "^0.28.5"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^6.3.0",
+        "@fortawesome/free-brands-svg-icons": "^6.3.0",
+        "@fortawesome/free-regular-svg-icons": "^6.3.0",
+        "@fortawesome/free-solid-svg-icons": "^6.3.0",
+        "@fortawesome/pro-duotone-svg-icons": "^6.3.0",
+        "@fortawesome/pro-light-svg-icons": "^6.3.0",
+        "@fortawesome/pro-regular-svg-icons": "^6.3.0",
+        "@fortawesome/pro-solid-svg-icons": "^6.3.0",
+        "@fortawesome/pro-thin-svg-icons": "^6.3.0",
+        "@fortawesome/sharp-regular-svg-icons": "^6.3.0",
+        "@fortawesome/sharp-solid-svg-icons": "^6.3.0",
+        "@fortawesome/vue-fontawesome": "^3.0.3",
         "@keyv/redis": "^2.5.5",
         "bcrypt": "^5.1.0",
         "csv-parse": "^5.3.5",
