@@ -24,7 +24,6 @@
         "@types/lodash": "^4.14.191",
         "autoprefixer": "^10.4.13",
         "nuxt": "^3.2.2",
-        "nuxt-headlessui": "^1.1.1",
         "postcss": "^8.4.21",
         "prisma": "^4.10.1",
         "tailwindcss": "^3.2.7",
@@ -45,9 +44,12 @@
         "@fortawesome/sharp-solid-svg-icons": "^6.3.0",
         "@fortawesome/vue-fontawesome": "^3.0.3",
         "@keyv/redis": "^2.5.5",
+        "@pinia/nuxt": "^0.4.7",
         "bcrypt": "^5.1.0",
         "csv-parse": "^5.3.5",
         "keyv": "^4.5.2",
-        "lodash": "^4.17.21"
+        "lodash": "^4.17.21",
+        "nuxt-headlessui": "^1.1.1",
+        "pinia": "^2.0.32"
     }
 }
