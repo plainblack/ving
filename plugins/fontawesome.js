@@ -1,6 +1,9 @@
 // For Nuxt 3
 import { library, config } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+// if you uncomment any of the below, make sure you add them to the transpile section in nuxt.config.ts
+
 //import { far } from '@fortawesome/free-regular-svg-icons'
 //import { fal } from '@fortawesome/free-light-svg-icons'
 //import { fab } from '@fortawesome/free-brands-svg-icons'

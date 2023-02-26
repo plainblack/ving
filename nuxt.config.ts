@@ -4,6 +4,14 @@ export default defineNuxtConfig({
         '@nuxtjs/tailwindcss',
         'nuxt-headlessui'
     ],
+    build: {
+        transpile: [
+            "@fortawesome/vue-fontawesome",
+            "@fortawesome/fontawesome-svg-core",
+            "@fortawesome/free-solid-svg-icons",
+            "@fortawesome/pro-solid-svg-icons",
+        ],
+    },
     headlessui: {
         prefix: '' // we'll just use the default headless component names with no prefix
     },
