@@ -38,7 +38,7 @@
                     <!-- Profile dropdown -->
                     <Menu as="div" class="relative ml-3">
                         <div>
-                            <MenuButton
+                            <MenuButton v-if="currentUserStore.currentUser"
                                 class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                 <span class="sr-only">Open user menu</span>
                                 <img class="h-8 w-8 rounded-full"
@@ -48,6 +48,11 @@
                                     {{ currentUserStore.currentUser && currentUserStore.currentUser.props.displayName }}
                                 </div>
                             </MenuButton>
+                            <NuxtLink v-else to="/user/login" type="button"
+                                class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <span class="sr-only">Sign in to your account</span>
+                                Sign In
+                            </NuxtLink>
                         </div>
                         <transition enter-active-class="transition ease-out duration-100"
                             enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
@@ -66,10 +71,12 @@
                                     :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
                                     Settings</NuxtLink>
                                 </MenuItem>
-                                <MenuItem v-slot="{ active }">
-                                <NuxtLink to="/user/logout"
-                                    :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign
-                                    out</NuxtLink>
+                                <MenuItem v-slot="{ active, close }">
+                                <NuxtLink to="/user/logout" v-slot="{ navigate }" custom>
+                                    <a @click="navigate(); close()"
+                                        :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign
+                                        out</a>
+                                </NuxtLink>
                                 </MenuItem>
                             </MenuItems>
                         </transition>
