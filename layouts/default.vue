@@ -105,8 +105,8 @@
                             <h3 class="text-sm font-semibold leading-6 text-white">Solutions</h3>
                             <ul role="list" class="mt-6 space-y-4">
                                 <li v-for="item in footNav.solutions" :key="item.name">
-                                    <a :href="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
-                                        item.name }}</a>
+                                    <NuxtLink :to="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
+                                        item.name }}</NuxtLink>
                                 </li>
                             </ul>
                         </div>
@@ -114,8 +114,8 @@
                             <h3 class="text-sm font-semibold leading-6 text-white">Support</h3>
                             <ul role="list" class="mt-6 space-y-4">
                                 <li v-for="item in footNav.support" :key="item.name">
-                                    <a :href="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
-                                        item.name }}</a>
+                                    <NuxtLink :to="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
+                                        item.name }}</NuxtLink>
                                 </li>
                             </ul>
                         </div>
@@ -125,8 +125,8 @@
                             <h3 class="text-sm font-semibold leading-6 text-white">Company</h3>
                             <ul role="list" class="mt-6 space-y-4">
                                 <li v-for="item in footNav.company" :key="item.name">
-                                    <a :href="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
-                                        item.name }}</a>
+                                    <NuxtLink :to="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
+                                        item.name }}</NuxtLink>
                                 </li>
                             </ul>
                         </div>
@@ -134,8 +134,8 @@
                             <h3 class="text-sm font-semibold leading-6 text-white">Legal</h3>
                             <ul role="list" class="mt-6 space-y-4">
                                 <li v-for="item in footNav.legal" :key="item.name">
-                                    <a :href="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
-                                        item.name }}</a>
+                                    <NuxtLink :to="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
+                                        item.name }}</NuxtLink>
                                 </li>
                             </ul>
                         </div>
