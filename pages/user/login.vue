@@ -8,23 +8,25 @@
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
 
+                <form @submit.prevent="tryLogin">
+                    <div class="space-y-6">
+                        <div>
+                            <label for="login" class="block text-sm font-medium text-gray-700">Email address or
+                                Username</label>
+                            <div class="mt-1">
+                                <input v-model="login" id="login" name="login" type="login" autocomplete="email" required
+                                    class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+                            </div>
+                        </div>
 
-                <div class="space-y-6">
-                    <div>
-                        <label for="login" class="block text-sm font-medium text-gray-700">Email address or Username</label>
-                        <div class="mt-1">
-                            <input v-model="login" id="login" name="login" type="login" autocomplete="email" required
-                                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+                        <div>
+                            <button
+                                class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                Sign in with magic link
+                            </button>
                         </div>
                     </div>
-
-                    <div>
-                        <button
-                            class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            Sign in with magic link
-                        </button>
-                    </div>
-                </div>
+                </form>
 
 
                 <div class="mt-6 relative">
@@ -36,32 +38,34 @@
                     </div>
                 </div>
 
+                <form @submit.prevent="tryLogin">
+                    <div class="mt-6 space-y-6">
+                        <div>
+                            <label for="login" class="block text-sm font-medium text-gray-700">Email address or
+                                Username</label>
+                            <div class="mt-1">
+                                <input v-model="login" id="login" name="login" type="login" autocomplete="email" required
+                                    class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+                            </div>
+                        </div>
 
-                <div class="mt-6 space-y-6">
-                    <div>
-                        <label for="login" class="block text-sm font-medium text-gray-700">Email address or Username</label>
-                        <div class="mt-1">
-                            <input v-model="login" id="login" name="login" type="login" autocomplete="email" required
-                                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                            <div class="mt-1">
+                                <input v-model="password" id="password" name="password" type="password"
+                                    autocomplete="current-password" required
+                                    class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
+                            </div>
+                        </div>
+
+                        <div>
+                            <button @click="tryLogin"
+                                class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                Sign in with password
+                            </button>
                         </div>
                     </div>
-
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                        <div class="mt-1">
-                            <input v-model="password" id="password" name="password" type="password"
-                                autocomplete="current-password" required
-                                class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
-                        </div>
-                    </div>
-
-                    <div>
-                        <button @click="tryLogin"
-                            class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            Sign in with password
-                        </button>
-                    </div>
-                </div>
+                </form>
                 <div class="mt-6">
                     <div class="relative">
                         <div class="absolute inset-0 flex items-center">
