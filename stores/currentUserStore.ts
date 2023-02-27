@@ -17,6 +17,26 @@ export const useCurrentUserStore = defineStore('currentUser', {
             catch (e) {
                 console.error(e);
             }
-        }
+        },
+        async login(login: string, password: string) {
+            try {
+                const session = await useFetch('/api/session?includeRelated=user', {
+                    method: 'POST',
+                    body: {
+                        login,
+                        password
+                    }
+                });
+                if (session.data.value && session.data.value.related && session.data.value.related.user) {
+                    this.currentUser = session.data.value.related?.user;
+                }
+                else {
+                    console.log('login failed, but without error');
+                }
+            }
+            catch (e) {
+                console.log('login failed: ' + e);
+            }
+        },
     },
 });

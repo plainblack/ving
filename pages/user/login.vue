@@ -1,6 +1,4 @@
 <template>
-    <p> {{ user.props && user.props.displayName }}</p>
-
     <div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <img class="mx-auto h-12 w-auto" :src="config.public.logoUrl" :alt="config.public.companyName" />
@@ -120,24 +118,16 @@
 
 
 <script setup lang="ts">
-import { Describe } from '~~/app/db';
+import { useCurrentUserStore } from '~/stores/currentUserStore';
+
 let login = ref('');
 let password = ref('');
-let user = ref<Describe<'User'>>({ props: {} });
 const config = useRuntimeConfig();
+const currentUserStore = useCurrentUserStore();
 
-async function tryLogin() {
-    const session = await useFetch('/api/session?includeRelated=user', {
-        method: 'POST',
-        body: {
-            login,
-            password
-        }
-    });
-    if (session.data.value && session.data.value.related && session.data.value.related.user) {
-        user.value = session.data.value.related?.user;
-    }
+function tryLogin() {
+    currentUserStore.login(login.value, password.value);
+    navigateTo('/');
 }
+
 </script>
-
-
