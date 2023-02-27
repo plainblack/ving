@@ -13,8 +13,8 @@
                 <p class="mt-6 text-base leading-7 text-gray-600">{{ error.message }}</p>
                 <p class="mt-6 text-base leading-7 text-gray-600">{{ error.description }}</p>
                 <div class="mt-10">
-                    <a href="#" class="text-sm font-semibold leading-7 text-indigo-600"><span
-                            aria-hidden="true">&larr;</span> Back to home</a>
+                    <NuxtLink to="/" class="text-sm font-semibold leading-7 text-indigo-600"><span
+                            aria-hidden="true">&larr;</span> Back to home</NuxtLink>
                 </div>
             </div>
         </main>
