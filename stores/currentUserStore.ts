@@ -38,5 +38,11 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 console.log('login failed: ' + e);
             }
         },
+        async logout() {
+            const session = await useFetch('/api/session', {
+                method: 'delete',
+            });
+            this.currentUser = undefined;
+        },
     },
 });

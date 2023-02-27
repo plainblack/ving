@@ -125,8 +125,8 @@ let password = ref('');
 const config = useRuntimeConfig();
 const currentUserStore = useCurrentUserStore();
 
-function tryLogin() {
-    currentUserStore.login(login.value, password.value);
+async function tryLogin() {
+    await currentUserStore.login(login.value, password.value);
     navigateTo('/');
 }
 
