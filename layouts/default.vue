@@ -44,6 +44,7 @@
                                 <img class="h-8 w-8 rounded-full"
                                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                     alt="" />
+                                {{ currentUserStore.currentUser && currentUserStore.currentUser.props.displayName }}
                             </MenuButton>
                         </div>
                         <transition enter-active-class="transition ease-out duration-100"
@@ -89,6 +90,8 @@
 </template>
 
 <script setup lang="ts">
+import { useCurrentUserStore } from '~/stores/currentUserStore';
+
 const config = useRuntimeConfig();
 const navigation = [
     { name: 'Ving', href: '/', current: true },
@@ -104,4 +107,7 @@ useHead({
         class: 'h-full bg-gray-50'
     },
 });
+
+const currentUserStore = useCurrentUserStore();
+currentUserStore.fetch();
 </script>

@@ -1,7 +1,12 @@
-import { Users } from '~~/app/db';
+import { ouch } from '~~/app/helpers';
 import { vingDescribe, vingSession } from '~~/app/helpers';
 export default defineEventHandler(async (event) => {
     const session = vingSession(event);
-    const user = await session.user();
-    return await user.describe(vingDescribe(event));
+    try {
+        const user = await session.user();
+        return await user.describe(vingDescribe(event));
+    }
+    catch {
+        throw ouch(401, 'Session not found.')
+    }
 })
