@@ -67,10 +67,9 @@
                                     Settings</NuxtLink>
                                 </MenuItem>
                                 <MenuItem v-slot="{ active, close }">
-                                <NuxtLink to="/user/logout" v-slot="{ navigate }" custom>
-                                    <a @click="navigate(); close()"
-                                        :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign
-                                        out</a>
+                                <NuxtLink to="/user/logout" @mouseup="close"
+                                    :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">
+                                    Sign out
                                 </NuxtLink>
                                 </MenuItem>
                             </MenuItems>
