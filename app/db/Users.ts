@@ -61,6 +61,31 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
         }
     }
 
+    public get avatarUrl() {
+        let url = `https://robohash.org/${this.id}/size_300x300`;
+
+        // foreground
+        if (this.id?.match(/^[A-M]/)) {
+            url += '/set_set2'
+        }
+        else if (this.id?.match(/^[a-m]/)) {
+            url += '/set_set3'
+        }
+        else if (this.id?.match(/^[N-Z]/)) {
+            url += '/set_set4'
+        }
+
+        // background
+        if (this.id?.match(/[A-Z]$/)) {
+            url += '/bgset_bg1'
+        }
+        else if (this.id?.match(/[a-z]$/)) {
+            url += '/bgset_bg2'
+        }
+
+        return url;
+    }
+
     public async testPassword(password: string) {
         if (this.get('password') == undefined)
             throw ouch(400, 'User has no password, you must log in via another provider.');
@@ -89,6 +114,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
     public async describe(params?: DescribeParams) {
         const out = await super.describe(params);
         out.props.displayName = this.displayName;
+        out.props.avatarUrl = this.avatarUrl;
         if (params && params.include && params.include.extra && params.include.extra.includes('foo')) {
             if (out.links === undefined) {
                 out.links = {};
