@@ -23,8 +23,8 @@
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
                             <NuxtLink v-for="item in navigation" :key="item.name" :to="item.href"
-                                :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium']"
-                                :aria-current="item.current ? 'page' : undefined">{{ item.name }}</NuxtLink>
+                                :class="['text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium']">
+                                {{ item.name }}</NuxtLink>
                         </div>
                     </div>
                 </div>
@@ -81,8 +81,8 @@
         <DisclosurePanel class="sm:hidden">
             <div class="space-y-1 px-2 pt-2 pb-3">
                 <DisclosureButton v-for="item in navigation" :key="item.name" as="a" :href="item.href"
-                    :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block px-3 py-2 rounded-md text-base font-medium']"
-                    :aria-current="item.current ? 'page' : undefined">{{ item.name }}</DisclosureButton>
+                    :class="['text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium']">
+                    {{ item.name }}</DisclosureButton>
             </div>
         </DisclosurePanel>
     </Disclosure>
@@ -96,10 +96,10 @@ import { useCurrentUserStore } from '~/stores/currentUserStore';
 
 const config = useRuntimeConfig();
 const navigation = [
-    { name: 'Ving', href: '/', current: true },
-    { name: 'Team', href: '#', current: false },
-    { name: 'Projects', href: '#', current: false },
-    { name: 'Calendar', href: '#', current: false },
+    { name: 'Ving', href: '/' },
+    { name: 'Team', href: '#' },
+    { name: 'Projects', href: '#' },
+    { name: 'Calendar', href: '#' },
 ]
 useHead({
     bodyAttrs: {
