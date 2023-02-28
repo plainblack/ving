@@ -1,5 +1,5 @@
 <template>
-    <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
+    <div class="lg:grid lg:grid-cols-12 lg:gap-x-5 p-5">
         <UserSettingsNav />
 
         <div class="space-y-6 sm:px-6 lg:col-span-9 lg:px-0">
