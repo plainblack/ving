@@ -317,7 +317,7 @@ export class VingRecord<T extends TModelName> {
             if (params[field.name] === undefined || field.relationName) {
                 continue;
             }
-            if (params[field.name] == '' && field.isRequired) {
+            if (params[field.name] === '' && field.isRequired) {
                 throw ouch(441, `${fieldName} is required.`, fieldName);
             }
             if (field.name !== undefined && params[field.name] !== undefined) {
