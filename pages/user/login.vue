@@ -65,7 +65,7 @@
                         </div>
 
                         <div>
-                            <button @click="tryLogin"
+                            <button type="submit"
                                 class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                 Sign in with password
                             </button>
@@ -134,7 +134,19 @@ const config = useRuntimeConfig();
 const currentUserStore = useCurrentUserStore();
 
 async function tryLogin() {
-    await currentUserStore.login(login.value, password.value);
-    navigateTo('/');
+    try {
+        await currentUserStore.login(login.value, password.value);
+        navigateTo('/');
+    }
+    catch (e) {
+        if (e !== undefined && typeof (e) == 'object' && e !== null && 'value' in e) {
+            if (e.value instanceof Error) {
+                alert(e.value.message);
+            }
+        }
+        else {
+            alert(e)
+        }
+    }
 }
 </script>

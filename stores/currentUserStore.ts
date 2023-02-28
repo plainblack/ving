@@ -10,36 +10,36 @@ export const useCurrentUserStore = defineStore('currentUser', {
     }),
     actions: {
         async whoami() {
-            try {
-                const response = await useFetch('/api/user/whoami?includeOptions=true');
-                if (response.data.value) {
-                    this.currentUser = response.data.value;
-                }
+            const response = await useFetch('/api/user/whoami?includeOptions=true');
+            if (response.data.value) {
+                this.currentUser = response.data.value;
             }
-            catch (e) {
-                console.error(e);
-            }
+            return response;
         },
         async login(login: string, password: string) {
-            try {
-                const session = await useFetch('/api/session', {
-                    method: 'POST',
-                    body: {
-                        login,
-                        password
-                    }
-                });
-                this.whoami();
+            console.log('a')
+            const response = await useFetch('/api/session', {
+                method: 'POST',
+                body: {
+                    login,
+                    password
+                },
+                onResponseError() { }
+            });
+            if (response.error) {
+                throw response.error;
             }
-            catch (e) {
-                console.log('login failed: ' + e);
+            else {
+                await this.whoami();
             }
+            return response;
         },
         async logout() {
-            const session = await useFetch('/api/session', {
+            const response = await useFetch('/api/session', {
                 method: 'delete',
             });
             this.currentUser = undefined;
+            return response;
         },
         async save() {
             const response = await useFetch('/api/user/' + this.currentUser?.props.id, {
@@ -48,14 +48,21 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 query: { includeOptions: true }
             });
             this.currentUser = response.data.value as Describe<'User'>;
+            return response;
         },
         async create(newUser: { username: string, email: string, password: string, realName: string }) {
             const response = await useFetch('/api/user', {
                 method: 'post',
                 body: newUser,
                 query: { includeOptions: true }
-            })
-            await this.login(newUser.email, newUser.password);
+            });
+            if (response.error) {
+                throw response.error;
+            }
+            else {
+                await this.login(newUser.email, newUser.password);
+            }
+            return response;
         },
         async isAuthenticated() {
             if (this.currentUser === undefined) {
