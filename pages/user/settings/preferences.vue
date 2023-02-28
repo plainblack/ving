@@ -13,7 +13,7 @@
                         </div>
 
                         <div class="grid grid-cols-3 gap-6">
-                            <div class="col-span-3 sm:col-span-2">
+                            <div class="col-span-6 sm:col-span-4">
                                 <VingOptionSelect v-if="currentUserStore.currentUser" @change="currentUserStore.save"
                                     v-model="currentUserStore.currentUser.props.developer"
                                     :options="currentUserStore.currentUser.options?.developer"
