@@ -73,7 +73,8 @@
                                         requirements</h3>
                                     <div class="mt-2 text-sm text-red-700">
                                         <ul role="list" class="list-disc space-y-1 pl-5">
-                                            <li v-if="newPassword.password == ''">New password is required.</li>
+                                            <li v-if="newPassword.password == ''">New password is required if you want to
+                                                change your password.</li>
                                             <li v-if="newPassword.password !== newPassword.password2">Your new passwords do
                                                 not
                                                 match.</li>
@@ -96,6 +97,9 @@
 </template>
   
 <script setup lang="ts">
+definePageMeta({
+    middleware: 'auth'
+});
 const currentUserStore = useCurrentUserStore();
 const newPassword = ref({ password: '', password2: '' });
 async function changePassword() {

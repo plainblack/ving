@@ -296,5 +296,5 @@ const footNav = {
 const route = useRoute();
 
 const currentUserStore = useCurrentUserStore();
-currentUserStore.fetch();
+await currentUserStore.isAuthenticated();
 </script>

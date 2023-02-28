@@ -20,8 +20,6 @@
                                     name="useAsDisplayName" label="Use As Display Name" />
                             </div>
 
-
-
                             <div class="col-span-3">
                                 <label class="block text-sm font-medium text-gray-700">Photo</label>
                                 <div class="mt-1 flex items-center">
@@ -70,5 +68,8 @@
 </template>
   
 <script setup lang="ts">
+definePageMeta({
+    middleware: 'auth'
+});
 const currentUserStore = useCurrentUserStore();
 </script>

@@ -12,7 +12,9 @@ export const useCurrentUserStore = defineStore('currentUser', {
         async fetch() {
             try {
                 const response = await useFetch('/api/user/whoami?includeOptions=true');
-                this.currentUser = response.data.value;
+                if (response.data.value) {
+                    this.currentUser = response.data.value;
+                }
             }
             catch (e) {
                 console.error(e);
@@ -20,19 +22,14 @@ export const useCurrentUserStore = defineStore('currentUser', {
         },
         async login(login: string, password: string) {
             try {
-                const session = await useFetch('/api/session?includeRelated=user&includeOptions=true', {
+                const session = await useFetch('/api/session', {
                     method: 'POST',
                     body: {
                         login,
                         password
                     }
                 });
-                if (session.data.value && session.data.value.related && session.data.value.related.user) {
-                    this.currentUser = session.data.value.related?.user;
-                }
-                else {
-                    console.log('login failed, but without error');
-                }
+                this.fetch();
             }
             catch (e) {
                 console.log('login failed: ' + e);
@@ -59,6 +56,12 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 query: { includeOptions: true }
             })
             await this.login(newUser.email, newUser.password);
-        }
+        },
+        async isAuthenticated() {
+            if (this.currentUser === undefined) {
+                await this.fetch();
+            }
+            return this.currentUser !== undefined;
+        },
     },
 });
