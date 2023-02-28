@@ -23,7 +23,8 @@
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
                             <NuxtLink v-for="item in mainNav" :key="item.name" :to="item.href"
-                                :class="['text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium']">
+                                :class="[item.href == route.path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']"
+                                :aria-current="item.href == route.path ? 'page' : undefined">
                                 {{ item.name }}</NuxtLink>
                         </div>
                     </div>
@@ -44,7 +45,8 @@
                                 </div>
                             </MenuButton>
                             <NuxtLink v-else to="/user/login" type="button"
-                                class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                :class="['/user/login' == route.path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']"
+                                :aria-current="'/user/login' == route.path ? 'page' : undefined">
                                 <span class="sr-only">Sign in to your account</span>
                                 Sign In
                             </NuxtLink>
@@ -82,7 +84,8 @@
         <DisclosurePanel class="sm:hidden">
             <div class="space-y-1 px-2 pt-2 pb-3">
                 <DisclosureButton v-for="item in mainNav" :key="item.name" as="a" :href="item.href"
-                    :class="['text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium']">
+                    :class="[item.href == route.path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block rounded-md px-3 py-2 text-base font-medium']"
+                    :aria-current="item.href == route.path ? 'page' : undefined">
                     {{ item.name }}</DisclosureButton>
             </div>
         </DisclosurePanel>
@@ -290,6 +293,7 @@ const footNav = {
         },
     ],
 }
+const route = useRoute();
 
 const currentUserStore = useCurrentUserStore();
 currentUserStore.fetch();
