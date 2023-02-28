@@ -9,7 +9,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
         currentUser: undefined
     }),
     actions: {
-        async fetch() {
+        async whoami() {
             try {
                 const response = await useFetch('/api/user/whoami?includeOptions=true');
                 if (response.data.value) {
@@ -29,7 +29,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
                         password
                     }
                 });
-                this.fetch();
+                this.whoami();
             }
             catch (e) {
                 console.log('login failed: ' + e);
@@ -59,7 +59,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
         },
         async isAuthenticated() {
             if (this.currentUser === undefined) {
-                await this.fetch();
+                await this.whoami();
             }
             return this.currentUser !== undefined;
         },
