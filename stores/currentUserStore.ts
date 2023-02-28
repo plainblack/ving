@@ -11,7 +11,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
     actions: {
         async fetch() {
             try {
-                const response = await useFetch('/api/user/whoami');
+                const response = await useFetch('/api/user/whoami?includeOptions=true');
                 this.currentUser = response.data.value;
             }
             catch (e) {
@@ -20,7 +20,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
         },
         async login(login: string, password: string) {
             try {
-                const session = await useFetch('/api/session?includeRelated=user', {
+                const session = await useFetch('/api/session?includeRelated=user&includeOptions=true', {
                     method: 'POST',
                     body: {
                         login,
@@ -43,6 +43,14 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 method: 'delete',
             });
             this.currentUser = undefined;
+        },
+        async save() {
+            const response = await useFetch('/api/user/' + this.currentUser?.props.id, {
+                method: 'put',
+                body: this.currentUser?.props,
+                query: { includeOptions: true }
+            });
+            this.currentUser = response.data.value as Describe<'User'>;
         },
     },
 });
