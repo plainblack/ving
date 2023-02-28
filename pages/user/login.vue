@@ -122,8 +122,6 @@
 
 
 <script setup lang="ts">
-import { useCurrentUserStore } from '~/stores/currentUserStore';
-
 let login = ref('');
 let password = ref('');
 const config = useRuntimeConfig();
@@ -133,5 +131,4 @@ async function tryLogin() {
     await currentUserStore.login(login.value, password.value);
     navigateTo('/');
 }
-
 </script>

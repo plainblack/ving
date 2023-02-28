@@ -5,6 +5,11 @@ export default defineNuxtConfig({
         'nuxt-headlessui',
         '@pinia/nuxt',
     ],
+    imports: {
+        dirs: [
+            'stores',
+        ],
+    },
     app: {
         head: {
             link: [
