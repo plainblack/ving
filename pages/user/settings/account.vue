@@ -48,13 +48,13 @@
                         <div class="grid grid-cols-3 gap-6">
 
                             <div class="col-span-6 sm:col-span-4">
-                                <FormInput name="password" type="password" v-model="newPassword.password" label="Password"
-                                    autocomplete="new-password" />
+                                <FormInput name="password" type="password" v-model="newPassword.password"
+                                    label="New Password" autocomplete="new-password" />
                             </div>
 
                             <div class="col-span-6 sm:col-span-4">
                                 <FormInput name="password" type="password" v-model="newPassword.password2"
-                                    label="Confirm Password" autocomplete="new-password" />
+                                    label="Confirm New Password" autocomplete="new-password" />
                             </div>
 
                         </div>
@@ -73,8 +73,9 @@
                                         requirements</h3>
                                     <div class="mt-2 text-sm text-red-700">
                                         <ul role="list" class="list-disc space-y-1 pl-5">
-                                            <li v-if="newPassword.password == ''">Password is required.</li>
-                                            <li v-if="newPassword.password !== newPassword.password2">Your passwords do not
+                                            <li v-if="newPassword.password == ''">New password is required.</li>
+                                            <li v-if="newPassword.password !== newPassword.password2">Your new passwords do
+                                                not
                                                 match.</li>
                                         </ul>
                                     </div>
