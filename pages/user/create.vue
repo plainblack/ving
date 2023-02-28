@@ -2,11 +2,11 @@
     <div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <img class="mx-auto h-12 w-auto" :src="config.public.logoUrl" :alt="config.public.companyName" />
-            <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
+            <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Create your account</h2>
             <p class="mt-2 text-center text-sm text-gray-600">
                 Or
                 {{ ' ' }}
-                <NuxtLink to="/user/create" class="font-medium text-indigo-600 hover:text-indigo-500">create your account
+                <NuxtLink to="/user/login" class="font-medium text-indigo-600 hover:text-indigo-500">sign in to your account
                 </NuxtLink>
             </p>
         </div>
@@ -14,60 +14,61 @@
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
 
-                <form @submit.prevent="tryLogin">
-                    <div class="space-y-6">
+
+
+                <form @submit.prevent="createAccount">
+                    <div class=" space-y-6">
                         <div>
-                            <label for="login" class="block text-sm font-medium text-gray-700">Email address or
-                                Username</label>
-                            <div class="mt-1">
-                                <input v-model="login" id="login" name="login" type="login" autocomplete="email" required
-                                    class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
-                            </div>
+                            <FormInput name="username" v-model="newUser.username" label="Username"
+                                autocomplete="username" />
                         </div>
 
                         <div>
-                            <button
+                            <FormInput name="email" v-model="newUser.email" label="Email" autocomplete="email" />
+                        </div>
+
+                        <div>
+                            <FormInput name="realName" v-model="newUser.realName" label="Real Name" autocomplete="name" />
+                        </div>
+
+                        <div>
+                            <FormInput type="password" name="password" v-model="newUser.password" label="Password"
+                                autocomplete="new-password" />
+                        </div>
+
+                        <div>
+                            <FormInput type="password" name="password2" v-model="newUser.password2" label="Confirm Password"
+                                autocomplete="new-password" />
+                        </div>
+
+                        <div>
+                            <div v-if="newUser.username == '' || newUser.email == '' || !newUser.email.match(/^.+@.+\..+$/) || newUser.realName == '' || newUser.password == '' || newUser.password !== newUser.password2"
+                                class="rounded-md bg-red-50 p-4">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <XCircleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-medium text-red-800">Your account has not met these
+                                            requirements</h3>
+                                        <div class="mt-2 text-sm text-red-700">
+                                            <ul role="list" class="list-disc space-y-1 pl-5">
+                                                <li v-if="newUser.username == ''">Username is required.</li>
+                                                <li v-if="newUser.email == ''">Email is required.</li>
+                                                <li v-if="!newUser.email.match(/^.+@.+\..+$/)">Email is invalid.</li>
+                                                <li v-if="newUser.realName == ''">Real name is required.</li>
+                                                <li v-if="newUser.password == ''">Password is required.</li>
+                                                <li v-if="newUser.password !== newUser.password2">Your passwords do not
+                                                    match.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button v-else @click="createAccount"
                                 class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                Sign in with magic link
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
-
-                <div class="mt-6 relative">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300" />
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="bg-white px-2 text-gray-500">Or continue with</span>
-                    </div>
-                </div>
-
-                <form @submit.prevent="tryLogin">
-                    <div class="mt-6 space-y-6">
-                        <div>
-                            <label for="login" class="block text-sm font-medium text-gray-700">Email address or
-                                Username</label>
-                            <div class="mt-1">
-                                <input v-model="login" id="login" name="login" type="login" autocomplete="email" required
-                                    class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                            <div class="mt-1">
-                                <input v-model="password" id="password" name="password" type="password"
-                                    autocomplete="current-password" required
-                                    class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm" />
-                            </div>
-                        </div>
-
-                        <div>
-                            <button @click="tryLogin"
-                                class="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                Sign in with password
+                                Create account
                             </button>
                         </div>
                     </div>
@@ -128,13 +129,12 @@
 
 
 <script setup lang="ts">
-let login = ref('');
-let password = ref('');
+let newUser = ref({ username: '', email: '', realName: '', password: '', password2: '' });
 const config = useRuntimeConfig();
 const currentUserStore = useCurrentUserStore();
 
-async function tryLogin() {
-    await currentUserStore.login(login.value, password.value);
+async function createAccount() {
+    await currentUserStore.create(newUser.value);
     navigateTo('/');
 }
 </script>

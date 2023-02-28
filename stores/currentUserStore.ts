@@ -52,5 +52,13 @@ export const useCurrentUserStore = defineStore('currentUser', {
             });
             this.currentUser = response.data.value as Describe<'User'>;
         },
+        async create(newUser: { username: string, email: string, password: string, realName: string }) {
+            const response = await useFetch('/api/user', {
+                method: 'post',
+                body: newUser,
+                query: { includeOptions: true }
+            })
+            await this.login(newUser.email, newUser.password);
+        }
     },
 });
