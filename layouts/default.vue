@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="bg-gray-900 py-3 px-6 shadow-2 flex align-items-center justify-content-between relative lg:static border-bottom-1 border-gray-800"
+        <div class="bg-gray-900 py-3 px-3 md:px-6 shadow-2 flex align-items-center justify-content-between relative lg:static border-bottom-1 border-gray-800"
             style="min-height: 84px">
             <img :src="config.public.logoUrl" :alt="config.public.companyName" height="40" class="mr-0 lg:mr-6">
             <a v-ripple class="cursor-pointer block lg:hidden text-gray-400 p-ripple"
@@ -90,8 +90,7 @@
                     </li>
                     <li>
                         <NuxtLink to="/user/login" v-ripple
-                            class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple"
-                            v-styleclass="{ selector: '@next', enterClass: 'hidden', enterActiveClass: 'scalein', leaveToClass: 'hidden', leaveActiveClass: 'fadeout', hideOnOutsideClick: true }">
+                            class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple">
                             Sign In
                         </NuxtLink>
                     </li>
@@ -130,7 +129,7 @@
                 </ul>
             </div>
         </div>
-        <div class="px-0 py-4 md:px-4">
+        <div class="px-0 py-4 md:px-5">
             <div class="p-3" style="min-height: 20rem">
                 <slot />
             </div>
