@@ -56,7 +56,7 @@ export default defineNuxtConfig({
     },
     css: [
         '@fortawesome/fontawesome-svg-core/styles.css',
-        'primevue/resources/themes/saga-blue/theme.css',
+        'primevue/resources/themes/tailwind-light/theme.css',
         'primevue/resources/primevue.css',
         'primeicons/primeicons.css',
         'primeflex/primeflex.css',
