@@ -88,18 +88,13 @@
                             </span>
                         </div>
                     </li>
-                    <li>
-                        <NuxtLink to="/user/login" v-ripple
-                            class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple">
-                            Sign In
-                        </NuxtLink>
-                    </li>
                     <li v-if="currentUserStore.currentUser">
-                        <img :src="currentUserStore.currentUser.props.avatarUrl" class="mr-3 lg:mr-0"
-                            style="width: 32px; height: 32px" />
-                        <div class="block lg:hidden">
-                            <div class="text-white font-medium">{{ currentUserStore.currentUser.props.displayName }}
-                            </div>
+                        <div class="flex align-items-center flex-wrap ml-6 lg:ml-0">
+                            <Avatar :image="currentUserStore.currentUser.props.avatarUrl" alt="user avatar"
+                                shape="circle" />
+                            <span class="text-white font-medium ml-2 mr-3 lg:mr-0">{{
+                                currentUserStore.currentUser.props.displayName }}
+                            </span>
                         </div>
                         <ul
                             class="list-none py-3 px-6 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:shadow-2 lg:absolute bg-gray-900 hidden origin-top w-full lg:w-15rem cursor-pointer lg:border-1 border-gray-800">
@@ -126,6 +121,13 @@
                             </li>
                         </ul>
                     </li>
+                    <li v-else>
+                        <NuxtLink to="/user/login" v-ripple
+                            class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple">
+                            Sign In
+                        </NuxtLink>
+                    </li>
+
                 </ul>
             </div>
         </div>
