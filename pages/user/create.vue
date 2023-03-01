@@ -141,10 +141,8 @@ async function createAccount() {
         navigateTo('/');
     }
     catch (e) {
-        if (e !== undefined && typeof (e) == 'object' && e !== null && 'value' in e) {
-            if (e.value instanceof Error) {
-                alert(e.value.message);
-            }
+        if (e !== undefined && typeof (e) == 'object' && e !== null && 'message' in e) {
+            alert(e.message);
         }
         else {
             alert(e)

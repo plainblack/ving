@@ -17,7 +17,6 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         async login(login: string, password: string) {
-            console.log('a')
             const response = await useFetch('/api/session', {
                 method: 'POST',
                 body: {
@@ -26,8 +25,8 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 },
                 onResponseError() { }
             });
-            if (response.error) {
-                throw response.error;
+            if (response.error?.value) {
+                throw response.error?.value.data;
             }
             else {
                 await this.whoami();
@@ -56,8 +55,8 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 body: newUser,
                 query: { includeOptions: true }
             });
-            if (response.error) {
-                throw response.error;
+            if (response.error?.value) {
+                throw response.error?.value.data;
             }
             else {
                 await this.login(newUser.email, newUser.password);
