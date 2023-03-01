@@ -60,6 +60,7 @@ export default defineNuxtConfig({
         'primevue/resources/primevue.css',
         'primeicons/primeicons.css',
         'primeflex/primeflex.css',
+        '~/assets/css/main.css',
     ],
     runtimeConfig: {
         public: {

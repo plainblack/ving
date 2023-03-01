@@ -1,0 +1,19 @@
+html {
+    font-size: 1rem;
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--surface-ground);
+    color: var(--text-color);
+    padding: 0;
+    margin: 0;
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+li a {
+    text-decoration: none;
+}

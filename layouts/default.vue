@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen flex flex-column surface-ground">
+    <div>
         <div class="bg-gray-900 py-3 px-6 shadow-2 flex align-items-center justify-content-between relative lg:static border-bottom-1 border-gray-800"
             style="min-height: 84px">
             <img :src="config.public.logoUrl" :alt="config.public.companyName" height="40" class="mr-0 lg:mr-6">
@@ -19,13 +19,13 @@
                     </li>
 
                     <li>
-                        <NuxtLink to="/" v-ripple
+                        <a to="/" v-ripple
                             class="flex px-6 p-3 lg:px-3 lg:py-2 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 font-medium border-round cursor-pointer transition-colors transition-duration-150 p-ripple"
                             v-styleclass="{ selector: '@next', enterClass: 'hidden', enterActiveClass: 'scalein', leaveToClass: 'hidden', leaveActiveClass: 'fadeout', hideOnOutsideClick: true }">
                             <i class="pi pi-users mr-2"></i>
                             <span>Customers</span>
                             <i class="pi pi-angle-down ml-auto lg:ml-3"></i>
-                        </NuxtLink>
+                        </a>
                         <ul
                             class="list-none py-3 px-6 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:shadow-2 lg:absolute bg-gray-900 hidden origin-top w-full lg:w-15rem cursor-pointer lg:border-1 border-gray-800">
                             <li>
@@ -140,12 +140,6 @@
 
 <script setup lang="ts">
 const config = useRuntimeConfig();
-useHead({
-    bodyAttrs: {
-        class: 'm-0'
-    }
-})
-
 const currentUserStore = useCurrentUserStore();
 await currentUserStore.isAuthenticated();
 </script>
