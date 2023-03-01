@@ -1,8 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     modules: [
-        '@nuxtjs/tailwindcss',
-        'nuxt-headlessui',
         '@pinia/nuxt',
     ],
     imports: {
@@ -53,21 +51,16 @@ export default defineNuxtConfig({
             "@fortawesome/fontawesome-svg-core",
             "@fortawesome/free-solid-svg-icons",
             "@fortawesome/pro-solid-svg-icons",
+            'primevue',
         ],
-    },
-    headlessui: {
-        prefix: '' // we'll just use the default headless component names with no prefix
     },
     css: [
         '@fortawesome/fontawesome-svg-core/styles.css',
-        '~/assets/css/main.css',
+        'primevue/resources/themes/saga-blue/theme.css',
+        'primevue/resources/primevue.css',
+        'primeicons/primeicons.css',
+        'primeflex/primeflex.css',
     ],
-    postcss: {
-        plugins: {
-            tailwindcss: {},
-            autoprefixer: {},
-        },
-    },
     runtimeConfig: {
         public: {
             companyName: 'ving',

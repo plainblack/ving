@@ -50,6 +50,9 @@
         "keyv": "^4.5.2",
         "lodash": "^4.17.21",
         "nuxt-headlessui": "^1.1.1",
-        "pinia": "^2.0.32"
+        "pinia": "^2.0.32",
+        "primeflex": "^3.3.0",
+        "primeicons": "^6.0.1",
+        "primevue": "^3.23.0"
     }
 }
