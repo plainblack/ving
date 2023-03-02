@@ -44,7 +44,7 @@
                                 </div>
 
                                 <div>
-                                    <Button type="submit" label="Update Profile" class="w-auto" @click="changePassword">
+                                    <Button type="submit" label="Update Profile" class="w-auto">
                                         Change Password
                                     </Button>
                                 </div>
@@ -63,12 +63,16 @@
 definePageMeta({
     middleware: 'auth'
 });
+const notify = useNotifyStore();
 const currentUserStore = useCurrentUserStore();
 const newPassword = ref({ password: '', password2: '' });
 async function changePassword() {
     if (currentUserStore.currentUser) {
         currentUserStore.currentUser.props.password = newPassword.value.password;
         await currentUserStore.save();
+        newPassword.value.password = '';
+        newPassword.value.password2 = '';
+        notify.success('Password changed.');
     }
 }
 </script>

@@ -1,18 +1,11 @@
 <template>
-    <form @invalid-field="invalidField" @submit.prevent="check">
+    <form @submit.prevent="check">
         <slot />
         <Toast />
     </form>
 </template>
 
 <script setup lang="ts">
-
-function invalidField(e: Event) {
-    console.log(e);
-    if (e.target) {
-        console.log(e.target)
-    }
-}
 
 const tracker: Record<string, { value: boolean, message?: string }> = {};
 
