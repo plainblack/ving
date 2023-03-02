@@ -9,36 +9,30 @@
         </div>
         <div class="surface-card p-4 shadow-2 border-round ">
 
-            <div>
-                <label for="login2" class="block text-900 font-medium mb-2">Email or Username</label>
-                <InputText v-model="login" id="login2" type="text" placeholder="Email address or Username"
-                    class="w-full mb-3" autocomplete="email" required />
+            <Form>
+                <FormInput name="login" v-model="login" id="login2" required label="Email or Username" autocomplete="email"
+                    class="mb-3" />
 
                 <Button label="Sign In with Magic Link" icon="pi pi-envelope" class="w-full"></Button>
-            </div>
-
+            </Form>
 
             <Divider align="center" class="my-4">
                 <span class="text-600 font-normal text-sm">OR</span>
             </Divider>
 
+            <Form :send="tryLogin">
+                <FormInput name="login" v-model="login" id="login1" required label="Email or Username" autocomplete="email"
+                    class="mb-3" />
 
-            <form @submit.prevent="tryLogin">
-                <label for="login1" class="block text-900 font-medium mb-2">Email or Username</label>
-                <InputText v-model="login" id="login1" type="text" placeholder="Email address or Username"
-                    class="w-full mb-3" autocomplete="email" required />
-
-                <label for="password1" class="block text-900 font-medium mb-2">Password</label>
-                <InputText v-model="password" id="password1" type="password" placeholder="Password" class="w-full mb-3"
-                    autocomplete="current-password" required />
+                <FormInput name="password" v-model="password" required label="Password" autocomplete="current-password"
+                    class="mb-3" />
 
                 <Button type="submit" label="Sign In with Password" icon="pi pi-user" class="w-full"></Button>
-            </form>
+            </Form>
 
             <Divider align="center" class="my-4">
                 <span class="text-600 font-normal text-sm">OR</span>
             </Divider>
-
 
             <div class="flex justify-content-between">
                 <Button
@@ -60,9 +54,6 @@
         </div>
     </div>
 </template>
-
-
-
 
 <script setup lang="ts">
 let login = ref('');

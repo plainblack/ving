@@ -29,7 +29,7 @@ provide('invalidForm', function (newValue: [string, boolean, string?]) {
 
 const props = withDefaults(
     defineProps<{
-        send: (e: Event) => void,
+        send?: (e: Event) => void,
     }>(),
     {
         send() { },
