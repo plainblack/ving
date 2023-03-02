@@ -10,17 +10,16 @@
                     <div class="flex gap-5 flex-column-reverse md:flex-row">
                         <div class="flex-auto p-fluid">
                             <div class="mb-4">
-                                <FormInput name="username" v-model="currentUserStore.currentUser.props.username"
-                                    label="Username" autocomplete="username" />
+                                <FormInput name="username" v-model="currentUserStore.currentUser.props.username" required
+                                    label="Username" autocomplete="username" @change="currentUserStore.save" />
                             </div>
                             <div class="mb-4">
-                                <FormInput name="email" v-model="currentUserStore.currentUser.props.email" label="Email"
-                                    autocomplete="email" />
+                                <FormInput type="email" name="email" v-model="currentUserStore.currentUser.props.email"
+                                    label="Email" required autocomplete="email" @change="currentUserStore.save" />
                             </div>
                             <div class="mb-4">
-                                <FormInput name="realName" @change="currentUserStore.save"
-                                    v-model="currentUserStore.currentUser.props.realName" label="Real Name"
-                                    autocomplete="name" />
+                                <FormInput name="realName" v-model="currentUserStore.currentUser.props.realName"
+                                    label="Real Name" autocomplete="name" @change="currentUserStore.save" />
                             </div>
 
                         </div>

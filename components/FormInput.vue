@@ -9,9 +9,9 @@
     <TextArea v-else-if="type == 'textarea' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))" v-model="val"
         :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete" :class="invalidClass"
         :required="required" v-bind="$attrs" />
-    <InputText v-else-if="type == 'text' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))" v-model="val"
-        :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete" :class="invalidClass"
-        :required="required" v-bind="$attrs" />
+    <InputText v-else-if="['text', 'email'].includes(type) && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
+        v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
+        :class="invalidClass" :required="required" v-bind="$attrs" />
     <Message v-else severity="error" :closable="false">
         Can't display {{ displayName }} Form Input
     </Message>
@@ -24,7 +24,7 @@ import _ from 'lodash';
 const props = withDefaults(
     defineProps<{
         label?: string,
-        type?: 'textarea' | 'text' | 'password' | 'number',
+        type?: 'textarea' | 'text' | 'password' | 'number' | 'email',
         name: string,
         id?: string,
         autocomplete?: string,
@@ -58,6 +58,11 @@ const invalid = computed(() => {
     }
     else if (props.mustMatch !== undefined && props.mustMatch.value !== props.modelValue) {
         invalidReason = `${displayName} must match ${props.mustMatch.field}.`;
+        invalidForm([props.name, true, invalidReason]);
+        return true;
+    }
+    else if (props.type == 'email' && !_.isNil(props.modelValue) && !(props.modelValue.toString().match(/.+@.+\..+/))) {
+        invalidReason = `${displayName} doesn't look like an email address.`;
         invalidForm([props.name, true, invalidReason]);
         return true;
     }
