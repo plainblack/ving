@@ -140,10 +140,14 @@
             </div>
         </div>
     </div>
+    <Notify />
 </template>
 
 <script setup lang="ts">
+import { info } from 'console';
+
 const config = useRuntimeConfig();
 const currentUserStore = useCurrentUserStore();
 await currentUserStore.isAuthenticated();
+const notify = useNotifyStore();
 </script>

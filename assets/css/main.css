@@ -17,3 +17,16 @@ body {
 li a {
     text-decoration: none;
 }
+
+/* these are because the tailwind style for messages are yellow on error by default */
+.p-inline-message.p-inline-message-error {
+  background: #f8d7da !important;
+}
+
+.p-message.p-message-error {
+  background: #f8d7da;
+  }
+
+  .p-toast .p-toast-message.p-toast-message-error {
+  background: #f8d7da;
+  }
