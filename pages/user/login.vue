@@ -60,6 +60,7 @@ let login = ref('');
 let password = ref('');
 const config = useRuntimeConfig();
 const currentUserStore = useCurrentUserStore();
+const notify = useNotifyStore();
 
 async function tryLogin() {
     try {
@@ -68,10 +69,10 @@ async function tryLogin() {
     }
     catch (e) {
         if (e !== undefined && typeof (e) == 'object' && e !== null && 'message' in e) {
-            alert(e.message);
+            notify.error(e.message as string);
         }
         else {
-            alert(e)
+            notify.error(e as string);
         }
     }
 }
