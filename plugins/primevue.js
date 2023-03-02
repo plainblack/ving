@@ -8,6 +8,10 @@ import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import Divider from 'primevue/divider';
 import Avatar from 'primevue/avatar';
+import Message from 'primevue/message';
+import Password from 'primevue/password';
+import InputNumber from 'primevue/inputnumber';
+import TextArea from 'primevue/textarea';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
@@ -19,4 +23,15 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Toast', Toast);
     nuxtApp.vueApp.component('Divider', Divider);
     nuxtApp.vueApp.component('Avatar', Avatar);
+    nuxtApp.vueApp.component('Message', Message);
+    nuxtApp.vueApp.component('Password', Password);
+    nuxtApp.vueApp.component('InputNumber', InputNumber);
+    nuxtApp.vueApp.component('TextArea', TextArea);
+
+    return {
+        provide: {
+            toast: nuxtApp.vueApp.config.globalProperties.$toast
+        }
+    }
+
 });

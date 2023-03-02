@@ -1,7 +1,6 @@
 <template>
     <label v-if="label" :for="computedId" class="block font-medium text-900 mb-2">{{ label }}</label>
-    <select v-model="selected" :id="computedId" :name="name" v-bind="$attrs"
-        class="p-inputtext"><!--p-dropdown-trigger-icon pi pi-chevron-down-->
+    <select v-model="selected" :id="computedId" :name="name" v-bind="$attrs" class="p-inputtext">
         <option v-for="option in options" :selected="selected === option.value" :value="option.value">
             {{ option.label }}
         </option>
