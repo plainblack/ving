@@ -1,0 +1,33 @@
+<template>
+    <div class="surface-ground px-4 py-8 md:px-6 lg:px-8">
+        <div class="p-fluid flex flex-column lg:flex-row">
+            <UserSettingsNav />
+            <div v-if="currentUserStore.currentUser" class="flex-auto">
+                <div class="surface-card p-5 shadow-2 border-round">
+                    <div class="text-900 font-semibold text-lg">Preferences</div>
+                    <p class="mt-1 mb-4 text-sm text-gray-500">These settings will change your experience on the site.</p>
+
+                    <div class="flex gap-5 flex-column-reverse md:flex-row">
+                        <div class="flex-auto p-fluid">
+                            <div class="mb-4">
+                                <VingOptionSelect v-if="currentUserStore.currentUser" @change="currentUserStore.save"
+                                    v-model="currentUserStore.currentUser.props.developer"
+                                    :options="currentUserStore.currentUser.options?.developer"
+                                    label="Are you a software developer?" name="developer" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+definePageMeta({
+    middleware: 'auth'
+});
+const currentUserStore = useCurrentUserStore();
+</script>
