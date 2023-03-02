@@ -2,32 +2,32 @@
     <div class="w-full lg:w-7 mx-auto">
         <div class="text-center mb-5">
             <img :src="config.public.logoUrl" :alt="config.public.companyName" height="50" class="mb-3">
-            <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
-            <span class="text-600 font-medium line-height-3">Don't have an account?</span>
-            <NuxtLink to="/user/create" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create one today!
+            <div class="text-900 text-3xl font-medium mb-3">Create an Account</div>
+            <span class="text-600 font-medium line-height-3">Already have an account?</span>
+            <NuxtLink to="/user/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in
             </NuxtLink>
         </div>
         <div class="surface-card p-4 shadow-2 border-round ">
 
-            <Form>
-                <FormInput name="login" v-model="login" id="login2" required label="Email or Username" autocomplete="email"
+            <Form :send="createAccount">
+
+                <FormInput name="username" v-model="newUser.username" required label="Username" autocomplete="username"
+                    type="text" class="mb-3" />
+
+                <FormInput name="realName" v-model="newUser.realName" required label="Real Name" autocomplete="name"
+                    type="text" class="mb-3" />
+
+                <FormInput name="email" v-model="newUser.email" required label="Email" autocomplete="email" type="email"
                     class="mb-3" />
 
-                <Button icon="pi pi-envelope" class="w-full">Sign In with Magic Link</Button>
-            </Form>
-
-            <Divider align="center" class="my-4">
-                <span class="text-600 font-normal text-sm">OR</span>
-            </Divider>
-
-            <Form :send="tryLogin">
-                <FormInput name="login" v-model="login" id="login1" required label="Email or Username" autocomplete="email"
-                    class="mb-3" />
-
-                <FormInput name="password" v-model="password" required label="Password" autocomplete="current-password"
+                <FormInput name="password" v-model="newUser.password" required label="Password" autocomplete="new-password"
                     type="password" class="mb-3" />
 
-                <Button type="submit" icon="pi pi-user" class="w-full">Sign In with Password</Button>
+                <FormInput name="password2" v-model="newUser.password2" required label="Confirm Password"
+                    autocomplete="new-password" type="password" :mustMatch="{ field: 'Password', value: newUser.password }"
+                    class="mb-3" />
+
+                <Button type="submit" icon="pi pi-user" class="w-full">Create account</Button>
             </Form>
 
             <Divider align="center" class="my-4">
@@ -56,23 +56,21 @@
 </template>
 
 <script setup lang="ts">
-let login = ref('');
-let password = ref('');
+let newUser = ref({ username: '', email: '', realName: '', password: '', password2: '' });
 const config = useRuntimeConfig();
 const currentUserStore = useCurrentUserStore();
-const notify = useNotifyStore();
 
-async function tryLogin() {
+async function createAccount() {
     try {
-        await currentUserStore.login(login.value, password.value);
+        await currentUserStore.create(newUser.value);
         navigateTo('/');
     }
     catch (e) {
         if (e !== undefined && typeof (e) == 'object' && e !== null && 'message' in e) {
-            notify.error(e.message as string);
+            alert(e.message);
         }
         else {
-            notify.error(e as string);
+            alert(e)
         }
     }
 }
