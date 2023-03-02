@@ -6,8 +6,6 @@
 </template>
 
 <script setup lang="ts">
-import { useToast } from 'primevue/usetoast'
-const toast = useToast();
 
 function invalidField(e: Event) {
     console.log(e);
@@ -38,6 +36,8 @@ const props = withDefaults(
     }
 );
 
+const notify = useNotifyStore();
+
 function check(e: Event) {
     if (invalid) {
         const problems = [];
@@ -45,8 +45,7 @@ function check(e: Event) {
             if (tracker[key].value)
                 problems.push(tracker[key].message);
         }
-        console.log('Cannot submit because: ' + problems.join(' '));
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Message Content', life: 3000 });
+        notify.error('Cannot submit form because: <ul><li>' + problems.join('</li><li>') + '</li></ul>');
     }
     else {
         props.send(e);
