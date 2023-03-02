@@ -11,8 +11,8 @@
 
             <div>
                 <label for="login2" class="block text-900 font-medium mb-2">Email or Username</label>
-                <InputText id="login2" type="text" placeholder="Email address or Username" class="w-full mb-3"
-                    autocomplete="email" required />
+                <InputText v-model="login" id="login2" type="text" placeholder="Email address or Username"
+                    class="w-full mb-3" autocomplete="email" required />
 
                 <Button label="Sign In with Magic Link" icon="pi pi-envelope" class="w-full"></Button>
             </div>
