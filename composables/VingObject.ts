@@ -54,31 +54,21 @@ export class VingObject<T extends TModelName> {
 
     public fetch() {
         const self = this;
-        return useFetch(this.fetchApi, {
+        const promise = useFetch(this.fetchApi, {
             query: this.behavior.include,
-            onRequest({ request, options }) {
-                console.log('on request ')
-
-            },
-            onRequestError({ request, options, error }) {
-                console.log('on request error')
-            },
-            async onResponse({ request, response, options }) {
-                console.log('on response')
-
-
-                self.props = response._data.props;
-                self.links = response._data.links;
-                self.meta = response._data.meta;
-                self.options = response._data.options;
-                self.related = response._data.related;
-            },
-            async onResponseError({ request, response, options }) {
-                console.log('on response error')
-
-                console.log(response._data);
-                throw response._data;
-            },
         });
+        promise.then((response) => {
+            const data: Describe<T> = response.data.value as Describe<T>;
+            self.props = data.props;
+            self.links = data.links;
+            self.meta = data.meta;
+            self.options = data.options;
+            self.related = data.related;
+        })
+            .catch((response) => {
+                console.log(response);
+                throw response;
+            });
+        return promise;
     }
 }
