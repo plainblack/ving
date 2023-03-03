@@ -21,11 +21,10 @@
 </template>
   
 <script setup lang="ts">
-//import { formatDate } from '~/app/dateTime';
 const route = useRoute();
 const dt = useDateTime();
-const user = new VingObject({
+const user = ref(new VingObject({
     fetchApi: '/api/user/' + route.params.id,
-});
-await user.fetch();
+}));
+await user.value.fetch();
 </script>
