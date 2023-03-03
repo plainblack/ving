@@ -90,6 +90,8 @@ export type Describe<T extends TModelName> = {
     /* relatedList?: { // not sure we're going to keep this.
          [key:string]:  DescribeList<T>
      }*/
+    warnings?: { code: number, message: string }[]
+    ,
 }
 
 export interface IPrisma<T extends TModelName> {
@@ -115,6 +117,12 @@ export class VingRecord<T extends TModelName> {
 
     public get id() {
         return this.props.id;
+    }
+
+    private warnings: Describe<T>['warnings'] = [];
+
+    public addWarning(warning: { code: number, message: string }) {
+        this.warnings?.push(warning);
     }
 
     public get<K extends keyof TProps<T>>(key: K): TProps<T>[K] {
@@ -214,6 +222,9 @@ export class VingRecord<T extends TModelName> {
         }
         if (include !== undefined && include.related && include.related.length) {
             out.related = {};
+        }
+        if (this.warnings?.length) {
+            out.warnings = this.warnings;
         }
 
         for (const field of this.kind.vingSchema.fields) {
