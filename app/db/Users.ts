@@ -145,6 +145,9 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
         if (key in ['password', ...RoleOptions]) {
             cache.set('user-changed-' + this.id, true, 1000 * 60 * 60 * 24 * 7);
         }
+        if (key == 'email' && !(value?.toString().match(/.+@.+\..+/))) {
+            throw ouch(442, `${value} doesn't look like an email address.`, key);
+        }
         return super.set(key, value);
     }
 
