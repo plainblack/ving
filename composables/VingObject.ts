@@ -1,27 +1,80 @@
-import { Describe, DescribeParams, TModelName } from '~/app/db';
+import { Describe, TModelName } from '~/app/db';
 import { ouch } from '~/app/helpers';
+import _ from 'lodash';
 const notify = useNotifyStore();
 
+type IncludeParams = {
+    includeOptions?: boolean,
+    includeMeta?: boolean,
+    includeRelated?: string[],
+    includeExtra?: string[],
+    includeLinks?: boolean,
+};
+
+/* probably don't need this anymore
+function formatPropsBodyData<T extends TModelName>(props: Describe<T>['props'], options: { formatJson: string[] }) {
+    var form = new FormData();
+    _.forEach(props, function (value, key) {
+        //console.log('--'+key+'--');
+        //console.dir(value)
+        if (typeof value == "object") {
+            if (value instanceof File) {
+                // handle file upload
+                //console.log(key+' is a file');
+                form.append(key, value);
+            } else if (value == null) {
+                // handle null
+                //console.log(key+' is null');
+                // skip it
+            } else if (
+                Array.isArray(value) &&
+                (typeof value[0] == "object" ||
+                    (options &&
+                        options.formatJson &&
+                        options.formatJson.includes(key)))
+            ) {
+                // handle an array of objects as JSON
+                //console.log(key+' is an array of objects');
+                form.append(key, JSON.stringify(value));
+            } else if (Array.isArray(value)) {
+                // handle an array of values as individual key value pairs
+                //console.log(key+' is an array of key value pairs');
+                _.forEach(value, function (element) {
+                    form.append(key, element);
+                });
+            } else {
+                // just a normal object hash
+                //console.log(key+' is an object hash');
+                form.append(key, JSON.stringify(value));
+            }
+        } else {
+            // handle values
+            //console.log(key+' is an normal value');
+            form.append(key, value);
+        }
+    });
+    return form;
+}*/
+
 export class VingObject<T extends TModelName> {
-    constructor(private behavior: {
+    constructor(public behavior: {
         props?: Describe<T>['props'],
         links?: Describe<T>['links'],
         meta?: Describe<T>['meta'],
         options?: Describe<T>['options'],
         related?: Describe<T>['related'],
-        include?: DescribeParams['include'],
+        include?: IncludeParams,
+        warnings?: Describe<T>['warnings'],
         createApi?: string | undefined,
         fetchApi?: string | undefined,
+        // postFormattingOptions: {}
     } = {
             props: {},
-            include: { links: true },
         }
     ) {
-        this.props = behavior.props;
-        this.links = behavior.links;
-        this.meta = behavior.meta;
-        this.options = behavior.options;
-        this.related = behavior.related;
+        this.setResult(behavior as Describe<T>)
+        this.dispatchWarnings(behavior.warnings)
+        this.include = { includeLinks: true, ...behavior.include };
     }
 
     public props?: Describe<T>['props'];
@@ -29,6 +82,8 @@ export class VingObject<T extends TModelName> {
     public meta?: Describe<T>['meta'];
     public options?: Describe<T>['options'];
     public related?: Describe<T>['related'];
+    public warnings?: Describe<T>['warnings'];
+    public include?: IncludeParams;
 
     public get createApi() {
         if (this.behavior.createApi) {
@@ -55,15 +110,44 @@ export class VingObject<T extends TModelName> {
     public fetch() {
         const self = this;
         const promise = useFetch(this.fetchApi, {
-            query: this.behavior.include,
+            query: this.include,
         });
         promise.then((response) => {
             const data: Describe<T> = response.data.value as Describe<T>;
-            self.props = data.props;
-            self.links = data.links;
-            self.meta = data.meta;
-            self.options = data.options;
-            self.related = data.related;
+            self.setResult(data);
+        })
+            .catch((response) => {
+                throw response;
+            });
+        return promise;
+    }
+
+    private setResult(result: Describe<T>) {
+        this.props = result.props;
+        this.links = result.links;
+        this.meta = result.meta;
+        this.options = result.options;
+        this.related = result.related;
+    }
+
+    public _partialUpdate(props?: Describe<T>['props'], options?: {}) {
+        // if we were calling formatPropsBodyData here is where we would call it
+        const self = this;
+
+        if (!this.links || !this.links.self) {
+            notify.error('No links.self');
+            throw ouch(400, 'No links.self');
+        }
+
+        const promise = useFetch(this.links.self, {
+            query: this.include,
+            method: 'put',
+            body: props,
+        });
+
+        promise.then((response) => {
+            const data: Describe<T> = response.data.value as Describe<T>;
+            self.setResult(data);
         })
             .catch((response) => {
                 console.log(response);
@@ -71,4 +155,29 @@ export class VingObject<T extends TModelName> {
             });
         return promise;
     }
+
+    public partialUpdate = _.debounce(function (this: typeof VingObject, props?: Describe<T>['props'], options?: {}) {
+        // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
+        return this._partialUpdate(props, options);
+    }, 200);
+
+    public update(options?: {}) {
+        return this.partialUpdate(this.props, options);
+    }
+
+    public dispatchWarnings(list?: Describe<T>['warnings']) {
+        if (list) {
+            for (const warning of list) {
+                document.dispatchEvent(
+                    new CustomEvent("wing_warn", {
+                        // @ts-ignore
+                        message: warning.message,
+                    })
+                );
+                notify.warn(warning.message);
+            }
+        }
+
+    }
+
 }
