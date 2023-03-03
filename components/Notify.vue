@@ -24,7 +24,8 @@ const notify = useNotifyStore();
 const toast = useToast();
 
 notify.$subscribe((mutation, state) => {
-    const key = mutation.events.key; // ignore this TS error
+    // @ts-ignore - it thinks there's no key but there is
+    const key = mutation.events.key;
     switch (key) {
         case 'successMessage': {
             if (state.successMessage == '')
