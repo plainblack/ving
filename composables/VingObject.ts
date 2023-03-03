@@ -3,7 +3,7 @@ import { ouch } from '~/app/helpers';
 import _ from 'lodash';
 const notify = useNotifyStore();
 
-type IncludeParams = {
+type QueryParams = {
     includeOptions?: boolean,
     includeMeta?: boolean,
     includeRelated?: string[],
@@ -63,7 +63,7 @@ export class VingObject<T extends TModelName> {
         meta?: Describe<T>['meta'],
         options?: Describe<T>['options'],
         related?: Describe<T>['related'],
-        include?: IncludeParams,
+        query?: QueryParams,
         warnings?: Describe<T>['warnings'],
         createApi?: string | undefined,
         fetchApi?: string | undefined,
@@ -74,7 +74,7 @@ export class VingObject<T extends TModelName> {
     ) {
         this.setResult(behavior as Describe<T>)
         this.dispatchWarnings(behavior.warnings)
-        this.include = { includeLinks: true, ...behavior.include };
+        this.query = { includeLinks: true, ...behavior.query };
     }
 
     public props?: Describe<T>['props'];
@@ -83,7 +83,7 @@ export class VingObject<T extends TModelName> {
     public options?: Describe<T>['options'];
     public related?: Describe<T>['related'];
     public warnings?: Describe<T>['warnings'];
-    public include?: IncludeParams;
+    public query?: QueryParams;
 
     public get createApi() {
         if (this.behavior.createApi) {
@@ -110,7 +110,7 @@ export class VingObject<T extends TModelName> {
     public fetch() {
         const self = this;
         const promise = useFetch(this.fetchApi, {
-            query: this.include,
+            query: this.query,
         });
         promise.then((response) => {
             const data: Describe<T> = response.data.value as Describe<T>;
@@ -140,7 +140,7 @@ export class VingObject<T extends TModelName> {
         }
 
         const promise = useFetch(this.links.self, {
-            query: this.include,
+            query: this.query,
             method: 'put',
             body: props,
         });
