@@ -19,7 +19,7 @@
                     </div>
                     <div class="flex flex-column align-items-center flex-or">
                         <span class="font-medium text-900 mb-2">Profile Picture</span>
-                        <Avatar :image="currentUserStore.currentUser.props.avatarUrl" alt="user avatar"
+                        <Avatar :image="currentUserStore.currentUser.meta?.avatarUrl" alt="user avatar"
                             class="h-10rem w-10rem" shape="circle" />
                         <Button type="button" icon="pi pi-pencil" class="p-button-rounded -mt-4"></Button>
                     </div>

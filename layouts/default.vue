@@ -92,10 +92,10 @@
                         <div class="flex align-items-center flex-wrap px-6 p-3 lg:px-3 lg:py-2 ml-6 lg:ml-0 text-gray-400 hover:text-white hover:bg-gray-800 cursor-pointer transition-colors transition-duration-150 p-ripple"
                             v-styleclass="{ selector: '@next', enterClass: 'hidden', enterActiveClass: 'scalein', leaveToClass: 'hidden', leaveActiveClass: 'fadeout', hideOnOutsideClick: true }">
 
-                            <Avatar :image="currentUserStore.currentUser.props.avatarUrl" alt="user avatar"
+                            <Avatar :image="currentUserStore.currentUser.meta?.avatarUrl" alt="user avatar"
                                 shape="circle" />
                             <span class="text-white font-medium ml-2">{{
-                                currentUserStore.currentUser.props.displayName }}
+                                currentUserStore.currentUser.meta?.displayName }}
                             </span>
                             <i class="pi pi-angle-down ml-auto lg:ml-3 mr-3 lg:mr-0"></i>
                         </div>

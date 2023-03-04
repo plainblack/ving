@@ -9,7 +9,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
     }),
     actions: {
         async whoami() {
-            const response = await useFetch('/api/user/whoami?includeOptions=true');
+            const response = await useFetch('/api/user/whoami?includeOptions=true&includeMeta=true');
             if (response.data.value) {
                 this.currentUser = response.data.value;
             }
