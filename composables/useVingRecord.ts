@@ -82,7 +82,7 @@ export interface VingRecord<T extends TModelName> {
     warnings: Describe<T>['warnings'],
     query?: QueryParams,
     behavior: VingRecordParams<T>,
-    setResult(result: Describe<T>): void,
+    setState(result: Describe<T>): void,
     dispatchWarnings(): void,
     getCreateApi(): string,
     getFetchApi(): string,
@@ -92,6 +92,7 @@ export interface VingRecord<T extends TModelName> {
     _partialUpdate(props?: Describe<T>['props'], options?: {}): Promise<any>,
     partialUpdate(props?: Describe<T>['props'], options?: {}): Promise<any>,
     update(options?: {}): Promise<any>,
+    create(props?: Describe<T>['props'], options?: {}): Promise<any>,
 }
 
 export default <T extends TModelName>(behavior: VingRecordParams<T> = { props: {} }) => {
@@ -107,7 +108,7 @@ export default <T extends TModelName>(behavior: VingRecordParams<T> = { props: {
         query: {},
         behavior: {},
 
-        setResult(result) {
+        setState(result) {
             this.props = result.props;
             this.links = result.links;
             this.meta = result.meta;
@@ -160,7 +161,7 @@ export default <T extends TModelName>(behavior: VingRecordParams<T> = { props: {
             });
             promise.then((response) => {
                 const data: Describe<T> = response.data.value as Describe<T>;
-                self.setResult(data);
+                self.setState(data);
             })
                 .catch((response) => {
                     throw response;
@@ -185,7 +186,7 @@ export default <T extends TModelName>(behavior: VingRecordParams<T> = { props: {
 
             promise.then((response) => {
                 const data: Describe<T> = response.data.value as Describe<T>;
-                self.setResult(data);
+                self.setState(data);
             })
                 .catch((response) => {
                     throw response;
@@ -218,12 +219,35 @@ export default <T extends TModelName>(behavior: VingRecordParams<T> = { props: {
 
         update(options?: {}) {
             return this.partialUpdate(this.props, options);
-        }
+        },
+
+        create(props, options) {
+            const self = this;
+            const newProps = _.extend({}, this.props, props);
+
+            const promise = useFetch(this.getCreateApi(), {
+                query: this.query,
+                method: 'post',
+                body: newProps,
+                onResponseError(context) {
+                    console.dir(context)
+                    notify.error(context.response._data.message);
+                }
+            });
+
+            promise.then((response) => {
+                const data: Describe<T> = response.data.value as Describe<T>;
+                self.setState(data);
+            }).catch(e => {
+                console.log(e)
+            });
+            return promise;
+        },
 
     }
 
     VingRecord.behavior = behavior;
-    VingRecord.setResult(behavior as Describe<T>);
+    VingRecord.setState(behavior as Describe<T>);
     VingRecord.query = { includeLinks: true, ...behavior.query };
 
     return VingRecord;
