@@ -113,13 +113,15 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
 
     public async describe(params?: DescribeParams) {
         const out = await super.describe(params);
-        out.props.displayName = this.displayName;
-        out.props.avatarUrl = this.avatarUrl;
+        if (params?.include?.meta && out.meta) {
+            out.meta.displayName = this.displayName;
+            out.meta.avatarUrl = this.avatarUrl;
+        }
         if (params && params.include && params.include.extra && params.include.extra.includes('foo')) {
-            if (out.links === undefined) {
-                out.links = {};
+            if (out.extra === undefined) {
+                out.extra = {};
             }
-            out.links.foo = 'foo';
+            out.extra.foo = 'foo';
         }
         return out;
     }
