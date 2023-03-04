@@ -8,6 +8,10 @@
                     <div class="flex-auto p-fluid">
                         <div class="mb-4">
 
+                            {{ user.props?.realName }}
+
+                            <button @click="user.partialUpdate({ realName: 'e' })">click</button>
+
                         </div>
 
                     </div>
@@ -23,8 +27,8 @@
 <script setup lang="ts">
 const route = useRoute();
 const dt = useDateTime();
-const user = ref(useVingObject({
+const user = ref(useVingRecord({
     fetchApi: '/api/user/' + route.params.id,
 }));
-await user.value.fetch();
+await user.value.fetch()
 </script>
