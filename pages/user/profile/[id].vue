@@ -27,7 +27,7 @@
 <script setup lang="ts">
 const route = useRoute();
 const dt = useDateTime();
-const user = ref(useVingRecord({
+const user = ref(useVingRecord<'User'>({
     fetchApi: '/api/user/' + route.params.id,
     query: { includeMeta: true }
 }));
