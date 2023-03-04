@@ -41,8 +41,8 @@ describe('Users', async () => {
         expect(captain.isOwner(warden)).toBe(true);
     });
     test("described by owner", async () => {
-        const description = await captain.describe({ currentUser: captain, include: { links: true, options: true } });
-        expect(description.props.displayName).toBe('captain');
+        const description = await captain.describe({ currentUser: captain, include: { links: true, options: true, meta: true } });
+        expect(description.meta?.displayName).toBe('captain');
         expect(description.props.username).toBe('captain');
         if (description.links !== undefined) {
             expect(description.links.base).toBe('/api/user');
@@ -58,8 +58,8 @@ describe('Users', async () => {
         expect(Object.keys(options).length).toBe(3);
     });
     test("described by admin", async () => {
-        const description = await captain.describe({ currentUser: warden, include: { links: true, options: true } });
-        expect(description.props.displayName).toBe('captain');
+        const description = await captain.describe({ currentUser: warden, include: { links: true, options: true, meta: true } });
+        expect(description.meta?.displayName).toBe('captain');
         expect(description.props.username).toBe('captain');
         expect(description.props.admin).toBe(false);
         if (description.links !== undefined) {
@@ -71,8 +71,8 @@ describe('Users', async () => {
         }
     });
     test("described by visitor", async () => {
-        const description = await warden.describe({ include: { links: true, options: true } });
-        expect(description.props.displayName).toBe('warden');
+        const description = await warden.describe({ include: { links: true, options: true, meta: true } });
+        expect(description.meta?.displayName).toBe('warden');
         expect(description.props.username).toBe(undefined);
         expect(description.props.admin).toBe(undefined);
         if (description.links !== undefined) {
