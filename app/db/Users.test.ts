@@ -127,11 +127,17 @@ describe('Users', async () => {
         params.username = 'rita';
         expect(rita.verifyCreationParams(params)).toBe(true);
     });
-    test('can verify posted params', () => {
+
+    test('can verify empty creation params', () => {
         params.username = '';
         expect(() => rita.verifyCreationParams(params)).toThrowError();
+    });
+
+    test('can verify posted params', async () => {
         params.username = 'rita';
-        expect(rita.verifyPostedParams(params)).toBe(true);
+        params.email = 'rita@rita.com';
+        expect(await rita.verifyPostedParams(params)).toBe(true);
         expect(rita.get('username')).toBe('rita');
     });
+
 })
