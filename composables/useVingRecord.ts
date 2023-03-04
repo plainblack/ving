@@ -11,6 +11,10 @@ type QueryParams = {
     includeLinks?: boolean,
 };
 
+/*
+ *  VingRecords annot be used in a Pinia store because it contains functions
+ */
+
 /* probably don't need this anymore
 function formatPropsBodyData<T extends TModelName>(props: Describe<T>['props'], options: { formatJson: string[] }) {
     var form = new FormData();
@@ -56,7 +60,7 @@ function formatPropsBodyData<T extends TModelName>(props: Describe<T>['props'], 
     return form;
 }*/
 
-type VingObjectParams<T extends TModelName> = {
+type VingRecordParams<T extends TModelName> = {
     props?: Describe<T>['props'],
     links?: Describe<T>['links'],
     meta?: Describe<T>['meta'],
@@ -69,7 +73,7 @@ type VingObjectParams<T extends TModelName> = {
     // postFormattingOptions: {}
 }
 
-interface VingObject<T extends TModelName> {
+export interface VingRecord<T extends TModelName> {
     props?: Describe<T>['props'],
     links?: Describe<T>['links'],
     meta?: Describe<T>['meta'],
@@ -77,7 +81,7 @@ interface VingObject<T extends TModelName> {
     related?: Describe<T>['related'],
     warnings: Describe<T>['warnings'],
     query?: QueryParams,
-    behavior: VingObjectParams<T>,
+    behavior: VingRecordParams<T>,
     setResult(result: Describe<T>): void,
     dispatchWarnings(): void,
     getCreateApi(): string,
@@ -88,9 +92,9 @@ interface VingObject<T extends TModelName> {
     update(options?: {}): Promise<any>,
 }
 
-export default <T extends TModelName>(behavior: VingObjectParams<T> = { props: {} }) => {
+export default <T extends TModelName>(behavior: VingRecordParams<T> = { props: {} }) => {
 
-    const VingObject: VingObject<T> = {
+    const VingRecord: VingRecord<T> = {
 
         props: {},
         links: {},
@@ -182,7 +186,6 @@ export default <T extends TModelName>(behavior: VingObjectParams<T> = { props: {
                 self.setResult(data);
             })
                 .catch((response) => {
-                    console.log(response);
                     throw response;
                 });
             return promise;
@@ -199,138 +202,9 @@ export default <T extends TModelName>(behavior: VingObjectParams<T> = { props: {
 
     }
 
-    VingObject.behavior = behavior;
-    VingObject.setResult(behavior as Describe<T>);
-    VingObject.query = { includeLinks: true, ...behavior.query };
+    VingRecord.behavior = behavior;
+    VingRecord.setResult(behavior as Describe<T>);
+    VingRecord.query = { includeLinks: true, ...behavior.query };
 
-    return VingObject;
+    return VingRecord;
 }
-
-
-/*
-export class VingObject<T extends TModelName> {
-    constructor(public behavior: {
-        props?: Describe<T>['props'],
-        links?: Describe<T>['links'],
-        meta?: Describe<T>['meta'],
-        options?: Describe<T>['options'],
-        related?: Describe<T>['related'],
-        query?: QueryParams,
-        warnings?: Describe<T>['warnings'],
-        createApi?: string | undefined,
-        fetchApi?: string | undefined,
-        // postFormattingOptions: {}
-    } = {
-            props: {},
-        }
-    ) {
-        this.setResult(behavior as Describe<T>)
-        this.dispatchWarnings(behavior.warnings)
-        this.query = { includeLinks: true, ...behavior.query };
-    }
-
-    public props?: Describe<T>['props'];
-    public links?: Describe<T>['links'];
-    public meta?: Describe<T>['meta'];
-    public options?: Describe<T>['options'];
-    public related?: Describe<T>['related'];
-    public warnings?: Describe<T>['warnings'];
-    public query?: QueryParams;
-
-    public get createApi() {
-        if (this.behavior.createApi) {
-            return this.behavior.createApi;
-        }
-        else if (this.behavior.links?.base) {
-            return this.behavior.links.base;
-        }
-        notify.error('No createApi');
-        throw ouch(401, 'No createApi');
-    }
-
-    public get fetchApi() {
-        if (this.behavior.fetchApi) {
-            return this.behavior.fetchApi;
-        }
-        else if (this.behavior.links?.self) {
-            return this.behavior.links.self;
-        }
-        notify.error('No fetchApi');
-        throw ouch(401, 'No fetchApi');
-    }
-
-    public fetch() {
-        const self = this;
-        const promise = useFetch(this.fetchApi, {
-            query: this.query,
-        });
-        promise.then((response) => {
-            const data: Describe<T> = response.data.value as Describe<T>;
-            self.setResult(data);
-        })
-            .catch((response) => {
-                throw response;
-            });
-        return promise;
-    }
-
-    private setResult(result: Describe<T>) {
-        this.props = result.props;
-        this.links = result.links;
-        this.meta = result.meta;
-        this.options = result.options;
-        this.related = result.related;
-    }
-
-    public _partialUpdate(props?: Describe<T>['props'], options?: {}) {
-        // if we were calling formatPropsBodyData here is where we would call it
-        const self = this;
-
-        if (!this.links || !this.links.self) {
-            notify.error('No links.self');
-            throw ouch(400, 'No links.self');
-        }
-
-        const promise = useFetch(this.links.self, {
-            query: this.query,
-            method: 'put',
-            body: props,
-        });
-
-        promise.then((response) => {
-            const data: Describe<T> = response.data.value as Describe<T>;
-            self.setResult(data);
-        })
-            .catch((response) => {
-                console.log(response);
-                throw response;
-            });
-        return promise;
-    }
-
-    public partialUpdate = _.debounce(function (this: typeof VingObject, props?: Describe<T>['props'], options?: {}) {
-        // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
-        return this._partialUpdate(props, options);
-    }, 200);
-
-    public update(options?: {}) {
-        return this.partialUpdate(this.props, options);
-    }
-
-    public dispatchWarnings(list?: Describe<T>['warnings']) {
-        if (list) {
-            for (const warning of list) {
-                document.dispatchEvent(
-                    new CustomEvent("wing_warn", {
-                        // @ts-ignore
-                        message: warning.message,
-                    })
-                );
-                notify.warn(warning.message);
-            }
-        }
-
-    }
-
-}
-*/
