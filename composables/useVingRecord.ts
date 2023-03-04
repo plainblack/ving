@@ -87,6 +87,8 @@ export interface VingRecord<T extends TModelName> {
     getCreateApi(): string,
     getFetchApi(): string,
     fetch(): Promise<any>,
+    _save<K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]): Promise<any>,
+    save<K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]): Promise<any>,
     _partialUpdate(props?: Describe<T>['props'], options?: {}): Promise<any>,
     partialUpdate(props?: Describe<T>['props'], options?: {}): Promise<any>,
     update(options?: {}): Promise<any>,
@@ -166,7 +168,7 @@ export default <T extends TModelName>(behavior: VingRecordParams<T> = { props: {
             return promise;
         },
 
-        _partialUpdate(props?: Describe<T>['props'], options?: {}) {
+        _partialUpdate(props, options: {}) {
             // if we were calling formatPropsBodyData here is where we would call it
             const self = this;
 
@@ -191,10 +193,28 @@ export default <T extends TModelName>(behavior: VingRecordParams<T> = { props: {
             return promise;
         },
 
-        partialUpdate: _.debounce(function (props?: Describe<T>['props'], options?: {}) {
+        partialUpdate: _.debounce(function (props, options) {
             // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
             return this._partialUpdate(props, options);
         }, 200),
+
+        save: _.debounce(function (name, value) {
+            // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
+            return this._save(name, value);
+        }, 200),
+
+        _save: function (name, value) {
+            const self = this;
+            const update: Describe<T>['props'] = {};
+            if (self.props && value === undefined) {
+                update[name] = self.props[name];
+            }
+            else if (value !== undefined) {
+                // @ts-ignore - not sure why this is a problem since it is properly typed in the interface
+                update[name] = value;
+            }
+            return self._partialUpdate(update);
+        },
 
         update(options?: {}) {
             return this.partialUpdate(this.props, options);
