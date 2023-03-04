@@ -81,6 +81,7 @@ export type Describe<T extends TModelName> = {
     }
     links?: Record<string, string>
     meta?: Record<string, any>
+    extra?: Record<string, any>
     options?: {
         [property in keyof TProps<T>]?: TVingOption[]
     }
