@@ -13,7 +13,7 @@ describe('Users', async () => {
         expect(Users).toHaveProperty('recordClass');
     })
     test("can create ving record", async () => {
-        expect(warden).toHaveProperty('kind');
+        expect(warden).toHaveProperty('prisma');
         expect(warden).toHaveProperty('props');
         expect(warden.get('email')).toBe('warden@shawshank.jail');
     });
@@ -95,7 +95,7 @@ describe('Users', async () => {
         warden.verifyPostedParams({ useAsDisplayName: 'email' }, warden);
         expect(warden.get('useAsDisplayName')).toBe('email');
     });
-    const guard = captain.copy();
+    const guard = Users.copy(captain.getAll());
     test("clone a record", () => {
         guard.setAll({
             username: 'guard',
@@ -117,7 +117,7 @@ describe('Users', async () => {
         expect(warden.get('username')).toBe('warden');
         expect(await Users.count({ where: { email: 'warden@shawshank.jail' } })).toBe(0);
         await captain.delete()
-        await guard.delete()
+        //  await guard.delete()
     });
 
     const rita = Users.mint({});

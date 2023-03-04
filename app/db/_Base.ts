@@ -110,9 +110,20 @@ export interface IPrisma<T extends TModelName> {
     name?: string
 }
 
+export const findVingSchema = <T extends TModelName>(nameToFind: string = '-unknown-') => {
+
+    try {
+        return findObject('name', nameToFind, vingSchemas) as TVingSchema<T>;
+    }
+    catch {
+        throw ouch(404, 'ving schema ' + nameToFind + ' not found');
+    }
+
+}
+
 export class VingRecord<T extends TModelName> {
 
-    constructor(protected kind: VingKind<T, VingRecord<T>>, private props: TProps<T>, private inserted = true) { }
+    constructor(public prisma: IPrisma<T>, private props: TProps<T>, private inserted = true) { }
 
     public get id() {
         return this.props.id;
@@ -142,41 +153,34 @@ export class VingRecord<T extends TModelName> {
         }
     }
 
-    public copy(): this {
-        let props = { ...this.props } as TProps<T>;
-        delete props.id;
-        delete props.createdAt;
-        return this.kind.mint(props) as this;
-    }
-
     public get isInserted() {
         return this.inserted;
     }
 
     public async insert() {
         if (this.inserted) {
-            throw ouch(409, `${this.kind.name} already inserted`);
+            throw ouch(409, `${this.prisma.name} already inserted`);
         }
         this.inserted = true;
-        return this.props = await this.kind.prisma.create({ data: this.props as any }) as TProps<T>
+        return this.props = await this.prisma.create({ data: this.props as any }) as TProps<T>
     }
 
     public async update() {
-        return this.props = await this.kind.prisma.update({ where: { id: this.props.id }, data: this.props }) as TProps<T>
+        return this.props = await this.prisma.update({ where: { id: this.props.id }, data: this.props }) as TProps<T>
     }
 
     public async delete() {
-        return this.props = await this.kind.prisma.delete({ where: { id: this.props.id } }) as TProps<T>
+        return this.props = await this.prisma.delete({ where: { id: this.props.id } }) as TProps<T>
     }
 
     public async refetch() {
-        return this.props = await this.kind.prisma.findUniqueOrThrow({ where: { id: this.props.id } }) as TProps<T>
+        return this.props = await this.prisma.findUniqueOrThrow({ where: { id: this.props.id } }) as TProps<T>
     }
 
     public isOwner(currentUser: Session | UserRecord) {
         if (currentUser === undefined)
             return false;
-        const table = this.kind.vingSchema;
+        const table = findVingSchema<T>(this.prisma.name);
         for (let owner of table.ving.owner) {
             let found = owner.match(/^\$(.*)$/);
             if (found) {
@@ -198,7 +202,7 @@ export class VingRecord<T extends TModelName> {
         if (this.isOwner(currentUser)) {
             return true;
         }
-        throw ouch(403, `You do not have the privileges to access ${this.kind.name}.`)
+        throw ouch(403, `You do not have the privileges to access ${this.prisma.name}.`)
     }
 
     public async describe(params: DescribeParams = {}) {
@@ -208,7 +212,7 @@ export class VingRecord<T extends TModelName> {
 
         let out: Describe<T> = { props: {} };
         if (include !== undefined && include.links) {
-            out.links = { base: `/api/${this.kind.name.toLowerCase()}` };
+            out.links = { base: `/api/${this.prisma.name?.toLowerCase()}` };
             out.links.self = `${out.links.base}/${this.props.id}`;
         }
         if (include !== undefined && include.options) {
@@ -216,7 +220,7 @@ export class VingRecord<T extends TModelName> {
         }
         if (include !== undefined && include.meta) {
             out.meta = {
-                type: this.kind.name,
+                type: this.prisma.name,
             };
         }
         if (include !== undefined && include.related && include.related.length) {
@@ -226,7 +230,7 @@ export class VingRecord<T extends TModelName> {
             out.warnings = this.warnings;
         }
 
-        for (const field of this.kind.vingSchema.fields) {
+        for (const field of findVingSchema<T>(this.prisma.name).fields) {
 
             // determine field visibility
             const roles = [...field.ving.viewBy, ...field.ving.editBy];
@@ -284,7 +288,7 @@ export class VingRecord<T extends TModelName> {
         const currentUser = params.currentUser;
         const include = params.include || {};
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
-        for (const field of this.kind.vingSchema.fields) {
+        for (const field of findVingSchema<T>(this.prisma.name).fields) {
             const roles = [...field.ving.viewBy, ...field.ving.editBy];
             const visible = roles.includes('public')
                 || (include !== undefined && include.private)
@@ -299,7 +303,7 @@ export class VingRecord<T extends TModelName> {
     }
 
     public verifyCreationParams(params: TProps<T>) {
-        const schema = this.kind.vingSchema;
+        const schema = findVingSchema<T>(this.prisma.name);
         for (const field of schema.fields) {
             if (!field.isRequired || field.hasDefaultValue || field.relationName)
                 continue;
@@ -312,7 +316,7 @@ export class VingRecord<T extends TModelName> {
     }
 
     public async verifyPostedParams(params: TProps<T>, currentUser?: Session | UserRecord) {
-        const schema = this.kind.vingSchema;
+        const schema = findVingSchema<T>(this.prisma.name);
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
 
         for (const field of schema.fields) {
@@ -342,7 +346,7 @@ export class VingRecord<T extends TModelName> {
                     //where[field.name] = params[field.name];
                     //  where.id = 'xx';
                     // console.log(where);
-                    //const count = await this.kind.count({ where });
+                    //const count = await this.prisma.count({ where });
                     // console.log(`SELECT count(*) FROM ${schema.name} WHERE ${field.name.toString()} = '${params[field.name]}'`);
                     //const count = await prisma.$queryRawUnsafe(`SELECT count(*) FROM ${schema.name} WHERE ${field.name.toString()} = '${params[field.name]}'`) as number;
 
@@ -371,12 +375,7 @@ export class VingRecord<T extends TModelName> {
 
 export class VingKind<T extends TModelName, R extends VingRecord<T>> {
 
-    constructor(public prisma: IPrisma<T>, public recordClass: IConstructable<R>, private propDefaults: TProps<T> = {}) {
-        if ('name' in prisma && prisma.name !== undefined) {
-            this.name = prisma.name;
-            this.vingSchema = this.findVingSchema(this.name);
-        }
-    }
+    constructor(public prisma: IPrisma<T>, public recordClass: IConstructable<R>, private propDefaults: TProps<T> = {}) { }
 
     public async describeList(params: DescribeListParams = {}, args?: TModel[T]['findMany']['args']) {
         const itemsPerPage = params.itemsPerPage === undefined || params.itemsPerPage > 100 || params.itemsPerPage < 1 ? 10 : params.itemsPerPage;
@@ -420,9 +419,16 @@ export class VingKind<T extends TModelName, R extends VingRecord<T>> {
         return out;
     }
 
+    public copy(originalProps: TProps<T>) {
+        let props = { ...originalProps };
+        delete props.id;
+        delete props.createdAt;
+        return this.mint(props);
+    }
+
     public mint(props: TProps<T> = {}) {
         let data = { ...this.propDefaults, ...props };
-        for (const field of this.vingSchema.fields) {
+        for (const field of findVingSchema<T>(this.prisma.name).fields) {
             if (data[field.name as keyof TProps<T>] !== undefined) {
                 continue;
             }
@@ -440,7 +446,7 @@ export class VingKind<T extends TModelName, R extends VingRecord<T>> {
                 }
             }
         }
-        return new this.recordClass(this, data, false);
+        return new this.recordClass(this.prisma, data, false);
     }
 
     public async create(props: TProps<T>) {
@@ -465,30 +471,30 @@ export class VingKind<T extends TModelName, R extends VingRecord<T>> {
     public async delete(args?: TModel[T]['delete']['args']) {
         const customArgs = this.getDefaultArgs(args) as TModel[T]['delete']['args'];
         const props = await this.prisma.delete(customArgs);
-        return new this.recordClass(this, props);
+        return new this.recordClass(this.prisma, props);
     }
 
     public async findFirst(args?: TModel[T]['findFirstOrThrow']['args']) {
         const customArgs = this.getDefaultArgs(args) as TModel[T]['findFirstOrThrow']['args'];
         const props = await this.prisma.findFirstOrThrow(customArgs);
-        return new this.recordClass(this, props);
+        return new this.recordClass(this.prisma, props);
     }
 
     public async findUnique(args?: TModel[T]['findUniqueOrThrow']['args']) {
         const customArgs = this.getDefaultArgs(args) as TModel[T]['findUniqueOrThrow']['args'];
         const props = await this.prisma.findUniqueOrThrow(customArgs);
-        return new this.recordClass(this, props);
+        return new this.recordClass(this.prisma, props);
     }
 
     public async find(id: TModel[T]['findUniqueOrThrow']['payload']['scalars']['id']) {
         const props = await this.prisma.findUniqueOrThrow({ where: { id: id } });
-        return new this.recordClass(this, props);
+        return new this.recordClass(this.prisma, props);
     }
 
     public async findMany(args?: TModel[T]['findMany']['args']) {
         const customArgs = this.getDefaultArgs(args) as TModel[T]['findMany']['args'];
         const results = await this.prisma.findMany(customArgs);
-        return results.map(props => new this.recordClass(this, props))
+        return results.map(props => new this.recordClass(this.prisma, props))
     }
 
     public async deleteMany(args?: TModel[T]['deleteMany']['args']) {
@@ -506,24 +512,9 @@ export class VingKind<T extends TModelName, R extends VingRecord<T>> {
         return await this.prisma.count(customArgs);
     }
 
-    public name = '-unknown-';
-
-    public findVingSchema(nameToFind: string) {
-
-        try {
-            return findObject('name', nameToFind, vingSchemas) as TVingSchema<T>;
-        }
-        catch {
-            throw ouch(404, 'ving schema ' + this.name + ' not found');
-        }
-
-    }
-
-    public vingSchema: TVingSchema<T> = { "name": "-unknown-", fields: [], ving: { "owner": [] } };
-
     public getOptions() {
         const out: Describe<T>['options'] = {};
-        for (const field of this.vingSchema.fields) {
+        for (const field of findVingSchema<T>(this.prisma.name).fields) {
             if (field.ving.options.length > 0) {
                 out[field.name] = field.ving.options;
             }
