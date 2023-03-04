@@ -23,7 +23,7 @@
 <script setup lang="ts">
 const route = useRoute();
 const dt = useDateTime();
-const user = ref(new VingObject({
+const user = ref(useVingObject({
     fetchApi: '/api/user/' + route.params.id,
 }));
 await user.value.fetch();
