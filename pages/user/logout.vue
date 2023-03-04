@@ -5,8 +5,8 @@
 definePageMeta({
     middleware: 'auth'
 });
-const currentUserStore = useCurrentUserStore();
+const currentUser = useCurrentUserStore();
 
-await currentUserStore.logout();
+await currentUser.logout();
 navigateTo('/');
 </script>

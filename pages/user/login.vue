@@ -59,12 +59,12 @@
 let login = ref('');
 let password = ref('');
 const config = useRuntimeConfig();
-const currentUserStore = useCurrentUserStore();
+const currentUser = useCurrentUserStore();
 const notify = useNotifyStore();
 
 async function tryLogin() {
     try {
-        await currentUserStore.login(login.value, password.value);
+        await currentUser.login(login.value, password.value);
         navigateTo('/');
     }
     catch (e) {

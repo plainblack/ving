@@ -1,19 +1,29 @@
 import { defineStore } from 'pinia';
 import { Describe } from '~~/app/db';
 
+const query = { includeOptions: true, includeMeta: true };
+
 export const useCurrentUserStore = defineStore('currentUser', {
     state: (): {
-        currentUser: Describe<'User'> | undefined
+        props?: Describe<'User'>['props'] | undefined
+        meta?: Describe<'User'>['meta'] | undefined
+        options?: Describe<'User'>['options'] | undefined
     } => ({
-        currentUser: undefined
     }),
     actions: {
         async whoami() {
-            const response = await useFetch('/api/user/whoami?includeOptions=true&includeMeta=true');
+            const response = await useFetch('/api/user/whoami', {
+                query,
+            });
             if (response.data.value) {
-                this.currentUser = response.data.value;
+                this.setState(response.data.value);
             }
             return response;
+        },
+        setState(data: Partial<Describe<'User'>>) {
+            this.props = data.props;
+            this.meta = data.meta;
+            this.options = data.options;
         },
         async login(login: string, password: string) {
             const response = await useFetch('/api/session', {
@@ -36,16 +46,16 @@ export const useCurrentUserStore = defineStore('currentUser', {
             const response = await useFetch('/api/session', {
                 method: 'delete',
             });
-            this.currentUser = undefined;
+            this.setState({});
             return response;
         },
         async save() {
-            const response = await useFetch('/api/user/' + this.currentUser?.props.id, {
+            const response = await useFetch('/api/user/' + this.props?.id, {
                 method: 'put',
-                body: this.currentUser?.props,
-                query: { includeOptions: true }
+                body: this.props,
+                query,
             });
-            this.currentUser = response.data.value as Describe<'User'>;
+            this.setState(response.data.value as Describe<'User'>)
             return response;
         },
         async create(newUser: { username: string, email: string, password: string, realName: string }) {
@@ -63,10 +73,10 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         async isAuthenticated() {
-            if (this.currentUser === undefined) {
+            if (this.props?.id === undefined) {
                 await this.whoami();
             }
-            return this.currentUser !== undefined;
+            return this.props?.id !== undefined;
         },
     },
 });

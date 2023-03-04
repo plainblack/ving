@@ -58,11 +58,11 @@
 <script setup lang="ts">
 let newUser = ref({ username: '', email: '', realName: '', password: '', password2: '' });
 const config = useRuntimeConfig();
-const currentUserStore = useCurrentUserStore();
+const currentUser = useCurrentUserStore();
 
 async function createAccount() {
     try {
-        await currentUserStore.create(newUser.value);
+        await currentUser.create(newUser.value);
         navigateTo('/');
     }
     catch (e) {
