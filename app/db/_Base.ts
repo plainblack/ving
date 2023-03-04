@@ -76,9 +76,7 @@ export type DescribeList<T extends TModelName> = {
 }
 
 export type Describe<T extends TModelName> = {
-    props: TProps<T> & {
-        [key: string]: any
-    }
+    props: TProps<T>
     links?: Record<string, string>
     meta?: Record<string, any>
     extra?: Record<string, any>
