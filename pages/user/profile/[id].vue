@@ -10,7 +10,7 @@
 
                             {{ user.props?.realName }}
 
-                            <button @click="user.partialUpdate({ realName: 'e' })">click</button>
+                            <button @click="user.create({ username: 'a', email: 'a@a.a' })">click</button>
 
                         </div>
 
@@ -29,6 +29,7 @@ const route = useRoute();
 const dt = useDateTime();
 const user = ref(useVingRecord<'User'>({
     fetchApi: '/api/user/' + route.params.id,
+    createApi: '/api/user',
     query: { includeMeta: true }
 }));
 await user.value.fetch()

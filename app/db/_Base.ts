@@ -311,7 +311,7 @@ export class VingRecord<T extends TModelName> {
         return true;
     }
 
-    public verifyPostedParams(params: TProps<T>, currentUser?: Session | UserRecord) {
+    public async verifyPostedParams(params: TProps<T>, currentUser?: Session | UserRecord) {
         const schema = this.kind.vingSchema;
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
 
@@ -331,6 +331,29 @@ export class VingRecord<T extends TModelName> {
                 throw ouch(441, `${fieldName} is required.`, fieldName);
             }
             if (field.name !== undefined && params[field.name] !== undefined) {
+
+                if (field.isUnique) {
+                    let where: TModel[T]['count']['args']['where'] = {};
+                    if (this.isInserted) {
+                        where = { id: { 'not': this.id } };
+                    }
+                    //console.log('checking');
+                    // @ts-ignore - no idea what the magic incantation should be here
+                    //where[field.name] = params[field.name];
+                    //  where.id = 'xx';
+                    // console.log(where);
+                    //const count = await this.kind.count({ where });
+                    // console.log(`SELECT count(*) FROM ${schema.name} WHERE ${field.name.toString()} = '${params[field.name]}'`);
+                    //const count = await prisma.$queryRawUnsafe(`SELECT count(*) FROM ${schema.name} WHERE ${field.name.toString()} = '${params[field.name]}'`) as number;
+
+                    const count = 0;
+                    // console.log('count:', count)
+                    if (count > 0) {
+                        //    console.log('--- unique check failed ---')
+                        throw ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
+                    }
+                }
+
                 this.set(field.name, params[field.name]);
             }
         }
@@ -338,7 +361,7 @@ export class VingRecord<T extends TModelName> {
     }
 
     public async updateAndVerify(params: TProps<T>, currentUser?: Session | UserRecord) {
-        this.verifyPostedParams(params, currentUser);
+        await this.verifyPostedParams(params, currentUser);
         await this.update();
     }
 
@@ -429,7 +452,7 @@ export class VingKind<T extends TModelName, R extends VingRecord<T>> {
     public async createAndVerify(props: TProps<T>, currentUser?: Session | UserRecord) {
         const obj = this.mint({});
         obj.verifyCreationParams(props);
-        obj.verifyPostedParams(props, currentUser);
+        await obj.verifyPostedParams(props, currentUser);
         await obj.insert();
         return obj;
     }
