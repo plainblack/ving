@@ -1,13 +1,11 @@
 import { defineStore } from 'pinia';
 import { Describe } from '~~/app/db';
-const prototypeUser = new VingObject<'User'>();
-type UserObj = typeof prototypeUser;
 
 export const useCurrentUserStore = defineStore('currentUser', {
     state: (): {
-        currentUser: UserObj
+        currentUser: Describe<'User'> | undefined
     } => ({
-        currentUser: new VingObject<'User'>()
+        currentUser: undefined
     }),
     actions: {
         async whoami() {
