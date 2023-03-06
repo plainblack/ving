@@ -10,6 +10,10 @@
         "postinstall": "nuxt prepare",
         "db:build": "prisma generate",
         "db:studio": "prisma studio",
+        "migrate:up": "sequelize-cli db:migrate",
+        "migrate:down": "sequelize-cli db:migrate:undo",
+        "migrate:make": "sequelize-mig migration:make",
+        "migrate:preview": "sequelize-mig migration:make --preview",
         "test": "vitest",
         "build:schema-generator": "tsc prisma/ving-schema-generator.ts"
     },
@@ -23,6 +27,8 @@
         "@types/luxon": "^3.2.0",
         "nuxt": "^3.2.2",
         "prisma": "^4.11.0",
+        "sequelize-cli": "^6.6.0",
+        "sequelize-mig": "^3.1.3",
         "typescript": "^4.9.5",
         "vitest": "^0.28.5"
     },
@@ -46,9 +52,11 @@
         "keyv": "^4.5.2",
         "lodash": "^4.17.21",
         "luxon": "^3.2.1",
+        "mysql2": "^3.2.0",
         "pinia": "^2.0.32",
         "primeflex": "^3.3.0",
         "primeicons": "^6.0.1",
-        "primevue": "^3.23.0"
+        "primevue": "^3.23.0",
+        "sequelize": "^6.29.0"
     }
 }
