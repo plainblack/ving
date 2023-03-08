@@ -156,7 +156,7 @@ export function useUserRecord(
         },
 
         async verifyPostedParams(params, currentUser) {
-            base.verifyPostedParams(params, currentUser);
+            await base.verifyPostedParams(params, currentUser);
             if (params !== undefined && params.password && (currentUser === undefined || this.isOwner(currentUser))) {
                 this.setPassword(params.password);
             }
