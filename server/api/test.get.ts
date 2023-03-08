@@ -1,5 +1,5 @@
-import user from '~~/sequelize/models/user';
+import { UserSchema } from '~/mikro-orm/entities/User.entity';
 
 export default defineEventHandler(async (event) => {
-    return user;
-});
+    return Object.keys(new UserSchema._meta.class());
+})

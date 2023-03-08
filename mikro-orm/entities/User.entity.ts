@@ -1,16 +1,12 @@
 import { EntitySchema } from '@mikro-orm/core';
+import { Base } from './Base.entity';
 
-export class User {
+export class User extends Base {
 
-    id: string;
-    email: string;
-    agreedToTerms?: Date;
-    firstName!: string;
-    lastName!: string;
+    public agreedToTerms?: Date;
 
-    constructor(id: string, email: string) {
-        this.id = id;
-        this.email = email;
+    constructor(public email: string, public firstName: string, public lastName: string) {
+        super();
     }
 
     get fullName(): string {
@@ -23,11 +19,10 @@ export class User {
 
 }
 
-export const UserSchema = new EntitySchema<User>({
+export const UserSchema = new EntitySchema<User, Base>({
     class: User,
     tableName: 'person',
     properties: {
-        id: { type: 'string', primary: true, name: 'cognito_id', foo: 'bar' },
         email: { type: 'string' },
         agreedToTerms: { type: 'datetime', nullable: true },
         firstName: { type: 'string' },
