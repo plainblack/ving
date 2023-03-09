@@ -1,5 +1,10 @@
-import { UserSchema } from '~~/mikro-orm/modules/User';
-
+import { AppDataSource } from '../../typeorm/data-source';
+import { User } from '../../typeorm/entity/User'
 export default defineEventHandler(async (event) => {
-    return Object.keys(new UserSchema._meta.class());
+    const user = new User()
+    user.firstName = "Timber"
+    user.lastName = "Saw"
+    user.age = 25
+    await AppDataSource.manager.save(user)
+    return await AppDataSource.manager.find(User)
 })
