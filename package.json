@@ -50,6 +50,7 @@
         "@mikro-orm/reflection": "^5.6.13",
         "@mikro-orm/sql-highlighter": "^1.0.1",
         "@pinia/nuxt": "^0.4.7",
+        "argon2": "^0.30.3",
         "bcrypt": "^5.1.0",
         "csv-parse": "^5.3.5",
         "keyv": "^4.5.2",
