@@ -3,7 +3,6 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { DataSource } from "typeorm";
 import { User } from "./entity/User";
-//import { VingRecord } from "./entity/VingRecord";
 import { URL } from 'node:url';
 const dbConfig = new URL(process.env.TYPEORM_DATABASE || '');
 

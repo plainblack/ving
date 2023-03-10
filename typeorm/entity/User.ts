@@ -1,11 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
-//import { VingRecord } from './VingRecord';
+import { Entity, Column } from "typeorm";
+import { VingRecord } from './VingRecord';
 
 @Entity()
-export class User extends BaseEntity {
-
-    @PrimaryGeneratedColumn("uuid")
-    id!: string
+export class User extends VingRecord {
 
     @Column('text', { nullable: true })
     firstName?: string
