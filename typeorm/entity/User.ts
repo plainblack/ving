@@ -1,5 +1,7 @@
 import { Entity, Column, Index } from "typeorm";
-import { VingRecord, vingProp, dbProps, stringDefault, booleanDefault, enum2options, ArrayToTuple } from './VingRecord';
+import { VingRecord, dbProps, stringDefault, booleanDefault, enum2options, ArrayToTuple, VingRecordProps } from './VingRecord';
+import { vingProp } from '../types';
+import { z } from "zod";
 
 const useAsDisplayNameEnums = ['username', 'email', 'realName'] as const;
 type useAsDisplayNameTuple = ArrayToTuple<typeof useAsDisplayNameEnums>;
@@ -7,12 +9,25 @@ type useAsDisplayNameTuple = ArrayToTuple<typeof useAsDisplayNameEnums>;
 const passwordTypeEnums = ['argon2'] as const;
 type passwordTypeTuple = ArrayToTuple<typeof passwordTypeEnums>;
 
+export type UserProps = {
+    username: string,
+    email: string,
+    realName: string,
+    password: string,
+    passwordType: passwordTypeTuple,
+    useAsDisplayName: useAsDisplayNameTuple,
+    admin: boolean,
+    developer: boolean,
+} & VingRecordProps;
+
 const _p: vingProp[] = [
     {
         name: 'username',
         required: true,
         db: { type: 'varchar', length: 60 },
+        zod: z.string().min(1).max(60),
         unique: true,
+        default: '',
         options: [],
         view: [],
         edit: ['owner'],
@@ -21,7 +36,9 @@ const _p: vingProp[] = [
         name: 'email',
         required: true,
         db: { type: 'varchar', length: 255 },
+        zod: z.string().email().max(255),
         unique: true,
+        default: '',
         options: [],
         view: [],
         edit: ['owner'],
@@ -29,7 +46,9 @@ const _p: vingProp[] = [
     {
         name: 'realName',
         required: false,
+        default: '',
         db: { type: 'varchar', length: 60 },
+        zod: z.string().min(1).max(60),
         options: [],
         view: [],
         edit: ['owner'],
@@ -37,6 +56,7 @@ const _p: vingProp[] = [
     {
         name: 'password',
         required: false,
+        default: '',
         db: { type: 'varchar', length: 60 },
         options: [],
         view: [],
@@ -86,10 +106,8 @@ const _p: vingProp[] = [
     },
 ];
 
-
-
 @Entity()
-export class User extends VingRecord {
+export class User extends VingRecord<'User'> {
 
     @Index({ unique: true })
     @Column('text', dbProps('username', _p))
@@ -117,7 +135,7 @@ export class User extends VingRecord {
     @Column('text', dbProps('developer', _p))
     developer = booleanDefault('developer', _p)
 
-    static vingSchema() {
+    public vingSchema() {
         const schema = super.vingSchema();
         schema.kind = 'User';
         schema.owner.push('$id');

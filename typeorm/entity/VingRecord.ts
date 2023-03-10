@@ -1,27 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, BeforeUpdate, UpdateDateColumn, BaseEntity, CreateDateColumn } from "typeorm";
 import { v4 } from 'uuid';
+import { vingOption, vingProp, vingSchema, Model, ModelName, ModelProps, Describe } from '../types';
 
-export type vingOption = {
-    value: string | boolean,
-    label: string
-}
-
-export type vingProp = {
-    name: string,
-    required: boolean,
-    db: Record<string, any>,
-    unique?: boolean,
-    default?: boolean | string | number | Date | undefined | (() => boolean | string | number | Date),
-    options: vingOption[],
-    view: string[],
-    edit: string[],
-}
-
-export type vingSchema = {
-    kind: string,
-    owner: string[]
-    props: vingProp[]
-}
+export type VingRecordProps = {
+    id: string,
+    createdAt: Date,
+    updatedAt: Date,
+};
 
 const _p: vingProp[] = [
     {
@@ -53,7 +38,7 @@ const _p: vingProp[] = [
     },
 ];
 
-export const findPropInSchema = (name: string, props: vingProp[]) => {
+export const findPropInSchema = (name: string | number | symbol, props: vingProp[]) => {
     return props.find(prop => prop.name == name);
 }
 
@@ -140,7 +125,7 @@ export const dbProps = (name: string, props: vingProp[]) => {
 }
 
 @Entity()
-export abstract class VingRecord extends BaseEntity {
+export abstract class VingRecord<T extends ModelName> extends BaseEntity {
 
     @PrimaryGeneratedColumn("uuid")
     id = stringDefault('id', _p);
@@ -156,12 +141,60 @@ export abstract class VingRecord extends BaseEntity {
         this.updatedAt = new Date()
     }
 
-    static vingSchema() {
+    public vingSchema() {
         const schema: vingSchema = {
             kind: 'VingRecord',
             owner: ['admin'],
             props: _p
         }
         return schema;
+    }
+
+    private warnings: Describe<T>['warnings'] = [];
+
+    public addWarning(warning: { code: number, message: string }) {
+        this.warnings?.push(warning);
+    }
+
+    public get<K extends keyof ModelProps<T>>(key: K): ModelProps<T>[K] {
+        //@ts-ignore - its what we think it is, but i don't know how to hook it up to the class
+        return this[key];
+    }
+
+    public set<K extends keyof ModelProps<T>>(key: K, value: ModelProps<T>[K]) {
+        const schema = this.vingSchema();
+        const prop = findPropInSchema(key, schema.props);
+        if (prop) {
+            if (prop.zod) {
+                const result = prop.zod.safeParse(value);
+                if (result.success) {
+                    value = result.data;
+                }
+                else {
+                    const formatted = result.error.format();
+                    throw key.toString() + ': ' + formatted._errors.join('.') + '.';
+                }
+            }
+        }
+        else {
+            throw key.toString() + ' is not a prop';
+        }
+        //@ts-ignore - its what we think it is, but i don't know how to hook it up to the class
+        return this[key] = value;
+    }
+
+    public getAll() {
+        const out: ModelProps<T> = {};
+        const schema = this.vingSchema();
+        for (const prop of schema.props) {
+            out[prop.name as keyof ModelProps<T>] = this.get(prop.name as keyof ModelProps<T>);
+        }
+        return out;
+    }
+
+    public setAll(props: ModelProps<T>) {
+        for (const key in props) {
+            this.set(key, props[key])
+        }
     }
 }

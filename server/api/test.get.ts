@@ -7,5 +7,5 @@ export default defineEventHandler(async (event) => {
     //await AppDataSource.manager.find(User)
     // return await User.find()
 
-    return Object.keys(user.useAsDisplayName = 'email') || 'nope';
+    return user.set('username', '') || 'nope';
 })
