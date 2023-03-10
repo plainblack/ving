@@ -16,7 +16,6 @@ const _p: vingProp[] = [
         db: { type: 'char', length: 36 },
         view: ['public'],
         edit: [],
-        options: []
     },
     {
         name: 'createdAt',
@@ -25,7 +24,6 @@ const _p: vingProp[] = [
         default: () => new Date(),
         view: ['public'],
         edit: [],
-        options: []
     },
     {
         name: 'updatedAt',
@@ -34,7 +32,6 @@ const _p: vingProp[] = [
         default: () => new Date(),
         view: ['public'],
         edit: [],
-        options: []
     },
 ];
 
@@ -109,15 +106,10 @@ export const dbProps = (name: string, props: vingProp[]) => {
             out.nullable = true;
         if (typeof field.default == 'string' || typeof field.default == 'number')
             out.default = field.default;
-        if (field.options.length) {
+        if (Array.isArray(field.enums) && field.enums.length) {
             const stringEnums: string[] = [];
-            for (const option of field.options) {
-                if (typeof option.value === 'string') {
-                    stringEnums.push(option.value);
-                }
-            }
-            if (stringEnums.length) {
-                out.enum = stringEnums;
+            if (typeof field.enums[0] == 'string') {
+                out.enum = field.enums;
             }
         }
     }

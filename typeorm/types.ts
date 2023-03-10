@@ -1,5 +1,4 @@
 import type { UserProps } from './entity/User';
-import { z } from "zod";
 
 export type Model = {
     User: UserProps
@@ -21,7 +20,8 @@ export type vingProp = {
     zod?: any,
     unique?: boolean,
     default: boolean | string | number | Date | undefined | (() => boolean | string | number | Date),
-    options: vingOption[],
+    enums?: readonly string[] | readonly boolean[],
+    enumLabels?: string[],
     view: string[],
     edit: string[],
 }
