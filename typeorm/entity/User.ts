@@ -11,6 +11,7 @@ const _p: vingProp[] = [
     {
         name: 'username',
         required: true,
+        db: { type: 'varchar', length: 60 },
         unique: true,
         options: [],
         view: [],
@@ -19,6 +20,7 @@ const _p: vingProp[] = [
     {
         name: 'email',
         required: true,
+        db: { type: 'varchar', length: 255 },
         unique: true,
         options: [],
         view: [],
@@ -27,6 +29,7 @@ const _p: vingProp[] = [
     {
         name: 'realName',
         required: false,
+        db: { type: 'varchar', length: 60 },
         options: [],
         view: [],
         edit: ['owner'],
@@ -34,6 +37,7 @@ const _p: vingProp[] = [
     {
         name: 'password',
         required: false,
+        db: { type: 'varchar', length: 60 },
         options: [],
         view: [],
         edit: [],
@@ -41,6 +45,7 @@ const _p: vingProp[] = [
     {
         name: 'passwordType',
         required: false,
+        db: { type: 'enum' },
         default: 'argon2',
         options: enum2options(passwordTypeEnums, ['Argon 2']),
         view: [],
@@ -49,6 +54,7 @@ const _p: vingProp[] = [
     {
         name: 'useAsDisplayName',
         required: true,
+        db: { type: 'enum' },
         default: 'username',
         options: enum2options(useAsDisplayNameEnums, ['Username', 'Email Address', 'Real Name']),
         view: [],
@@ -57,6 +63,7 @@ const _p: vingProp[] = [
     {
         name: 'admin',
         required: true,
+        db: { type: 'boolean' },
         default: false,
         options: [
             { value: false, label: 'Not Admin' },
@@ -68,6 +75,7 @@ const _p: vingProp[] = [
     {
         name: 'developer',
         required: true,
+        db: { type: 'boolean' },
         default: false,
         options: [
             { value: false, label: 'Not a Software Developer' },

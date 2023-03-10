@@ -9,6 +9,7 @@ export type vingOption = {
 export type vingProp = {
     name: string,
     required: boolean,
+    db: Record<string, any>,
     unique?: boolean,
     default?: boolean | string | number | Date | undefined | (() => boolean | string | number | Date),
     options: vingOption[],
@@ -27,6 +28,7 @@ const _p: vingProp[] = [
         name: 'id',
         required: true,
         default: () => v4(),
+        db: { type: 'char', length: 36 },
         view: ['public'],
         edit: [],
         options: []
@@ -34,6 +36,7 @@ const _p: vingProp[] = [
     {
         name: 'createdAt',
         required: true,
+        db: { type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" },
         default: () => new Date(),
         view: ['public'],
         edit: [],
@@ -42,44 +45,13 @@ const _p: vingProp[] = [
     {
         name: 'updatedAt',
         required: true,
+        db: { type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" },
         default: () => new Date(),
         view: ['public'],
         edit: [],
         options: []
     },
 ];
-
-
-
-@Entity()
-export abstract class VingRecord extends BaseEntity {
-
-    @PrimaryGeneratedColumn("uuid")
-    id = stringDefault('id', _p);
-
-    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-    createdAt = new Date();
-
-    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
-    updatedAt = new Date();
-
-    @BeforeUpdate()
-    updateDates() {
-        this.updatedAt = new Date()
-    }
-
-    static vingSchema() {
-        const schema: vingSchema = {
-            kind: 'VingRecord',
-            owner: ['admin'],
-            props: _p
-        }
-        return schema;
-    }
-}
-
-
-
 
 export const findPropInSchema = (name: string, props: vingProp[]) => {
     return props.find(prop => prop.name == name);
@@ -127,37 +99,6 @@ export const booleanDefault = (name: string, props: vingProp[]) => {
     return false;
 }
 
-export const dbProps = (name: string, props: vingProp[]) => {
-    const out: { nullable?: boolean, default?: string | number, enum?: string[] | boolean[] } = {};
-    const field = findPropInSchema(name, props);
-    if (field) {
-        if (!field.required && field.default === undefined)
-            out.nullable = true;
-        if (typeof field.default == 'string' || typeof field.default == 'number')
-            out.default = field.default;
-        if (field.options.length) {
-            const booleanEnums: boolean[] = [];
-            const stringEnums: string[] = [];
-            for (const option of field.options) {
-                if (typeof option.value === 'boolean') {
-                    booleanEnums.push(option.value);
-                }
-                else if (typeof option.value === 'string') {
-                    stringEnums.push(option.value);
-                }
-            }
-            if (stringEnums.length) {
-                out.enum = stringEnums;
-            }
-            else if (booleanEnums.length) {
-                out.enum = booleanEnums;
-            }
-        }
-    }
-    return out;
-}
-
-
 export const enum2options = (enums: readonly string[], labels: string[]) => {
     const options: vingOption[] = [];
     let i = 0
@@ -174,3 +115,53 @@ export const enum2options = (enums: readonly string[], labels: string[]) => {
 export type ArrayToTuple<T extends ReadonlyArray<string>, V = string> = keyof {
     [K in (T extends ReadonlyArray<infer U> ? U : never)]: V
 };
+
+export const dbProps = (name: string, props: vingProp[]) => {
+    const out: { nullable?: boolean, default?: string | number, enum?: string[] | boolean[] } = {};
+    const field = findPropInSchema(name, props);
+    if (field) {
+        if (!field.required && field.default === undefined)
+            out.nullable = true;
+        if (typeof field.default == 'string' || typeof field.default == 'number')
+            out.default = field.default;
+        if (field.options.length) {
+            const stringEnums: string[] = [];
+            for (const option of field.options) {
+                if (typeof option.value === 'string') {
+                    stringEnums.push(option.value);
+                }
+            }
+            if (stringEnums.length) {
+                out.enum = stringEnums;
+            }
+        }
+    }
+    return { ...out, ...field?.db };
+}
+
+@Entity()
+export abstract class VingRecord extends BaseEntity {
+
+    @PrimaryGeneratedColumn("uuid")
+    id = stringDefault('id', _p);
+
+    @CreateDateColumn(dbProps('createdAt', _p))
+    createdAt = new Date();
+
+    @UpdateDateColumn(dbProps('updatedAt', _p))
+    updatedAt = new Date();
+
+    @BeforeUpdate()
+    updateDates() {
+        this.updatedAt = new Date()
+    }
+
+    static vingSchema() {
+        const schema: vingSchema = {
+            kind: 'VingRecord',
+            owner: ['admin'],
+            props: _p
+        }
+        return schema;
+    }
+}
