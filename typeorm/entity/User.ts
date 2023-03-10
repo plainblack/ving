@@ -1,16 +1,120 @@
-import { Entity, Column } from "typeorm";
-import { VingRecord } from './VingRecord';
+import { Entity, Column, Index } from "typeorm";
+import { VingRecord, vingProp, dbProps, stringDefault, booleanDefault, enum2options, ArrayToTuple } from './VingRecord';
+
+const useAsDisplayNameEnums = ['username', 'email', 'realName'] as const;
+type useAsDisplayNameTuple = ArrayToTuple<typeof useAsDisplayNameEnums>;
+
+const passwordTypeEnums = ['argon2'] as const;
+type passwordTypeTuple = ArrayToTuple<typeof passwordTypeEnums>;
+
+const _p: vingProp[] = [
+    {
+        name: 'username',
+        required: true,
+        unique: true,
+        options: [],
+        view: [],
+        edit: ['owner'],
+    },
+    {
+        name: 'email',
+        required: true,
+        unique: true,
+        options: [],
+        view: [],
+        edit: ['owner'],
+    },
+    {
+        name: 'realName',
+        required: false,
+        options: [],
+        view: [],
+        edit: ['owner'],
+    },
+    {
+        name: 'password',
+        required: false,
+        options: [],
+        view: [],
+        edit: [],
+    },
+    {
+        name: 'passwordType',
+        required: false,
+        default: 'argon2',
+        options: enum2options(passwordTypeEnums, ['Argon 2']),
+        view: [],
+        edit: [],
+    },
+    {
+        name: 'useAsDisplayName',
+        required: true,
+        default: 'username',
+        options: enum2options(useAsDisplayNameEnums, ['Username', 'Email Address', 'Real Name']),
+        view: [],
+        edit: ['owner'],
+    },
+    {
+        name: 'admin',
+        required: true,
+        default: false,
+        options: [
+            { value: false, label: 'Not Admin' },
+            { value: true, label: 'Admin' },
+        ],
+        view: [],
+        edit: ['admin'],
+    },
+    {
+        name: 'developer',
+        required: true,
+        default: false,
+        options: [
+            { value: false, label: 'Not a Software Developer' },
+            { value: true, label: 'Software Developer' },
+        ],
+        view: [],
+        edit: ['developer'],
+    },
+];
+
+
 
 @Entity()
 export class User extends VingRecord {
 
-    @Column('text', { nullable: true })
-    firstName?: string
+    @Index({ unique: true })
+    @Column('text', dbProps('username', _p))
+    username!: string
 
-    @Column('text', { nullable: true })
-    lastName?: string
+    @Index({ unique: true })
+    @Column('text', dbProps('email', _p))
+    email!: string
 
-    @Column('integer')
-    age?: number
+    @Column('text', dbProps('realName', _p))
+    realName = stringDefault('realName', _p)
+
+    @Column('text', dbProps('password', _p))
+    password = stringDefault('password', _p)
+
+    @Column('text', dbProps('passwordType', _p))
+    passwordType: passwordTypeTuple = stringDefault('passwordType', _p) as passwordTypeTuple
+
+    @Column('text', dbProps('useAsDisplayName', _p))
+    useAsDisplayName: useAsDisplayNameTuple = stringDefault('useAsDisplayName', _p) as useAsDisplayNameTuple
+
+    @Column('text', dbProps('admin', _p))
+    admin = booleanDefault('admin', _p)
+
+    @Column('text', dbProps('developer', _p))
+    developer = booleanDefault('developer', _p)
+
+    static vingSchema() {
+        const schema = super.vingSchema();
+        schema.kind = 'User';
+        schema.owner.push('$id');
+        schema.props.push(..._p);
+        return schema;
+    }
 
 }
