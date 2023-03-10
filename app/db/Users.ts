@@ -1,9 +1,12 @@
 import { prisma } from "./client";
 import { VingKind, VingRecord, TProps, DescribeParams, IConstructable } from "./_Base";
 import { APIKeyKind, APIKeyRecord } from "./APIKeys";
-import { ouch, ArrayToTuple } from '../helpers';
+import { ouch } from '../helpers';
 import bcrypt from 'bcrypt';
 import { cache } from '../cache';
+
+import { ArrayToTuple } from '../../typeorm/types';
+
 
 export type TRoleProps = TRoles & Pick<TProps<'User'>, 'id' | 'password'>;
 

@@ -1,4 +1,4 @@
-import type { UserProps, User } from './entity/User';
+import type { UserProps, User, RoleOptions } from './entity/User';
 
 export type Model = {
     User: UserProps
@@ -84,3 +84,16 @@ export type Describe<T extends ModelName> = {
 }
 
 export type AuthorizedUser = User;
+
+export type ArrayToTuple<T extends ReadonlyArray<string>, V = string> = keyof {
+    [K in (T extends ReadonlyArray<infer U> ? U : never)]: V
+};
+
+export interface Constructable<T> {
+    new(...args: any): T;
+}
+
+export type Roles = Pick<ModelProps<'User'>, ArrayToTuple<typeof RoleOptions>>;
+export type ExtendedRoleOptions = keyof Roles | "public" | "owner" | string;
+
+export type RoleProps = Roles & Pick<ModelProps<'User'>, 'id' | 'password'>;

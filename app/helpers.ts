@@ -66,10 +66,6 @@ export const testRequired = (list: string[], params: Record<string, any>) => {
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-export type ArrayToTuple<T extends ReadonlyArray<string>, V = string> = keyof {
-    [K in (T extends ReadonlyArray<infer U> ? U : never)]: V
-};
-
 export const vingSession = (event: H3Event) => {
     if (event && event.context && event.context.ving && event.context.ving.session) {
         return event.context.ving.session;

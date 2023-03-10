@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, BeforeUpdate, UpdateDateColumn, BaseEntity, CreateDateColumn } from "typeorm";
 import { v4 } from 'uuid';
-import { vingOption, vingProp, vingSchema, AuthorizedUser, ModelName, ModelProps, Describe } from '../types';
+import { vingOption, vingProp, vingSchema, AuthorizedUser, ModelName, ModelProps, Describe, Roles } from '../types';
 import { ouch } from '../../app/helpers';
 
 export type VingRecordProps = {
@@ -95,10 +95,6 @@ export const enum2options = (enums: readonly string[], labels: string[]) => {
     return options;
 }
 
-export type ArrayToTuple<T extends ReadonlyArray<string>, V = string> = keyof {
-    [K in (T extends ReadonlyArray<infer U> ? U : never)]: V
-};
-
 export const dbProps = (name: string, props: vingProp[]) => {
     const out: { nullable?: boolean, default?: string | number, enum?: string[] | boolean[] } = {};
     const field = findPropInSchema(name, props);
@@ -118,7 +114,7 @@ export const dbProps = (name: string, props: vingProp[]) => {
 }
 
 @Entity()
-export abstract class VingRecord<T extends ModelName> extends BaseEntity {
+export class VingRecord<T extends ModelName> extends BaseEntity {
 
     @PrimaryGeneratedColumn("uuid")
     id = stringDefault('id', _p);
@@ -205,9 +201,9 @@ export abstract class VingRecord<T extends ModelName> extends BaseEntity {
             }
             found = owner.match(/^([A-Za-z]+)$/);
             if (found) {
-                //   if (found[1] && currentUser.isRole(found[1] as keyof Roles) == true) {
-                //     return true;
-                // }
+                if (found[1] && currentUser.isRole(found[1] as keyof Roles) == true) {
+                    return true;
+                }
             }
         }
         return false;

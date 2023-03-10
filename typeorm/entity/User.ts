@@ -1,7 +1,10 @@
 import { Entity, Column, Index } from "typeorm";
-import { VingRecord, dbProps, stringDefault, booleanDefault, enum2options, ArrayToTuple, VingRecordProps } from './VingRecord';
-import { vingProp } from '../types';
+import { VingRecord, dbProps, stringDefault, booleanDefault, VingRecordProps } from './VingRecord';
+import { vingProp, ArrayToTuple } from '../types';
 import { z } from "zod";
+import { RoleMixin } from "../mixin/Role";
+
+export const RoleOptions = ["admin", "developer"] as const;
 
 const useAsDisplayNameEnums = ['username', 'email', 'realName'] as const;
 type useAsDisplayNameTuple = ArrayToTuple<typeof useAsDisplayNameEnums>;
@@ -101,7 +104,7 @@ const _p: vingProp[] = [
 ];
 
 @Entity()
-export class User extends VingRecord<'User'> {
+export class User extends RoleMixin(VingRecord<'User'>) {
 
     @Index({ unique: true })
     @Column('text', dbProps('username', _p))
