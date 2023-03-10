@@ -2,7 +2,7 @@
     "name": "ving",
     "description": "An opinionated web services starter for Nuxt3 that provides REST and per-field privileges out of the box.",
     "private": true,
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
         "build": "nuxt build",
         "dev": "nuxt dev",
@@ -18,10 +18,10 @@
         "migration:generate": "typeorm-ts-node-esm -p -o -d ./typeorm/data-source.ts migration:generate typeorm/migrations/gen",
         "migration:up": "typeorm-ts-node-esm -d ./typeorm/data-source.ts migration:run",
         "migration:down": "typeorm-ts-node-esm -d ./typeorm/data-source.ts  migration:revert",
-        "prepare-migration-datasource": "esbuild typeorm/data-source.ts --external:'mysql' --platform=node --bundle --log-level=warning --outfile=typeorm/migrations/data-source.js",
-        "generate-migration": "npm run prepare-migration-datasource && typeorm migration:generate -d typeorm/migrations/data-source.js typeorm/migrations/$npm_config_name",
-        "run-migrations": "npm run prepare-migration-datasource && typeorm migration:run -d typeorm/migrations/data-source.js",
-        "revert-migration": "npm run prepare-migration-datasource && typeorm migration:revert -d typeorm/migrations/data-source.js"
+        "prepare-migration-datasource": "esbuild typeorm/data-source.ts --external:'mysql' --platform=node --bundle --log-level=warning --outfile=.output/typeorm/data-source.js",
+        "generate-migration": "npm run prepare-migration-datasource && typeorm migration:generate -o -p -d .output/typeorm/data-source.js typeorm/migrations/$npm_config_name",
+        "run-migrations": "npm run prepare-migration-datasource && typeorm migration:run -d .output/typeorm/data-source.js",
+        "revert-migration": "npm run prepare-migration-datasource && typeorm migration:revert -d .output/typeorm/data-source.js"
     },
     "devDependencies": {
         "@mikro-orm/cli": "^5.6.13",
