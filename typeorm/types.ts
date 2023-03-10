@@ -1,4 +1,4 @@
-import type { UserProps } from './entity/User';
+import type { UserProps, User } from './entity/User';
 
 export type Model = {
     User: UserProps
@@ -82,3 +82,5 @@ export type Describe<T extends ModelName> = {
      }*/
     warnings?: { code: number, message: string }[]
 }
+
+export type AuthorizedUser = User;

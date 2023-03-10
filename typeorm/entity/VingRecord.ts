@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, BeforeUpdate, UpdateDateColumn, BaseEntity, CreateDateColumn } from "typeorm";
 import { v4 } from 'uuid';
-import { vingOption, vingProp, vingSchema, Model, ModelName, ModelProps, Describe } from '../types';
+import { vingOption, vingProp, vingSchema, AuthorizedUser, ModelName, ModelProps, Describe } from '../types';
+import { ouch } from '../../app/helpers';
 
 export type VingRecordProps = {
     id: string,
@@ -164,12 +165,12 @@ export abstract class VingRecord<T extends ModelName> extends BaseEntity {
                 }
                 else {
                     const formatted = result.error.format();
-                    throw key.toString() + ': ' + formatted._errors.join('.') + '.';
+                    throw ouch(442, key.toString() + ': ' + formatted._errors.join('.') + '.', key);
                 }
             }
         }
         else {
-            throw key.toString() + ' is not a prop';
+            throw ouch(400, key.toString() + ' is not a prop', key);
         }
         //@ts-ignore - its what we think it is, but i don't know how to hook it up to the class
         return this[key] = value;
@@ -188,5 +189,35 @@ export abstract class VingRecord<T extends ModelName> extends BaseEntity {
         for (const key in props) {
             this.set(key, props[key])
         }
+    }
+
+    public isOwner(currentUser: AuthorizedUser) {
+        if (currentUser === undefined)
+            return false;
+        const schema = this.vingSchema();
+        const props = this.getAll();
+        for (let owner of schema.owner) {
+            let found = owner.match(/^\$(.*)$/);
+            if (found) {
+                if (props[found[1] as keyof ModelProps<T>] == currentUser.get('id')) {
+                    return true;
+                }
+            }
+            found = owner.match(/^([A-Za-z]+)$/);
+            if (found) {
+                //   if (found[1] && currentUser.isRole(found[1] as keyof Roles) == true) {
+                //     return true;
+                // }
+            }
+        }
+        return false;
+    }
+
+    public canEdit(currentUser: AuthorizedUser) {
+        const schema = this.vingSchema();
+        if (this.isOwner(currentUser)) {
+            return true;
+        }
+        throw ouch(403, `You do not have the privileges to edit ${schema.kind}.`)
     }
 }

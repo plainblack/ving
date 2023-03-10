@@ -1,4 +1,4 @@
-import { DescribeListParams, DescribeParams } from './db';
+import { DescribeListParams, DescribeParams } from '../typeorm/types';
 import _ from 'lodash';
 import { H3Event, createError, getQuery, readBody } from 'h3';
 
