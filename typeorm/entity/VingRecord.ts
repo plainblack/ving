@@ -317,4 +317,71 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         return options;
     }
 
+    public verifyCreationParams(params: ModelProps<T>) {
+        const schema = this.vingSchema();
+        for (const field of schema.props) {
+            if (!field.required || field.default !== undefined)//|| field.relationName)
+                continue;
+            if (params[field.name] !== undefined && params[field.name] != '')
+                continue;
+            const fieldName = field.name.toString();
+            throw ouch(441, `${fieldName} is required.`, fieldName);
+        }
+        return true;
+    }
+
+    public async verifyPostedParams(params: ModelProps<T>, currentUser?: AuthorizedUser) {
+        const schema = this.vingSchema();
+        const isOwner = currentUser !== undefined && this.isOwner(currentUser);
+
+        for (const field of schema.props) {
+            const fieldName = field.name.toString();
+
+            const roles = [...field.edit];
+            const editable = (roles.includes('owner') && (isOwner))//|| !this.isInserted))
+                || (currentUser !== undefined && currentUser.isaRole(roles));
+            if (!editable) {
+                continue;
+            }
+            if (params[field.name] === undefined) {//|| field.relationName) {
+                continue;
+            }
+            if (params[field.name] === '' && field.required) {
+                throw ouch(441, `${fieldName} is required.`, fieldName);
+            }
+            if (field.name !== undefined && params[field.name] !== undefined) {
+
+                if (field.unique) {
+                    // let where: Model[T]['count']['args']['where'] = {};
+                    // if (this.isInserted) {
+                    ///     where = { id: { 'not': this.id } };
+                    // }
+                    //console.log('checking');
+                    // @ts-ignore - no idea what the magic incantation should be here
+                    //where[field.name] = params[field.name];
+                    //  where.id = 'xx';
+                    // console.log(where);
+                    //const count = await this.prisma.count({ where });
+                    // console.log(`SELECT count(*) FROM ${schema.name} WHERE ${field.name.toString()} = '${params[field.name]}'`);
+                    //const count = await prisma.$queryRawUnsafe(`SELECT count(*) FROM ${schema.name} WHERE ${field.name.toString()} = '${params[field.name]}'`) as number;
+
+                    const count = 0;
+                    // console.log('count:', count)
+                    if (count > 0) {
+                        //    console.log('--- unique check failed ---')
+                        throw ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
+                    }
+                }
+
+                this.set(field.name, params[field.name]);
+            }
+        }
+        return true;
+    }
+
+    public async updateAndVerify(params: ModelProps<T>, currentUser?: AuthorizedUser) {
+        await this.verifyPostedParams(params, currentUser);
+        await this.save();
+    }
+
 }
