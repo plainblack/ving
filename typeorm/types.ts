@@ -13,8 +13,8 @@ export type vingOption = {
     label: string
 }
 
-export type vingProp = {
-    name: string,
+export type vingProp<T extends ModelName> = {
+    name: keyof ModelProps<T>,
     required: boolean,
     db: Record<string, any>,
     zod?: any,
@@ -26,10 +26,10 @@ export type vingProp = {
     edit: string[],
 }
 
-export type vingSchema = {
-    kind: string,
+export type vingSchema<T extends ModelName> = {
+    kind: ModelName | 'VingRecord',
     owner: string[]
-    props: vingProp[]
+    props: vingProp<T>[]
 }
 
 export type DescribeParams = {

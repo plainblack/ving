@@ -8,5 +8,5 @@ export default defineEventHandler(async (event) => {
     //await AppDataSource.manager.find(User)
     // return await User.find()
 
-    return user.isRole('admin') || 'nope';
+    return user.vingSchema() || 'nope';
 })

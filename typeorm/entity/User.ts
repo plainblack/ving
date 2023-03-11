@@ -23,7 +23,7 @@ export type UserProps = {
     developer: boolean,
 } & VingRecordProps;
 
-const _p: vingProp[] = [
+const _p: vingProp<'User'>[] = [
     {
         name: 'username',
         required: true,

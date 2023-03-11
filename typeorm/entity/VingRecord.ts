@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, BeforeUpdate, UpdateDateColumn, BaseEntity, CreateDateColumn } from "typeorm";
 import { v4 } from 'uuid';
-import { vingOption, vingProp, vingSchema, AuthorizedUser, ModelName, ModelProps, Describe, Roles } from '../types';
+import { vingOption, vingProp, vingSchema, AuthorizedUser, ModelName, ModelProps, Describe, Roles, DescribeParams } from '../types';
 import { ouch } from '../../app/helpers';
 
 export type VingRecordProps = {
@@ -9,7 +9,7 @@ export type VingRecordProps = {
     updatedAt: Date,
 };
 
-const _p: vingProp[] = [
+const _p: vingProp<any>[] = [
     {
         name: 'id',
         required: true,
@@ -36,11 +36,11 @@ const _p: vingProp[] = [
     },
 ];
 
-export const findPropInSchema = (name: string | number | symbol, props: vingProp[]) => {
+export const findPropInSchema = (name: string | number | symbol, props: vingProp<any>[]) => {
     return props.find(prop => prop.name == name);
 }
 
-export const stringDefault = (name: string, props: vingProp[]) => {
+export const stringDefault = (name: string, props: vingProp<any>[]) => {
     const field = props.find(prop => prop.name == name);
     if (field) {
         if (typeof field.default == 'string')
@@ -54,7 +54,7 @@ export const stringDefault = (name: string, props: vingProp[]) => {
     return '';
 }
 
-export const numberDefault = (name: string, props: vingProp[]) => {
+export const numberDefault = (name: string, props: vingProp<any>[]) => {
     const field = props.find(prop => prop.name == name);
     if (field) {
         if (typeof field.default == 'number')
@@ -68,7 +68,7 @@ export const numberDefault = (name: string, props: vingProp[]) => {
     return 0;
 }
 
-export const booleanDefault = (name: string, props: vingProp[]) => {
+export const booleanDefault = (name: string, props: vingProp<any>[]) => {
     const field = props.find(prop => prop.name == name);
     if (field) {
         if (typeof field.default == 'boolean')
@@ -82,20 +82,21 @@ export const booleanDefault = (name: string, props: vingProp[]) => {
     return false;
 }
 
-export const enum2options = (enums: readonly string[], labels: string[]) => {
+export const enum2options = (enums: readonly string[] | readonly boolean[], labels: string[] | undefined) => {
     const options: vingOption[] = [];
     let i = 0
     for (let value of enums) {
+        const label = (labels !== undefined && labels[i] !== undefined) ? labels[i] : value.toString();
         options.push({
-            value: value,
-            label: labels[i] !== undefined ? labels[i] : value,
+            value,
+            label,
         })
         i++
     }
     return options;
 }
 
-export const dbProps = (name: string, props: vingProp[]) => {
+export const dbProps = (name: string, props: vingProp<any>[]) => {
     const out: { nullable?: boolean, default?: string | number, enum?: string[] | boolean[] } = {};
     const field = findPropInSchema(name, props);
     if (field) {
@@ -131,7 +132,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     }
 
     public vingSchema() {
-        const schema: vingSchema = {
+        const schema: vingSchema<T> = {
             kind: 'VingRecord',
             owner: ['admin'],
             props: _p
@@ -216,4 +217,104 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         }
         throw ouch(403, `You do not have the privileges to edit ${schema.kind}.`)
     }
+
+    public async describe(params: DescribeParams = {}) {
+        const schema = this.vingSchema();
+        const currentUser = params.currentUser;
+        const include = params.include || {};
+        const isOwner = currentUser !== undefined && this.isOwner(currentUser);
+
+        let out: Describe<T> = { props: {} };
+        if (include !== undefined && include.links) {
+            out.links = { base: `/api/${schema.kind?.toLowerCase()}` };
+            out.links.self = `${out.links.base}/${this.get('id')}`;
+        }
+        if (include !== undefined && include.options) {
+            out.options = this.propOptions(params);
+        }
+        if (include !== undefined && include.meta) {
+            out.meta = {
+                kind: schema.kind,
+            };
+        }
+        if (include !== undefined && include.related && include.related.length) {
+            out.related = {};
+        }
+        if (this.warnings?.length) {
+            out.warnings = this.warnings;
+        }
+
+        for (const field of schema.props) {
+
+            // determine field visibility
+            const roles = [...field.view, ...field.edit];
+            const visible = roles.includes('public')
+                || (include !== undefined && include.private)
+                || (roles.includes('owner') && isOwner)
+                || (currentUser !== undefined && currentUser.isaRole(roles));
+            if (!visible) continue;
+
+            const fieldName = field.name.toString();
+
+            // props
+            // if (field.kind !== 'object') { // enable this check once working with related objects
+            out.props[field.name] = this.get(field.name);
+            //  }
+
+            /*  // links 
+              if (typeof out.links === 'object'
+                  && include.links
+                  && field.relationName
+              ) {
+                  let lower = fieldName.toLowerCase();
+                  out.links[lower] = `${out.links.self}/${lower}`;
+              }*/
+
+            // related
+            /*  if (typeof out.related === 'object'
+                  && include.related !== undefined && include.related.length > 0
+                  && field.relationName
+                  && include.related.includes(fieldName)
+              ) {
+                  if (field.relationFromFields.length > 0) { // parent relationship
+                      let parent = await this[field.name as keyof this] as VingRecord<T>;
+                      out.related[fieldName] = await parent.describe({ currentUser: currentUser })
+                  }
+              } */
+            /*   if (typeof out.related === 'object'
+                   && include.relatedList !== undefined && include.relatedList.length > 0
+                   && field.relationName
+                   && include.relatedList.includes(fieldName)
+               ) {
+                   if (field.relationFromFields.length == 0) { // child relationship
+                       let childKind = this[field.name as keyof this] as VingKind<T, this>;
+                       out.relatedList[fieldName] = await childKind.describeList({ objectParams: { currentUser: currentUser } })
+                   }
+               }*/
+
+        }
+
+        return out;
+    }
+
+    public propOptions(params: DescribeParams = {}) {
+        const options: Describe<T>['options'] = {};
+        const currentUser = params.currentUser;
+        const include = params.include || {};
+        const isOwner = currentUser !== undefined && this.isOwner(currentUser);
+        const schema = this.vingSchema()
+        for (const field of schema.props) {
+            const roles = [...field.view, ...field.edit];
+            const visible = roles.includes('public')
+                || (include !== undefined && include.private)
+                || (roles.includes('owner') && isOwner)
+                || (currentUser !== undefined && currentUser.isaRole(roles));
+            if (!visible) continue;
+            if (field.enums && field.enums.length > 0) {
+                options[field.name] = enum2options(field.enums, field.enumLabels);
+            }
+        }
+        return options;
+    }
+
 }
