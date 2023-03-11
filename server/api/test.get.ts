@@ -13,7 +13,8 @@ export default defineEventHandler(async (event) => {
     //  await AppDataSource.manager.save(user)
     //await AppDataSource.manager.find(User)
     // return await User.find()
-
-    return await user.constructor.createQueryBuilder("me").where("me.realName = :realName", { realName: 'foo' }).andWhere(`me.id <> :id`, { id: '78107671-c448-4d6a-b460-9a1c33518472' }).getQueryAndParameters()
+    // await user.constructor.createQueryBuilder("me").where("me.realName = :realName", { realName: 'foo' }).andWhere(`me.id <> :id`, { id: '78107671-c448-4d6a-b460-9a1c33518472' }).getQueryAndParameters()
+    //User.count({ where: { realName: 'foo' } })
+    return typeof user.constructor.createQueryBuilder("me").where("me.realName = :realName", { realName: 'foo' }).andWhere(`me.id <> :id`, { id: '78107671-c448-4d6a-b460-9a1c33518472' })
         || 'nope';
 })

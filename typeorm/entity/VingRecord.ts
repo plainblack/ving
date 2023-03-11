@@ -1,8 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, UpdateDateColumn, BaseEntity, CreateDateColumn, BeforeUpdate, AfterLoad, AfterInsert } from "typeorm";
+import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder'
 import { v4 } from 'uuid';
-import { vingOption, vingProp, vingSchema, AuthorizedUser, ModelName, ModelProps, Describe, Roles, DescribeParams } from '../types';
+import { vingOption, vingProp, vingSchema, AuthorizedUser, ModelName, ModelProps, Describe, Roles, DescribeParams, DescribeList, DescribeListParams } from '../types';
 import { ouch } from '../../app/helpers';
-
+import { User } from './User';
 export type VingRecordProps = {
     id: string,
     createdAt: Date,
@@ -384,6 +385,47 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     public async updateAndVerify(params: ModelProps<T>, currentUser?: AuthorizedUser) {
         await this.verifyPostedParams(params, currentUser);
         await this.save();
+    }
+
+    static async describeList<T extends ModelName>(params: DescribeListParams = {}, qb: SelectQueryBuilder<any>) {
+        const itemsPerPage = params.itemsPerPage === undefined || params.itemsPerPage > 100 || params.itemsPerPage < 1 ? 10 : params.itemsPerPage;
+        const pageNumber = params.pageNumber || 1;
+        const maxItems = params.maxItems || 100000000000;
+        const itemsUpToThisPage = itemsPerPage * pageNumber;
+        const fullPages = Math.floor(maxItems / itemsPerPage);
+        let maxItemsThisPage = itemsPerPage;
+        let skipResultSet = false;
+        if (itemsUpToThisPage - itemsPerPage >= maxItems) {
+            skipResultSet = true;
+        }
+        else if (pageNumber - fullPages == 1) {
+            maxItemsThisPage = itemsPerPage - (itemsUpToThisPage - maxItems);
+        }
+        else if (pageNumber - fullPages > 1) {
+            skipResultSet = true;
+        }
+        const totalItems = await qb.getCount();
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const out: DescribeList<T> = {
+            paging: {
+                pageNumber: pageNumber,
+                nextPageNumber: pageNumber + 1 >= totalPages ? pageNumber : pageNumber + 1,
+                previousPageNumber: pageNumber < 2 ? 1 : pageNumber - 1,
+                itemsPerPage: itemsPerPage,
+                totalItems: totalItems,
+                totalPages: totalPages
+            },
+            items: []
+        };
+        if (!skipResultSet) {
+            const records = await qb.andWhere({ take: itemsPerPage, skip: itemsPerPage * (pageNumber - 1) }).getMany();
+            for (let record of records) {
+                out.items.push(await record.describe(params.objectParams));
+                maxItemsThisPage--;
+                if (maxItemsThisPage < 1) break;
+            }
+        }
+        return out;
     }
 
 }
