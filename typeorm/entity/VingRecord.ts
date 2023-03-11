@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, BeforeUpdate, UpdateDateColumn, BaseEntity, CreateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, UpdateDateColumn, BaseEntity, CreateDateColumn, BeforeUpdate, AfterLoad, AfterInsert } from "typeorm";
 import { v4 } from 'uuid';
 import { vingOption, vingProp, vingSchema, AuthorizedUser, ModelName, ModelProps, Describe, Roles, DescribeParams } from '../types';
 import { ouch } from '../../app/helpers';
@@ -126,9 +126,20 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     @UpdateDateColumn(dbProps('updatedAt', _p))
     updatedAt = new Date();
 
+    private _inserted = false;
+    get isInserted() {
+        return this._inserted;
+    }
+
     @BeforeUpdate()
-    updateDates() {
+    private updateDates() {
         this.updatedAt = new Date()
+    }
+
+    @AfterLoad()
+    @AfterInsert()
+    setInserted() {
+        this._inserted = true;
     }
 
     public vingSchema() {
@@ -338,7 +349,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
             const fieldName = field.name.toString();
 
             const roles = [...field.edit];
-            const editable = (roles.includes('owner') && (isOwner))//|| !this.isInserted))
+            const editable = (roles.includes('owner') && (isOwner || !this.isInserted))
                 || (currentUser !== undefined && currentUser.isaRole(roles));
             if (!editable) {
                 continue;
@@ -353,9 +364,9 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
 
                 if (field.unique) {
                     // let where: Model[T]['count']['args']['where'] = {};
-                    // if (this.isInserted) {
-                    ///     where = { id: { 'not': this.id } };
-                    // }
+                    if (this.isInserted) {
+                        // where = { id: { 'not': this.id } };
+                    }
                     //console.log('checking');
                     // @ts-ignore - no idea what the magic incantation should be here
                     //where[field.name] = params[field.name];
