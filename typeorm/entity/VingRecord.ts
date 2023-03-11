@@ -363,23 +363,14 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
             if (field.name !== undefined && params[field.name] !== undefined) {
 
                 if (field.unique) {
-                    // let where: Model[T]['count']['args']['where'] = {};
+                    // @ts-ignore - typescript doesn't know about the static methods on the class when called via constructor
+                    let qb = this.constructor.createQueryBuilder("me")
+                        .where(`me.{$field.name} = :field`, { field: field.name })
                     if (this.isInserted) {
-                        // where = { id: { 'not': this.id } };
+                        qb = qb.andWhere('me.id <> :id', { id: this.get('id') })
                     }
-                    //console.log('checking');
-                    // @ts-ignore - no idea what the magic incantation should be here
-                    //where[field.name] = params[field.name];
-                    //  where.id = 'xx';
-                    // console.log(where);
-                    //const count = await this.prisma.count({ where });
-                    // console.log(`SELECT count(*) FROM ${schema.name} WHERE ${field.name.toString()} = '${params[field.name]}'`);
-                    //const count = await prisma.$queryRawUnsafe(`SELECT count(*) FROM ${schema.name} WHERE ${field.name.toString()} = '${params[field.name]}'`) as number;
-
-                    const count = 0;
-                    // console.log('count:', count)
+                    const count = await qb.getCount();
                     if (count > 0) {
-                        //    console.log('--- unique check failed ---')
                         throw ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
                     }
                 }
