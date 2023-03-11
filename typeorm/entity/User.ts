@@ -91,7 +91,7 @@ const _p: vingProp<'User'>[] = [
         default: false,
         enums: [false, true],
         enumLabels: ['Not Admin', 'Admin'],
-        view: [],
+        view: ['owner'],
         edit: ['admin'],
     },
     {
@@ -102,7 +102,7 @@ const _p: vingProp<'User'>[] = [
         enums: [false, true],
         enumLabels: ['Not a Software Developer', 'Software Developer'],
         view: [],
-        edit: ['developer'],
+        edit: ['owner'],
     },
 ];
 

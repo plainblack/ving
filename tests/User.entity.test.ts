@@ -9,11 +9,6 @@ try {
     console.trace('Error thrown during DB initialization, aborting startup', error)
     process.exit(-1)
 }
-describe('Users', async () => {
-    test('junk', () => {
-        expect(true).toBe(true);
-    })
-})
 
 await User.createQueryBuilder().delete().where('username IN (:...names)', { names: ['warden', 'captain', 'guard'] }).execute();
 const warden = await new User().setAll({ username: 'warden', email: 'warden@shawshank.jail', realName: 'Samuel Norton' }).save();
