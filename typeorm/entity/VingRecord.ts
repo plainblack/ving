@@ -3,7 +3,8 @@ import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder'
 import { v4 } from 'uuid';
 import { vingOption, vingProp, vingSchema, AuthorizedUser, ModelName, ModelProps, Describe, Roles, DescribeParams, DescribeList, DescribeListParams } from '../types';
 import { ouch } from '../../app/helpers';
-import { User } from './User';
+import _ from 'lodash';
+
 export type VingRecordProps = {
     id: string,
     createdAt: Date,
@@ -143,13 +144,22 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         this._inserted = true;
     }
 
-    public vingSchema() {
+    protected buildVingSchema() {
         const schema: vingSchema<T> = {
             kind: 'VingRecord',
             owner: ['admin'],
             props: _p
         }
-        return schema;
+        return _.cloneDeep(schema);
+    }
+
+    private cachedVingSchema!: vingSchema<T>;
+
+    public get vingSchema() {
+        if (this.cachedVingSchema === undefined) {
+            this.cachedVingSchema = this.buildVingSchema();
+        }
+        return this.cachedVingSchema;
     }
 
     private warnings: Describe<T>['warnings'] = [];
@@ -164,7 +174,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     }
 
     public set<K extends keyof ModelProps<T>>(key: K, value: ModelProps<T>[K]) {
-        const schema = this.vingSchema();
+        const schema = this.vingSchema;
         const prop = findPropInSchema(key, schema.props);
         if (prop) {
             if (prop.zod) {
@@ -187,7 +197,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
 
     public getAll() {
         const out: ModelProps<T> = {};
-        const schema = this.vingSchema();
+        const schema = this.vingSchema;
         for (const prop of schema.props) {
             out[prop.name as keyof ModelProps<T>] = this.get(prop.name as keyof ModelProps<T>);
         }
@@ -198,12 +208,13 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         for (const key in props) {
             this.set(key, props[key])
         }
+        return this;
     }
 
     public isOwner(currentUser: AuthorizedUser) {
         if (currentUser === undefined)
             return false;
-        const schema = this.vingSchema();
+        const schema = this.vingSchema;
         const props = this.getAll();
         for (let owner of schema.owner) {
             let found = owner.match(/^\$(.*)$/);
@@ -223,7 +234,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     }
 
     public canEdit(currentUser: AuthorizedUser) {
-        const schema = this.vingSchema();
+        const schema = this.vingSchema;
         if (this.isOwner(currentUser)) {
             return true;
         }
@@ -231,7 +242,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     }
 
     public async describe(params: DescribeParams = {}) {
-        const schema = this.vingSchema();
+        const schema = this.vingSchema;
         const currentUser = params.currentUser;
         const include = params.include || {};
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
@@ -314,7 +325,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         const currentUser = params.currentUser;
         const include = params.include || {};
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
-        const schema = this.vingSchema()
+        const schema = this.vingSchema
         for (const field of schema.props) {
             const roles = [...field.view, ...field.edit];
             const visible = roles.includes('public')
@@ -330,7 +341,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     }
 
     public verifyCreationParams(params: ModelProps<T>) {
-        const schema = this.vingSchema();
+        const schema = this.vingSchema;
         for (const field of schema.props) {
             if (!field.required || field.default !== undefined)//|| field.relationName)
                 continue;
@@ -343,7 +354,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     }
 
     public async verifyPostedParams(params: ModelProps<T>, currentUser?: AuthorizedUser) {
-        const schema = this.vingSchema();
+        const schema = this.vingSchema;
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
 
         for (const field of schema.props) {

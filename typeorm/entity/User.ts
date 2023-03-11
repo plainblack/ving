@@ -135,11 +135,17 @@ export class User extends RoleMixin(VingRecord<'User'>) {
     @Column('text', dbProps('developer', _p))
     developer = booleanDefault('developer', _p)
 
-    public vingSchema() {
-        const schema = super.vingSchema();
+    protected buildVingSchema() {
+        const schema = super.buildVingSchema();
         schema.kind = 'User';
         schema.owner.push('$id');
-        schema.props.push(..._p);
+        for (const prop of _p) {
+            // console.log(prop.name);
+            schema.props.push(prop);
+        }
+        console.log(schema.props.length);
+        //schema.props.push(..._p);
+        //  console.log('-----')
         return schema;
     }
 
