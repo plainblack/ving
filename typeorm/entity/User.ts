@@ -139,13 +139,7 @@ export class User extends RoleMixin(VingRecord<'User'>) {
         const schema = super.buildVingSchema();
         schema.kind = 'User';
         schema.owner.push('$id');
-        for (const prop of _p) {
-            // console.log(prop.name);
-            schema.props.push(prop);
-        }
-        console.log(schema.props.length);
-        //schema.props.push(..._p);
-        //  console.log('-----')
+        schema.props.push(..._p);
         return schema;
     }
 
