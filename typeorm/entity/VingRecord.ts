@@ -343,7 +343,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     public verifyCreationParams(params: ModelProps<T>) {
         const schema = this.vingSchema;
         for (const field of schema.props) {
-            if (!field.required || field.default !== undefined)//|| field.relationName)
+            if (!field.required || (field.default !== undefined && field.default !== ''))//|| field.relationName)
                 continue;
             if (params[field.name] !== undefined && params[field.name] != '')
                 continue;
