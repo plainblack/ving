@@ -5,14 +5,14 @@ import { z } from "zod";
 import { RoleMixin } from "../mixin/Role";
 import { ouch } from '../../app/helpers';
 import { cache } from '../../app/cache';
-import * as argon2 from "argon2";
+import bcrypt from 'bcryptjs';
 
 export const RoleOptions = ["admin", "developer"] as const;
 
 const useAsDisplayNameEnums = ['username', 'email', 'realName'] as const;
 type useAsDisplayNameTuple = ArrayToTuple<typeof useAsDisplayNameEnums>;
 
-const passwordTypeEnums = ['argon2'] as const;
+const passwordTypeEnums = ['bcrypt'] as const;
 type passwordTypeTuple = ArrayToTuple<typeof passwordTypeEnums>;
 
 export type UserProps = {
@@ -68,7 +68,7 @@ const _p: vingProp<'User'>[] = [
         name: 'passwordType',
         required: false,
         db: { type: 'enum' },
-        default: 'argon2',
+        default: 'bcrypt',
         enums: passwordTypeEnums,
         enumLabels: ['Argon 2'],
         view: [],
@@ -186,12 +186,12 @@ export class User extends RoleMixin(VingRecord<'User'>) {
             throw ouch(441, 'You must specify a password.');
         let passed = false;
         console.log(password, this.get('password'))
-        if (this.get('passwordType') == 'argon2')
-            passed = await argon2.verify(password, this.get('password') || '');
+        if (this.get('passwordType') == 'bcrypt')
+            passed = bcrypt.compareSync(password, this.get('password') || '');
         else
             throw ouch(404, 'validating other password types not implemented');
         if (passed) {
-            if (this.get('passwordType') != 'argon2') {
+            if (this.get('passwordType') != 'bcrypt') {
                 await this.setPassword(password)
                 await this.save();
             }
@@ -201,8 +201,8 @@ export class User extends RoleMixin(VingRecord<'User'>) {
     }
 
     public async setPassword(password: string) {
-        this.set('password', await argon2.hash(password));
-        this.set('passwordType', 'argon2');
+        this.set('password', bcrypt.hashSync(password, 10));
+        this.set('passwordType', 'bcrypt');
     }
 
     public async describe(params?: DescribeParams) {
