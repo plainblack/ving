@@ -356,7 +356,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         return true;
     }
 
-    public async verifyPostedParams(params: ModelProps<T>, currentUser?: AuthorizedUser) {
+    public async setPostedParams(params: ModelProps<T>, currentUser?: AuthorizedUser) {
         const schema = this.vingSchema;
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
 
@@ -397,7 +397,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     }
 
     public async updateAndVerify(params: ModelProps<T>, currentUser?: AuthorizedUser) {
-        await this.verifyPostedParams(params, currentUser);
+        await this.setPostedParams(params, currentUser);
         await this.save();
     }
 
@@ -414,7 +414,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     static async createAndVerify<T extends ModelName>(props: ModelProps<T>, currentUser?: AuthorizedUser) {
         const obj = new this()
         obj.verifyCreationParams(props);
-        await obj.verifyPostedParams(props, currentUser);
+        await obj.setPostedParams(props, currentUser);
         await obj.save();
         return obj;
     }

@@ -220,8 +220,8 @@ export class User extends RoleMixin(VingRecord<'User'>) {
         return out;
     }
 
-    public async verifyPostedParams(params: ModelProps<'User'>, currentUser?: AuthorizedUser) {
-        await super.verifyPostedParams(params, currentUser);
+    public async setPostedParams(params: ModelProps<'User'>, currentUser?: AuthorizedUser) {
+        await super.setPostedParams(params, currentUser);
         if (params !== undefined && params.password && (currentUser === undefined || this.isOwner(currentUser))) {
             await this.setPassword(params.password);
         }

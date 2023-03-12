@@ -91,11 +91,11 @@ describe('Users', async () => {
         expect(await warden.testPassword('foo')).toBe(true);
     });
     test('set password via posted params', async () => {
-        await warden.verifyPostedParams({ password: 'food' }, warden);
+        await warden.setPostedParams({ password: 'food' }, warden);
         expect(await warden.testPassword('food')).toBe(true);
     });
     test('set useAsDisplayName via posted params', async () => {
-        await warden.verifyPostedParams({ useAsDisplayName: 'email' }, warden);
+        await warden.setPostedParams({ useAsDisplayName: 'email' }, warden);
         expect(warden.get('useAsDisplayName')).toBe('email');
     });
     const guard = captain.copy();
@@ -152,7 +152,7 @@ describe('Users', async () => {
     test('can verify posted params', async () => {
         params.username = 'rita';
         params.email = 'rita@rita.com';
-        expect(await rita.verifyPostedParams(params)).toBe(true);
+        expect(await rita.setPostedParams(params)).toBe(true);
         expect(rita.get('username')).toBe('rita');
     });
 })
