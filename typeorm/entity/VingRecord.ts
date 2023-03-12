@@ -343,7 +343,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         return options;
     }
 
-    public verifyCreationParams(params: ModelProps<T>) {
+    public testRequiredProps(params: ModelProps<T>) {
         const schema = this.vingSchema;
         for (const field of schema.props) {
             if (!field.required || (field.default !== undefined && field.default !== ''))//|| field.relationName)
@@ -356,7 +356,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         return true;
     }
 
-    public async setPostedParams(params: ModelProps<T>, currentUser?: AuthorizedUser) {
+    public async setPostedProps(params: ModelProps<T>, currentUser?: AuthorizedUser) {
         const schema = this.vingSchema;
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
 
@@ -397,7 +397,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
     }
 
     public async updateAndVerify(params: ModelProps<T>, currentUser?: AuthorizedUser) {
-        await this.setPostedParams(params, currentUser);
+        await this.setPostedProps(params, currentUser);
         await this.save();
     }
 
@@ -413,8 +413,8 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
 
     static async createAndVerify<T extends ModelName>(props: ModelProps<T>, currentUser?: AuthorizedUser) {
         const obj = new this()
-        obj.verifyCreationParams(props);
-        await obj.setPostedParams(props, currentUser);
+        obj.testRequiredProps(props);
+        await obj.setPostedProps(props, currentUser);
         await obj.save();
         return obj;
     }

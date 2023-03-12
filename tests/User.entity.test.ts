@@ -91,11 +91,11 @@ describe('Users', async () => {
         expect(await warden.testPassword('foo')).toBe(true);
     });
     test('set password via posted params', async () => {
-        await warden.setPostedParams({ password: 'food' }, warden);
+        await warden.setPostedProps({ password: 'food' }, warden);
         expect(await warden.testPassword('food')).toBe(true);
     });
     test('set useAsDisplayName via posted params', async () => {
-        await warden.setPostedParams({ useAsDisplayName: 'email' }, warden);
+        await warden.setPostedProps({ useAsDisplayName: 'email' }, warden);
         expect(warden.get('useAsDisplayName')).toBe('email');
     });
     const guard = captain.copy();
@@ -139,20 +139,20 @@ describe('Users', async () => {
     const rita = new User();
     let params: ModelProps<'User'> = { realName: 'Rita Hayworth', email: 'rita@hollywood.com' };
     test('can verify creation params', () => {
-        expect(() => rita.verifyCreationParams(params)).toThrowError();
+        expect(() => rita.testRequiredProps(params)).toThrowError();
         params.username = 'rita';
-        expect(rita.verifyCreationParams(params)).toBe(true);
+        expect(rita.testRequiredProps(params)).toBe(true);
     });
 
     test('can verify empty creation params', () => {
         params.username = '';
-        expect(() => rita.verifyCreationParams(params)).toThrowError();
+        expect(() => rita.testRequiredProps(params)).toThrowError();
     });
 
     test('can verify posted params', async () => {
         params.username = 'rita';
         params.email = 'rita@rita.com';
-        expect(await rita.setPostedParams(params)).toBe(true);
+        expect(await rita.setPostedProps(params)).toBe(true);
         expect(rita.get('username')).toBe('rita');
     });
 })
