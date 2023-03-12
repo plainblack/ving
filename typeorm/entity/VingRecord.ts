@@ -398,7 +398,15 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         await this.save();
     }
 
-    static async describeList<T extends ModelName>(params: DescribeListParams = {}, qb: SelectQueryBuilder<any>) {
+    static async createAndVerify<T extends ModelName>(props: ModelProps<T>, currentUser?: AuthorizedUser) {
+        const obj = new this()
+        obj.verifyCreationParams(props);
+        await obj.verifyPostedParams(props, currentUser);
+        await obj.save();
+        return obj;
+    }
+
+    static async describeList<T extends ModelName>(qb: SelectQueryBuilder<any>, params: DescribeListParams = {}) {
         const itemsPerPage = params.itemsPerPage === undefined || params.itemsPerPage > 100 || params.itemsPerPage < 1 ? 10 : params.itemsPerPage;
         const pageNumber = params.pageNumber || 1;
         const maxItems = params.maxItems || 100000000000;
@@ -429,7 +437,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
             items: []
         };
         if (!skipResultSet) {
-            const records = await qb.andWhere({ take: itemsPerPage, skip: itemsPerPage * (pageNumber - 1) }).getMany();
+            const records = await qb.take(itemsPerPage).skip(itemsPerPage * (pageNumber - 1)).getMany();
             for (let record of records) {
                 out.items.push(await record.describe(params.objectParams));
                 maxItemsThisPage--;
