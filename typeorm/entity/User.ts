@@ -5,7 +5,7 @@ import { z } from "zod";
 import { RoleMixin } from "../mixin/Role";
 import { ouch } from '../../app/helpers';
 import { cache } from '../../app/cache';
-import { hash, verify } from 'argon2';
+import * as argon2 from "argon2";
 
 export const RoleOptions = ["admin", "developer"] as const;
 
@@ -60,7 +60,7 @@ const _p: vingProp<'User'>[] = [
         name: 'password',
         required: false,
         default: '',
-        db: { type: 'varchar', length: 60 },
+        db: { type: 'varchar', length: 255 },
         view: [],
         edit: [],
     },
@@ -185,8 +185,9 @@ export class User extends RoleMixin(VingRecord<'User'>) {
         if (password == undefined || password == '')
             throw ouch(441, 'You must specify a password.');
         let passed = false;
+        console.log(password, this.get('password'))
         if (this.get('passwordType') == 'argon2')
-            passed = await verify(password, this.get('password') || '');
+            passed = await argon2.verify(password, this.get('password') || '');
         else
             throw ouch(404, 'validating other password types not implemented');
         if (passed) {
@@ -200,7 +201,7 @@ export class User extends RoleMixin(VingRecord<'User'>) {
     }
 
     public async setPassword(password: string) {
-        this.set('password', await hash(password));
+        this.set('password', await argon2.hash(password));
         this.set('passwordType', 'argon2');
     }
 
@@ -228,14 +229,16 @@ export class User extends RoleMixin(VingRecord<'User'>) {
         return true;
     }
 
+    private userChanged = false;
     public async save() {
-        cache.set('user-changed-' + this.get('id'), true, 1000 * 60 * 60 * 24 * 7);
+        if (this.userChanged)
+            await cache.set('user-changed-' + this.get('id'), true, 1000 * 60 * 60 * 24 * 7);
         return await super.save();
     }
 
     public set<K extends keyof ModelProps<'User'>>(key: K, value: ModelProps<'User'>[K]) {
         if (key in ['password', ...RoleOptions]) {
-            cache.set('user-changed-' + this.get('id'), true, 1000 * 60 * 60 * 24 * 7);
+            this.userChanged = true;
         }
         // shouldn't need this now that we have zod
         if (key == 'email' && !(value?.toString().match(/.+@.+\..+/))) {

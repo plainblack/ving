@@ -60,42 +60,42 @@ describe('Users', async () => {
             expect(Object.keys(description.options).length).toBe(3);
         }
     });
+    test("propOptions by owner", async () => {
+        const options = await captain.propOptions({ currentUser: captain });
+        expect(options.useAsDisplayName).toBeTypeOf('object');
+        expect(Object.keys(options).length).toBe(3);
+    });
+    test("described by admin", async () => {
+        const description = await captain.describe({ currentUser: warden, include: { links: true, options: true, meta: true } });
+        expect(description.meta?.displayName).toBe('captain');
+        expect(description.props.username).toBe('captain');
+        expect(description.props.admin).toBe(false);
+        if (description.links !== undefined) {
+            expect(description.links.base).toBe('/api/user');
+        }
+        if (description.options !== undefined) {
+            expect(description.options.useAsDisplayName).toBeTypeOf('object');
+            expect(Object.keys(description.options).length).toBe(3);
+        }
+    });
+    test("described by visitor", async () => {
+        const description = await warden.describe({ include: { links: true, options: true, meta: true } });
+        expect(description.meta?.displayName).toBe('warden');
+        expect(description.props.username).toBe(undefined);
+        expect(description.props.admin).toBe(undefined);
+        if (description.links !== undefined) {
+            expect(description.links.base).toBe('/api/user');
+        }
+        expect(description.options).toEqual({});
+        if (description.options !== undefined) {
+            expect(Object.keys(description.options).length).toBe(0);
+        }
+    });
+    test('set password', async () => {
+        await warden.setPassword('foo');
+        expect(await warden.testPassword('foo')).toBe(true);
+    });
     /*
-        test("propOptions by owner", async () => {
-            const options = await captain.propOptions({ currentUser: captain });
-            expect(options.useAsDisplayName).toBeTypeOf('object');
-            expect(Object.keys(options).length).toBe(3);
-        });
-        test("described by admin", async () => {
-            const description = await captain.describe({ currentUser: warden, include: { links: true, options: true, meta: true } });
-            expect(description.meta?.displayName).toBe('captain');
-            expect(description.props.username).toBe('captain');
-            expect(description.props.admin).toBe(false);
-            if (description.links !== undefined) {
-                expect(description.links.base).toBe('/api/user');
-            }
-            if (description.options !== undefined) {
-                expect(description.options.useAsDisplayName).toBeTypeOf('object');
-                expect(Object.keys(description.options).length).toBe(3);
-            }
-        });
-        test("described by visitor", async () => {
-            const description = await warden.describe({ include: { links: true, options: true, meta: true } });
-            expect(description.meta?.displayName).toBe('warden');
-            expect(description.props.username).toBe(undefined);
-            expect(description.props.admin).toBe(undefined);
-            if (description.links !== undefined) {
-                expect(description.links.base).toBe('/api/user');
-            }
-            expect(description.options).toEqual({});
-            if (description.options !== undefined) {
-                expect(Object.keys(description.options).length).toBe(0);
-            }
-        });
-        test('set password', async () => {
-            warden.setPassword('foo');
-            expect(await warden.testPassword('foo')).toBe(true);
-        });
         test('set password via posted params', async () => {
             warden.verifyPostedParams({ password: 'food' }, warden);
             expect(await warden.testPassword('food')).toBe(true);
