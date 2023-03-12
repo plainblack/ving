@@ -4,6 +4,7 @@ dotenv.config();
 import { DataSource } from "typeorm";
 import { User } from "./entity/User";
 import { URL } from 'node:url';
+import { ouch } from '../app/helpers';
 const dbConfig = new URL(process.env.TYPEORM_DATABASE || '');
 
 export const AppDataSource = new DataSource({
@@ -20,10 +21,8 @@ export const AppDataSource = new DataSource({
 })
 
 export const initialize = async () => {
-    console.log('DB: Initializing DB connection')
-
     if (AppDataSource.isInitialized) {
-        console.log('DB: Already initialized')
+        console.warn('DB: Already initialized')
         return
     }
 
@@ -31,8 +30,6 @@ export const initialize = async () => {
         await AppDataSource.initialize()
     } catch (error) {
         console.trace('DB: Failed to initialized database', error)
-        throw error
+        throw ouch(504, error);
     }
-
-    console.log('DB: Successfully initialized database connection')
 }
