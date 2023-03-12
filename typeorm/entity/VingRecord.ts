@@ -173,6 +173,15 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         return this[key];
     }
 
+    public getAll() {
+        const out: ModelProps<T> = {};
+        const schema = this.vingSchema;
+        for (const prop of schema.props) {
+            out[prop.name as keyof ModelProps<T>] = this.get(prop.name as keyof ModelProps<T>);
+        }
+        return out;
+    }
+
     public set<K extends keyof ModelProps<T>>(key: K, value: ModelProps<T>[K]) {
         const schema = this.vingSchema;
         const prop = findPropInSchema(key, schema.props);
@@ -195,18 +204,12 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         return this[key] = value;
     }
 
-    public getAll() {
-        const out: ModelProps<T> = {};
-        const schema = this.vingSchema;
-        for (const prop of schema.props) {
-            out[prop.name as keyof ModelProps<T>] = this.get(prop.name as keyof ModelProps<T>);
-        }
-        return out;
-    }
-
     public setAll(props: ModelProps<T>) {
+        const schema = this.vingSchema;
         for (const key in props) {
-            this.set(key, props[key])
+            const field = findPropInSchema(key, schema.props)
+            if (!field?.noSetAll)
+                this.set(key, props[key]);
         }
         return this;
     }

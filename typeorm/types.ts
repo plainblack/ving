@@ -25,6 +25,7 @@ export type vingProp<T extends ModelName> = {
     enumLabels?: string[],
     view: string[],
     edit: string[],
+    noSetAll?: boolean,
 }
 
 export type vingSchema<T extends ModelName> = {
