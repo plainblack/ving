@@ -37,7 +37,18 @@ const errorCodes = {
     504: 'Could Not Connect',
 };
 
-export const ouch = (code: keyof typeof errorCodes, message: string, data?: any) => {
+export const ouch = (code: keyof typeof errorCodes, error: string | unknown, data?: any) => {
+    let message = '';
+    if (_.isString(error)) {
+        message = error;
+    }
+    else if (_.isObject(error) && 'message' in error && _.isString(error.message)) {
+        message = error.message;
+    }
+    else {
+        message = 'Unknown error';
+        data = error;
+    }
     return createError({
         statusCode: code,
         statusMessage: errorCodes[code || 500],
