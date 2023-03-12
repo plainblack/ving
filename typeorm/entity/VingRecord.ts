@@ -379,7 +379,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
 
                 if (field.unique) {
                     // @ts-ignore - typescript doesn't know about the static methods on the class when called via constructor
-                    let qb = this.constructor.createQueryBuilder("me")
+                    let qb = this.constructor.qb("me")
                         .where('me.' + field.name.toString() + ' = :field', { field: field.name })
                     if (this.isInserted) {
                         qb = qb.andWhere('me.id <> :id', { id: this.get('id') })
@@ -467,6 +467,10 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         }
         const schema = new this().vingSchema;
         throw ouch(404, schema.kind + ' not found.');
+    }
+
+    static qb(alias?: string) {
+        return this.createQueryBuilder(alias);
     }
 
 }

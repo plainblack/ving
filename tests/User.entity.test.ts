@@ -5,7 +5,7 @@ import { initialize } from '../typeorm/data-source'
 
 await initialize()
 
-await User.createQueryBuilder().delete().where('username IN (:...names)', { names: ['warden', 'captain', 'guard'] }).execute();
+await User.qb().delete().where('username IN (:...names)', { names: ['warden', 'captain', 'guard'] }).execute();
 const warden = await new User().setAll({ username: 'warden', email: 'warden@shawshank.jail', realName: 'Samuel Norton' }).save();
 const captain = new User().setAll({ username: 'captain', email: 'captain@shawshank.jail', realName: 'Byron Hadley' })
 
