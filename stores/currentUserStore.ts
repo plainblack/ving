@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { Describe } from '~~/app/db';
+import { Describe } from '../typeorm/types';
 
 const query = { includeOptions: true, includeMeta: true };
 

@@ -1,4 +1,4 @@
-import { Session } from '~~/app/session';
+import { Session } from '../../app/session';
 export default defineEventHandler(async (event) => {
     const cookie = getCookie(event, 'vingSessionId');
     if (cookie) {
