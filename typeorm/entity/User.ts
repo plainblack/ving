@@ -239,10 +239,6 @@ export class User extends RoleMixin(VingRecord<'User'>) {
         if (key in ['password', ...RoleOptions]) {
             this.userChanged = true;
         }
-        // shouldn't need this now that we have zod
-        if (key == 'email' && !(value?.toString().match(/.+@.+\..+/))) {
-            throw ouch(442, `${value} doesn't look like an email address.`, key);
-        }
         return super.set(key, value);
     }
 
