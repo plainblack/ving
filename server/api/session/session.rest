@@ -1,6 +1,6 @@
 ### login
 # @name login
-POST http://localhost:3000/api/session?includeRelated=user
+POST http://localhost:3000/api/session
 Content-Type: application/json
 
 {

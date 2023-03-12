@@ -398,6 +398,16 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         await this.save();
     }
 
+    public copy() {
+        let props = { ...this.getAll() };
+        delete props.id;
+        delete props.createdAt;
+        // @ts-ignore - typescript doesn't like newing the constructor this way
+        const copy = new this.constructor;
+        copy.setAll(props);
+        return copy;
+    }
+
     static async createAndVerify<T extends ModelName>(props: ModelProps<T>, currentUser?: AuthorizedUser) {
         const obj = new this()
         obj.verifyCreationParams(props);
@@ -447,14 +457,13 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         return out;
     }
 
-    public copy() {
-        let props = { ...this.getAll() };
-        delete props.id;
-        delete props.createdAt;
-        // @ts-ignore - typescript doesn't like newing the constructor this way
-        const copy = new this.constructor;
-        copy.setAll(props);
-        return copy;
+    static async findIdOrDie(id: string) {
+        const record = await this.findOneBy({ id });
+        if (record !== null) {
+            return record;
+        }
+        const schema = new this().vingSchema;
+        throw ouch(404, schema.kind + ' not found.');
     }
 
 }

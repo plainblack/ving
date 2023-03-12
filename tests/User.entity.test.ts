@@ -3,12 +3,7 @@ import { describe, test, expect } from "vitest";
 import { ModelProps } from "../typeorm/types";
 import { initialize } from '../typeorm/data-source'
 
-try {
-    await initialize()
-} catch (error) {
-    console.trace('Error thrown during DB initialization, aborting startup', error)
-    process.exit(-1)
-}
+await initialize()
 
 await User.createQueryBuilder().delete().where('username IN (:...names)', { names: ['warden', 'captain', 'guard'] }).execute();
 const warden = await new User().setAll({ username: 'warden', email: 'warden@shawshank.jail', realName: 'Samuel Norton' }).save();
@@ -117,13 +112,18 @@ describe('Users', async () => {
         expect(guard).toHaveProperty('isRole');
     });
 
+    test('can edit', () => {
+        expect(() => guard.canEdit(captain)).toThrowError();
+        expect(guard.canEdit(warden)).toBe(true);
+        expect(guard.canEdit(guard)).toBe(true);
+    })
+
     //  let key = captain.apiKeys.mint({ name: 'foo' } as any);
     // await key.insert();
     // console.log(JSON.stringify(await captain.describe({ currentUser: captain, include: { related: ['apiKeys'], extra: ['foo'] } }), undefined, 2));
 
     test('can describe list', async () => {
         const list = await User.describeList(User.createQueryBuilder());
-        console.log(list);
         expect(list.paging.totalItems).toBeGreaterThanOrEqual(3);
         expect(list.paging.totalItems).toBeGreaterThanOrEqual(list.items.length);
     })
