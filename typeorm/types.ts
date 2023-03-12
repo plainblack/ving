@@ -1,4 +1,5 @@
 import type { UserProps, User, RoleOptions } from './entity/User';
+import type { Session } from '../app/session';
 
 export type Model = {
     User: UserProps
@@ -83,7 +84,7 @@ export type Describe<T extends ModelName> = {
     warnings?: { code: number, message: string }[]
 }
 
-export type AuthorizedUser = User;
+export type AuthorizedUser = Session | User;
 
 export type ArrayToTuple<T extends ReadonlyArray<string>, V = string> = keyof {
     [K in (T extends ReadonlyArray<infer U> ? U : never)]: V

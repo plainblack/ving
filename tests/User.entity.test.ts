@@ -121,6 +121,13 @@ describe('Users', async () => {
     // await key.insert();
     // console.log(JSON.stringify(await captain.describe({ currentUser: captain, include: { related: ['apiKeys'], extra: ['foo'] } }), undefined, 2));
 
+    test('can describe list', async () => {
+        const list = await User.describeList(User.createQueryBuilder());
+        console.log(list);
+        expect(list.paging.totalItems).toBeGreaterThanOrEqual(3);
+        expect(list.paging.totalItems).toBeGreaterThanOrEqual(list.items.length);
+    })
+
     test("can delete ving record", async () => {
         await warden.remove()
         expect(warden.get('username')).toBe('warden');

@@ -1,25 +1,27 @@
-import { Users, UserRecord, TRoleProps, RoleMixin, RoleOptions, DescribeParams, Describe } from './db';
+import { RoleProps, DescribeParams, Describe } from '../typeorm/types';
+import { RoleMixin } from '../typeorm/mixin/Role';
+import { User, RoleOptions } from '../typeorm/entity/User';
 import { ouch } from './helpers';
 import { cache } from './cache';
 import crypto from 'crypto';
 
 class ProtoSession {
 
-    constructor(private props: TRoleProps, public id = crypto.randomUUID()) { }
+    constructor(private props: RoleProps, public id = crypto.randomUUID()) { }
 
-    private userObj: UserRecord | undefined;
+    private userObj: User | undefined;
 
-    public async user(userObj?: UserRecord) {
+    public async user(userObj?: User) {
         if (userObj !== undefined) {
             return this.userObj = userObj;
         }
         if (this.userObj !== undefined) {
             return this.userObj;
         }
-        return this.userObj = await Users.findUnique({ where: { id: this.props.id } });
+        return this.userObj = await User.findOneOrFail({ where: { id: this.props.id } });
     }
 
-    public get<K extends keyof TRoleProps>(key: K): TRoleProps[K] {
+    public get<K extends keyof RoleProps>(key: K): RoleProps[K] {
         return this.props[key];
     }
 
@@ -75,14 +77,14 @@ class ProtoSession {
         return out;
     }
 
-    static async start(user: UserRecord) {
+    static async start(user: User) {
         const session = new Session(user.getAll());
         await session.extend();
         return session;
     }
 
     static async fetch(id: string) {
-        const data: TRoleProps | undefined = await cache.get('session-' + id);
+        const data: RoleProps | undefined = await cache.get('session-' + id);
         if (data !== undefined) {
             return new Session(data, id);
         }

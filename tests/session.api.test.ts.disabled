@@ -1,0 +1,46 @@
+import { describe, test, expect } from "vitest";
+import { User } from '../typeorm/entity/User';
+import { Describe } from '../typeorm/types';
+import { setup, $fetch } from '@nuxt/test-utils'
+import { initialize } from '../typeorm/data-source'
+
+await initialize()
+
+const base = 'http://localhost:3000/api/';
+
+describe('Session API', async () => {
+    await setup({
+        // test context options
+    })
+    await User.createQueryBuilder().delete().where({ username: 'brooks' }).execute();
+
+    test('foo', () => {
+        expect(true).toBe(true)
+    })
+    const user = (await $fetch(
+        base + 'user',
+        {
+            method: 'post',
+            params: { username: 'brooks', realName: 'Brooks Hatlen', email: 'brooks@shawshank.jail', password: 'rockhammer' }
+        }
+    )).data;
+
+    test('create user', () => {
+        expect(user.props.displayName).toBe('brooks');
+    });
+
+
+    const session = (await $fetch(
+        base + 'session',
+        {
+            method: 'post',
+            params: { login: 'brooks', password: 'rockhammer' }
+        }
+    )).data;
+
+    test('login', () => {
+        expect(session.props.userId).toBe(user.props.id);
+    });
+
+
+});

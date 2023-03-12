@@ -1,16 +1,16 @@
-import { Users } from '~~/app/db';
-import { testRequired, ouch, vingBody, vingDescribe } from '~~/app/helpers';
-import { Session } from '~~/app/session';
+import { User } from '../../../typeorm/entity/User';
+import { testRequired, ouch, vingBody, vingDescribe } from '../../../app/helpers';
+import { Session } from '../../../app/session';
 export default defineEventHandler(async (event) => {
     const body = await vingBody(event)
     testRequired(['login', 'password'], body);
     let user;
     try {
-        user = await Users.findUnique({ where: { email: body.login } });
+        user = await User.findOneOrFail({ where: { email: body.login } });
     }
     catch {
         try {
-            user = await Users.findUnique({ where: { username: body.login } });
+            user = await User.findOneOrFail({ where: { username: body.login } });
         }
         catch {
             throw ouch(404, 'User not found.')

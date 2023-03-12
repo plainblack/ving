@@ -1,9 +1,9 @@
-import { Users } from '~~/app/db';
-import { vingSession, vingDescribe } from '~~/app/helpers';
+import { User } from '../../../typeorm/entity/User';
+import { vingSession, vingDescribe } from '../../../app/helpers';
 export default defineEventHandler(async (event) => {
     const { id } = getRouterParams(event);
-    const user = await Users.find(id);
+    const user = await User.findOneOrFail(id);
     user.canEdit(vingSession(event));
-    await user.delete();
+    await user.remove();
     return user.describe(vingDescribe(event));
 });
