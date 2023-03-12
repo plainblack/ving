@@ -439,4 +439,14 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         return out;
     }
 
+    public copy() {
+        let props = { ...this.getAll() };
+        delete props.id;
+        delete props.createdAt;
+        // @ts-ignore - typescript doesn't like newing the constructor this way
+        const copy = new this.constructor;
+        copy.setAll(props);
+        return copy;
+    }
+
 }

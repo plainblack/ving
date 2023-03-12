@@ -185,7 +185,6 @@ export class User extends RoleMixin(VingRecord<'User'>) {
         if (password == undefined || password == '')
             throw ouch(441, 'You must specify a password.');
         let passed = false;
-        console.log(password, this.get('password'))
         if (this.get('passwordType') == 'bcrypt')
             passed = bcrypt.compareSync(password, this.get('password') || '');
         else
@@ -224,7 +223,7 @@ export class User extends RoleMixin(VingRecord<'User'>) {
     public async verifyPostedParams(params: ModelProps<'User'>, currentUser?: AuthorizedUser) {
         await super.verifyPostedParams(params, currentUser);
         if (params !== undefined && params.password && (currentUser === undefined || this.isOwner(currentUser))) {
-            this.setPassword(params.password);
+            await this.setPassword(params.password);
         }
         return true;
     }

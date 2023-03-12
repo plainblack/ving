@@ -95,28 +95,29 @@ describe('Users', async () => {
         await warden.setPassword('foo');
         expect(await warden.testPassword('foo')).toBe(true);
     });
+    test('set password via posted params', async () => {
+        await warden.verifyPostedParams({ password: 'food' }, warden);
+        expect(await warden.testPassword('food')).toBe(true);
+    });
+    test('set useAsDisplayName via posted params', async () => {
+        await warden.verifyPostedParams({ useAsDisplayName: 'email' }, warden);
+        expect(warden.get('useAsDisplayName')).toBe('email');
+    });
+    const guard = captain.copy();
+    test("clone a record", () => {
+        expect(guard.get('realName')).toBe('Byron Hadley');
+        guard.setAll({
+            username: 'guard',
+            email: 'guard@shawshank.jail',
+            realName: 'Dekins',
+        });
+        guard.save();
+        expect(guard.get('realName')).toBe('Dekins');
+        expect(guard.get('id')).not.toBe(captain.get('id'));
+        expect(guard).toHaveProperty('isRole');
+    });
+
     /*
-        test('set password via posted params', async () => {
-            warden.verifyPostedParams({ password: 'food' }, warden);
-            expect(await warden.testPassword('food')).toBe(true);
-        });
-        test('set useAsDisplayName via posted params', () => {
-            warden.verifyPostedParams({ useAsDisplayName: 'email' }, warden);
-            expect(warden.get('useAsDisplayName')).toBe('email');
-        });
-        const guard = Users.copy(captain.getAll());
-        test("clone a record", () => {
-            guard.setAll({
-                username: 'guard',
-                email: 'guard@shawshank.jail',
-                realName: 'Dekins',
-            });
-            guard.insert();
-            expect(guard.get('realName')).toBe('Dekins');
-            expect(guard.get('id')).not.toBe(captain.get('id'));
-            expect(guard).toHaveProperty('isRole');
-        });
-    
         //  let key = captain.apiKeys.mint({ name: 'foo' } as any);
         // await key.insert();
         // console.log(JSON.stringify(await captain.describe({ currentUser: captain, include: { related: ['apiKeys'], extra: ['foo'] } }), undefined, 2));
