@@ -117,37 +117,35 @@ describe('Users', async () => {
         expect(guard).toHaveProperty('isRole');
     });
 
-    /*
-        //  let key = captain.apiKeys.mint({ name: 'foo' } as any);
-        // await key.insert();
-        // console.log(JSON.stringify(await captain.describe({ currentUser: captain, include: { related: ['apiKeys'], extra: ['foo'] } }), undefined, 2));
-    
-        test("can delete ving record", async () => {
-            await warden.delete()
-            expect(warden.get('username')).toBe('warden');
-            expect(await Users.count({ where: { email: 'warden@shawshank.jail' } })).toBe(0);
-            await captain.delete()
-            //  await guard.delete()
-        });
-    
-        const rita = Users.mint({});
-        let params: TProps<'User'> = { realName: 'Rita Hayworth', email: 'rita@hollywood.com' };
-        test('can verify creation params', () => {
-            expect(() => rita.verifyCreationParams(params)).toThrowError();
-            params.username = 'rita';
-            expect(rita.verifyCreationParams(params)).toBe(true);
-        });
-    
-        test('can verify empty creation params', () => {
-            params.username = '';
-            expect(() => rita.verifyCreationParams(params)).toThrowError();
-        });
-    
-        test('can verify posted params', async () => {
-            params.username = 'rita';
-            params.email = 'rita@rita.com';
-            expect(await rita.verifyPostedParams(params)).toBe(true);
-            expect(rita.get('username')).toBe('rita');
-        });
-    */
+    //  let key = captain.apiKeys.mint({ name: 'foo' } as any);
+    // await key.insert();
+    // console.log(JSON.stringify(await captain.describe({ currentUser: captain, include: { related: ['apiKeys'], extra: ['foo'] } }), undefined, 2));
+
+    test("can delete ving record", async () => {
+        await warden.remove()
+        expect(warden.get('username')).toBe('warden');
+        expect(await User.count({ where: { email: 'warden@shawshank.jail' } })).toBe(0);
+        await captain.remove()
+        await guard.remove()
+    });
+
+    const rita = new User();
+    let params: ModelProps<'User'> = { realName: 'Rita Hayworth', email: 'rita@hollywood.com' };
+    test('can verify creation params', () => {
+        expect(() => rita.verifyCreationParams(params)).toThrowError();
+        params.username = 'rita';
+        expect(rita.verifyCreationParams(params)).toBe(true);
+    });
+
+    test('can verify empty creation params', () => {
+        params.username = '';
+        expect(() => rita.verifyCreationParams(params)).toThrowError();
+    });
+
+    test('can verify posted params', async () => {
+        params.username = 'rita';
+        params.email = 'rita@rita.com';
+        expect(await rita.verifyPostedParams(params)).toBe(true);
+        expect(rita.get('username')).toBe('rita');
+    });
 })

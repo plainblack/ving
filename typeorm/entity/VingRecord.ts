@@ -377,7 +377,7 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
                 if (field.unique) {
                     // @ts-ignore - typescript doesn't know about the static methods on the class when called via constructor
                     let qb = this.constructor.createQueryBuilder("me")
-                        .where(`me.{$field.name} = :field`, { field: field.name })
+                        .where('me.' + field.name.toString() + ' = :field', { field: field.name })
                     if (this.isInserted) {
                         qb = qb.andWhere('me.id <> :id', { id: this.get('id') })
                     }
