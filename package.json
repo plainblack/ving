@@ -16,7 +16,9 @@
         "prepare-migration-datasource": "esbuild typeorm/data-source.ts --external:'mysql' --platform=node --bundle --log-level=warning --outfile=.output/typeorm/data-source.js",
         "generate-migration": "npm run prepare-migration-datasource && typeorm migration:generate -o -p -d .output/typeorm/data-source.js typeorm/migrations/$npm_config_name",
         "run-migrations": "npm run prepare-migration-datasource && typeorm migration:run -d .output/typeorm/data-source.js",
-        "revert-migration": "npm run prepare-migration-datasource && typeorm migration:revert -d .output/typeorm/data-source.js"
+        "revert-migration": "npm run prepare-migration-datasource && typeorm migration:revert -d .output/typeorm/data-source.js",
+        "drizzle:gen": "drizzle-kit generate:mysql --out ./drizzle/migrations --schema drizzle/schema",
+        "drizzle:migrate": "esbuild drizzle/migrate.ts --platform=node --bundle --log-level=warning --outfile=.output/drizzle/migrate.js && node .output/drizzle/migrate.js"
     },
     "devDependencies": {
         "@mikro-orm/cli": "^5.6.13",
@@ -29,6 +31,7 @@
         "@types/lodash": "^4.14.191",
         "@types/luxon": "^3.2.0",
         "@types/uuid": "^9.0.1",
+        "drizzle-kit": "^0.17.0",
         "nuxt": "^3.2.2",
         "prisma": "^4.11.0",
         "ts-node": "^10.9.1",
@@ -59,6 +62,7 @@
         "bcrypt": "^5.1.0",
         "bcryptjs": "^2.4.3",
         "csv-parse": "^5.3.5",
+        "drizzle-orm": "^0.21.1",
         "keyv": "^4.5.2",
         "lodash": "^4.17.21",
         "luxon": "^3.2.1",
