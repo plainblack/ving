@@ -16,7 +16,7 @@ const _p: vingProp<any>[] = [
         name: 'id',
         required: true,
         default: () => v4(),
-        db: { type: 'char', length: 36 },
+        db: { type: 'varchar', length: 36 },
         view: ['public'],
         edit: [],
     },
@@ -199,6 +199,10 @@ export class VingRecord<T extends ModelName> extends BaseEntity {
         }
         else {
             throw ouch(400, key.toString() + ' is not a prop', key);
+        }
+        if (prop.relation && prop.relation.type == '1:n') {
+            // @ts-ignore - ts doesn't know about the relationship, because we don't put the relationship on the props, maybe we should?
+            this[prop.relation.name] = <any>{ id: value }; // maybe we should put the class as a property of the relation as well instead of using this <any> trick
         }
         //@ts-ignore - its what we think it is, but i don't know how to hook it up to the class
         return this[key] = value;

@@ -1,8 +1,10 @@
 import type { UserProps, User, RoleOptions } from './entity/User';
+import type { APIKeyProps } from './entity/APIKey';
 import type { Session } from '../app/session';
 
 export type Model = {
-    User: UserProps
+    User: UserProps,
+    APIKey: APIKeyProps,
 }
 
 export type ModelName = keyof Model;
@@ -18,6 +20,10 @@ export type vingProp<T extends ModelName> = {
     name: keyof ModelProps<T>,
     required: boolean,
     db: Record<string, any>,
+    relation?: {
+        type: '1:n' | 'n:1' | 'n:n' | '1:1',
+        name: string,
+    },
     zod?: any,
     unique?: boolean,
     default: boolean | string | number | Date | undefined | (() => boolean | string | number | Date),

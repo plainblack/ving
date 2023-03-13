@@ -1,6 +1,7 @@
-import { Entity, Column, Index } from "typeorm";
+import { Entity, Column, Index, OneToMany } from "typeorm";
 import { VingRecord, dbProps, stringDefault, booleanDefault, VingRecordProps } from './VingRecord';
 import { vingProp, ArrayToTuple, DescribeParams, AuthorizedUser, ModelProps } from '../types';
+import { APIKey } from "./APIKey";
 import { z } from "zod";
 import { RoleMixin } from "../mixin/Role";
 import { ouch } from '../../app/helpers';
@@ -110,30 +111,36 @@ const _p: vingProp<'User'>[] = [
 export class User extends RoleMixin(VingRecord<'User'>) {
 
     @Index({ unique: true })
-    @Column('text', dbProps('username', _p))
+    @Column(dbProps('username', _p))
     username!: string
 
     @Index({ unique: true })
-    @Column('text', dbProps('email', _p))
+    @Column(dbProps('email', _p))
     email!: string
 
-    @Column('text', dbProps('realName', _p))
+    @Column(dbProps('realName', _p))
     realName = stringDefault('realName', _p)
 
-    @Column('text', dbProps('password', _p))
+    @Column(dbProps('password', _p))
     password = stringDefault('password', _p)
 
-    @Column('text', dbProps('passwordType', _p))
+    @Column(dbProps('passwordType', _p))
     passwordType: passwordTypeTuple = stringDefault('passwordType', _p) as passwordTypeTuple
 
-    @Column('text', dbProps('useAsDisplayName', _p))
+    @Column(dbProps('useAsDisplayName', _p))
     useAsDisplayName: useAsDisplayNameTuple = stringDefault('useAsDisplayName', _p) as useAsDisplayNameTuple
 
-    @Column('text', dbProps('admin', _p))
+    @Column(dbProps('admin', _p))
     admin = booleanDefault('admin', _p)
 
-    @Column('text', dbProps('developer', _p))
+    @Column(dbProps('developer', _p))
     developer = booleanDefault('developer', _p)
+
+    @OneToMany(() => APIKey, (apikey) => apikey.user, {
+        cascade: true,
+    })
+    apikeys!: APIKey[]
+
 
     protected buildVingSchema() {
         const schema = super.buildVingSchema();
