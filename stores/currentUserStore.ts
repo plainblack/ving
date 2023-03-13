@@ -32,7 +32,6 @@ export const useCurrentUserStore = defineStore('currentUser', {
                     login,
                     password
                 },
-                onResponseError() { }
             });
             if (response.error?.value) {
                 throw response.error?.value.data;

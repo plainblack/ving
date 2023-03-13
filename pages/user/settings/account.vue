@@ -21,7 +21,6 @@
                                 <FormInput name="realName" v-model="currentUser.props.realName" label="Real Name"
                                     autocomplete="name" @change="currentUser.save" />
                             </div>
-
                         </div>
 
                     </div>

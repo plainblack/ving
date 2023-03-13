@@ -3,16 +3,16 @@
         <label v-if="label" :for="computedId" class="block font-medium text-900 mb-1">{{ label }}</label>
         <InputNumber v-if="type == 'number' && (_.isNumber(val) || _.isNull(val) || _.isUndefined(val))" v-model="val"
             showButtons :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
-            :required="required" :inputClass="fieldClass" v-bind="$attrs" />
+            :required="required" :inputClass="fieldClass" />
         <Password v-else-if="type == 'password' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))" v-model="val"
             toggleMask :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
-            :required="required" :inputClass="fieldClass" v-bind="$attrs" class="w-full" />
+            :required="required" :inputClass="fieldClass" class="w-full" />
         <TextArea v-else-if="type == 'textarea' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))" v-model="val"
             :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete" :class="fieldClass"
-            :required="required" v-bind="$attrs" />
+            :required="required" />
         <InputText v-else-if="['text', 'email'].includes(type) && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
             v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
-            :class="fieldClass" :required="required" v-bind="$attrs" />
+            :class="fieldClass" :required="required" />
         <Message v-else severity="error" :closable="false">
             Can't display {{ displayName }} Form Input
         </Message>
