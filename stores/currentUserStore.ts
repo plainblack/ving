@@ -5,10 +5,13 @@ const query = { includeOptions: true, includeMeta: true };
 
 export const useCurrentUserStore = defineStore('currentUser', {
     state: (): {
-        props?: Describe<'User'>['props'] | undefined
-        meta?: Describe<'User'>['meta'] | undefined
-        options?: Describe<'User'>['options'] | undefined
+        props?: Describe<'User'>['props']
+        meta?: Describe<'User'>['meta']
+        options?: Describe<'User'>['options']
     } => ({
+        props: {},
+        meta: {},
+        options: {},
     }),
     actions: {
         async whoami() {

@@ -95,7 +95,6 @@
                             <Avatar :image="currentUser.meta?.avatarUrl" alt="user avatar" shape="circle" />
                             <span class="text-white font-medium ml-2">
                                 {{ currentUser.meta?.displayName }}
-                                {{ currentUser.props.useAsDisplayName }}
                             </span>
                             <i class="pi pi-angle-down ml-auto lg:ml-3 mr-3 lg:mr-0"></i>
                         </div>
