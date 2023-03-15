@@ -1,5 +1,5 @@
 import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar } from 'drizzle-orm/mysql-core';
-import type { AnyMySqlColumn, MySqlColumn } from 'drizzle-orm/mysql-core';
+import type { AnyMySqlColumn } from 'drizzle-orm/mysql-core';
 import { AnyMySqlColumnBuilder } from 'drizzle-orm/mysql-core/columns/common';
 import { vingSchema, vingProp } from '../types/db';
 export { v4 as uuid } from 'uuid';
@@ -68,6 +68,8 @@ export const dbPk = (prop: vingProp) => {
     return varchar(prop.name, dbColLength(prop)).primaryKey();
 }
 
+// somehow have to use inference to make it so this casts the right types: https://discord.com/channels/1043890932593987624/1085675996956590162
+// see this as an example: https://github.com/drizzle-team/drizzle-orm/blob/main/drizzle-orm/src/mysql-core/table.ts#L184
 export const makeTable = (schema: vingSchema) => {
     const columns: Record<string, AnyMySqlColumnBuilder> = {};
     const uniqueIndexes: Record<string, any> = {};
