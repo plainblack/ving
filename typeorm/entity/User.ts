@@ -71,7 +71,7 @@ const _p: vingProp<'User'>[] = [
         db: { type: 'enum' },
         default: 'bcrypt',
         enums: passwordTypeEnums,
-        enumLabels: ['Argon 2'],
+        enumLabels: ['Bcrypt'],
         view: [],
         edit: [],
     },
