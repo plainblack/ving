@@ -1,103 +1,6 @@
-import { AnyMySqlColumn, MySqlColumn, AnyMySqlTable, boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, InferModel } from 'drizzle-orm/mysql-core';
-import { AnyMySqlColumnBuilder } from 'drizzle-orm/mysql-core/columns/common';
-
-import { v4 } from 'uuid';
-import { z, ZodTypeAny } from 'zod';
-
-export const stringDefault = (prop: vingProp): string => {
-    if (typeof prop.default == 'string')
-        return prop.default;
-    if (typeof prop.default == 'function') {
-        const value = prop.default();
-        if (typeof value == 'string')
-            return value;
-    }
-    return '';
-}
-
-export const numberDefault = (prop: vingProp): number => {
-    if (typeof prop.default == 'number')
-        return prop.default;
-    if (typeof prop.default == 'function') {
-        const value = prop.default();
-        if (typeof value == 'number')
-            return value;
-    }
-    return 0;
-}
-
-export const dbColLength = (prop: vingProp): { length: number } => {
-    if (typeof prop.length == 'number')
-        return { length: prop.length };
-    return { length: 256 };
-}
-
-export const booleanDefault = (prop: vingProp): boolean => {
-    if (typeof prop.default == 'boolean')
-        return prop.default;
-    if (typeof prop.default == 'function') {
-        const value = prop.default();
-        if (typeof value == 'boolean')
-            return value;
-    }
-    return false;
-}
-
-export const zodString = (prop: vingProp) => {
-    return z.string().min(1).max(prop.length || 256);
-}
-
-export const dbTimestamp = (prop: vingProp) => {
-    return timestamp(prop.name).defaultNow().notNull();
-}
-
-export const dbString = (prop: vingProp) => {
-    return varchar(prop.name, dbColLength(prop)).notNull().default(stringDefault(prop));
-}
-
-export const dbEnum = (prop: vingProp) => {
-    return mysqlEnum(prop.name, prop.enums || ['']).notNull().default(stringDefault(prop));
-}
-
-export const dbBoolean = (prop: vingProp) => {
-    return boolean(prop.name).notNull().default(booleanDefault(prop));
-}
-
-export const dbPk = (prop: vingProp) => {
-    return varchar(prop.name, dbColLength(prop)).primaryKey();
-}
-
-
-export type vingProp = {
-    name: string,
-    //    name: keyof ModelProps<T>,
-    length?: number,
-    default: boolean | string | number | Date | undefined | (() => boolean | string | number | Date),
-    db: (prop: vingProp) => AnyMySqlColumnBuilder,
-    zod?: (prop: vingProp) => ZodTypeAny,
-    required: boolean,
-    relation?: {
-        type: '1:n' | 'n:1' | 'n:n' | '1:1',
-        name: string,
-    },
-    unique?: boolean,
-    enums?: [string, ...string[]],
-    enumLabels?: [string, ...string[]],
-    view: string[],
-    edit: string[],
-    noSetAll?: boolean,
-}
-
-export type vingSchema = {
-    kind: string,
-    tableName: string,
-    owner: string[]
-    props: vingProp[],
-}
-
-export type ArrayToTuple<T extends ReadonlyArray<string>, V = string> = keyof {
-    [K in (T extends ReadonlyArray<infer U> ? U : never)]: V
-};
+import { vingSchema, vingProp } from '../../types/db';
+import { uuid, dbPk, dbTimestamp, dbString, zodString, dbEnum, dbBoolean, makeTable } from '../helpers';
+import type { InferModel } from 'drizzle-orm/mysql-core';
 
 export const userSchema: vingSchema = {
     kind: 'User',
@@ -108,7 +11,7 @@ export const userSchema: vingSchema = {
             name: "id",
             required: true,
             length: 36,
-            default: () => v4(),
+            default: () => uuid(),
             db: (prop: vingProp) => dbPk(prop),
             view: ['public'],
             edit: [],
@@ -212,25 +115,6 @@ export const userSchema: vingSchema = {
     ],
 };
 
-export const makeTable = (schema: vingSchema) => {
-    const columns: Record<string, AnyMySqlColumnBuilder> = {};
-    const uniqueIndexes: Record<string, any> = {};
-    for (const prop of schema.props) {
-        columns[prop.name] = prop.db(prop);
-        if (prop.unique) {
-            const key = prop.name + 'Index';
-            uniqueIndexes[key] = (table: Record<string, AnyMySqlColumn>) => uniqueIndex(key).on(table[prop.name]);
-        }
-    }
-    const extras = (table: Record<string, any>) => {
-        const out: Record<string, any> = {};
-        for (const key in uniqueIndexes) {
-            out[key] = uniqueIndexes[key](table);
-        }
-        return out;
-    }
-    return mysqlTable(schema.tableName, columns, extras)
-}
 
 export const users = makeTable(userSchema);
 
