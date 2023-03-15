@@ -1,4 +1,6 @@
-import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, InferModel } from 'drizzle-orm/mysql-core';
+import { AnyMySqlColumn, MySqlColumn, AnyMySqlTable, boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, InferModel } from 'drizzle-orm/mysql-core';
+import { AnyMySqlColumnBuilder } from 'drizzle-orm/mysql-core/columns/common';
+
 import { v4 } from 'uuid';
 import { z } from 'zod';
 
@@ -50,7 +52,7 @@ export type vingProp = {
     //    name: keyof ModelProps<T>,
     length?: number,
     default: boolean | string | number | Date | undefined | (() => boolean | string | number | Date),
-    db: (prop: vingProp) => any,
+    db: (prop: vingProp) => AnyMySqlColumnBuilder,
     zod?: (prop: vingProp) => any,
     required: boolean,
     relation?: {
@@ -58,8 +60,8 @@ export type vingProp = {
         name: string,
     },
     unique?: boolean,
-    enums?: readonly string[] | readonly boolean[],
-    enumLabels?: string[],
+    enums?: [string, ...string[]],
+    enumLabels?: [string, ...string[]],
     view: string[],
     edit: string[],
     noSetAll?: boolean,
@@ -67,6 +69,7 @@ export type vingProp = {
 
 export type vingSchema = {
     kind: string,
+    tableName: string,
     owner: string[]
     props: vingProp[],
 }
@@ -77,6 +80,7 @@ export type ArrayToTuple<T extends ReadonlyArray<string>, V = string> = keyof {
 
 export const userSchema: vingSchema = {
     kind: 'User',
+    tableName: 'users',
     owner: ['$id', 'admin'],
     props: [
         {
@@ -146,11 +150,21 @@ export const userSchema: vingSchema = {
             edit: [],
         },
         {
+            name: "passwordType",
+            required: false,
+            default: 'no-password-specified',
+            db: (prop: vingProp) => mysqlEnum(prop.name, prop.enums || ['']).notNull().default(stringDefault(prop)),
+            enums: ['bcrypt'],
+            enumLabels: ['Bcrypt'],
+            view: [],
+            edit: [],
+        },
+        {
             name: 'useAsDisplayName',
             required: true,
             length: 20,
             default: 'username',
-            db: (prop: vingProp) => varchar(prop.name, lengthDefault(prop)).notNull().default(stringDefault(prop)),
+            db: (prop: vingProp) => mysqlEnum(prop.name, prop.enums || ['']).notNull().default(stringDefault(prop)),
             enums: ['username', 'email', 'realName'],
             enumLabels: ['Username', 'Email Address', 'Real Name'],
             view: [],
@@ -161,7 +175,6 @@ export const userSchema: vingSchema = {
             required: true,
             default: false,
             db: (prop: vingProp) => boolean(prop.name).notNull().default(booleanDefault(prop)),
-            enums: [false, true],
             enumLabels: ['Not Admin', 'Admin'],
             view: ['owner'],
             edit: ['admin'],
@@ -171,7 +184,6 @@ export const userSchema: vingSchema = {
             required: true,
             default: false,
             db: (prop: vingProp) => boolean(prop.name).notNull().default(booleanDefault(prop)),
-            enums: [false, true],
             enumLabels: ['Not a Software Developer', 'Software Developer'],
             view: [],
             edit: ['owner'],
@@ -186,7 +198,7 @@ export const makeTable = (schema: vingSchema) => {
         fields[prop.name] = prop.db(prop);
         if (prop.unique) {
             const key = prop.name + 'Index';
-            uniqueIndexes[key] = (table: Record<string, any>, field: vingProp) => uniqueIndex(key).on(table[field.name]);
+            uniqueIndexes[key] = (table: Record<string, AnyMySqlColumn>) => uniqueIndex(key).on(table[prop.name]);
         }
     }
     const extras = (table: Record<string, any>) => {
@@ -196,17 +208,20 @@ export const makeTable = (schema: vingSchema) => {
         }
         return out;
     }
-    return mysqlTable(schema.kind.toLowerCase(), fields, extras)
+    return mysqlTable(schema.tableName, fields, extras)
 }
+
+//export const users = makeTable(userSchema);
+
 
 export const users = mysqlTable('users',
     {
         id: varchar('id', { length: 36 }).primaryKey(),
         createdAt: timestamp('createdAt').defaultNow().notNull(),
         updatedAt: timestamp('updatedAt').defaultNow().notNull(),
-        username: varchar('username', { length: 60 }).notNull(),
-        email: varchar('email', { length: 256 }).notNull(),
-        realName: varchar('realName', { length: 60 }).notNull(),
+        username: varchar('username', { length: 60 }).notNull().default(''),
+        email: varchar('email', { length: 256 }).notNull().default(''),
+        realName: varchar('realName', { length: 60 }).notNull().default(''),
         password: varchar('password', { length: 256 }).notNull().default('no-password-specified'),
         passwordType: mysqlEnum('passwordType', ['bcrypt']).default('bcrypt').notNull(),
         useAsDisplayName: mysqlEnum('useAsDisplayName', ['username', 'email', 'realName']).default('username').notNull(),
@@ -219,5 +234,5 @@ export const users = mysqlTable('users',
     })
 );
 
-export type User = InferModel<typeof users>; // return type when queried
-export type NewUser = InferModel<typeof users, 'insert'>; // insert type
+//export type User = InferModel<typeof users>; // return type when queried
+//export type NewUser = InferModel<typeof users, 'insert'>; // insert type
