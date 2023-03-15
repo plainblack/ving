@@ -2,7 +2,7 @@ import { AnyMySqlColumn, MySqlColumn, AnyMySqlTable, boolean, mysqlEnum, mysqlTa
 import { AnyMySqlColumnBuilder } from 'drizzle-orm/mysql-core/columns/common';
 
 import { v4 } from 'uuid';
-import { z } from 'zod';
+import { z, ZodTypeAny } from 'zod';
 
 export const stringDefault = (prop: vingProp): string => {
     if (typeof prop.default == 'string')
@@ -74,7 +74,7 @@ export type vingProp = {
     length?: number,
     default: boolean | string | number | Date | undefined | (() => boolean | string | number | Date),
     db: (prop: vingProp) => AnyMySqlColumnBuilder,
-    zod?: (prop: vingProp) => any,
+    zod?: (prop: vingProp) => ZodTypeAny,
     required: boolean,
     relation?: {
         type: '1:n' | 'n:1' | 'n:n' | '1:1',
