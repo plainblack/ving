@@ -152,7 +152,7 @@ export const userSchema: vingSchema = {
         {
             name: "passwordType",
             required: false,
-            default: 'no-password-specified',
+            default: 'bcrypt',
             db: (prop: vingProp) => mysqlEnum(prop.name, prop.enums || ['']).notNull().default(stringDefault(prop)),
             enums: ['bcrypt'],
             enumLabels: ['Bcrypt'],
@@ -211,9 +211,9 @@ export const makeTable = (schema: vingSchema) => {
     return mysqlTable(schema.tableName, fields, extras)
 }
 
-//export const users = makeTable(userSchema);
+export const users = makeTable(userSchema);
 
-
+/*
 export const users = mysqlTable('users',
     {
         id: varchar('id', { length: 36 }).primaryKey(),
@@ -233,6 +233,7 @@ export const users = mysqlTable('users',
         emailIndex: uniqueIndex('emailIndex').on(users.email),
     })
 );
+*/
 
-//export type User = InferModel<typeof users>; // return type when queried
-//export type NewUser = InferModel<typeof users, 'insert'>; // insert type
+export type User = InferModel<typeof users>; // return type when queried
+export type NewUser = InferModel<typeof users, 'insert'>; // insert type
