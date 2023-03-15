@@ -1,6 +1,8 @@
-import { foreignKey, mysqlTable, timestamp, text, varchar, InferModel } from 'drizzle-orm/mysql-core';
+import { vingSchema, vingProp } from '../../types/db';
+import { uuid, dbPk, dbTimestamp, dbString, zodString, makeTable, dbText, zodText, dbId } from '../helpers';
+import { InferModel } from 'drizzle-orm/mysql-core';
 import { users } from './users';
-
+/*
 export const apikeys = mysqlTable('apikeys',
     {
         id: varchar('id', { length: 36 }).primaryKey(),
@@ -13,6 +15,92 @@ export const apikeys = mysqlTable('apikeys',
         userId: varchar('userId', { length: 36 }).notNull().references(() => users.id),
     },
 );
+*/
+
+export const apikeySchema: vingSchema = {
+    kind: 'APIKey',
+    tableName: 'apikeys',
+    owner: ['$id', 'admin'],
+    props: [
+        {
+            name: "id",
+            required: true,
+            length: 36,
+            default: () => uuid(),
+            db: (prop: vingProp) => dbPk(prop),
+            view: ['public'],
+            edit: [],
+        },
+        {
+            name: "createdAt",
+            required: true,
+            default: () => new Date(),
+            db: (prop: vingProp) => dbTimestamp(prop),
+            view: ['public'],
+            edit: [],
+        },
+        {
+            name: "updatedAt",
+            required: true,
+            default: () => new Date(),
+            db: (prop: vingProp) => dbTimestamp(prop),
+            view: ['public'],
+            edit: [],
+        },
+        {
+            name: 'name',
+            required: true,
+            length: 60,
+            db: (prop: vingProp) => dbString(prop),
+            zod: (prop: vingProp) => zodString(prop),
+            default: '',
+            view: ['public'],
+            edit: ['owner'],
+        },
+        {
+            name: 'url',
+            required: true,
+            db: (prop: vingProp) => dbText(prop),
+            zod: (prop: vingProp) => zodText(prop).url(),
+            default: '',
+            view: [],
+            edit: ['owner'],
+        },
+        {
+            name: 'reason',
+            required: false,
+            default: '',
+            db: (prop: vingProp) => dbText(prop),
+            zod: (prop: vingProp) => zodText(prop),
+            view: [],
+            edit: ['owner'],
+        },
+        {
+            name: 'privateKey',
+            required: false,
+            length: 39,
+            default: () => 'pk_' + uuid(),
+            db: (prop: vingProp) => dbString(prop),
+            view: [],
+            edit: [],
+        },
+        {
+            name: 'userId',
+            required: true,
+            db: (prop: vingProp) => dbId(prop).references(() => users.id),
+            relation: {
+                type: '1:n',
+                name: 'user',
+            },
+            default: undefined,
+            view: ['public'],
+            edit: [],
+        },
+    ],
+};
+
+export const apikeys = makeTable(apikeySchema);
+
 
 export type APIKey = InferModel<typeof apikeys>; // return type when queried
 export type NewAPIKey = InferModel<typeof apikeys, 'insert'>; // insert type

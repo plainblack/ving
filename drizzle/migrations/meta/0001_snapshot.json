@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "03448460-2316-4cdd-b605-0a28a8ac9ae1",
+  "id": "4abaac61-aea8-49ca-917c-374070964035",
   "prevId": "9914eb61-48d8-4546-bfbb-19e792e0bac9",
   "tables": {
     "apikeys": {
@@ -35,15 +35,16 @@
           "type": "varchar(60)",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "''"
         },
         "url": {
           "name": "url",
-          "type": "varchar(256)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "''"
+          "default": "('')"
         },
         "reason": {
           "name": "reason",
@@ -55,10 +56,11 @@
         },
         "privateKey": {
           "name": "privateKey",
-          "type": "varchar(36)",
+          "type": "varchar(39)",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "''"
         },
         "userId": {
           "name": "userId",

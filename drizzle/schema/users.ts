@@ -10,7 +10,6 @@ export const userSchema: vingSchema = {
         {
             name: "id",
             required: true,
-            length: 36,
             default: () => uuid(),
             db: (prop: vingProp) => dbPk(prop),
             view: ['public'],

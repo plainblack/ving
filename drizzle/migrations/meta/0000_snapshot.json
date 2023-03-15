@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "9914eb61-48d8-4546-bfbb-19e792e0bac9",
+  "id": "3578c638-f537-47ee-acf0-40e405a9ce6f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "apikeys": {
@@ -35,30 +35,30 @@
           "type": "varchar(60)",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "''"
         },
         "url": {
           "name": "url",
-          "type": "varchar(256)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "''"
+          "autoincrement": false
         },
         "reason": {
           "name": "reason",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "('')"
+          "autoincrement": false
         },
         "privateKey": {
           "name": "privateKey",
-          "type": "varchar(36)",
+          "type": "varchar(39)",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "''"
         },
         "userId": {
           "name": "userId",
@@ -115,21 +115,24 @@
           "type": "varchar(60)",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "''"
         },
         "email": {
           "name": "email",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "''"
         },
         "realName": {
           "name": "realName",
           "type": "varchar(60)",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "''"
         },
         "password": {
           "name": "password",
