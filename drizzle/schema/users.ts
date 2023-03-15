@@ -68,8 +68,6 @@ export const userSchema: vingSchema = {
             required: false,
             default: 'no-password-specified',
             db: (prop: vingProp) => dbString(prop),
-            enums: ['bcrypt'],
-            enumLabels: ['Bcrypt'],
             view: [],
             edit: [],
         },
