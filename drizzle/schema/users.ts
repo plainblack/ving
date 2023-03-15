@@ -4,7 +4,7 @@ import { AnyMySqlColumnBuilder } from 'drizzle-orm/mysql-core/columns/common';
 import { v4 } from 'uuid';
 import { z } from 'zod';
 
-export const stringDefault = (prop: vingProp) => {
+export const stringDefault = (prop: vingProp): string => {
     if (typeof prop.default == 'string')
         return prop.default;
     if (typeof prop.default == 'function') {
@@ -15,7 +15,7 @@ export const stringDefault = (prop: vingProp) => {
     return '';
 }
 
-export const numberDefault = (prop: vingProp) => {
+export const numberDefault = (prop: vingProp): number => {
     if (typeof prop.default == 'number')
         return prop.default;
     if (typeof prop.default == 'function') {
@@ -26,13 +26,13 @@ export const numberDefault = (prop: vingProp) => {
     return 0;
 }
 
-export const lengthDefault = (prop: vingProp) => {
+export const lengthDefault = (prop: vingProp): { length: number } => {
     if (typeof prop.length == 'number')
         return { length: prop.length };
     return { length: 256 };
 }
 
-export const booleanDefault = (prop: vingProp) => {
+export const booleanDefault = (prop: vingProp): boolean => {
     if (typeof prop.default == 'boolean')
         return prop.default;
     if (typeof prop.default == 'function') {
@@ -192,10 +192,10 @@ export const userSchema: vingSchema = {
 };
 
 export const makeTable = (schema: vingSchema) => {
-    const fields: Record<string, any> = {};
+    const columns: Record<string, AnyMySqlColumnBuilder> = {};
     const uniqueIndexes: Record<string, any> = {};
     for (const prop of schema.props) {
-        fields[prop.name] = prop.db(prop);
+        columns[prop.name] = prop.db(prop);
         if (prop.unique) {
             const key = prop.name + 'Index';
             uniqueIndexes[key] = (table: Record<string, AnyMySqlColumn>) => uniqueIndex(key).on(table[prop.name]);
@@ -208,7 +208,7 @@ export const makeTable = (schema: vingSchema) => {
         }
         return out;
     }
-    return mysqlTable(schema.tableName, fields, extras)
+    return mysqlTable(schema.tableName, columns, extras)
 }
 
 export const users = makeTable(userSchema);
