@@ -26,7 +26,7 @@ export const numberDefault = (prop: vingProp): number => {
     return 0;
 }
 
-export const lengthDefault = (prop: vingProp): { length: number } => {
+export const dbColLength = (prop: vingProp): { length: number } => {
     if (typeof prop.length == 'number')
         return { length: prop.length };
     return { length: 256 };
@@ -44,8 +44,29 @@ export const booleanDefault = (prop: vingProp): boolean => {
 }
 
 export const zodString = (prop: vingProp) => {
-    return z.string().min(1).max(prop.length || 256)
+    return z.string().min(1).max(prop.length || 256);
 }
+
+export const dbTimestamp = (prop: vingProp) => {
+    return timestamp(prop.name).defaultNow().notNull();
+}
+
+export const dbString = (prop: vingProp) => {
+    return varchar(prop.name, dbColLength(prop)).notNull().default(stringDefault(prop));
+}
+
+export const dbEnum = (prop: vingProp) => {
+    return mysqlEnum(prop.name, prop.enums || ['']).notNull().default(stringDefault(prop));
+}
+
+export const dbBoolean = (prop: vingProp) => {
+    return boolean(prop.name).notNull().default(booleanDefault(prop));
+}
+
+export const dbPk = (prop: vingProp) => {
+    return varchar(prop.name, dbColLength(prop)).primaryKey();
+}
+
 
 export type vingProp = {
     name: string,
@@ -88,7 +109,7 @@ export const userSchema: vingSchema = {
             required: true,
             length: 36,
             default: () => v4(),
-            db: (prop: vingProp) => varchar(prop.name, lengthDefault(prop)).primaryKey(),
+            db: (prop: vingProp) => dbPk(prop),
             view: ['public'],
             edit: [],
         },
@@ -96,7 +117,7 @@ export const userSchema: vingSchema = {
             name: "createdAt",
             required: true,
             default: () => new Date(),
-            db: (prop: vingProp) => timestamp(prop.name).defaultNow().notNull(),
+            db: (prop: vingProp) => dbTimestamp(prop),
             view: ['public'],
             edit: [],
         },
@@ -104,7 +125,7 @@ export const userSchema: vingSchema = {
             name: "updatedAt",
             required: true,
             default: () => new Date(),
-            db: (prop: vingProp) => timestamp(prop.name).defaultNow().notNull(),
+            db: (prop: vingProp) => dbTimestamp(prop),
             view: ['public'],
             edit: [],
         },
@@ -114,8 +135,8 @@ export const userSchema: vingSchema = {
             unique: true,
             length: 60,
             default: '',
-            db: (prop: vingProp) => varchar(prop.name, lengthDefault(prop)).notNull().default(stringDefault(prop)),
-            zod: (prop: vingProp) => z.string().min(1).max(prop.length || 256),
+            db: (prop: vingProp) => dbString(prop),
+            zod: (prop: vingProp) => zodString(prop),
             view: [],
             edit: ['owner'],
         },
@@ -124,8 +145,8 @@ export const userSchema: vingSchema = {
             required: true,
             unique: true,
             default: '',
-            db: (prop: vingProp) => varchar(prop.name, lengthDefault(prop)).notNull().default(stringDefault(prop)),
-            zod: (prop: vingProp) => z.string().min(1).max(prop.length || 256).email(),
+            db: (prop: vingProp) => dbString(prop),
+            zod: (prop: vingProp) => zodString(prop).email(),
             view: [],
             edit: ['owner'],
         },
@@ -134,8 +155,8 @@ export const userSchema: vingSchema = {
             required: true,
             length: 60,
             default: '',
-            db: (prop: vingProp) => varchar(prop.name, lengthDefault(prop)).notNull().default(stringDefault(prop)),
-            zod: (prop: vingProp) => z.string().min(1).max(prop.length || 256),
+            db: (prop: vingProp) => dbString(prop),
+            zod: (prop: vingProp) => zodString(prop),
             view: [],
             edit: ['owner'],
         },
@@ -143,7 +164,7 @@ export const userSchema: vingSchema = {
             name: "password",
             required: false,
             default: 'no-password-specified',
-            db: (prop: vingProp) => varchar(prop.name, lengthDefault(prop)).notNull().default(stringDefault(prop)),
+            db: (prop: vingProp) => dbString(prop),
             enums: ['bcrypt'],
             enumLabels: ['Bcrypt'],
             view: [],
@@ -153,7 +174,7 @@ export const userSchema: vingSchema = {
             name: "passwordType",
             required: false,
             default: 'bcrypt',
-            db: (prop: vingProp) => mysqlEnum(prop.name, prop.enums || ['']).notNull().default(stringDefault(prop)),
+            db: (prop: vingProp) => dbEnum(prop),
             enums: ['bcrypt'],
             enumLabels: ['Bcrypt'],
             view: [],
@@ -164,7 +185,7 @@ export const userSchema: vingSchema = {
             required: true,
             length: 20,
             default: 'username',
-            db: (prop: vingProp) => mysqlEnum(prop.name, prop.enums || ['']).notNull().default(stringDefault(prop)),
+            db: (prop: vingProp) => dbEnum(prop),
             enums: ['username', 'email', 'realName'],
             enumLabels: ['Username', 'Email Address', 'Real Name'],
             view: [],
@@ -174,7 +195,7 @@ export const userSchema: vingSchema = {
             name: 'admin',
             required: true,
             default: false,
-            db: (prop: vingProp) => boolean(prop.name).notNull().default(booleanDefault(prop)),
+            db: (prop: vingProp) => dbBoolean(prop),
             enumLabels: ['Not Admin', 'Admin'],
             view: ['owner'],
             edit: ['admin'],
@@ -183,7 +204,7 @@ export const userSchema: vingSchema = {
             name: 'developer',
             required: true,
             default: false,
-            db: (prop: vingProp) => boolean(prop.name).notNull().default(booleanDefault(prop)),
+            db: (prop: vingProp) => dbBoolean(prop),
             enumLabels: ['Not a Software Developer', 'Software Developer'],
             view: [],
             edit: ['owner'],
