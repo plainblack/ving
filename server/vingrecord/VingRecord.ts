@@ -7,10 +7,15 @@ import crypto from 'crypto';
 import _ from 'lodash';
 import type { MySql2Database } from 'drizzle-orm/mysql2';
 import type { SQL } from 'drizzle-orm/sql';
+import { MySqlSelectBuilder, MySqlSelect } from 'drizzle-orm/mysql-core/query-builders'
+import type { JoinNullability, SelectMode } from 'drizzle-orm/mysql-core/query-builders/select.types';
+import { sql } from 'drizzle-orm';
+import { like, eq, asc, desc, and, or } from 'drizzle-orm/expressions';
+import { Name } from "drizzle-orm/table";
 
 export const findVingSchema = <T extends ModelName>(nameToFind: string = '-unknown-') => {
     try {
-        return findObject('kind', nameToFind, vingSchemas) as vingSchema;
+        return findObject('tableName', nameToFind, vingSchemas) as vingSchema;
     }
     catch {
         throw ouch(404, 'ving schema ' + nameToFind + ' not found');
@@ -53,10 +58,10 @@ export interface VingRecord<T extends ModelName> {
     updateAndVerify(params: ModelProps<T>, currentUser?: AuthorizedUser): void,
 }
 
-export type useVingRecordOptions<T extends ModelName> = { prisma: IPrisma<T>, props: ModelProps<T>, inserted?: boolean }
+export type useVingRecordOptions<T extends ModelName> = { db: MySql2Database, model: any, props: ModelProps<T>, inserted?: boolean }
 
 export function useVingRecord<T extends ModelName>(
-    { prisma, props, inserted = true }: useVingRecordOptions<T>
+    { db, model, props, inserted = true }: useVingRecordOptions<T>
 ) {
 
     const VingRecord: VingRecord<T> = {
@@ -321,19 +326,18 @@ export interface VingKind<T extends ModelName, VR extends VingRecord<'User'>> {
     create(props: ModelProps<T>): Promise<VR>,
     createAndVerify(props: ModelProps<T>, currentUser?: AuthorizedUser): Promise<VR>,
     getDefaultArgs(args?: object): object,
-    delete(args?: SQL): Promise<VR>,
-    findFirst(args?: TModel[T]['findFirstOrThrow']['args']): Promise<VR>,
-    findUnique(args?: TModel[T]['findUniqueOrThrow']['args']): Promise<VR>,
+    select(): any,
+    delete(): any,
+    update(): any,
+    insert(): any,
+    count(whereCallback: (condition?: SQL) => SQL | undefined): Promise<number>,
     find(id: TModel[T]['findUniqueOrThrow']['payload']['scalars']['id']): Promise<VR>,
     findMany(args?: TModel[T]['findMany']['args']): Promise<VR[]>,
-    deleteMany(args?: TModel[T]['deleteMany']['args']): Promise<{ count: number }>,
-    updateMany(args?: TModel[T]['updateMany']['args']): Promise<{ count: number }>,
-    count(args?: TModel[T]['count']['args']): Promise<number>,
     getOptions(): Describe<T>['options'],
 }
 
 export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
-    { db, model, recordComposable, propDefaults }: { db: MySql2Database, model: ModelProps<T>, recordComposable: (opts: useVingRecordOptions<T>) => VR, propDefaults: ModelProps<T> }
+    { db, model, recordComposable, propDefaults }: { db: MySql2Database, model: any, recordComposable: (opts: useVingRecordOptions<T>) => VR, propDefaults: ModelProps<T> }
 ) {
 
     const VingKind: VingKind<T, VR> = {
@@ -390,7 +394,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
 
         mint(props = {}) {
             let data = { ...propDefaults, ...props };
-            for (const field of findVingSchema<T>(prisma.name).props) {
+            for (const field of findVingSchema(model[Name]).props) {
                 if (data[field.name as keyof ModelProps<T>] !== undefined) {
                     continue;
                 }
@@ -408,7 +412,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
                     }
                 }
             }
-            return recordComposable({ prisma, props: data, inserted: false });
+            return recordComposable({ db, model, props: data, inserted: false });
         },
 
         async create(props) {
@@ -430,58 +434,35 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
             return _.defaults(defaultArgs, args);
         },
 
-        async delete(args) {
-            const customArgs = this.getDefaultArgs(args) as TModel[T]['delete']['args'];
-            const props = await prisma.delete(customArgs) as ModelProps<T>;
-            return recordComposable({ prisma, props });
-        },
+        select: () => db.select().from(model),
+        delete: () => db.delete(model),
+        update: () => db.update(model),
+        insert: () => db.insert(model),
 
-        async findFirst(args) {
-            const customArgs = this.getDefaultArgs(args) as TModel[T]['findFirstOrThrow']['args'];
-            const props = await prisma.findFirstOrThrow(customArgs) as ModelProps<T>;
-            return recordComposable({ prisma, props });
-        },
-
-        async findUnique(args) {
-            const customArgs = this.getDefaultArgs(args) as TModel[T]['findUniqueOrThrow']['args'];
-            const props = await prisma.findUniqueOrThrow(customArgs) as ModelProps<T>;
-            return recordComposable({ prisma, props });
+        async count(whereCallback: (condition?: SQL) => SQL | undefined = (c) => c) {
+            return (await db.select({ count: sql<number>`count(*)`.as('count') }).from(model).where(whereCallback()))[0].count;
         },
 
         async find(id) {
-            const props = await prisma.findUniqueOrThrow({ where: { id: id } }) as ModelProps<T>;
-            return recordComposable({ prisma, props });
+            const props = await this.select.where(eq(model.id, id)) as ModelProps<T>;
+            return recordComposable({ db, model, props });
         },
 
-        async findMany(args) {
-            const customArgs = this.getDefaultArgs(args) as TModel[T]['findMany']['args'];
-            const results = (await prisma.findMany(customArgs)) as ModelProps<T>[];
-            return results.map(props => recordComposable({ prisma, props }));
-        },
-
-        async deleteMany(args) {
-            const customArgs = this.getDefaultArgs(args) as TModel[T]['deleteMany']['args'];
-            return await prisma.deleteMany(customArgs);
-        },
-
-        async updateMany(args) {
-            const customArgs = this.getDefaultArgs(args) as TModel[T]['updateMany']['args'];
-            return await prisma.updateMany(customArgs);
-        },
-
-        async count(args?: TModel[T]['count']['args']) {
-            const customArgs = this.getDefaultArgs(args) as TModel[T]['count']['args'];
-            return await prisma.count(customArgs);
+        async findMany(whereCallback: (condition?: SQL) => SQL | undefined = (c) => c) {
+            //  const customArgs = this.getDefaultArgs(args) as TModel[T]['findMany']['args'];
+            const results: ModelProps<T>[] = await this.select.where(whereCallback());
+            return results.map(props => recordComposable({ db, model, props }));
         },
 
         getOptions() {
-            const out: Describe<T>['options'] = {};
-            for (const field of findVingSchema<T>(prisma.name).fields) {
-                if (field.ving.options.length > 0) {
-                    out[field.name] = field.ving.options;
+            const options: Describe<T>['options'] = {};
+            for (const field of findVingSchema<T>(model[Name]).props) {
+                if (field.enums && field.enums.length > 0) {
+                    options[field.name] = enum2options(field.enums, field.enumLabels);
                 }
+
             }
-            return out;
+            return options;
         },
     }
     return VingKind;
