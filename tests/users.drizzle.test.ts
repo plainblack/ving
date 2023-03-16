@@ -24,8 +24,16 @@ describe('users', async () => {
         expect(result[0].realName).toBe('Warden');
     });
 
-    test("can countr", async () => {
-        const result = await db.select({ count: sql`count(*)`.as('count') }).from(users).where(eq(users.id, 'a'));
+    test("can count", async () => {
+        const result = await db.select({ count: sql<number>`count(*)` }).from(users).where(eq(users.id, 'a'));
+        expect(result[0].count).toBe(1);
+    });
+
+    test("can count with column", async () => {
+        const countWithColumn = (column: AnyMySqlColumn) => {
+            return sql<number>`count(${column})`
+        }
+        const result = await db.select({ count: countWithColumn(users.username) }).from(users).where(eq(users.id, 'a'));
         expect(result[0].count).toBe(1);
     });
 
