@@ -89,6 +89,8 @@ export const userSchema: vingSchema = {
     ],
 };
 
+export const RoleOptions = ["admin", "developer"] as const;
+
 export const users = makeTable(userSchema);
 
 /*
