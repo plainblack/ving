@@ -3,7 +3,6 @@ import type { ZodTypeAny } from 'zod';
 import type { User } from '../drizzle/schema/users';
 import { RoleOptions } from '../drizzle/schema/users';
 import type { APIKey } from '../drizzle/schema/apikeys';
-import type { ArrayToTuple } from './util'
 
 export type Model = {
     User: User,
@@ -16,7 +15,7 @@ export type ModelProps<T extends ModelName> = Partial<Model[T]>;
 
 export type AuthorizedUser = User;
 
-export type Roles = Pick<ModelProps<'User'>, ArrayToTuple<typeof RoleOptions>>;
+export type Roles = Pick<ModelProps<'User'>, typeof RoleOptions[number]>;
 export type ExtendedRoleOptions = keyof Roles | "public" | "owner" | string;
 
 export type RoleProps = Roles & Pick<ModelProps<'User'>, 'id' | 'password'>;
