@@ -1,5 +1,5 @@
 import { vingSchema, vingProp } from '../../types/db';
-import { uuid, dbPk, dbTimestamp, dbString, zodString, makeTable, dbText, zodText, dbId } from '../helpers';
+import { uuid, baseSchemaProps, dbString, zodString, makeTable, dbText, zodText, dbId } from '../helpers';
 import { InferModel } from 'drizzle-orm/mysql-core';
 import { users } from './users';
 /*
@@ -22,31 +22,7 @@ export const apikeySchema: vingSchema = {
     tableName: 'apikeys',
     owner: ['$id', 'admin'],
     props: [
-        {
-            name: "id",
-            required: true,
-            length: 36,
-            default: () => uuid(),
-            db: (prop: vingProp) => dbPk(prop),
-            view: ['public'],
-            edit: [],
-        },
-        {
-            name: "createdAt",
-            required: true,
-            default: () => new Date(),
-            db: (prop: vingProp) => dbTimestamp(prop),
-            view: ['public'],
-            edit: [],
-        },
-        {
-            name: "updatedAt",
-            required: true,
-            default: () => new Date(),
-            db: (prop: vingProp) => dbTimestamp(prop),
-            view: ['public'],
-            edit: [],
-        },
+        ...baseSchemaProps,
         {
             name: 'name',
             required: true,
@@ -100,7 +76,6 @@ export const apikeySchema: vingSchema = {
 };
 
 export const apikeys = makeTable(apikeySchema);
-
 
 export type APIKey = InferModel<typeof apikeys>; // return type when queried
 export type NewAPIKey = InferModel<typeof apikeys, 'insert'>; // insert type

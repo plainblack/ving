@@ -2,8 +2,9 @@ import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text }
 import type { AnyMySqlColumn } from 'drizzle-orm/mysql-core';
 import { AnyMySqlColumnBuilder } from 'drizzle-orm/mysql-core/columns/common';
 import { vingSchema, vingProp } from '../types/db';
-export { v4 as uuid } from 'uuid';
+import { v4 } from 'uuid';
 import { z } from 'zod';
+export const uuid = v4;
 
 export const dbColLength = (prop: vingProp): { length: number } => {
     if (typeof prop.length == 'number')
@@ -105,3 +106,31 @@ export const makeTable = (schema: vingSchema) => {
     }
     return mysqlTable(schema.tableName, columns, extras)
 }
+
+export const baseSchemaProps: vingProp[] = [
+    {
+        name: "id",
+        required: true,
+        length: 36,
+        default: () => uuid(),
+        db: (prop: vingProp) => dbPk(prop),
+        view: ['public'],
+        edit: [],
+    },
+    {
+        name: "createdAt",
+        required: true,
+        default: () => new Date(),
+        db: (prop: vingProp) => dbTimestamp(prop),
+        view: ['public'],
+        edit: [],
+    },
+    {
+        name: "updatedAt",
+        required: true,
+        default: () => new Date(),
+        db: (prop: vingProp) => dbTimestamp(prop),
+        view: ['public'],
+        edit: [],
+    },
+];

@@ -1,5 +1,5 @@
 import { vingSchema, vingProp } from '../../types/db';
-import { uuid, dbPk, dbTimestamp, dbString, zodString, dbEnum, dbBoolean, makeTable } from '../helpers';
+import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, makeTable } from '../helpers';
 import type { InferModel } from 'drizzle-orm/mysql-core';
 
 export const userSchema: vingSchema = {
@@ -7,30 +7,7 @@ export const userSchema: vingSchema = {
     tableName: 'users',
     owner: ['$id', 'admin'],
     props: [
-        {
-            name: "id",
-            required: true,
-            default: () => uuid(),
-            db: (prop: vingProp) => dbPk(prop),
-            view: ['public'],
-            edit: [],
-        },
-        {
-            name: "createdAt",
-            required: true,
-            default: () => new Date(),
-            db: (prop: vingProp) => dbTimestamp(prop),
-            view: ['public'],
-            edit: [],
-        },
-        {
-            name: "updatedAt",
-            required: true,
-            default: () => new Date(),
-            db: (prop: vingProp) => dbTimestamp(prop),
-            view: ['public'],
-            edit: [],
-        },
+        ...baseSchemaProps,
         {
             name: "username",
             required: true,
@@ -111,7 +88,6 @@ export const userSchema: vingSchema = {
         },
     ],
 };
-
 
 export const users = makeTable(userSchema);
 
