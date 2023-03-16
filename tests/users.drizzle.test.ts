@@ -44,6 +44,15 @@ describe('users', async () => {
         expect(result.length).toBe(0);
     });
 
+    test("use a where callback to extend a query but with nothing to pass in", async () => {
+        const startIt = (whereCallback: (condition: SQL) => SQL | undefined = (c) => c) => {
+            return db.select().from(users).where(whereCallback(eq(users.developer, true)));
+        }
+        const result = await startIt();
+        expect(result.length).toBe(0);
+    });
+
+
     // can't figure out the types on this
     /*
     test("can pass order by", async () => {
