@@ -77,5 +77,14 @@ export const apikeySchema: vingSchema = {
 
 export const apikeys = makeTable(apikeySchema);
 
-export type APIKey = InferModel<typeof apikeys>; // return type when queried
-export type NewAPIKey = InferModel<typeof apikeys, 'insert'>; // insert type
+//export type APIKey = InferModel<typeof apikeys>; // return type when queried
+//export type NewAPIKey = InferModel<typeof apikeys, 'insert'>; // insert type
+export type APIKey = {
+    id: string,
+    createdAt: Date,
+    updatedAt: Date,
+    name: string,
+    url: string,
+    privateKey: string,
+    userId: string,
+}

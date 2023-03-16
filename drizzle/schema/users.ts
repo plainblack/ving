@@ -113,5 +113,20 @@ export const users = mysqlTable('users',
 );
 */
 
-export type User = InferModel<typeof users>; // return type when queried
-export type NewUser = InferModel<typeof users, 'insert'>; // insert type
+//export type User = InferModel<typeof users>; // return type when queried
+//export type NewUser = InferModel<typeof users, 'insert'>; // insert type
+
+// have to do this until infererence works
+export type User = {
+    id: string,
+    createdAt: Date,
+    updatedAt: Date,
+    username: string,
+    email: string,
+    realName: string,
+    password: string,
+    passwordType: 'bcrypt',
+    useAsDisplayName: 'username' | 'email' | 'realName',
+    admin: boolean,
+    developer: boolean
+}
