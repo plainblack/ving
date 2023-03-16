@@ -3,25 +3,30 @@ import { db } from '../drizzle/db';
 import { like, eq, asc, desc, and } from 'drizzle-orm/expressions';
 import { sql } from 'drizzle-orm';
 import { ValueOrArray } from 'drizzle-orm/utils';
-import { AnyMySqlColumn } from 'drizzle-orm/mysql-core';
+import { AnyMySqlColumn, MySqlTable, MySqlColumn } from 'drizzle-orm/mysql-core';
 import { MySqlSelectBuilder, MySqlSelect } from 'drizzle-orm/mysql-core/query-builders'
 import { users, User } from '../drizzle/schema/users';
 import type { SQL } from 'drizzle-orm/sql';
 import type { JoinNullability, SelectMode } from 'drizzle-orm/mysql-core/query-builders/select.types';
-
+import type { MySql2Database } from 'drizzle-orm/mysql2';
 
 describe('users', async () => {
 
     await db.delete(users).where(like(users.email, '%@shawshank.prison'));
 
-    test("can insert user", async () => {
+    test("can insert", async () => {
         const result = await db.insert(users).values({ id: 'a', username: 'warden', email: 'warden@shawshank.prison', realName: 'Warden' });
         expect(result[0].affectedRows).toBe(1);
     });
 
-    test("can select user", async () => {
+    test("can select", async () => {
         const result = await db.select().from(users).where(eq(users.id, 'a'));
         expect(result[0].realName).toBe('Warden');
+    });
+
+    test("can countr", async () => {
+        const result = await db.select({ count: sql`count(*)`.as('count') }).from(users).where(eq(users.id, 'a'));
+        expect(result[0].count).toBe(1);
     });
 
     test("can pass where clause", async () => {
@@ -76,6 +81,7 @@ describe('users', async () => {
     });
 
     test("can pass select query", async () => {
+
         const passSelect = async <
             TTableName extends string,
             TSelection,
@@ -87,14 +93,14 @@ describe('users', async () => {
         expect(result[0].realName).toBe('Warden');
     });
 
-    test("can update user", async () => {
+    test("can update", async () => {
         const result1 = await db.update(users).set({ realName: 'Samuel Norton' }).where(eq(users.id, 'a'));
         expect(result1[0].affectedRows).toBe(1);
         const result2 = await db.select().from(users).where(eq(users.id, 'a'));
         expect(result2[0].realName).toBe('Samuel Norton');
     });
 
-    test("can delete user", async () => {
+    test("can delete", async () => {
         const result = await db.delete(users).where(eq(users.id, 'a'));
         expect(result[0].affectedRows).toBe(1);
     });
