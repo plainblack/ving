@@ -1,24 +1,5 @@
 import type { AnyMySqlColumnBuilder } from 'drizzle-orm/mysql-core/columns/common';
 import type { ZodTypeAny } from 'zod';
-import type { User } from '../drizzle/schema/users';
-import { RoleOptions } from '../drizzle/schema/users';
-import type { APIKey } from '../drizzle/schema/apikeys';
-
-export type Model = {
-    User: User,
-    APIKey: APIKey,
-}
-
-export type ModelName = keyof Model;
-
-export type ModelProps<T extends ModelName> = Partial<Model[T]>;
-
-export type AuthorizedUser = User;
-
-export type Roles = Pick<ModelProps<'User'>, typeof RoleOptions[number]>;
-export type ExtendedRoleOptions = keyof Roles | "public" | "owner" | string;
-
-export type RoleProps = Roles & Pick<ModelProps<'User'>, 'id' | 'password'>;
 
 
 export type vingProp = {
