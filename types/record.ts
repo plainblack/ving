@@ -56,4 +56,4 @@ export type Describe<T extends ModelName> = {
     warnings?: { code: number, message: string }[]
 }
 
-
+export type warning = { code: number, message: string };
