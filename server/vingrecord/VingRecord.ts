@@ -12,6 +12,7 @@ import type { JoinNullability, SelectMode } from 'drizzle-orm/mysql-core/query-b
 import { sql } from 'drizzle-orm';
 import { like, eq, asc, desc, and, or } from 'drizzle-orm/expressions';
 import { Name } from "drizzle-orm/table";
+import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../../drizzle/helpers';
 
 export const findVingSchema = <T extends ModelName>(nameToFind: string = '-unknown-') => {
     try {
@@ -320,9 +321,9 @@ export function useVingRecord<T extends ModelName>(
 export interface VingKind<T extends ModelName, VR extends VingRecord<'User'>> {
     db: MySql2Database,
     model: ModelProps<T>,
-    describeList(params: DescribeListParams, args?: ModelProps<T>): Promise<DescribeList<T>>,
+    describeList(params: DescribeListParams, whereCallback?: (condition?: SQL) => SQL | undefined): Promise<DescribeList<T>>,
     copy(originalProps: ModelProps<T>): VR,
-    mint(props: ModelProps<T>): VR,
+    mint(props?: Partial<ModelProps<T>>): VR,
     create(props: ModelProps<T>): Promise<VR>,
     createAndVerify(props: ModelProps<T>, currentUser?: AuthorizedUser): Promise<VR>,
     getDefaultArgs(args?: object): object,
@@ -330,9 +331,9 @@ export interface VingKind<T extends ModelName, VR extends VingRecord<'User'>> {
     delete(): any,
     update(): any,
     insert(): any,
-    count(whereCallback: (condition?: SQL) => SQL | undefined): Promise<number>,
-    find(id: TModel[T]['findUniqueOrThrow']['payload']['scalars']['id']): Promise<VR>,
-    findMany(args?: TModel[T]['findMany']['args']): Promise<VR[]>,
+    count(whereCallback?: (condition?: SQL) => SQL | undefined): Promise<number>,
+    find(id: ModelProps<T>['id']): Promise<VR>,
+    findMany(whereCallback?: (condition?: SQL) => SQL | undefined): Promise<VR[]>,
     getOptions(): Describe<T>['options'],
 }
 
@@ -343,7 +344,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
     const VingKind: VingKind<T, VR> = {
         db,
         model,
-        async describeList(params = {}, args) {
+        async describeList(params = {}, whereCallback = (c) => c) {
             const itemsPerPage = params.itemsPerPage === undefined || params.itemsPerPage > 100 || params.itemsPerPage < 1 ? 10 : params.itemsPerPage;
             const pageNumber = params.pageNumber || 1;
             const maxItems = params.maxItems || 100000000000;
@@ -360,8 +361,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
             else if (pageNumber - fullPages > 1) {
                 skipResultSet = true;
             }
-            const where = args !== undefined && args.where !== undefined ? args.where : {};
-            const totalItems = await this.count({ where: where });
+            const totalItems = await this.count(whereCallback);
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const out: DescribeList<T> = {
                 paging: {
@@ -375,7 +375,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
                 items: []
             };
             if (!skipResultSet) {
-                const records = await this.findMany({ where: where, take: itemsPerPage, skip: itemsPerPage * (pageNumber - 1) });
+                const records = await this.findMany(whereCallback).limit(itemsPerPage).offset(itemsPerPage * (pageNumber - 1));
                 for (let record of records) {
                     out.items.push(await record.describe(params.objectParams || {}));
                     maxItemsThisPage--;
@@ -392,27 +392,23 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
             return this.mint(props);
         },
 
-        mint(props = {}) {
-            let data = { ...propDefaults, ...props };
-            for (const field of findVingSchema(model[Name]).props) {
-                if (data[field.name as keyof ModelProps<T>] !== undefined) {
-                    continue;
-                }
-                if (field.default) {
-                    if (typeof field.default === 'object') {
-                        if (field.default.name == 'uuid' && field.name == 'id') {
-                            data[field.name as keyof ModelProps<T>] = crypto.randomUUID() as any;
-                        }
-                        else if (field.default.name == 'now') {
-                            data[field.name as keyof ModelProps<T>] = new Date() as any;
-                        }
-                    }
-                    else {
-                        data[field.name as keyof ModelProps<T>] = field.default;
-                    }
-                }
+        mint(props?) {
+            const output: Record<string, any> = {};
+            for (const prop of findVingSchema(model[Name]).props) {
+                // @ts-ignore
+                if (props && props[prop.name] !== undefined)
+                    // @ts-ignore
+                    output[prop.name] = props[prop.name]
+                else if (prop.type == 'string' || prop.type == 'enum' || prop.type == 'id')
+                    output[prop.name] = stringDefault(prop)
+                else if (prop.type == 'boolean')
+                    output[prop.name] = booleanDefault(prop)
+                else if (prop.type == 'number')
+                    output[prop.name] = numberDefault(prop)
+                else if (prop.type == 'date')
+                    output[prop.name] = dateDefault(prop)
             }
-            return recordComposable({ db, model, props: data, inserted: false });
+            return recordComposable({ db, model, props: output as ModelProps<T>, inserted: false });
         },
 
         async create(props) {
@@ -439,7 +435,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
         update: () => db.update(model),
         insert: () => db.insert(model),
 
-        async count(whereCallback: (condition?: SQL) => SQL | undefined = (c) => c) {
+        async count(whereCallback = (c) => c) {
             return (await db.select({ count: sql<number>`count(*)`.as('count') }).from(model).where(whereCallback()))[0].count;
         },
 
@@ -448,7 +444,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
             return recordComposable({ db, model, props });
         },
 
-        async findMany(whereCallback: (condition?: SQL) => SQL | undefined = (c) => c) {
+        async findMany(whereCallback = (c) => c) {
             //  const customArgs = this.getDefaultArgs(args) as TModel[T]['findMany']['args'];
             const results: ModelProps<T>[] = await this.select.where(whereCallback());
             return results.map(props => recordComposable({ db, model, props }));
@@ -457,7 +453,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
         getOptions() {
             const options: Describe<T>['options'] = {};
             for (const field of findVingSchema<T>(model[Name]).props) {
-                if (field.enums && field.enums.length > 0) {
+                if (field.type == 'enum' && field.enums && field.enums.length > 0) {
                     options[field.name] = enum2options(field.enums, field.enumLabels);
                 }
 
