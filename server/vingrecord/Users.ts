@@ -181,10 +181,6 @@ export function useUserRecord(
         set(key, value) {
             if (key in ['password', ...RoleOptions])
                 userChanged = true;
-
-            if (key == 'email' && !(value?.toString().match(/.+@.+\..+/))) {
-                throw ouch(442, `${value} doesn't look like an email address.`, key);
-            }
             return base.set(key, value);
         },
 
