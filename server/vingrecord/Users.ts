@@ -77,6 +77,8 @@ export function useUserRecord(
         useVingRecordOptions<'User'>
 ) {
     const base = useVingRecord<'User'>({ db, model, props, inserted });
+    let userChanged = false;
+
     const UserRecord: UserRecord = {
         ...base,
         ...useVingRole({ ...base, props }),
@@ -129,7 +131,7 @@ export function useUserRecord(
                 throw ouch(404, 'validating other password types not implemented');
             if (passed) {
                 if (this.get('passwordType') != 'bcrypt') {
-                    this.setPassword(password)
+                    await this.setPassword(password)
                     await this.update();
                 }
                 return true;
@@ -137,7 +139,7 @@ export function useUserRecord(
             throw ouch(454, 'Password does not match.');
         },
 
-        setPassword(password) {
+        async setPassword(password) {
             this.set('password', bcrypt.hashSync(password, 10));
             this.set('passwordType', 'bcrypt');
         },
@@ -159,24 +161,27 @@ export function useUserRecord(
 
         async setPostedProps(params, currentUser) {
             if (params.password && (currentUser === undefined || this.isOwner(currentUser))) {
-                this.setPassword(params.password);
+                await this.setPassword(params.password);
             }
-            return await base.setPostedProps(params, currentUser);
+            await base.setPostedProps(params, currentUser);
+            return true;
         },
 
         //   get apiKeys() {
         //      return new APIKeyKind(prisma.aPIKey, APIKeyRecord, { userId: this.id });
         //  },
 
+
         async update() {
-            cache.set('user-changed-' + this.id, true, 1000 * 60 * 60 * 24 * 7);
+            if (userChanged)
+                await cache.set('user-changed-' + this.id, true, 1000 * 60 * 60 * 24 * 7);
             await base.update();
         },
 
         set(key, value) {
-            if (key in ['password', ...RoleOptions]) {
-                cache.set('user-changed-' + this.id, true, 1000 * 60 * 60 * 24 * 7);
-            }
+            if (key in ['password', ...RoleOptions])
+                userChanged = true;
+
             if (key == 'email' && !(value?.toString().match(/.+@.+\..+/))) {
                 throw ouch(442, `${value} doesn't look like an email address.`, key);
             }
