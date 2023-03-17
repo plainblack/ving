@@ -96,8 +96,7 @@ export const makeTable = (schema: vingSchema) => {
     const columns: Record<string, AnyMySqlColumnBuilder> = {};
     const uniqueIndexes: Record<string, any> = {};
     for (const prop of schema.props) {
-        //@ts-ignore - not sure why this is balking
-        columns[prop.name] = prop.db(prop);
+        columns[prop.name] = prop.db(prop as never);
         if (prop.unique) {
             const key = prop.name + 'Index';
             uniqueIndexes[key] = (table: Record<string, AnyMySqlColumn>) => uniqueIndex(key).on(table[prop.name]);
