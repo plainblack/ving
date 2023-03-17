@@ -6,13 +6,7 @@ import { v4 } from 'uuid';
 import { z } from 'zod';
 export const uuid = v4;
 
-export const dbColLength = (prop: vingProp): { length: number } => {
-    if (typeof prop.length == 'number')
-        return { length: prop.length };
-    return { length: 256 };
-}
-
-export const stringDefault = (prop: vingProp, skipFunc: boolean = false): string => {
+export const stringDefault = (prop: Extract<vingProp, { type: "string" | "enum" | "id" }>, skipFunc: boolean = false): string => {
     if (typeof prop.default == 'string')
         return prop.default;
     if (!skipFunc && typeof prop.default == 'function') {
@@ -23,7 +17,7 @@ export const stringDefault = (prop: vingProp, skipFunc: boolean = false): string
     return '';
 }
 
-export const numberDefault = (prop: vingProp, skipFunc: boolean = false): number => {
+export const numberDefault = (prop: Extract<vingProp, { type: "number" }>, skipFunc: boolean = false): number => {
     if (typeof prop.default == 'number')
         return prop.default;
     if (!skipFunc && typeof prop.default == 'function') {
@@ -34,7 +28,7 @@ export const numberDefault = (prop: vingProp, skipFunc: boolean = false): number
     return 0;
 }
 
-export const booleanDefault = (prop: vingProp, skipFunc: boolean = false): boolean => {
+export const booleanDefault = (prop: Extract<vingProp, { type: "boolean" }>, skipFunc: boolean = false): boolean => {
     if (typeof prop.default == 'boolean')
         return prop.default;
     if (!skipFunc && typeof prop.default == 'function') {
@@ -45,31 +39,42 @@ export const booleanDefault = (prop: vingProp, skipFunc: boolean = false): boole
     return false;
 }
 
-export const zodString = (prop: vingProp) => {
-    return z.string().min(1).max(prop.length || 256);
+export const dateDefault = (prop: Extract<vingProp, { type: "date" }>, skipFunc: boolean = false): Date => {
+    if (prop.default instanceof Date)
+        return prop.default;
+    if (!skipFunc && typeof prop.default == 'function') {
+        const value = prop.default();
+        if (value instanceof Date)
+            return value;
+    }
+    return new Date();
 }
 
-export const zodText = (prop: vingProp) => {
-    return z.string().min(1).max(prop.length || 65535);
+export const zodString = (prop: Extract<vingProp, { type: "string" }>) => {
+    return z.string().min(1).max(prop.length);
 }
 
-export const dbTimestamp = (prop: vingProp) => {
+export const zodText = (prop: Extract<vingProp, { type: "string" }>) => {
+    return z.string().min(1).max(prop.length);
+}
+
+export const dbTimestamp = (prop: Extract<vingProp, { type: "date" }>) => {
     return timestamp(prop.name).defaultNow().notNull();
 }
 
-export const dbString = (prop: vingProp) => {
-    return varchar(prop.name, dbColLength(prop)).notNull().default(stringDefault(prop, true));
+export const dbString = (prop: Extract<vingProp, { type: "string" }>) => {
+    return varchar(prop.name, { length: prop.length }).notNull().default(stringDefault(prop, true));
 }
 
-export const dbText = (prop: vingProp) => {
+export const dbText = (prop: Extract<vingProp, { type: "string" }>) => {
     return text(prop.name).notNull();
 }
 
-export const dbEnum = (prop: vingProp) => {
+export const dbEnum = (prop: Extract<vingProp, { type: "enum" }>) => {
     return mysqlEnum(prop.name, prop.enums || ['']).notNull().default(stringDefault(prop, true));
 }
 
-export const dbBoolean = (prop: vingProp) => {
+export const dbBoolean = (prop: Extract<vingProp, { type: "boolean" }>) => {
     return boolean(prop.name).notNull().default(booleanDefault(prop, true));
 }
 
@@ -91,6 +96,7 @@ export const makeTable = (schema: vingSchema) => {
     const columns: Record<string, AnyMySqlColumnBuilder> = {};
     const uniqueIndexes: Record<string, any> = {};
     for (const prop of schema.props) {
+        //@ts-ignore - not sure why this is balking
         columns[prop.name] = prop.db(prop);
         if (prop.unique) {
             const key = prop.name + 'Index';
@@ -109,27 +115,30 @@ export const makeTable = (schema: vingSchema) => {
 
 export const baseSchemaProps: vingProp[] = [
     {
+        type: "id",
         name: "id",
         required: true,
         length: 36,
         default: () => uuid(),
-        db: (prop: vingProp) => dbPk(prop),
+        db: (prop) => dbPk(prop),
         view: ['public'],
         edit: [],
     },
     {
+        type: "date",
         name: "createdAt",
         required: true,
         default: () => new Date(),
-        db: (prop: vingProp) => dbTimestamp(prop),
+        db: (prop) => dbTimestamp(prop),
         view: ['public'],
         edit: [],
     },
     {
+        type: "date",
         name: "updatedAt",
         required: true,
         default: () => new Date(),
-        db: (prop: vingProp) => dbTimestamp(prop),
+        db: (prop) => dbTimestamp(prop),
         view: ['public'],
         edit: [],
     },
