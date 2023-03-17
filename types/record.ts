@@ -1,4 +1,5 @@
 import type { User } from '../drizzle/schema/users';
+import type { UserRecord } from '../server/vingrecord/Users';
 import { RoleOptions } from '../drizzle/schema/users';
 import type { APIKey } from '../drizzle/schema/apikeys';
 
@@ -9,9 +10,9 @@ export type Model = {
 
 export type ModelName = keyof Model;
 
-export type ModelProps<T extends ModelName> = Partial<Model[T]>;
+export type ModelProps<T extends ModelName> = Model[T];
 
-export type AuthorizedUser = User;
+export type AuthorizedUser = UserRecord;
 
 export type Roles = Pick<ModelProps<'User'>, typeof RoleOptions[number]>;
 export type ExtendedRoleOptions = keyof Roles | "public" | "owner" | string;
@@ -58,12 +59,12 @@ export type DescribeList<T extends ModelName> = {
 }
 
 export type Describe<T extends ModelName> = {
-    props: ModelProps<T>
+    props: Partial<ModelProps<T>>
     links?: Record<string, string>
     meta?: Record<string, any>
     extra?: Record<string, any>
     options?: {
-        [property in keyof ModelProps<T>]?: vingOption[]
+        [property in keyof Partial<ModelProps<T>>]?: vingOption[]
     }
     related?: {
         [key: string]: Describe<T>

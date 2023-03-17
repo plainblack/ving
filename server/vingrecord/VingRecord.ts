@@ -1,4 +1,4 @@
-//import { UserRecord } from "./Users";
+import { UserRecord } from "./Users";
 import { Roles, ExtendedRoleOptions, ModelName, vingSchema, ModelProps, Describe, warning, AuthorizedUser, DescribeParams, DescribeListParams, vingOption, DescribeList } from '../../types'
 //import { Session } from "../session";
 import { vingSchemas } from '../../drizzle/vingSchemas';
@@ -189,7 +189,7 @@ export function useVingRecord<T extends ModelName>(
                 const fieldName = field.name.toString();
 
                 // props
-                out.props[fieldName as keyof Describe<T>['props']] = props[field.name];
+                out.props[field.name as keyof Describe<T>['props']] = props[field.name as keyof ModelProps<T>];
 
                 // links 
                 if (typeof out.links === 'object'
@@ -241,7 +241,7 @@ export function useVingRecord<T extends ModelName>(
                     || (currentUser !== undefined && currentUser.isaRole(roles));
                 if (!visible) continue;
                 if (prop.type == 'enum' && prop.enums && prop.enums.length > 0) {
-                    options[prop.name] = enum2options(prop.enums, prop.enumLabels);
+                    options[prop.name as keyof ModelProps<T>] = enum2options(prop.enums, prop.enumLabels);
                 }
             }
             return options;
@@ -249,12 +249,13 @@ export function useVingRecord<T extends ModelName>(
 
         testCreationProps(params) {
             const schema = findVingSchema(model[Name]);
-            for (const field of schema.props) {
-                if (!field.required || field.default || field.relation)
+            for (const prop of schema.props) {
+                if (!prop.required || prop.default || prop.relation)
                     continue;
-                const fieldName = field.name.toString();
-                if (params[field.name] !== undefined && params[field.name] != '')
+                // @ts-ignore - vingSchema 
+                if (params[prop.name] !== undefined && params[prop.name] != '')
                     continue;
+                const fieldName = prop.name.toString();
                 throw ouch(441, `${fieldName} is required.`, fieldName);
             }
             return true;
@@ -266,20 +267,20 @@ export function useVingRecord<T extends ModelName>(
 
             for (const field of schema.props) {
                 const fieldName = field.name.toString();
-
+                const param = params[field.name as keyof ModelProps<T>];
                 const roles = [...field.edit];
                 const editable = (roles.includes('owner') && (isOwner || !this.isInserted))
                     || (currentUser !== undefined && currentUser.isaRole(roles));
                 if (!editable) {
                     continue;
                 }
-                if (params[field.name] === undefined || field.relation) {
+                if (param === undefined || field.relation) {
                     continue;
                 }
-                if (params[field.name] === '' && field.required) {
+                if (param === '' && field.required) {
                     throw ouch(441, `${fieldName} is required.`, fieldName);
                 }
-                if (field.name !== undefined && params[field.name] !== undefined) {
+                if (field.name !== undefined && param !== undefined) {
 
                     /*     if (field.unique) {
                              let where: TModel[T]['count']['args']['where'] = {};
@@ -304,7 +305,7 @@ export function useVingRecord<T extends ModelName>(
                              }
                          }*/
                     console.log('setting', fieldName)
-                    this.set(field.name, params[field.name]);
+                    this.set(field.name as keyof ModelProps<T>, param);
                 }
             }
             return true;
@@ -319,11 +320,11 @@ export function useVingRecord<T extends ModelName>(
 }
 
 
-export interface VingKind<T extends ModelName, VR extends VingRecord<'User'>> {
+export interface VingKind<T extends ModelName, VR extends VingRecord<T>> {
     db: MySql2Database,
     model: ModelProps<T>,
     describeList(params: DescribeListParams, whereCallback?: (condition?: SQL) => SQL | undefined): Promise<DescribeList<T>>,
-    copy(originalProps: ModelProps<T>): VR,
+    copy(originalProps: Partial<ModelProps<T>>): VR,
     mint(props?: Partial<ModelProps<T>>): VR,
     create(props: ModelProps<T>): Promise<VR>,
     createAndVerify(props: ModelProps<T>, currentUser?: AuthorizedUser): Promise<VR>,
@@ -334,13 +335,15 @@ export interface VingKind<T extends ModelName, VR extends VingRecord<'User'>> {
     insert(): any,
     count(whereCallback?: (condition?: SQL) => SQL | undefined): Promise<number>,
     find(id: ModelProps<T>['id']): Promise<VR>,
-    findMany(whereCallback?: (condition?: SQL) => SQL | undefined): Promise<VR[]>,
+    findMany(whereCallback?: (condition?: SQL) => SQL | undefined, options?: { limit?: number, offset?: number }): Promise<VR[]>,
     getOptions(): Describe<T>['options'],
 }
 
-export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
-    { db, model, recordComposable, propDefaults }: { db: MySql2Database, model: any, recordComposable: (opts: useVingRecordOptions<T>) => VR, propDefaults: ModelProps<T> }
-) {
+export type useVingKindOptions<T extends ModelName, VR extends VingRecord<T>> = {
+    db: MySql2Database, model: any, recordComposable: (opts: useVingRecordOptions<T>) => VR, propDefaults: Partial<ModelProps<T>>
+}
+
+export function useVingKind<T extends ModelName, VR extends VingRecord<T>>({ db, model, recordComposable, propDefaults }: useVingKindOptions<T, VR>) {
 
     const VingKind: VingKind<T, VR> = {
         db,
@@ -376,7 +379,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
                 items: []
             };
             if (!skipResultSet) {
-                const records = await this.findMany(whereCallback).limit(itemsPerPage).offset(itemsPerPage * (pageNumber - 1));
+                const records = await this.findMany(whereCallback, { limit: itemsPerPage, offset: itemsPerPage * (pageNumber - 1) });
                 for (let record of records) {
                     out.items.push(await record.describe(params.objectParams || {}));
                     maxItemsThisPage--;
@@ -441,13 +444,18 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
         },
 
         async find(id) {
-            const props = await this.select.where(eq(model.id, id)) as ModelProps<T>;
+            const props = (await db.select().from(model).where(eq(model.id, id)))[0] as ModelProps<T>;
             return recordComposable({ db, model, props });
         },
 
-        async findMany(whereCallback = (c) => c) {
+        async findMany(whereCallback = (c) => c, options) {
             //  const customArgs = this.getDefaultArgs(args) as TModel[T]['findMany']['args'];
-            const results: ModelProps<T>[] = await this.select.where(whereCallback());
+            let query = db.select().from(model).where(whereCallback());
+            if (options && options.limit)
+                query.limit(options.limit);
+            if (options && options.offset)
+                query.offset(options.offset);
+            const results = (await query) as ModelProps<T>[];
             return results.map(props => recordComposable({ db, model, props }));
         },
 
@@ -455,7 +463,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
             const options: Describe<T>['options'] = {};
             for (const field of findVingSchema(model[Name]).props) {
                 if (field.type == 'enum' && field.enums && field.enums.length > 0) {
-                    options[field.name] = enum2options(field.enums, field.enumLabels);
+                    options[field.name as keyof ModelProps<T>] = enum2options(field.enums, field.enumLabels);
                 }
 
             }

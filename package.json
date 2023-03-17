@@ -47,7 +47,6 @@
         "@fortawesome/vue-fontawesome": "^3.0.3",
         "@keyv/redis": "^2.5.5",
         "@pinia/nuxt": "^0.4.7",
-        "bcrypt": "^5.1.0",
         "bcryptjs": "^2.4.3",
         "csv-parse": "^5.3.5",
         "drizzle-orm": "^0.21.1",
