@@ -126,7 +126,7 @@ export function useUserRecord(
                 throw ouch(441, 'You must specify a password.');
             let passed = false;
             if (this.get('passwordType') == 'bcrypt')
-                passed = bcrypt.compareSync(password, this.get('password') || '');
+                passed = await bcrypt.compare(password, this.get('password') || '');
             else
                 throw ouch(404, 'validating other password types not implemented');
             if (passed) {
@@ -140,7 +140,8 @@ export function useUserRecord(
         },
 
         async setPassword(password) {
-            this.set('password', bcrypt.hashSync(password, 10));
+            const hashedPass = bcrypt.hashSync(password, 10);
+            this.set('password', hashedPass);
             this.set('passwordType', 'bcrypt');
         },
 
