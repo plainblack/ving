@@ -66,7 +66,7 @@ export interface UserRecord extends VingRecord<'User'>, VingRole {
     testPassword(password: string): Promise<boolean>,
     setPassword(password: string): void,
     describe(params: DescribeParams): Promise<Describe<'User'>>,
-    setPostedProps(params: ModelProps<'User'>, currentUser?: AuthorizedUser): Promise<boolean>,
+    setPostedProps(params: Partial<ModelProps<'User'>>, currentUser?: AuthorizedUser): Promise<boolean>,
     // apiKeys:
     update(): Promise<void>,
     set<K extends keyof ModelProps<'User'>>(key: K, value: ModelProps<'User'>[K]): ModelProps<'User'>[K],
@@ -158,11 +158,10 @@ export function useUserRecord(
         },
 
         async setPostedProps(params, currentUser) {
-            await base.setPostedProps(params, currentUser);
-            if (params !== undefined && params.password && (currentUser === undefined || this.isOwner(currentUser))) {
+            if (params.password && (currentUser === undefined || this.isOwner(currentUser))) {
                 this.setPassword(params.password);
             }
-            return true;
+            return await base.setPostedProps(params, currentUser);
         },
 
         //   get apiKeys() {

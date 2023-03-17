@@ -38,13 +38,15 @@ export const enum2options = (enums: readonly string[] | readonly boolean[], labe
 }
 
 export interface VingRecord<T extends ModelName> {
+    db: MySql2Database,
+    model: any,
     id: ModelProps<T>['id'],
     warnings: Describe<T>['warnings'],
     addWarning(warning: warning): void,
     get<K extends keyof ModelProps<T>>(key: K): ModelProps<T>[K],
     getAll(): ModelProps<T>,
     set<K extends keyof ModelProps<T>>(key: K, value: ModelProps<T>[K]): ModelProps<T>[K],
-    setAll(props: ModelProps<T>): ModelProps<T>,
+    setAll(props: Partial<ModelProps<T>>): ModelProps<T>,
     isInserted: boolean,
     insert(): Promise<void>,
     update(): Promise<void>,
@@ -54,8 +56,8 @@ export interface VingRecord<T extends ModelName> {
     canEdit(currentUser: AuthorizedUser): boolean,
     describe(params: DescribeParams): Promise<Describe<T>>,
     propOptions(params: DescribeParams): Describe<T>['options'],
-    testCreationProps(params: ModelProps<T>): boolean,
-    setPostedProps(params: ModelProps<T>, currentUser?: AuthorizedUser): Promise<boolean>,
+    testCreationProps(params: Partial<ModelProps<T>>): boolean,
+    setPostedProps(params: Partial<ModelProps<T>>, currentUser?: AuthorizedUser): Promise<boolean>,
     updateAndVerify(params: ModelProps<T>, currentUser?: AuthorizedUser): void,
 }
 
@@ -67,6 +69,8 @@ export function useVingRecord<T extends ModelName>(
 
     const VingRecord: VingRecord<T> = {
 
+        db,
+        model,
         get id() {
             return props.id;
         },
@@ -158,7 +162,7 @@ export function useVingRecord<T extends ModelName>(
 
             let out: Describe<T> = { props: {} };
             if (include !== undefined && include.links) {
-                out.links = { base: `/api/${schema.tableName?.toLowerCase()}` };
+                out.links = { base: `/api/${schema.kind?.toLowerCase()}` };
                 out.links.self = `${out.links.base}/${props.id}`;
             }
             if (include !== undefined && include.options) {
@@ -240,7 +244,7 @@ export function useVingRecord<T extends ModelName>(
                     || (roles.includes('owner') && isOwner)
                     || (currentUser !== undefined && currentUser.isaRole(roles));
                 if (!visible) continue;
-                if (prop.type == 'enum' && prop.enums && prop.enums.length > 0) {
+                if ((prop.type == 'enum' || prop.type == 'boolean') && prop.enums && prop.enums.length > 0) {
                     options[prop.name as keyof ModelProps<T>] = enum2options(prop.enums, prop.enumLabels);
                 }
             }
@@ -250,7 +254,7 @@ export function useVingRecord<T extends ModelName>(
         testCreationProps(params) {
             const schema = findVingSchema(model[Name]);
             for (const prop of schema.props) {
-                if (!prop.required || prop.default || prop.relation)
+                if (!prop.required || (prop.default !== undefined && prop.default !== '') || prop.relation)
                     continue;
                 // @ts-ignore - vingSchema 
                 if (params[prop.name] !== undefined && params[prop.name] != '')
@@ -304,8 +308,8 @@ export function useVingRecord<T extends ModelName>(
                                  throw ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
                              }
                          }*/
-                    console.log('setting', fieldName)
-                    this.set(field.name as keyof ModelProps<T>, param);
+                    if (param !== null)
+                        this.set(field.name as keyof ModelProps<T>, param);
                 }
             }
             return true;
@@ -322,17 +326,17 @@ export function useVingRecord<T extends ModelName>(
 
 export interface VingKind<T extends ModelName, VR extends VingRecord<T>> {
     db: MySql2Database,
-    model: ModelProps<T>,
+    model: any,
     describeList(params: DescribeListParams, whereCallback?: (condition?: SQL) => SQL | undefined): Promise<DescribeList<T>>,
     copy(originalProps: Partial<ModelProps<T>>): VR,
     mint(props?: Partial<ModelProps<T>>): VR,
-    create(props: ModelProps<T>): Promise<VR>,
+    create(props: Partial<ModelProps<T>>): Promise<VR>,
     createAndVerify(props: ModelProps<T>, currentUser?: AuthorizedUser): Promise<VR>,
     getDefaultArgs(args?: object): object,
-    select(): any,
-    delete(): any,
-    update(): any,
-    insert(): any,
+    get select(): any,
+    get delete(): any,
+    get update(): any,
+    get insert(): any,
     count(whereCallback?: (condition?: SQL) => SQL | undefined): Promise<number>,
     find(id: ModelProps<T>['id']): Promise<VR>,
     findMany(whereCallback?: (condition?: SQL) => SQL | undefined, options?: { limit?: number, offset?: number }): Promise<VR[]>,
@@ -434,23 +438,23 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>({ db,
             return _.defaults(defaultArgs, args);
         },
 
-        select: () => db.select().from(model),
-        delete: () => db.delete(model),
-        update: () => db.update(model),
-        insert: () => db.insert(model),
+        get select() { return db.select().from(model) },
+        get delete() { return db.delete(model) },
+        get update() { return db.update(model) },
+        get insert() { return db.insert(model) },
 
         async count(whereCallback = (c) => c) {
             return (await db.select({ count: sql<number>`count(*)`.as('count') }).from(model).where(whereCallback()))[0].count;
         },
 
         async find(id) {
-            const props = (await db.select().from(model).where(eq(model.id, id)))[0] as ModelProps<T>;
+            const props = (await this.select.where(eq(model.id, id)))[0] as ModelProps<T>;
             return recordComposable({ db, model, props });
         },
 
         async findMany(whereCallback = (c) => c, options) {
             //  const customArgs = this.getDefaultArgs(args) as TModel[T]['findMany']['args'];
-            let query = db.select().from(model).where(whereCallback());
+            let query = this.select.where(whereCallback());
             if (options && options.limit)
                 query.limit(options.limit);
             if (options && options.offset)
