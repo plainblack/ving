@@ -1,13 +1,13 @@
 import { useVingKind, useVingRecord, VingRecord, useVingRecordOptions, useVingKindOptions } from "./VingRecord";
-import { ModelName, ModelProps, DescribeParams, Describe, AuthorizedUser } from '../../types';
+import { ModelName, ModelSelect, DescribeParams, Describe, AuthorizedUser } from '../../types';
 //import { APIKeyKind, APIKeyRecord } from "./APIKeys";
 import { ouch } from '../../app/helpers';
 import bcrypt from 'bcryptjs';
 import { cache } from '../../app/cache';
 import { db } from '../../drizzle/db';
-import { users } from '../../drizzle/schema/users';
+import { UserTable } from '../../drizzle/schema/users';
 
-export type TRoleProps = TRoles & Pick<ModelProps<'User'>, 'id' | 'password'>;
+export type TRoleProps = TRoles & Pick<ModelSelect<'User'>, 'id' | 'password'>;
 
 export interface VingRole {
     isRole(role: TExtendedRoleOptions): boolean,
@@ -56,7 +56,7 @@ export function useVingRole({ getAll, props }: { getAll(): any, props: TRoleProp
 }
 
 export const RoleOptions = ["admin", "developer"] as const;
-export type TRoles = Pick<ModelProps<'User'>, typeof RoleOptions[number]>;
+export type TRoles = Pick<ModelSelect<'User'>, typeof RoleOptions[number]>;
 export type TExtendedRoleOptions = keyof TRoles | "public" | "owner" | string;
 
 
@@ -66,17 +66,17 @@ export interface UserRecord extends VingRecord<'User'>, VingRole {
     testPassword(password: string): Promise<boolean>,
     setPassword(password: string): void,
     describe(params: DescribeParams): Promise<Describe<'User'>>,
-    setPostedProps(params: Partial<ModelProps<'User'>>, currentUser?: AuthorizedUser): Promise<boolean>,
+    setPostedProps(params: Partial<ModelSelect<'User'>>, currentUser?: AuthorizedUser): Promise<boolean>,
     // apiKeys:
     update(): Promise<void>,
-    set<K extends keyof ModelProps<'User'>>(key: K, value: ModelProps<'User'>[K]): ModelProps<'User'>[K],
+    set<K extends keyof ModelSelect<'User'>>(key: K, value: ModelSelect<'User'>[K]): ModelSelect<'User'>[K],
 }
 
 export function useUserRecord(
-    { db, model, props, inserted = true }:
+    { db, table, props, inserted = true }:
         useVingRecordOptions<'User'>
 ) {
-    const base = useVingRecord<'User'>({ db, model, props, inserted });
+    const base = useVingRecord<'User'>({ db, table, props, inserted });
     let userChanged = false;
 
     const UserRecord: UserRecord = {
@@ -190,11 +190,11 @@ export function useUserRecord(
     return UserRecord;
 }
 
-export function useUserKind<R extends typeof useUserRecord>({ db, model, recordComposable, propDefaults = {} }: useVingKindOptions<'User', UserRecord>) {
-    const base = useVingKind<'User', UserRecord>({ db, model, recordComposable, propDefaults });
+export function useUserKind<R extends typeof useUserRecord>({ db, table, recordComposable, propDefaults = {} }: useVingKindOptions<'User', UserRecord>) {
+    const base = useVingKind<'User', UserRecord>({ db, table, recordComposable, propDefaults });
     return {
         ...base
     }
 }
 
-export const Users = useUserKind({ db, model: users, recordComposable: useUserRecord, propDefaults: {} });
+export const Users = useUserKind({ db, table: UserTable, recordComposable: useUserRecord, propDefaults: {} });

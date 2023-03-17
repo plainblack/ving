@@ -104,10 +104,11 @@ export const userSchema: vingSchema = {
 
 export const RoleOptions = ["admin", "developer"] as const;
 
-export const users = makeTable(userSchema);
+export const UserTable = makeTable(userSchema);
 
-/*
-export const users = mysqlTable('users',
+// temporary measure until we can get the types worked out for auto-generation
+import { mysqlTable, varchar, timestamp, mysqlEnum, boolean, uniqueIndex } from 'drizzle-orm/mysql-core';
+export const usersTemp = mysqlTable('users',
     {
         id: varchar('id', { length: 36 }).primaryKey(),
         createdAt: timestamp('createdAt').defaultNow().notNull(),
@@ -126,13 +127,21 @@ export const users = mysqlTable('users',
         emailIndex: uniqueIndex('emailIndex').on(users.email),
     })
 );
-*/
 
-//export type User = InferModel<typeof users>; // return type when queried
-//export type NewUser = InferModel<typeof users, 'insert'>; // insert type
+export type UserModel = typeof UserTable;
+export type UserSelect = InferModel<typeof usersTemp, 'select'>
+export type UserInsert = InferModel<typeof usersTemp, 'insert'>
+
+
+//export type User = InferModel<UserModel>; // return type when queried
+
+type Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2 ? true : false
+type Expect<T extends true> = T
+
+type test = Expect<Equal<UserSelect, UserProps>>
 
 // have to do this until infererence works
-export type User = {
+export type UserProps = {
     id: string,
     createdAt: Date,
     updatedAt: Date,

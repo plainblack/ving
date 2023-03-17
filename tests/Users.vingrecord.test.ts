@@ -1,17 +1,17 @@
 import { Users, UserRecord } from '../server/vingrecord/Users';
 import { describe, test, expect } from "vitest";
-import { ModelProps } from "../types";
+import { ModelSelect } from "../types";
 import { like, eq, asc, desc, and, inArray } from 'drizzle-orm/expressions';
 
 
 
-await Users.delete.where(inArray(Users.model.username, ['warden', 'captain', 'guard']));
+await Users.delete.where(inArray(Users.table.username, ['warden', 'captain', 'guard']));
 const warden = await Users.create({ username: 'warden', email: 'warden@shawshank.jail', realName: 'Samuel Norton' });
 const captain = Users.mint({ username: 'captain', email: 'captain@shawshank.jail', realName: 'Byron Hadley' });
 describe('Users', async () => {
     test("make user kind", () => {
         expect(Users).toHaveProperty('db');
-        expect(Users).toHaveProperty('model');
+        expect(Users).toHaveProperty('table');
     })
     test("can create ving record", async () => {
         expect(true).toBe(true);
@@ -116,13 +116,13 @@ describe('Users', async () => {
     test("can delete ving record", async () => {
         await warden.delete()
         expect(warden.get('username')).toBe('warden');
-        expect(await Users.count((c) => and(c, eq(Users.model.email, 'warden@shawshank.jail')))).toBe(0);
+        expect(await Users.count((c) => and(c, eq(Users.table.email, 'warden@shawshank.jail')))).toBe(0);
         await captain.delete()
         await guard.delete()
     });
 
     const rita = Users.mint({});
-    let params: Partial<ModelProps<'User'>> = { realName: 'Rita Hayworth', email: 'rita@hollywood.com' };
+    let params: Partial<ModelSelect<'User'>> = { realName: 'Rita Hayworth', email: 'rita@hollywood.com' };
     test('can verify creation params', () => {
         expect(() => rita.testCreationProps(params)).toThrowError();
         params.username = 'rita';
