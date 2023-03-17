@@ -1,5 +1,5 @@
 import { UserRecord } from "./Users";
-import { Roles, ExtendedRoleOptions, ModelName, vingSchema, ModelProps, Describe, warning, AuthorizedUser, DescribeParams, DescribeListParams, vingOption, DescribeList } from '../../types'
+import { Roles, ExtendedRoleOptions, ModelName, vingSchema, vingProp, ModelProps, Describe, warning, AuthorizedUser, DescribeParams, DescribeListParams, vingOption, DescribeList } from '../../types'
 //import { Session } from "../session";
 import { vingSchemas } from '../../drizzle/vingSchemas';
 import { findObject, ouch } from '../../app/helpers';
@@ -35,6 +35,10 @@ export const enum2options = (enums: readonly string[] | readonly boolean[], labe
         i++
     }
     return options;
+}
+
+export const findPropInSchema = (name: string | number | symbol, props: vingProp[]) => {
+    return props.find(prop => prop.name == name);
 }
 
 export interface VingRecord<T extends ModelName> {
@@ -90,12 +94,33 @@ export function useVingRecord<T extends ModelName>(
         },
 
         set(key, value) {
+            const schema = findVingSchema(model[Name]);
+            const prop = findPropInSchema(key, schema.props);
+            if (prop) {
+                if (prop.zod) {
+                    //@ts-ignore - its what we think it is, but i don't know how to hook it up to the class
+                    const result = prop.zod(prop).safeParse(value);
+                    if (result.success) {
+                        value = result.data;
+                    }
+                    else {
+                        const formatted = result.error.format();
+                        throw ouch(442, key.toString() + ': ' + formatted._errors.join('.') + '.', key);
+                    }
+                }
+            }
+            else {
+                throw ouch(400, key.toString() + ' is not a prop', key);
+            }
             return props[key] = value;
         },
 
         setAll(props: ModelProps<T>) {
+            const schema = findVingSchema(model[Name]);
             for (const key in props) {
-                this.set(key, props[key])
+                const field = findPropInSchema(key, schema.props)
+                if (!field?.noSetAll)
+                    this.set(key, props[key]);
             }
             return props;
         },
