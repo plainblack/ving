@@ -14,7 +14,7 @@ import { like, eq, asc, desc, and, or } from 'drizzle-orm/expressions';
 import { Name } from "drizzle-orm/table";
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../../drizzle/helpers';
 
-export const findVingSchema = <T extends ModelName>(nameToFind: string = '-unknown-') => {
+export const findVingSchema = (nameToFind: string = '-unknown-') => {
     try {
         return findObject('tableName', nameToFind, vingSchemas) as vingSchema;
     }
@@ -46,16 +46,16 @@ export interface VingRecord<T extends ModelName> {
     set<K extends keyof ModelProps<T>>(key: K, value: ModelProps<T>[K]): ModelProps<T>[K],
     setAll(props: ModelProps<T>): ModelProps<T>,
     isInserted: boolean,
-    insert(): Promise<ModelProps<T>>,
-    update(): Promise<ModelProps<T>>,
-    delete(): Promise<ModelProps<T>>,
-    refetch(): Promise<ModelProps<T>>,
+    insert(): Promise<void>,
+    update(): Promise<void>,
+    delete(): Promise<void>,
+    refresh(): Promise<ModelProps<T>>,
     isOwner(currentUser: AuthorizedUser): boolean,
     canEdit(currentUser: AuthorizedUser): boolean,
     describe(params: DescribeParams): Promise<Describe<T>>,
     propOptions(params: DescribeParams): Describe<T>['options'],
-    verifyCreationParams(params: ModelProps<T>): boolean,
-    verifyPostedParams(params: ModelProps<T>, currentUser?: AuthorizedUser): Promise<boolean>,
+    testCreationProps(params: ModelProps<T>): boolean,
+    setPostedProps(params: ModelProps<T>, currentUser?: AuthorizedUser): Promise<boolean>,
     updateAndVerify(params: ModelProps<T>, currentUser?: AuthorizedUser): void,
 }
 
@@ -102,29 +102,30 @@ export function useVingRecord<T extends ModelName>(
 
         async insert() {
             if (inserted) {
-                throw ouch(409, `${prisma.name} already inserted`);
+                const schema = findVingSchema(model[Name]);
+                throw ouch(409, `${schema.kind} already inserted`);
             }
             inserted = true;
-            return props = (await prisma.create({ data: props as any })) as ModelProps<T>;
+            await db.insert(model).values(props);
         },
 
         async update() {
-            return props = await prisma.update({ where: { id: props.id }, data: props }) as ModelProps<T>
+            await db.update(model).set(props).where(eq(model.id, props.id));
         },
 
         async delete() {
-            return props = await prisma.delete({ where: { id: props.id } }) as ModelProps<T>
+            await db.delete(model).where(eq(model.id, props.id));
         },
 
-        async refetch() {
-            return props = await prisma.findUniqueOrThrow({ where: { id: props.id } }) as ModelProps<T>
+        async refresh() {
+            return props = (await db.select().from(model).where(eq(model.id, props.id)))[0] as ModelProps<T>;
         },
 
         isOwner(currentUser) {
             if (currentUser === undefined)
                 return false;
-            const table = findVingSchema<T>(prisma.name);
-            for (let owner of table.ving.owner) {
+            const schema = findVingSchema(model[Name]);
+            for (let owner of schema.owner) {
                 let found = owner.match(/^\$(.*)$/);
                 if (found) {
                     if (props[found[1] as keyof ModelProps<T>] == currentUser.getRoleProp('id')) {
@@ -133,7 +134,7 @@ export function useVingRecord<T extends ModelName>(
                 }
                 found = owner.match(/^([A-Za-z]+)$/);
                 if (found) {
-                    if (found[1] && currentUser.isRole(found[1] as keyof TRoles) == true) {
+                    if (found[1] && currentUser.isRole(found[1] as keyof Roles) == true) {
                         return true;
                     }
                 }
@@ -145,17 +146,19 @@ export function useVingRecord<T extends ModelName>(
             if (this.isOwner(currentUser)) {
                 return true;
             }
-            throw ouch(403, `You do not have the privileges to access ${prisma.name}.`)
+            const schema = findVingSchema(model[Name]);
+            throw ouch(403, `You do not have the privileges to access ${schema.kind}.`)
         },
 
         async describe(params = {}) {
             const currentUser = params.currentUser;
             const include = params.include || {};
             const isOwner = currentUser !== undefined && this.isOwner(currentUser);
+            const schema = findVingSchema(model[Name]);
 
             let out: Describe<T> = { props: {} };
             if (include !== undefined && include.links) {
-                out.links = { base: `/api/${prisma.name?.toLowerCase()}` };
+                out.links = { base: `/api/${schema.tableName?.toLowerCase()}` };
                 out.links.self = `${out.links.base}/${props.id}`;
             }
             if (include !== undefined && include.options) {
@@ -163,7 +166,7 @@ export function useVingRecord<T extends ModelName>(
             }
             if (include !== undefined && include.meta) {
                 out.meta = {
-                    type: prisma.name,
+                    kind: schema.kind,
                 };
             }
             if (include !== undefined && include.related && include.related.length) {
@@ -173,10 +176,10 @@ export function useVingRecord<T extends ModelName>(
                 out.warnings = this.warnings;
             }
 
-            for (const field of findVingSchema<T>(prisma.name).fields) {
+            for (const field of schema.props) {
 
                 // determine field visibility
-                const roles = [...field.ving.viewBy, ...field.ving.editBy];
+                const roles = [...field.view, ...field.edit];
                 const visible = roles.includes('public')
                     || (include !== undefined && include.private)
                     || (roles.includes('owner') && isOwner)
@@ -186,30 +189,28 @@ export function useVingRecord<T extends ModelName>(
                 const fieldName = field.name.toString();
 
                 // props
-                if (field.kind !== 'object') {
-                    out.props[fieldName as keyof Describe<T>['props']] = props[field.name];
-                }
+                out.props[fieldName as keyof Describe<T>['props']] = props[field.name];
 
                 // links 
                 if (typeof out.links === 'object'
                     && include.links
-                    && field.relationName
+                    && field.relation
                 ) {
-                    let lower = fieldName.toLowerCase();
+                    let lower = field.relation.name.toLowerCase();
                     out.links[lower] = `${out.links.self}/${lower}`;
                 }
 
                 // related
                 if (typeof out.related === 'object'
                     && include.related !== undefined && include.related.length > 0
-                    && field.relationName
+                    && field.relation
                     && include.related.includes(fieldName)
                 ) {
-                    if (field.relationFromFields.length > 0) { // parent relationship
-                        //need to handle related differently, probably by consumers adding their own related processors
-                        //         let parent = await this[field.name as keyof this] as VingRecord<T>;
-                        //       out.related[fieldName] = await parent.describe({ currentUser: currentUser })
-                    }
+                    //  if (field.relationFromFields.length > 0) { // parent relationship
+                    //need to handle related differently, probably by consumers adding their own related processors
+                    //         let parent = await this[field.name as keyof this] as VingRecord<T>;
+                    //       out.related[fieldName] = await parent.describe({ currentUser: currentUser })
+                    //  }
                 }
                 /*   if (typeof out.related === 'object'
                        && include.relatedList !== undefined && include.relatedList.length > 0
@@ -232,22 +233,22 @@ export function useVingRecord<T extends ModelName>(
             const currentUser = params.currentUser;
             const include = params.include || {};
             const isOwner = currentUser !== undefined && this.isOwner(currentUser);
-            for (const field of findVingSchema<T>(prisma.name).props) {
-                const roles = [...field.view, ...field.edit];
+            for (const prop of findVingSchema(model[Name]).props) {
+                const roles = [...prop.view, ...prop.edit];
                 const visible = roles.includes('public')
                     || (include !== undefined && include.private)
                     || (roles.includes('owner') && isOwner)
                     || (currentUser !== undefined && currentUser.isaRole(roles));
                 if (!visible) continue;
-                if (field.enums && field.enums.length > 0) {
-                    options[field.name] = enum2options(field.enums, field.enumLabels);
+                if (prop.type == 'enum' && prop.enums && prop.enums.length > 0) {
+                    options[prop.name] = enum2options(prop.enums, prop.enumLabels);
                 }
             }
             return options;
         },
 
-        verifyCreationParams(params) {
-            const schema = findVingSchema<T>(prisma.name);
+        testCreationProps(params) {
+            const schema = findVingSchema(model[Name]);
             for (const field of schema.props) {
                 if (!field.required || field.default || field.relation)
                     continue;
@@ -259,8 +260,8 @@ export function useVingRecord<T extends ModelName>(
             return true;
         },
 
-        async verifyPostedParams(params, currentUser) {
-            const schema = findVingSchema<T>(prisma.name);
+        async setPostedProps(params, currentUser) {
+            const schema = findVingSchema(model[Name]);
             const isOwner = currentUser !== undefined && this.isOwner(currentUser);
 
             for (const field of schema.props) {
@@ -310,7 +311,7 @@ export function useVingRecord<T extends ModelName>(
         },
 
         async updateAndVerify(params, currentUser) {
-            await this.verifyPostedParams(params, currentUser);
+            await this.setPostedProps(params, currentUser);
             await this.update();
         },
     }
@@ -419,8 +420,8 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
 
         async createAndVerify(props, currentUser) {
             const obj = this.mint({});
-            obj.verifyCreationParams(props);
-            await obj.verifyPostedParams(props, currentUser);
+            obj.testCreationProps(props);
+            await obj.setPostedProps(props, currentUser);
             await obj.insert();
             return obj;
         },
@@ -452,7 +453,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>(
 
         getOptions() {
             const options: Describe<T>['options'] = {};
-            for (const field of findVingSchema<T>(model[Name]).props) {
+            for (const field of findVingSchema(model[Name]).props) {
                 if (field.type == 'enum' && field.enums && field.enums.length > 0) {
                     options[field.name] = enum2options(field.enums, field.enumLabels);
                 }
