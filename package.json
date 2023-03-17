@@ -49,7 +49,7 @@
         "@pinia/nuxt": "^0.4.7",
         "bcryptjs": "^2.4.3",
         "csv-parse": "^5.3.5",
-        "drizzle-orm": "^0.21.1",
+        "drizzle-orm": "^0.22.0-7239945",
         "keyv": "^4.5.2",
         "lodash": "^4.17.21",
         "luxon": "^3.2.1",
