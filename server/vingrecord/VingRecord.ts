@@ -1,6 +1,5 @@
 import { UserRecord } from "./records/Users";
 import { ModelMap, Roles, ExtendedRoleOptions, ModelName, vingSchema, vingProp, ModelSelect, ModelInsert, Describe, warning, AuthorizedUser, DescribeParams, DescribeListParams, vingOption, DescribeList } from '../../types'
-//import { Session } from "../session";
 import { vingSchemas } from '../vingschema';
 import { findObject, ouch } from '../helpers';
 import crypto from 'crypto';
@@ -10,7 +9,7 @@ import type { SQL } from 'drizzle-orm/sql';
 import { MySqlSelectBuilder, MySqlSelect } from 'drizzle-orm/mysql-core/query-builders'
 import type { JoinNullability, SelectMode } from 'drizzle-orm/mysql-core/query-builders/select.types';
 import { sql } from 'drizzle-orm';
-import { like, eq, asc, desc, and, or } from 'drizzle-orm/expressions';
+import { like, eq, asc, desc, and, or, ne } from 'drizzle-orm/mysql-core/expressions';
 import { Name } from "drizzle-orm/table";
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers';
 import { AnyMySqlColumn } from 'drizzle-orm/mysql-core';
@@ -309,28 +308,20 @@ export function useVingRecord<T extends ModelName>(
                 }
                 if (field.name !== undefined && param !== undefined) {
 
-                    /*     if (field.unique) {
-                             let where: TModel[T]['count']['args']['where'] = {};
-                             if (this.isInserted) {
-                                 where = { id: { 'not': this.id } };
-                             }
-                             console.log('checking', fieldName);
-                             // @ts-ignore - no idea what the magic incantation should be here
-                             where[field.name] = params[field.name];
-                             //  where.id = 'xx';
-                             console.log(where);
-                             //const count = await prisma.count({ where });
-                             // console.log(`SELECT count(*) FROM ${schema.name} WHERE ${field.name.toString()} = '${params[field.name]}'`);
-                             //const count = await prisma.$queryRawUnsafe(`SELECT count(*) FROM ${schema.name} WHERE ${field.name.toString()} = '${params[field.name]}'`) as number;
-     
-                             const count = 0;
-                             console.log('count for ', fieldName, count);
-                             // console.log('count:', count)
-                             if (count > 0) {
-                                 console.log('--- unique check failed ---', fieldName)
-                                 throw ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
-                             }
-                         }*/
+                    if (field.unique) {
+                        const query = db.select({ count: sql<number>`count(*)`.as('count') }).from(table);
+                        // @ts-ignore - vingSchema knows best
+                        let where = eq(table[field.name], params[field.name as keyof ModelInsert<T>]);
+                        if (this.isInserted)
+                            // @ts-ignore - vingSchema knows best
+                            where = and(where, ne(table.id, this.get('id')));
+
+                        let count = (await query.where(where))[0].count
+                        if (count > 0) {
+                            console.log('--- unique check failed ---', fieldName)
+                            throw ouch(409, `${field.name.toString()} must be unique, but ${params[field.name as keyof ModelInsert<T>]} has already been used.`, field.name)
+                        }
+                    }
                     if (param !== null)
                         this.set(field.name as keyof ModelSelect<T>, param);
                 }
