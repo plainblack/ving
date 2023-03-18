@@ -369,7 +369,7 @@ export interface VingKind<T extends ModelName, VR extends VingRecord<T>> {
 }
 
 export type useVingKindOptions<T extends ModelName, VR extends VingRecord<T>> = {
-    db: MySql2Database, table: ModelMap[T]['model'], recordComposable: (opts: useVingRecordOptions<T>) => VR, propDefaults: ModelInsert<T>
+    db: MySql2Database, table: ModelMap[T]['model'], recordComposable: (opts: useVingRecordOptions<T>) => VR, propDefaults: Partial<ModelInsert<T>>
 }
 
 export function useVingKind<T extends ModelName, VR extends VingRecord<T>>({ db, table, recordComposable, propDefaults }: useVingKindOptions<T, VR>) {
