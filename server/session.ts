@@ -1,7 +1,9 @@
-import { Users, UserRecord, TRoleProps, useVingRole, VingRole, RoleOptions, DescribeParams, Describe } from './db';
+import { DescribeParams, Describe, RoleProps } from '../types';
+import { Users, UserRecord } from './vingrecord/Users';
+import { useVingRole, VingRole, RoleOptions } from './vingrecord/VingRole';
 import { ouch } from './helpers';
 import { cache } from './cache';
-import crypto from 'crypto';
+import { v4 } from 'uuid';
 
 export interface Session extends VingRole {
     _userObj: UserRecord | undefined,
@@ -14,7 +16,7 @@ export interface Session extends VingRole {
     fetch(id: string): Promise<Session>,
 }
 
-export function useSession(props: TRoleProps, id = crypto.randomUUID()) {
+export function useSession(props: RoleProps, id = v4()) {
 
     const getAll = () => {
         return props;
@@ -34,7 +36,7 @@ export function useSession(props: TRoleProps, id = crypto.randomUUID()) {
             if (this._userObj !== undefined) {
                 return this._userObj;
             }
-            return this._userObj = await Users.findUnique({ where: { id: props.id } }) as UserRecord;
+            return this._userObj = await Users.find(props.id) as UserRecord;
         },
 
         async end() {
@@ -92,7 +94,7 @@ export function useSession(props: TRoleProps, id = crypto.randomUUID()) {
         },
 
         async fetch(id: string) {
-            const data: TRoleProps | undefined = await cache.get('session-' + id);
+            const data: RoleProps | undefined = await cache.get('session-' + id);
             if (data !== undefined) {
                 return useSession(data, id);
             }

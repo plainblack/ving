@@ -1,5 +1,7 @@
 import { useVingKind, useVingRecord, VingRecord, useVingRecordOptions, useVingKindOptions } from "./VingRecord";
 import { ModelInsert, ModelSelect, DescribeParams, Describe, AuthorizedUser } from '../../types';
+import { RoleOptions, VingRole, useVingRole } from './VingRole';
+
 //import { APIKeyKind, APIKeyRecord } from "./APIKeys";
 import { ouch } from '../helpers';
 import bcrypt from 'bcryptjs';
@@ -7,57 +9,6 @@ import { cache } from '../cache';
 import { db } from '../drizzle/db';
 import { UserTable } from '../drizzle/schema/User';
 
-export type TRoleProps = TRoles & Pick<ModelSelect<'User'>, 'id' | 'password'>;
-
-export interface VingRole {
-    isRole(role: TExtendedRoleOptions): boolean,
-    isaRole(roles: TExtendedRoleOptions[]): boolean,
-    isRoleOrThrow(role: keyof TRoles): boolean,
-    getRoleProp<K extends keyof TRoleProps>(key: K): TRoleProps[K],
-}
-
-export function useVingRole({ getAll, props }: { getAll(): any, props: TRoleProps }) {
-
-    const VingRole: VingRole = {
-        isRole(role: TExtendedRoleOptions): boolean {
-            if (role == 'public') return true;
-            if (role == 'owner') return false; // can't do owner check this way, use isOwner() instead
-            let props = getAll();
-            if (role in props) {
-                return props[role as keyof TRoles] || props.admin || false;
-            }
-            return false;
-        },
-
-        isaRole(roles: TExtendedRoleOptions[]): boolean {
-            for (const role of roles) {
-                const result = this.isRole(role);
-                if (result) {
-                    return true;
-                }
-            }
-            return false;
-        },
-
-        isRoleOrThrow(role: keyof TRoles): boolean {
-            if (this.isRole(role)) {
-                return true;
-            }
-            throw ouch(403, `Not a member of ${role}`, role);
-        },
-
-        getRoleProp(key) {
-            return props[key];
-        },
-    }
-
-    return VingRole;
-
-}
-
-export const RoleOptions = ["admin", "developer"] as const;
-export type TRoles = Pick<ModelSelect<'User'>, typeof RoleOptions[number]>;
-export type TExtendedRoleOptions = keyof TRoles | "public" | "owner" | string;
 
 
 export interface UserRecord extends VingRecord<'User'>, VingRole {
