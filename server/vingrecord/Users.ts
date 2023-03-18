@@ -66,7 +66,7 @@ export interface UserRecord extends VingRecord<'User'>, VingRole {
     testPassword(password: string): Promise<boolean>,
     setPassword(password: string): void,
     describe(params: DescribeParams): Promise<Describe<'User'>>,
-    setPostedProps(params: Partial<ModelSelect<'User'>>, currentUser?: AuthorizedUser): Promise<boolean>,
+    setPostedProps(params: ModelInsert<'User'>, currentUser?: AuthorizedUser): Promise<boolean>,
     // apiKeys:
     update(): Promise<void>,
     set<K extends keyof ModelSelect<'User'>>(key: K, value: ModelSelect<'User'>[K]): ModelSelect<'User'>[K],

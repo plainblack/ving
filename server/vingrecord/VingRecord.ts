@@ -50,7 +50,7 @@ export interface VingRecord<T extends ModelName> {
     get<K extends keyof ModelSelect<T>>(key: K): ModelSelect<T>[K],
     getAll(): ModelSelect<T>,
     set<K extends keyof ModelSelect<T>>(key: K, value: ModelSelect<T>[K]): ModelSelect<T>[K],
-    setAll(props: Partial<ModelSelect<T>>): ModelSelect<T>,
+    setAll(props: ModelInsert<T>): ModelSelect<T>,
     isInserted: boolean,
     insert(): Promise<void>,
     update(): Promise<void>,
@@ -60,8 +60,8 @@ export interface VingRecord<T extends ModelName> {
     canEdit(currentUser: AuthorizedUser): boolean,
     describe(params: DescribeParams): Promise<Describe<T>>,
     propOptions(params: DescribeParams): Describe<T>['options'],
-    testCreationProps(params: Partial<ModelSelect<T>>): boolean,
-    setPostedProps(params: Partial<ModelSelect<T>>, currentUser?: AuthorizedUser): Promise<boolean>,
+    testCreationProps(params: ModelInsert<T>): boolean,
+    setPostedProps(params: ModelInsert<T>, currentUser?: AuthorizedUser): Promise<boolean>,
     updateAndVerify(params: ModelSelect<T>, currentUser?: AuthorizedUser): void,
 }
 
@@ -295,7 +295,8 @@ export function useVingRecord<T extends ModelName>(
 
             for (const field of schema.props) {
                 const fieldName = field.name.toString();
-                const param = params[field.name as keyof ModelSelect<T>];
+                // @ts-ignore - vingSchema is a safe bet
+                const param = params[field.name];
                 const roles = [...field.edit];
                 const editable = (roles.includes('owner') && (isOwner || !this.isInserted))
                     || (currentUser !== undefined && currentUser.isaRole(roles));
@@ -352,9 +353,9 @@ export interface VingKind<T extends ModelName, VR extends VingRecord<T>> {
     db: MySql2Database,
     table: ModelMap[T]['model'],
     describeList(params: DescribeListParams, whereCallback?: (condition?: SQL) => SQL | undefined): Promise<DescribeList<T>>,
-    copy(originalProps: Partial<ModelSelect<T>>): VR,
-    mint(props?: Partial<ModelSelect<T>>): VR,
-    create(props: Partial<ModelSelect<T>>): Promise<VR>,
+    copy(originalProps: ModelInsert<T>): VR,
+    mint(props?: ModelInsert<T>): VR,
+    create(props: ModelInsert<T>): Promise<VR>,
     createAndVerify(props: ModelSelect<T>, currentUser?: AuthorizedUser): Promise<VR>,
     getDefaultArgs(args?: object): object,
     get select(): any,
@@ -368,7 +369,7 @@ export interface VingKind<T extends ModelName, VR extends VingRecord<T>> {
 }
 
 export type useVingKindOptions<T extends ModelName, VR extends VingRecord<T>> = {
-    db: MySql2Database, table: ModelMap[T]['model'], recordComposable: (opts: useVingRecordOptions<T>) => VR, propDefaults: Partial<ModelSelect<T>>
+    db: MySql2Database, table: ModelMap[T]['model'], recordComposable: (opts: useVingRecordOptions<T>) => VR, propDefaults: ModelInsert<T>
 }
 
 export function useVingKind<T extends ModelName, VR extends VingRecord<T>>({ db, table, recordComposable, propDefaults }: useVingKindOptions<T, VR>) {

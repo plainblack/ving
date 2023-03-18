@@ -5,7 +5,7 @@ import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text }
 
 export const UserTable = mysqlTable('users',
     {
-        id: varchar('id', { length: 36 }).notNull().primaryKey(),
+        id: varchar('id', { length: 36 }).notNull().default('uuid-will-be-generated').primaryKey(),
 		createdAt: timestamp('createdAt').defaultNow().notNull(),
 		updatedAt: timestamp('updatedAt').defaultNow().notNull(),
 		username: varchar('username', { length: 60 }).notNull().default(''),
