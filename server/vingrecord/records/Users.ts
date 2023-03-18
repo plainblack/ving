@@ -124,7 +124,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
         await super.update();
     }
 
-    public set<K extends keyof ModelSelect<'User'>>(key: any /* K */, value: ModelSelect<'User'>[K]) {
+    public set<K extends keyof ModelSelect<'User'>>(key: K, value: ModelSelect<'User'>[K]) {
         if (key in ['password', ...RoleOptions])
             this.userChanged = true;
         return super.set(key, value);

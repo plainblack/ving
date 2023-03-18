@@ -13,7 +13,7 @@ export interface VingRole {
 export const RoleOptions = ["admin", "developer"] as const;
 
 export function RoleMixin<T extends Constructable<{ getAll(): any, get<K extends keyof RoleProps>(key: K): RoleProps[K] }>>(Base: T) {
-    return class RoleMixin extends Base {
+    class RoleMixin extends Base {
 
         public isRole(role: ExtendedRoleOptions): boolean {
             if (role == 'public') return true;
@@ -46,4 +46,9 @@ export function RoleMixin<T extends Constructable<{ getAll(): any, get<K extends
             return this.get(key);
         }
     }
+
+    return RoleMixin as {
+        new(...args: any): RoleMixin;
+        prototype: any;
+    } & T;
 }
