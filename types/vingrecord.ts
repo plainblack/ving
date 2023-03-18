@@ -12,14 +12,13 @@ export type ModelName = keyof ModelMap;
 
 export type ModelSelect<T extends ModelName> = ModelMap[T]['select'];
 export type ModelInsert<T extends ModelName> = ModelMap[T]['insert'];
-export type ModelProps<T extends ModelName> = ModelMap[T]['select'];
 
 export type AuthorizedUser = UserRecord;
 
-export type Roles = Pick<ModelProps<'User'>, typeof RoleOptions[number]>;
+export type Roles = Pick<ModelSelect<'User'>, typeof RoleOptions[number]>;
 export type ExtendedRoleOptions = keyof Roles | "public" | "owner" | string;
 
-export type RoleProps = Roles & Pick<ModelProps<'User'>, 'id' | 'password'>;
+export type RoleProps = Roles & Pick<ModelSelect<'User'>, 'id' | 'password'>;
 
 export type vingOption = {
     value: string | boolean,
@@ -61,12 +60,12 @@ export type DescribeList<T extends ModelName> = {
 }
 
 export type Describe<T extends ModelName> = {
-    props: Partial<ModelProps<T>>
+    props: Partial<ModelSelect<T>>
     links?: Record<string, string>
     meta?: Record<string, any>
     extra?: Record<string, any>
     options?: {
-        [property in keyof Partial<ModelProps<T>>]?: vingOption[]
+        [property in keyof Partial<ModelSelect<T>>]?: vingOption[]
     }
     related?: {
         [key: string]: Describe<T>
