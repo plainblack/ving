@@ -13,6 +13,7 @@ import { sql } from 'drizzle-orm';
 import { like, eq, asc, desc, and, or } from 'drizzle-orm/expressions';
 import { Name } from "drizzle-orm/table";
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers';
+import { AnyMySqlColumn } from 'drizzle-orm/mysql-core';
 
 export const findVingSchema = (nameToFind: string = '-unknown-') => {
     try {
@@ -352,7 +353,7 @@ export function useVingRecord<T extends ModelName>(
 export interface VingKind<T extends ModelName, VR extends VingRecord<T>> {
     db: MySql2Database,
     table: ModelMap[T]['model'],
-    describeList(params: DescribeListParams, whereCallback?: (condition?: SQL) => SQL | undefined): Promise<DescribeList<T>>,
+    describeList(params: DescribeListParams, whereCallback?: (condition?: SQL) => SQL | undefined, orderBy?: (SQL | AnyMySqlColumn)[]): Promise<DescribeList<T>>,
     copy(originalProps: ModelInsert<T>): VR,
     mint(props?: ModelInsert<T>): VR,
     create(props: ModelInsert<T>): Promise<VR>,
@@ -364,7 +365,7 @@ export interface VingKind<T extends ModelName, VR extends VingRecord<T>> {
     get insert(): any,
     count(whereCallback?: (condition?: SQL) => SQL | undefined): Promise<number>,
     find(id: ModelSelect<T>['id']): Promise<VR>,
-    findMany(whereCallback?: (condition?: SQL) => SQL | undefined, options?: { limit?: number, offset?: number }): Promise<VR[]>,
+    findMany(whereCallback?: (condition?: SQL) => SQL | undefined, options?: { limit?: number, offset?: number, orderBy?: (SQL | AnyMySqlColumn)[] }): Promise<VR[]>,
     getOptions(): Describe<T>['options'],
 }
 
@@ -377,7 +378,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>({ db,
     const VingKind: VingKind<T, VR> = {
         db,
         table,
-        async describeList(params = {}, whereCallback = (c) => c) {
+        async describeList(params = {}, whereCallback = (c) => c, orderBy = [asc(table.createdAt)]) {
             const itemsPerPage = params.itemsPerPage === undefined || params.itemsPerPage > 100 || params.itemsPerPage < 1 ? 10 : params.itemsPerPage;
             const page = params.page || 1;
             const maxItems = params.maxItems || 100000000000;
@@ -408,7 +409,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>({ db,
                 items: []
             };
             if (!skipResultSet) {
-                const records = await this.findMany(whereCallback, { limit: itemsPerPage, offset: itemsPerPage * (page - 1) });
+                const records = await this.findMany(whereCallback, { limit: itemsPerPage, offset: itemsPerPage * (page - 1), orderBy: orderBy });
                 for (let record of records) {
                     out.items.push(await record.describe(params.objectParams || {}));
                     maxItemsThisPage--;

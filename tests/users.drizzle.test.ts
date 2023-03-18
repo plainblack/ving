@@ -1,11 +1,12 @@
 import { describe, test, expect } from "vitest";
-import { db } from '../server/drizzle/db';
-import { like, eq, asc, and } from 'drizzle-orm/expressions';
+import { db, } from '../server/drizzle/db';
+import { like, eq, asc, desc, and } from 'drizzle-orm/expressions';
 import { sql } from 'drizzle-orm';
-import { AnyMySqlColumn } from 'drizzle-orm/mysql-core';
+import { AnyMySqlColumn, } from 'drizzle-orm/mysql-core';
 import { UserTable } from '../server/drizzle/schema/User';
 import type { SQL } from 'drizzle-orm/sql';
-import type { AnyMySqlSelect } from 'drizzle-orm/mysql-core/query-builders/select.types';
+import type { AnyMySqlSelect, } from 'drizzle-orm/mysql-core/query-builders/select.types';
+import { ValueOrArray } from 'drizzle-orm/utils';
 
 describe('UserTable', async () => {
 
@@ -64,15 +65,15 @@ describe('UserTable', async () => {
 
 
     // can't figure out the types on this
-    /*
-    test("can pass order by", async () => {
-        const passOrderBy = async (orderBy: (SQL | AnyMySqlColumn)[]) => await db.select().from(UserTable).orderBy(orderBy);
+
+    test("can pass order by with 2", async () => {
+        const passOrderBy = async (orderBy: (SQL | AnyMySqlColumn)[]) => await db.select().from(UserTable).orderBy(...orderBy);
         const result = await passOrderBy([asc(UserTable.username), desc(UserTable.realName)]);
         expect(result[0].realName).toBe('Warden');
     });
-    */
 
-    test("can pass order by with 2", async () => {
+
+    test("can pass order by", async () => {
         const passOrderBy = async (orderBy: SQL | AnyMySqlColumn) => await db.select().from(UserTable).orderBy(orderBy);
         const result = await passOrderBy(asc(UserTable.username));
         expect(result[0].realName).toBe('Warden');
