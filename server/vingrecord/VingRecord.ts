@@ -65,7 +65,7 @@ export interface VingRecord<T extends ModelName> {
     updateAndVerify(params: ModelSelect<T>, currentUser?: AuthorizedUser): void,
 }
 
-export type useVingRecordOptions<T extends ModelName> = { db: MySql2Database, table: any, props: ModelSelect<T>, inserted?: boolean }
+export type useVingRecordOptions<T extends ModelName> = { db: MySql2Database, table: any /* ModelMap[T]['model'] */, props: ModelMap[T]['select'], inserted?: boolean }
 
 export function useVingRecord<T extends ModelName>(
     { db, table, props, inserted = true }: useVingRecordOptions<T>
