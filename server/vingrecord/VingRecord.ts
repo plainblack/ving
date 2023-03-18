@@ -470,8 +470,26 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
     }
 
     public async find(id: ModelSelect<T>['id']) {
+        try {
+            return await this.findOrDie(id);
+        } catch {
+            return undefined;
+        }
+    }
+
+    public async findOrDie(id: ModelSelect<T>['id']) {
         const props = (await this.select.where(eq(this.table.id, id)))[0] as ModelSelect<T>;
-        return new this.recordClass({ db: this.db, table: this.table, props });
+        if (props)
+            return new this.recordClass({ db: this.db, table: this.table, props });
+        const schema = findVingSchema(this.table[Name]);
+        throw ouch(404, `${schema.kind} not found.`)
+    }
+
+    public async findOne(whereCallback: (condition?: SQL) => SQL | undefined = (c) => c) {
+        const result = await this.findMany(whereCallback, { limit: 1 });
+        if (result.length)
+            return result[0];
+        return undefined;
     }
 
     public async findMany(
@@ -491,15 +509,16 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         const results = (await query) as ModelSelect<T>[];
         return results.map(props => new this.recordClass({ db: this.db, table: this.table, props }));
     }
-
-    public getOptions() {
-        const options: Describe<T>['options'] = {};
-        for (const field of findVingSchema(this.table[Name]).props) {
-            if (field.type == 'enum' && field.enums && field.enums.length > 0) {
-                options[field.name as keyof ModelInsert<T>] = enum2options(field.enums, field.enumLabels);
+    /*
+        public propOptions() {
+            const options: Describe<T>['options'] = {};
+            for (const field of findVingSchema(this.table[Name]).props) {
+                if (field.type == 'enum' && field.enums && field.enums.length > 0) {
+                    options[field.name as keyof ModelInsert<T>] = enum2options(field.enums, field.enumLabels);
+                }
+    
             }
-
+            return options;
         }
-        return options;
-    }
+        */
 }

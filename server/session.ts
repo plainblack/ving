@@ -1,5 +1,5 @@
 import { DescribeParams, Describe, RoleProps } from '../types';
-import { Users, UserRecord } from './vingrecord/records/Users';
+import { Users, UserRecord } from './vingrecord/records/User';
 import { RoleMixin, RoleOptions } from './vingrecord/mixins/Role';
 import { ouch } from './helpers';
 import { cache } from './cache';
@@ -92,13 +92,13 @@ class ProtoSession {
         return out;
     }
 
-    public async start(user: UserRecord) {
+    static async start(user: UserRecord) {
         const session = new Session(user.getAll());
         await session.extend();
         return session;
     }
 
-    public async fetch(id: string) {
+    static async fetch(id: string) {
         const data: RoleProps | undefined = await cache.get('session-' + id);
         if (data !== undefined) {
             return new Session(data, id);

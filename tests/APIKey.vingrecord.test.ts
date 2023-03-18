@@ -1,5 +1,5 @@
 import { APIKeys } from '../server/vingrecord/records/APIKey';
-import { Users } from '../server/vingrecord/records/Users';
+import { Users } from '../server/vingrecord/records/User';
 import { describe, test, expect } from "vitest";
 import { like, eq, asc, desc, and, inArray } from 'drizzle-orm/expressions';
 

@@ -1,20 +1,16 @@
-import { User } from '../../../typeorm/entity/User';
+import { Users } from '../../vingrecord/records/User';
 import { testRequired, ouch, vingBody, vingDescribe } from '../../helpers';
-import { Session } from '../../../app/session';
+import { Session } from '../../session';
+import { eq } from 'drizzle-orm/mysql-core/expressions';
+
 export default defineEventHandler(async (event) => {
     const body = await vingBody(event)
     testRequired(['login', 'password'], body);
-    let user;
-    try {
-        user = await User.findOneOrFail({ where: { email: body.login } });
-    }
-    catch {
-        try {
-            user = await User.findOneOrFail({ where: { username: body.login } });
-        }
-        catch {
+    let user = await Users.findOne(() => eq(Users.table.email, body.login));
+    if (!user) {
+        user = await Users.findOne(() => eq(Users.table.username, body.login));
+        if (!user)
             throw ouch(404, 'User not found.')
-        }
     }
     await user.testPassword(body.password);
     const session = await Session.start(user);

@@ -1,5 +1,5 @@
-import { User } from '../../../typeorm/entity/User';
+import { Users } from '../../vingrecord/records/User';
 import { vingDescribe } from '../../helpers';
 export default defineEventHandler(async (event) => {
-    return new User().propOptions(vingDescribe(event));
+    return Users.mint().propOptions(vingDescribe(event));
 })
