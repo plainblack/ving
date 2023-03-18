@@ -45,7 +45,6 @@ export const findPropInSchema = (name: string | number | symbol, props: vingProp
 export interface VingRecord<T extends ModelName> {
     db: MySql2Database,
     table: ModelMap[T]['model'],
-    id: ModelSelect<T>['id'],
     warnings: Describe<T>['warnings'],
     addWarning(warning: warning): void,
     get<K extends keyof ModelSelect<T>>(key: K): ModelSelect<T>[K],
@@ -66,7 +65,7 @@ export interface VingRecord<T extends ModelName> {
     updateAndVerify(params: ModelSelect<T>, currentUser?: AuthorizedUser): void,
 }
 
-export type useVingRecordOptions<T extends ModelName> = { db: MySql2Database, table: any /* ModelMap[T]['model'] */, props: ModelMap[T]['select'], inserted?: boolean }
+export type useVingRecordOptions<T extends ModelName> = { db: MySql2Database, table: ModelMap[T]['model'], props: ModelMap[T]['select'], inserted?: boolean }
 
 export function useVingRecord<T extends ModelName>(
     { db, table, props, inserted = true }: useVingRecordOptions<T>
@@ -76,9 +75,6 @@ export function useVingRecord<T extends ModelName>(
 
         db,
         table,
-        get id() {
-            return props.id;
-        },
 
         warnings: [],
 
@@ -185,7 +181,8 @@ export function useVingRecord<T extends ModelName>(
             const isOwner = currentUser !== undefined && this.isOwner(currentUser);
             const schema = findVingSchema(table[Name]);
 
-            let out: Describe<T> = { props: { id: this.get('id') } };
+            let out: Describe<T> = { props: {} };
+            out.props.id = this.get('id');
             if (include !== undefined && include.links) {
                 out.links = { base: `/api/${schema.kind?.toLowerCase()}` };
                 out.links.self = `${out.links.base}/${props.id}`;
@@ -354,8 +351,8 @@ export interface VingKind<T extends ModelName, VR extends VingRecord<T>> {
     db: MySql2Database,
     table: ModelMap[T]['model'],
     describeList(params: DescribeListParams, whereCallback?: (condition?: SQL) => SQL | undefined, orderBy?: (SQL | AnyMySqlColumn)[]): Promise<DescribeList<T>>,
-    copy(originalProps: ModelInsert<T>): VR,
-    mint(props?: ModelInsert<T>): VR,
+    copy(originalProps: Partial<ModelSelect<T>>): VR,
+    mint(props?: Partial<ModelInsert<T>>): VR,
     create(props: ModelInsert<T>): Promise<VR>,
     createAndVerify(props: ModelSelect<T>, currentUser?: AuthorizedUser): Promise<VR>,
     getDefaultArgs(args?: object): object,

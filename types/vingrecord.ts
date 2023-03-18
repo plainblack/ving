@@ -2,12 +2,27 @@ import type { UserModel, UserSelect, UserInsert } from '../server/drizzle/schema
 import type { UserRecord } from '../server/vingrecord/records/Users';
 import { RoleOptions } from '../server/vingschema/schemas/User';
 import type { APIKeyModel, APIKeySelect, APIKeyInsert } from '../server/drizzle/schema/APIKey';
+import type { InferModel, AnyMySqlTable } from 'drizzle-orm/mysql-core';
 
+
+type MakeModelMap<T extends Record<string, AnyMySqlTable>> = {
+    [K in keyof T]: {
+        model: T[K];
+        select: InferModel<T[K], 'select'>;
+        insert: InferModel<T[K], 'insert'>;
+    };
+};
+
+export type ModelMap = MakeModelMap<{
+    User: UserModel;
+    APIKey: APIKeyModel;
+}>;
+/*
 export type ModelMap = {
     User: { model: UserModel, select: UserSelect, insert: UserInsert },
     APIKey: { model: APIKeyModel, select: APIKeySelect, insert: APIKeyInsert },
 }
-
+*/
 export type ModelName = keyof ModelMap;
 
 export type ModelSelect<T extends ModelName> = ModelMap[T]['select'];
@@ -60,12 +75,12 @@ export type DescribeList<T extends ModelName> = {
 }
 
 export type Describe<T extends ModelName> = {
-    props: ModelInsert<T>
+    props: Partial<ModelSelect<T>>
     links?: Record<string, string>
     meta?: Record<string, any>
     extra?: Record<string, any>
     options?: {
-        [property in keyof ModelInsert<T>]?: vingOption[]
+        [property in keyof Partial<ModelSelect<T>>]?: vingOption[]
     }
     related?: {
         [key: string]: Describe<T>

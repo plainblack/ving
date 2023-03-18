@@ -46,7 +46,8 @@ export function useUserRecord(
         },
 
         get avatarUrl() {
-            let url = `https://robohash.org/${this.id}/size_300x300`;
+            const id = this.get('id');
+            let url = `https://robohash.org/${id}/size_300x300`;
 
             // foreground
             if (this.get('id')?.match(/^[A-M]/)) {
@@ -55,15 +56,15 @@ export function useUserRecord(
             else if (this.get('id')?.match(/^[a-m]/)) {
                 url += '/set_set3'
             }
-            else if (this.id?.match(/^[N-Z]/)) {
+            else if (id.match(/^[N-Z]/)) {
                 url += '/set_set4'
             }
 
             // background
-            if (this.id?.match(/[A-Z]$/)) {
+            if (id.match(/[A-Z]$/)) {
                 url += '/bgset_bg1'
             }
-            else if (this.id?.match(/[a-z]$/)) {
+            else if (id.match(/[a-z]$/)) {
                 url += '/bgset_bg2'
             }
 
@@ -126,7 +127,7 @@ export function useUserRecord(
 
         async update() {
             if (userChanged)
-                await cache.set('user-changed-' + this.id, true, 1000 * 60 * 60 * 24 * 7);
+                await cache.set('user-changed-' + this.get('id'), true, 1000 * 60 * 60 * 24 * 7);
             await base.update();
         },
 
