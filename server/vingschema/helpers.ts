@@ -89,7 +89,7 @@ export const dbId = (prop: Extract<vingProp, { type: "id" }>) => {
 }
 
 export const dbPk = (prop: Extract<vingProp, { type: "id" }>) => {
-    return `${dbId(prop)}.primaryKey()`;
+    return `${dbId(prop)}.default('uuid-will-be-generated').primaryKey()`;
 }
 
 export const dbRelation = (prop: Extract<vingProp, { type: "id" }>) => {

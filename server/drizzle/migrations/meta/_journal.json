@@ -8,6 +8,13 @@
       "when": 1678921509647,
       "tag": "0000_regular_vindicator",
       "breakpoints": false
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1679107573132,
+      "tag": "0001_freezing_callisto",
+      "breakpoints": false
     }
   ]
 }
