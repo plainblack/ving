@@ -1,5 +1,5 @@
 import { useVingKind, useVingRecord, VingRecord, useVingRecordOptions, useVingKindOptions } from "./VingRecord";
-import { ModelName, ModelSelect, DescribeParams, Describe, AuthorizedUser } from '../../types';
+import { ModelInsert, ModelSelect, DescribeParams, Describe, AuthorizedUser } from '../../types';
 //import { APIKeyKind, APIKeyRecord } from "./APIKeys";
 import { ouch } from '../../app/helpers';
 import bcrypt from 'bcryptjs';

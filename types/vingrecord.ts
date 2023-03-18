@@ -13,10 +13,6 @@ export type ModelName = keyof ModelMap;
 export type ModelSelect<T extends ModelName> = ModelMap[T]['select'];
 export type ModelInsert<T extends ModelName> = ModelMap[T]['insert'];
 
-type x = ModelSelect<'User'>
-type y = ModelInsert<'User'>
-type z = Partial<ModelSelect<'User'>>
-
 export type AuthorizedUser = UserRecord;
 
 export type Roles = Pick<ModelSelect<'User'>, typeof RoleOptions[number]>;
