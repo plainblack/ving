@@ -43,7 +43,7 @@ export const findPropInSchema = (name: string | number | symbol, props: vingProp
 
 export interface VingRecord<T extends ModelName> {
     db: MySql2Database,
-    table: any,
+    table: ModelMap[T]['model'],
     id: ModelSelect<T>['id'],
     warnings: Describe<T>['warnings'],
     addWarning(warning: warning): void,
@@ -350,7 +350,7 @@ export function useVingRecord<T extends ModelName>(
 
 export interface VingKind<T extends ModelName, VR extends VingRecord<T>> {
     db: MySql2Database,
-    table: any,
+    table: ModelMap[T]['model'],
     describeList(params: DescribeListParams, whereCallback?: (condition?: SQL) => SQL | undefined): Promise<DescribeList<T>>,
     copy(originalProps: Partial<ModelSelect<T>>): VR,
     mint(props?: Partial<ModelSelect<T>>): VR,
