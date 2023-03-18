@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { UserRecord, TRoles, TExtendedRoleOptions } from "./Users";
 import { Session } from "../session";
 import vingSchemas from './ving-schema.json';
-import { findObject, ouch } from '../helpers';
+import { findObject, ouch } from '../../server/helpers';
 import crypto from 'crypto';
 import _ from 'lodash';
 

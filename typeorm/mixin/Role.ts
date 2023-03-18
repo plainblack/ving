@@ -1,5 +1,5 @@
 import { Constructable, RoleProps, ExtendedRoleOptions, Roles } from '../types';
-import { ouch } from '../../app/helpers';
+import { ouch } from '../../server/helpers';
 
 export function RoleMixin<T extends Constructable<{ getAll(): any, get<K extends keyof RoleProps>(key: K): RoleProps[K] }>>(Base: T) {
     class RoleMixin extends Base {

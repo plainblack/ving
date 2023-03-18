@@ -2,7 +2,7 @@ import { UserRecord } from "./Users";
 import { ModelMap, Roles, ExtendedRoleOptions, ModelName, vingSchema, vingProp, ModelSelect, ModelInsert, Describe, warning, AuthorizedUser, DescribeParams, DescribeListParams, vingOption, DescribeList } from '../../types'
 //import { Session } from "../session";
 import { vingSchemas } from '../vingschema';
-import { findObject, ouch } from '../../app/helpers';
+import { findObject, ouch } from '../helpers';
 import crypto from 'crypto';
 import _ from 'lodash';
 import type { MySql2Database } from 'drizzle-orm/mysql2';

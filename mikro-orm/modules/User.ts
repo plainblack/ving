@@ -5,7 +5,7 @@ import {
 } from '@mikro-orm/core';
 import { hash, verify } from 'argon2';
 import { BaseEntity } from './Base';
-import { ouch } from '../../app/helpers';
+import { ouch } from '../../server/helpers';
 
 export class UserRepository extends EntityRepository<User> {
 

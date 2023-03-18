@@ -1,9 +1,9 @@
 import { useVingKind, useVingRecord, VingRecord, useVingRecordOptions, useVingKindOptions } from "./VingRecord";
 import { ModelInsert, ModelSelect, DescribeParams, Describe, AuthorizedUser } from '../../types';
 //import { APIKeyKind, APIKeyRecord } from "./APIKeys";
-import { ouch } from '../../app/helpers';
+import { ouch } from '../helpers';
 import bcrypt from 'bcryptjs';
-import { cache } from '../../app/cache';
+import { cache } from '../cache';
 import { db } from '../drizzle/db';
 import { UserTable } from '../drizzle/schema/User';
 

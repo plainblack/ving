@@ -1,8 +1,8 @@
 import { RoleProps, DescribeParams, Describe } from '../typeorm/types';
 import { RoleMixin } from '../typeorm/mixin/Role';
 import { User, RoleOptions } from '../typeorm/entity/User';
-import { ouch } from './helpers';
-import { cache } from './cache';
+import { ouch } from '../server/helpers';
+import { cache } from '../server/cache';
 import crypto from 'crypto';
 
 class ProtoSession {

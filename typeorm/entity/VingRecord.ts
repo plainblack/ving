@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, UpdateDateColumn, BaseEntity, CreateDat
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder'
 import { v4 } from 'uuid';
 import { vingOption, vingProp, vingSchema, AuthorizedUser, ModelName, ModelProps, Describe, Roles, DescribeParams, DescribeList, DescribeListParams } from '../types';
-import { ouch } from '../../app/helpers';
+import { ouch } from '../../server/helpers';
 import _ from 'lodash';
 
 export type VingRecordProps = {

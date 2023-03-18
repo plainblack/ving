@@ -1,9 +1,9 @@
 import { prisma } from "./client";
 import { VingKind, VingRecord, TProps, DescribeParams, IConstructable } from "./_Base";
 import { APIKeyKind, APIKeyRecord } from "./APIKeys";
-import { ouch } from '../helpers';
+import { ouch } from '../../server/helpers';
 import bcrypt from 'bcrypt';
-import { cache } from '../cache';
+import { cache } from '../../server/cache';
 
 import { ArrayToTuple } from '../../typeorm/types';
 

@@ -1,5 +1,5 @@
 import { User } from '../../../typeorm/entity/User';
-import { testRequired, ouch, vingBody, vingDescribe } from '../../../app/helpers';
+import { testRequired, ouch, vingBody, vingDescribe } from '../../helpers';
 import { Session } from '../../../app/session';
 export default defineEventHandler(async (event) => {
     const body = await vingBody(event)

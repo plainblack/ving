@@ -5,7 +5,7 @@ import { DataSource } from "typeorm";
 import { User } from "./entity/User";
 import { APIKey } from "./entity/APIKey";
 import { URL } from 'node:url';
-import { ouch } from '../app/helpers';
+import { ouch } from '../server/helpers';
 const dbConfig = new URL(process.env.TYPEORM_DATABASE || '');
 
 export const AppDataSource = new DataSource({

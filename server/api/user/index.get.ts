@@ -1,5 +1,5 @@
 import { User } from '../../../typeorm/entity/User';
-import { vingDescribeList, vingSession, ouch } from '../../../app/helpers';
+import { vingDescribeList, vingSession, ouch } from '../../helpers';
 export default defineEventHandler(async (event) => {
   const session = vingSession(event);
   // comment the 2 lines below out if you want to allow mere users to access the user list
