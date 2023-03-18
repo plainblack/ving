@@ -1,21 +1,19 @@
-import { APIKey } from '../typeorm/entity/APIKey';
-import { User } from '../typeorm/entity/User';
+import { APIKeys } from '../server/vingrecord/records/APIKey';
+import { Users } from '../server/vingrecord/records/Users';
 import { describe, test, expect } from "vitest";
-import { initialize } from '../typeorm/data-source'
+import { like, eq, asc, desc, and, inArray } from 'drizzle-orm/expressions';
 
-await initialize()
-
-await APIKey.delete({ name: 'Test' });
-await User.delete({ username: 'guardMert' });
+await APIKeys.delete.where(eq(APIKeys.table.name, 'Test'));
+await Users.delete.where(eq(Users.table.username, 'guardMert'));
 
 describe('APIKey', async () => {
 
-    const user = await new User().setAll({ username: 'guardMert', email: 'Mert@shawshank.jail', realName: 'Mert' }).save();
+    const user = await Users.create({ username: 'guardMert', email: 'Mert@shawshank.jail', realName: 'Mert' });
 
-    const apikey = new APIKey().setAll({ name: 'Test', userId: user.id });
+    const apikey = APIKeys.mint({ name: 'Test', userId: user.get('id') });
 
     test('can set relation', async () => {
-        expect(apikey.user.id).toEqual(user.id);
+        expect(apikey.get('userId')).toEqual(user.get('id'));
     })
 
     test('privateKey generated', async () => {
@@ -23,7 +21,7 @@ describe('APIKey', async () => {
     })
 
     test('can save key', async () => {
-        await apikey.save();
+        await apikey.insert();
         expect(apikey.isInserted).toBe(true);
     })
 
