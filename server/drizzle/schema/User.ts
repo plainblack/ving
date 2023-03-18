@@ -1,4 +1,3 @@
-import type { InferModel } from 'drizzle-orm/mysql-core';
 import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from 'drizzle-orm/mysql-core';
 
 
@@ -25,5 +24,3 @@ export const UserTable = mysqlTable('users',
 
 
 export type UserModel = typeof UserTable;
-export type UserSelect = InferModel<UserModel, 'select'>
-export type UserInsert = InferModel<UserModel, 'insert'>

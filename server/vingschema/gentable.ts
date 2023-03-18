@@ -31,15 +31,12 @@ export const makeTableFile = async (schema: vingSchema) => {
             references.push(`import {${prop.relation.kind}Table} from './${prop.relation.kind}';`);
         }
     }
-    const content = `import type { InferModel } from 'drizzle-orm/mysql-core';
-import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from 'drizzle-orm/mysql-core';
+    const content = `import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from 'drizzle-orm/mysql-core';
 ${references.join("\n")}
 
 ${makeTable(schema)}
 
 export type ${schema.kind}Model = typeof ${schema.kind}Table;
-export type ${schema.kind}Select = InferModel<${schema.kind}Model, 'select'>
-export type ${schema.kind}Insert = InferModel<${schema.kind}Model, 'insert'>
 `;
     const path = `server/drizzle/schema/${schema.kind}.ts`;
     await writeFileSafely(path, content);

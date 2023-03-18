@@ -1,4 +1,3 @@
-import type { InferModel } from 'drizzle-orm/mysql-core';
 import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from 'drizzle-orm/mysql-core';
 import {UserTable} from './User';
 
@@ -21,5 +20,3 @@ export const APIKeyTable = mysqlTable('apikeys',
 
 
 export type APIKeyModel = typeof APIKeyTable;
-export type APIKeySelect = InferModel<APIKeyModel, 'select'>
-export type APIKeyInsert = InferModel<APIKeyModel, 'insert'>

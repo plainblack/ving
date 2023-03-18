@@ -1,9 +1,8 @@
-import type { UserModel, UserSelect, UserInsert } from '../server/drizzle/schema/User';
+import type { UserModel } from '../server/drizzle/schema/User';
 import type { UserRecord } from '../server/vingrecord/records/Users';
 import { RoleOptions } from '../server/vingschema/schemas/User';
-import type { APIKeyModel, APIKeySelect, APIKeyInsert } from '../server/drizzle/schema/APIKey';
+import type { APIKeyModel } from '../server/drizzle/schema/APIKey';
 import type { InferModel, AnyMySqlTable } from 'drizzle-orm/mysql-core';
-
 
 type MakeModelMap<T extends Record<string, AnyMySqlTable>> = {
     [K in keyof T]: {
@@ -17,12 +16,7 @@ export type ModelMap = MakeModelMap<{
     User: UserModel;
     APIKey: APIKeyModel;
 }>;
-/*
-export type ModelMap = {
-    User: { model: UserModel, select: UserSelect, insert: UserInsert },
-    APIKey: { model: APIKeyModel, select: APIKeySelect, insert: APIKeyInsert },
-}
-*/
+
 export type ModelName = keyof ModelMap;
 
 export type ModelSelect<T extends ModelName> = ModelMap[T]['select'];
