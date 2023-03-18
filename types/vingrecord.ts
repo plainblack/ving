@@ -13,6 +13,10 @@ export type ModelName = keyof ModelMap;
 export type ModelSelect<T extends ModelName> = ModelMap[T]['select'];
 export type ModelInsert<T extends ModelName> = ModelMap[T]['insert'];
 
+type x = ModelSelect<'User'>
+type y = ModelInsert<'User'>
+type z = Partial<ModelSelect<'User'>>
+
 export type AuthorizedUser = UserRecord;
 
 export type Roles = Pick<ModelSelect<'User'>, typeof RoleOptions[number]>;
@@ -60,12 +64,12 @@ export type DescribeList<T extends ModelName> = {
 }
 
 export type Describe<T extends ModelName> = {
-    props: Partial<ModelSelect<T>>
+    props: ModelInsert<T>
     links?: Record<string, string>
     meta?: Record<string, any>
     extra?: Record<string, any>
     options?: {
-        [property in keyof Partial<ModelSelect<T>>]?: vingOption[]
+        [property in keyof ModelInsert<T>]?: vingOption[]
     }
     related?: {
         [key: string]: Describe<T>

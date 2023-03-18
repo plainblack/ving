@@ -184,7 +184,7 @@ export function useVingRecord<T extends ModelName>(
             const isOwner = currentUser !== undefined && this.isOwner(currentUser);
             const schema = findVingSchema(table[Name]);
 
-            let out: Describe<T> = { props: {} };
+            let out: Describe<T> = { props: { id: this.get('id') } };
             if (include !== undefined && include.links) {
                 out.links = { base: `/api/${schema.kind?.toLowerCase()}` };
                 out.links.self = `${out.links.base}/${props.id}`;
@@ -217,7 +217,7 @@ export function useVingRecord<T extends ModelName>(
                 const fieldName = field.name.toString();
 
                 // props
-                out.props[field.name as keyof Describe<T>['props']] = props[field.name as keyof ModelSelect<T>];
+                out.props[field.name as keyof Describe<T>['props']] = props[field.name as keyof ModelInsert<T>];
 
                 // links 
                 if (typeof out.links === 'object'
@@ -269,7 +269,7 @@ export function useVingRecord<T extends ModelName>(
                     || (currentUser !== undefined && currentUser.isaRole(roles));
                 if (!visible) continue;
                 if ((prop.type == 'enum' || prop.type == 'boolean') && prop.enums && prop.enums.length > 0) {
-                    options[prop.name as keyof ModelSelect<T>] = enum2options(prop.enums, prop.enumLabels);
+                    options[prop.name as keyof ModelInsert<T>] = enum2options(prop.enums, prop.enumLabels);
                 }
             }
             return options;
@@ -491,7 +491,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>({ db,
             const options: Describe<T>['options'] = {};
             for (const field of findVingSchema(table[Name]).props) {
                 if (field.type == 'enum' && field.enums && field.enums.length > 0) {
-                    options[field.name as keyof ModelSelect<T>] = enum2options(field.enums, field.enumLabels);
+                    options[field.name as keyof ModelInsert<T>] = enum2options(field.enums, field.enumLabels);
                 }
 
             }
