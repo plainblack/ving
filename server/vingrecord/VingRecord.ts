@@ -379,28 +379,28 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>({ db,
         table,
         async describeList(params = {}, whereCallback = (c) => c) {
             const itemsPerPage = params.itemsPerPage === undefined || params.itemsPerPage > 100 || params.itemsPerPage < 1 ? 10 : params.itemsPerPage;
-            const pageNumber = params.pageNumber || 1;
+            const page = params.page || 1;
             const maxItems = params.maxItems || 100000000000;
-            const itemsUpToThisPage = itemsPerPage * pageNumber;
+            const itemsUpToThisPage = itemsPerPage * page;
             const fullPages = Math.floor(maxItems / itemsPerPage);
             let maxItemsThisPage = itemsPerPage;
             let skipResultSet = false;
             if (itemsUpToThisPage - itemsPerPage >= maxItems) {
                 skipResultSet = true;
             }
-            else if (pageNumber - fullPages == 1) {
+            else if (page - fullPages == 1) {
                 maxItemsThisPage = itemsPerPage - (itemsUpToThisPage - maxItems);
             }
-            else if (pageNumber - fullPages > 1) {
+            else if (page - fullPages > 1) {
                 skipResultSet = true;
             }
             const totalItems = await this.count(whereCallback);
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const out: DescribeList<T> = {
                 paging: {
-                    pageNumber: pageNumber,
-                    nextPageNumber: pageNumber + 1 >= totalPages ? pageNumber : pageNumber + 1,
-                    previousPageNumber: pageNumber < 2 ? 1 : pageNumber - 1,
+                    page: page,
+                    nextPage: page + 1 >= totalPages ? page : page + 1,
+                    previousPage: page < 2 ? 1 : page - 1,
                     itemsPerPage: itemsPerPage,
                     totalItems: totalItems,
                     totalPages: totalPages
@@ -408,7 +408,7 @@ export function useVingKind<T extends ModelName, VR extends VingRecord<T>>({ db,
                 items: []
             };
             if (!skipResultSet) {
-                const records = await this.findMany(whereCallback, { limit: itemsPerPage, offset: itemsPerPage * (pageNumber - 1) });
+                const records = await this.findMany(whereCallback, { limit: itemsPerPage, offset: itemsPerPage * (page - 1) });
                 for (let record of records) {
                     out.items.push(await record.describe(params.objectParams || {}));
                     maxItemsThisPage--;

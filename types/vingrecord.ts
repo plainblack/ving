@@ -39,7 +39,7 @@ export type DescribeParams = {
 
 export type DescribeListParams = {
     itemsPerPage?: number,
-    pageNumber?: number,
+    page?: number,
     orderBy?: string,
     sortOrder?: 'asc' | 'desc',
     maxItems?: number,
@@ -49,9 +49,9 @@ export type DescribeListParams = {
 
 export type DescribeList<T extends ModelName> = {
     paging: {
-        pageNumber: number
-        nextPageNumber: number
-        previousPageNumber: number
+        page: number
+        nextPage: number
+        previousPage: number
         itemsPerPage: number
         totalItems: number
         totalPages: number
