@@ -1,5 +1,5 @@
-import { RoleProps, ExtendedRoleOptions, Roles } from '../../types';
-import { ouch } from '../helpers';
+import { RoleProps, ExtendedRoleOptions, Roles } from '../../../types';
+import { ouch } from '../../helpers';
 
 export interface VingRole {
     isRole(role: ExtendedRoleOptions): boolean,

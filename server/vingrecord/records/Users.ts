@@ -1,6 +1,6 @@
 import { useVingKind, useVingRecord, VingRecord, useVingRecordOptions, useVingKindOptions } from "../VingRecord";
 import { ModelInsert, ModelSelect, DescribeParams, Describe, AuthorizedUser } from '../../../types';
-import { RoleOptions, VingRole, useVingRole } from '../VingRole';
+import { RoleOptions, VingRole, useVingRole } from '../traits/VingRole';
 
 //import { APIKeyKind, APIKeyRecord } from "./APIKeys";
 import { ouch } from '../../helpers';
