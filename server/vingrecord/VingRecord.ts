@@ -1,4 +1,4 @@
-import { UserRecord } from "./Users";
+import { UserRecord } from "./records/Users";
 import { ModelMap, Roles, ExtendedRoleOptions, ModelName, vingSchema, vingProp, ModelSelect, ModelInsert, Describe, warning, AuthorizedUser, DescribeParams, DescribeListParams, vingOption, DescribeList } from '../../types'
 //import { Session } from "../session";
 import { vingSchemas } from '../vingschema';

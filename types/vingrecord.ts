@@ -1,5 +1,5 @@
 import type { UserModel, UserSelect, UserInsert } from '../server/drizzle/schema/User';
-import type { UserRecord } from '../server/vingrecord/Users';
+import type { UserRecord } from '../server/vingrecord/records/Users';
 import { RoleOptions } from '../server/vingschema/schemas/User';
 import type { APIKeyModel, APIKeySelect, APIKeyInsert } from '../server/drizzle/schema/APIKey';
 

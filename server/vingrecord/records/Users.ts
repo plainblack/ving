@@ -1,13 +1,13 @@
-import { useVingKind, useVingRecord, VingRecord, useVingRecordOptions, useVingKindOptions } from "./VingRecord";
-import { ModelInsert, ModelSelect, DescribeParams, Describe, AuthorizedUser } from '../../types';
-import { RoleOptions, VingRole, useVingRole } from './VingRole';
+import { useVingKind, useVingRecord, VingRecord, useVingRecordOptions, useVingKindOptions } from "../VingRecord";
+import { ModelInsert, ModelSelect, DescribeParams, Describe, AuthorizedUser } from '../../../types';
+import { RoleOptions, VingRole, useVingRole } from '../VingRole';
 
 //import { APIKeyKind, APIKeyRecord } from "./APIKeys";
-import { ouch } from '../helpers';
+import { ouch } from '../../helpers';
 import bcrypt from 'bcryptjs';
-import { cache } from '../cache';
-import { db } from '../drizzle/db';
-import { UserTable } from '../drizzle/schema/User';
+import { cache } from '../../cache';
+import { db } from '../../drizzle/db';
+import { UserTable } from '../../drizzle/schema/User';
 
 
 

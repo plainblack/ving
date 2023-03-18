@@ -1,5 +1,5 @@
 import { DescribeParams, Describe, RoleProps } from '../types';
-import { Users, UserRecord } from './vingrecord/Users';
+import { Users, UserRecord } from './vingrecord/records/Users';
 import { useVingRole, VingRole, RoleOptions } from './vingrecord/VingRole';
 import { ouch } from './helpers';
 import { cache } from './cache';

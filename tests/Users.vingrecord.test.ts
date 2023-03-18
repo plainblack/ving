@@ -1,4 +1,4 @@
-import { Users, UserRecord } from '../server/vingrecord/Users';
+import { Users, UserRecord } from '../server/vingrecord/records/Users';
 import { describe, test, expect } from "vitest";
 import { ModelSelect } from "../types";
 import { like, eq, asc, desc, and, inArray } from 'drizzle-orm/expressions';
