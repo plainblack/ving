@@ -1,7 +1,5 @@
-import { vingSchema, vingProp } from '../../types/db';
-import { uuid, baseSchemaProps, dbString, zodString, makeTable, dbText, zodText, dbId } from '../helpers';
-import { InferModel } from 'drizzle-orm/mysql-core';
-import { UserTable } from './users';
+import { vingSchema } from '../../../types/vingschema';
+import { uuid, baseSchemaProps, dbString, zodString, dbText, zodText, dbRelation } from '../helpers';
 
 export const apikeySchema: vingSchema = {
     kind: 'APIKey',
@@ -57,10 +55,11 @@ export const apikeySchema: vingSchema = {
             name: 'userId',
             required: true,
             length: 36,
-            db: (prop: vingProp) => dbId(prop).references(() => UserTable.id),
+            db: (prop) => dbRelation(prop),
             relation: {
-                type: '1:n',
+                type: 'parent',
                 name: 'user',
+                kind: 'User',
             },
             default: undefined,
             view: ['public'],
@@ -68,7 +67,7 @@ export const apikeySchema: vingSchema = {
         },
     ],
 };
-
+/*
 export const APIKeyTable = makeTable(apikeySchema);
 
 export type APIKeyModel = typeof APIKeyTable;
@@ -99,3 +98,4 @@ export type APIKeyProps = {
     privateKey: string,
     userId: string,
 }
+*/

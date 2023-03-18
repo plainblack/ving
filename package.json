@@ -17,8 +17,9 @@
         "generate-migration": "npm run prepare-migration-datasource && typeorm migration:generate -o -p -d .output/typeorm/data-source.js typeorm/migrations/$npm_config_name",
         "run-migrations": "npm run prepare-migration-datasource && typeorm migration:run -d .output/typeorm/data-source.js",
         "revert-migration": "npm run prepare-migration-datasource && typeorm migration:revert -d .output/typeorm/data-source.js",
-        "drizzle:gen": "drizzle-kit generate:mysql --out ./drizzle/migrations --schema drizzle/schema",
-        "drizzle:migrate": "esbuild drizzle/migrate.ts --platform=node --bundle --log-level=warning --outfile=.output/drizzle/migrate.js && node .output/drizzle/migrate.js"
+        "ving:gentable": "esbuild server/vingschema/gentable.ts --platform=node --bundle --log-level=warning --outfile=.output/server/vingschema/gentable.js && node .output/server/vingschema/gentable.js",
+        "drizzle:gen": "drizzle-kit generate:mysql --out ./server/drizzle/migrations --schema server/drizzle/schema",
+        "drizzle:migrate": "esbuild server/drizzle/migrate.ts --platform=node --bundle --log-level=warning --outfile=.output/server/drizzle/migrate.js && node .output/server/drizzle/migrate.js"
     },
     "devDependencies": {
         "@nuxt/test-utils": "^3.2.2",

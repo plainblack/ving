@@ -1,7 +1,7 @@
 import { UserRecord } from "./Users";
 import { ModelMap, Roles, ExtendedRoleOptions, ModelName, vingSchema, vingProp, ModelSelect, ModelInsert, Describe, warning, AuthorizedUser, DescribeParams, DescribeListParams, vingOption, DescribeList } from '../../types'
 //import { Session } from "../session";
-import { vingSchemas } from '../../drizzle/vingSchemas';
+import { vingSchemas } from '../vingschema';
 import { findObject, ouch } from '../../app/helpers';
 import crypto from 'crypto';
 import _ from 'lodash';
@@ -12,7 +12,7 @@ import type { JoinNullability, SelectMode } from 'drizzle-orm/mysql-core/query-b
 import { sql } from 'drizzle-orm';
 import { like, eq, asc, desc, and, or } from 'drizzle-orm/expressions';
 import { Name } from "drizzle-orm/table";
-import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../../drizzle/helpers';
+import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers';
 
 export const findVingSchema = (nameToFind: string = '-unknown-') => {
     try {
@@ -368,7 +368,7 @@ export interface VingKind<T extends ModelName, VR extends VingRecord<T>> {
 }
 
 export type useVingKindOptions<T extends ModelName, VR extends VingRecord<T>> = {
-    db: MySql2Database, table: any, recordComposable: (opts: useVingRecordOptions<T>) => VR, propDefaults: Partial<ModelSelect<T>>
+    db: MySql2Database, table: ModelMap[T]['model'], recordComposable: (opts: useVingRecordOptions<T>) => VR, propDefaults: Partial<ModelSelect<T>>
 }
 
 export function useVingKind<T extends ModelName, VR extends VingRecord<T>>({ db, table, recordComposable, propDefaults }: useVingKindOptions<T, VR>) {

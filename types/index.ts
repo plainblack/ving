@@ -1,3 +1,3 @@
-export * from './db';
-export * from './record';
+export * from './vingschema';
+export * from './vingrecord';
 export * from './util';

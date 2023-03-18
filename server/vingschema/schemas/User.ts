@@ -1,6 +1,5 @@
-import { vingSchema, vingProp } from '../../types/db';
-import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, makeTable } from '../helpers';
-import type { InferModel } from 'drizzle-orm/mysql-core';
+import { vingSchema } from '../../../types/vingschema';
+import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean } from '../helpers';
 
 export const userSchema: vingSchema = {
     kind: 'User',
@@ -104,6 +103,7 @@ export const userSchema: vingSchema = {
 
 export const RoleOptions = ["admin", "developer"] as const;
 
+/*
 export const UserTable = makeTable(userSchema);
 
 // temporary measure until we can get the types worked out for auto-generation
@@ -127,6 +127,8 @@ export const usersTemp = mysqlTable('users',
         emailIndex: uniqueIndex('emailIndex').on(users.email),
     })
 );
+
+
 
 export type UserModel = typeof UserTable;
 export type UserSelect = InferModel<typeof usersTemp, 'select'>
@@ -154,3 +156,4 @@ export type UserProps = {
     admin: boolean,
     developer: boolean
 }
+*/

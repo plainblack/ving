@@ -1,10 +1,12 @@
 import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from 'drizzle-orm/mysql-core';
 import type { AnyMySqlColumn } from 'drizzle-orm/mysql-core';
 import { AnyMySqlColumnBuilder } from 'drizzle-orm/mysql-core/columns/common';
-import { vingSchema, vingProp } from '../types/db';
+import { vingSchema, vingProp } from '../../types/vingschema';
 import { v4 } from 'uuid';
 import { z } from 'zod';
 export const uuid = v4;
+import * as fs from 'fs';
+import * as path from 'path';
 
 export const stringDefault = (prop: Extract<vingProp, { type: "string" | "enum" | "id" }>, skipFunc: boolean = false): string => {
     if (typeof prop.default == 'string')
@@ -59,57 +61,47 @@ export const zodText = (prop: Extract<vingProp, { type: "string" }>) => {
 }
 
 export const dbTimestamp = (prop: Extract<vingProp, { type: "date" }>) => {
-    return timestamp(prop.name).defaultNow().notNull();
+    return `timestamp('${prop.name}').defaultNow().notNull()`;
 }
 
 export const dbString = (prop: Extract<vingProp, { type: "string" }>) => {
-    return varchar(prop.name, { length: prop.length }).notNull().default(stringDefault(prop, true));
+    return `varchar('${prop.name}', { length: ${prop.length} }).notNull().default('${stringDefault(prop, true)}')`;
 }
 
 export const dbText = (prop: Extract<vingProp, { type: "string" }>) => {
-    return text(prop.name).notNull();
+    return `text('${prop.name}').notNull()`;
 }
 
 export const dbEnum = (prop: Extract<vingProp, { type: "enum" }>) => {
-    return mysqlEnum(prop.name, prop.enums || ['']).notNull().default(stringDefault(prop, true));
+    return `mysqlEnum('${prop.name}', ['${prop.enums.join("','")}']).notNull().default('${stringDefault(prop, true)}')`;
 }
 
 export const dbBoolean = (prop: Extract<vingProp, { type: "boolean" }>) => {
-    return boolean(prop.name).notNull().default(booleanDefault(prop, true));
+    return `boolean('${prop.name}').notNull().default(${booleanDefault(prop, true)})`;
 }
 
-export const dbId = (prop: vingProp) => {
-    const col = varchar(prop.name, { length: 36 });
+export const dbId = (prop: Extract<vingProp, { type: "id" }>) => {
+    let col = `varchar('${prop.name}', { length: 36 })`;
     if (prop.required) {
-        return col.notNull();
+        col += `.notNull()`;
     }
     return col;
 }
 
-export const dbPk = (prop: vingProp) => {
-    return dbId(prop).primaryKey();
+export const dbPk = (prop: Extract<vingProp, { type: "id" }>) => {
+    return `${dbId(prop)}.primaryKey()`;
 }
 
-// somehow have to use inference to make it so this casts the right types: https://discord.com/channels/1043890932593987624/1085675996956590162
-// see this as an example: https://github.com/drizzle-team/drizzle-orm/blob/main/drizzle-orm/src/mysql-core/table.ts#L184
-export const makeTable = (schema: vingSchema) => {
-    const columns: Record<string, AnyMySqlColumnBuilder> = {};
-    const uniqueIndexes: Record<string, any> = {};
-    for (const prop of schema.props) {
-        columns[prop.name] = prop.db(prop as never);
-        if (prop.unique) {
-            const key = prop.name + 'Index';
-            uniqueIndexes[key] = (table: Record<string, AnyMySqlColumn>) => uniqueIndex(key).on(table[prop.name]);
-        }
-    }
-    const extras = (table: Record<string, any>) => {
-        const out: Record<string, any> = {};
-        for (const key in uniqueIndexes) {
-            out[key] = uniqueIndexes[key](table);
-        }
-        return out;
-    }
-    return mysqlTable(schema.tableName, columns, extras)
+export const dbRelation = (prop: Extract<vingProp, { type: "id" }>) => {
+    return `${dbId(prop)}.references(() => ${prop.relation?.kind}Table.id)`;
+}
+
+export const writeFileSafely = async (writeLocation: string, content: any) => {
+    fs.mkdirSync(path.dirname(writeLocation), {
+        recursive: true,
+    })
+
+    fs.writeFileSync(writeLocation, content)
 }
 
 export const baseSchemaProps: vingProp[] = [

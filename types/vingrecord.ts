@@ -1,11 +1,11 @@
-import type { UserModel, UserProps, UserSelect, UserInsert } from '../drizzle/schema/users';
+import type { UserModel, UserSelect, UserInsert } from '../server/drizzle/schema/User';
 import type { UserRecord } from '../server/vingrecord/Users';
-import { RoleOptions } from '../drizzle/schema/users';
-import type { APIKeyModel, APIKeyProps, APIKeySelect, APIKeyInsert } from '../drizzle/schema/apikeys';
+import { RoleOptions } from '../server/vingschema/schemas/User';
+import type { APIKeyModel, APIKeySelect, APIKeyInsert } from '../server/drizzle/schema/APIKey';
 
 export type ModelMap = {
-    User: { model: UserModel, select: UserSelect, insert: UserInsert, props: UserProps },
-    APIKey: { model: APIKeyModel, select: APIKeySelect, insert: APIKeyInsert, props: APIKeyProps },
+    User: { model: UserModel, select: UserSelect, insert: UserInsert },
+    APIKey: { model: APIKeyModel, select: APIKeySelect, insert: APIKeyInsert },
 }
 
 export type ModelName = keyof ModelMap;

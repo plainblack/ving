@@ -4,8 +4,8 @@ import { ModelName, ModelSelect, DescribeParams, Describe, AuthorizedUser } from
 import { ouch } from '../../app/helpers';
 import bcrypt from 'bcryptjs';
 import { cache } from '../../app/cache';
-import { db } from '../../drizzle/db';
-import { UserTable } from '../../drizzle/schema/users';
+import { db } from '../drizzle/db';
+import { UserTable } from '../drizzle/schema/User';
 
 export type TRoleProps = TRoles & Pick<ModelSelect<'User'>, 'id' | 'password'>;
 
