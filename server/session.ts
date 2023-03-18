@@ -1,6 +1,6 @@
 import { DescribeParams, Describe, RoleProps } from '../types';
 import { Users, UserRecord } from './vingrecord/records/Users';
-import { useVingRole, VingRole, RoleOptions } from './vingrecord/traits/VingRole';
+import { useVingRole, VingRole, RoleOptions } from './vingrecord/mixins/Role';
 import { ouch } from './helpers';
 import { cache } from './cache';
 import { v4 } from 'uuid';

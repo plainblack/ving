@@ -140,5 +140,4 @@ describe('Users', async () => {
         expect(await rita.setPostedProps(params)).toBe(true);
         expect(rita.get('username')).toBe('rita');
     });
-
 })

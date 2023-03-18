@@ -67,21 +67,21 @@ describe('UserTable', async () => {
     // can't figure out the types on this
 
     test("can pass order by with 2", async () => {
-        const passOrderBy = async (orderBy: (SQL | AnyMySqlColumn)[]) => await db.select().from(UserTable).orderBy(...orderBy);
+        const passOrderBy = async (orderBy: (SQL | AnyMySqlColumn)[]) => await db.select().from(UserTable).where(like(UserTable.email, '%@shawshank.prison')).orderBy(...orderBy);
         const result = await passOrderBy([asc(UserTable.username), desc(UserTable.realName)]);
         expect(result[0].realName).toBe('Warden');
     });
 
 
     test("can pass order by", async () => {
-        const passOrderBy = async (orderBy: SQL | AnyMySqlColumn) => await db.select().from(UserTable).orderBy(orderBy);
+        const passOrderBy = async (orderBy: SQL | AnyMySqlColumn) => await db.select().from(UserTable).where(like(UserTable.email, '%@shawshank.prison')).orderBy(orderBy);
         const result = await passOrderBy(asc(UserTable.username));
         expect(result[0].realName).toBe('Warden');
     });
 
 
     test("can pass group by", async () => {
-        const passGroupBy = async (groupBy: SQL | AnyMySqlColumn) => await db.select().from(UserTable).groupBy(groupBy);
+        const passGroupBy = async (groupBy: SQL | AnyMySqlColumn) => await db.select().from(UserTable).where(like(UserTable.email, '%@shawshank.prison')).groupBy(groupBy);
         const result = await passGroupBy(UserTable.username);
         expect(result[0].realName).toBe('Warden');
     });
