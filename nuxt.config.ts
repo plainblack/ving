@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
+        '@nuxt/content',
     ],
     imports: {
         dirs: [
@@ -68,4 +69,7 @@ export default defineNuxtConfig({
             logoUrl: '/ving.svg',
         },
     },
+    content: {
+        highlight: { theme: 'dracula-soft' },
+    }
 })
