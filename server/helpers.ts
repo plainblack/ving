@@ -1,4 +1,4 @@
-import { DescribeListParams, DescribeParams } from '../typeorm/types';
+import { DescribeListParams, DescribeParams } from '../types';
 import _ from 'lodash';
 import { H3Event, createError, getQuery, readBody } from 'h3';
 
@@ -125,12 +125,12 @@ export const vingDescribeList = (event: H3Event) => {
 
 export const vingPaging = (event: H3Event) => {
     const params = getQuery(event);
-    const paging: DescribeListParams = { itemsPerPage: 10, pageNumber: 1, orderBy: 'dateCreated', sortOrder: 'asc' };
+    const paging: DescribeListParams = { itemsPerPage: 10, page: 1, orderBy: 'dateCreated', sortOrder: 'asc' };
     if (params !== undefined) {
         if (params.itemsPerPage && _.isNumber(params.itemsPerPage))
             paging.itemsPerPage = params.itemsPerPage;
-        if (params.pageNumber && _.isNumber(params.pageNumber))
-            paging.pageNumber = params.pageNumber;
+        if (params.page && _.isNumber(params.page))
+            paging.page = params.page;
         if (params.orderBy && _.isString(params.orderBy))
             paging.orderBy = params.orderBy;
         if (params.sortOrder && _.isString(params.sortOrder) && params.sortOrder in ['asc', 'desc'])
