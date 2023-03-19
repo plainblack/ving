@@ -328,6 +328,7 @@ export class VingRecord<T extends ModelName> {
                 }
                 if (param !== null)
                     this.set(field.name as keyof ModelSelect<T>, param);
+
             }
         }
         return true;

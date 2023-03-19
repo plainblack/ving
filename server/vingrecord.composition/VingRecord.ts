@@ -130,7 +130,6 @@ export function useVingRecord<T extends ModelName>(
                 throw ouch(409, `${schema.kind} already inserted`);
             }
             inserted = true;
-            console.log(inserted);
             await db.insert(table).values(props);
         },
 
