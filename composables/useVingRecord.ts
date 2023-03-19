@@ -1,5 +1,5 @@
 import { Describe, TModelName } from '~/app/db';
-import { ouch } from '~/app/helpers';
+import { ouch } from '~/server/helpers';
 import _ from 'lodash';
 const notify = useNotifyStore();
 

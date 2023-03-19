@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { ouch } from '~/app/helpers';
+import { ouch } from '~/server/helpers';
 import type { DateTime as LDT } from 'luxon'
 
 type DTinput = string | number | string[] | Date | LDT | undefined;
