@@ -24,7 +24,7 @@ Develop using [VSCode](https://code.visualstudio.com) and these plugins:
 
 ### Setup
 
-Head over to [the docs](docs/1.index.md)
+Head over to [the docs](content/ving/1.index.md)
 
 #### Install NPM Modules
 
