@@ -256,7 +256,7 @@ export class VingRecord<T extends ModelName> {
         return out;
     }
 
-    public propOptions(params: DescribeParams = {}) {
+    public propOptions(params: DescribeParams = {}, all = false) {
         const options: Describe<T>['options'] = {};
         const currentUser = params.currentUser;
         const include = params.include || {};
@@ -265,9 +265,10 @@ export class VingRecord<T extends ModelName> {
             const roles = [...prop.view, ...prop.edit];
             const visible = roles.includes('public')
                 || (include !== undefined && include.private)
-                || (roles.includes('owner') && isOwner)
+                || (roles.includes('owner') && (isOwner || all))
                 || (currentUser !== undefined && currentUser.isaRole(roles));
-            if (!visible) continue;
+            if (!visible)
+                continue;
             if ((prop.type == 'enum' || prop.type == 'boolean') && prop.enums && prop.enums.length > 0) {
                 options[prop.name as keyof ModelInsert<T>] = enum2options(prop.enums, prop.enumLabels);
             }
@@ -480,7 +481,7 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
     public async findOrDie(id: ModelSelect<T>['id']) {
         const props = (await this.select.where(eq(this.table.id, id)))[0] as ModelSelect<T>;
         if (props)
-            return new this.recordClass({ db: this.db, table: this.table, props });
+            return new this.recordClass(this.db, this.table, props);
         const schema = findVingSchema(this.table[Name]);
         throw ouch(404, `${schema.kind} not found.`)
     }
@@ -507,7 +508,7 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         if (options && options.offset)
             query.offset(options.offset);
         const results = (await query) as ModelSelect<T>[];
-        return results.map(props => new this.recordClass({ db: this.db, table: this.table, props }));
+        return results.map(props => new this.recordClass(this.db, this.table, props));
     }
     /*
         public propOptions() {

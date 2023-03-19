@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
         if (!user)
             throw ouch(404, 'User not found.')
     }
+    console.log(user)
     await user.testPassword(body.password);
     const session = await Session.start(user);
     setCookie(event, 'vingSessionId', session.id, { maxAge: 60 * 24 * 365 * 5, httpOnly: true });
