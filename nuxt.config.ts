@@ -70,6 +70,6 @@ export default defineNuxtConfig({
         },
     },
     content: {
-        highlight: { theme: 'dracula-soft' },
+        highlight: { theme: 'light-plus' },
     }
 })

@@ -5,10 +5,9 @@
                 <ContentNavigation v-slot="{ navigation }">
                     <ul class="list-none">
                         <li :class="{
-                            'font-medium mt-4 ml-0': depth(link._file || '') < 1,
-                            'mt-2 ml-2': depth(link._file || '') == 1,
-                            'mt-2 text-sm ml-4': depth(link._file || '') == 2,
-                            'mt-2 text-xs ml-6': depth(link._file || '') > 2,
+                            'font-medium text-base mt-4 ml-0': depth(link._file || '') < 1,
+                            'mt-2 text-sm ml-2': depth(link._file || '') == 1,
+                            'mt-2 text-xs ml-4': depth(link._file || '') > 1,
                         }" v-for="link of ving" :key="link._path">
 
                             <NuxtLink :to="link._path">{{ link.title }}</NuxtLink>

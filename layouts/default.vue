@@ -19,20 +19,28 @@
                     </li>
 
                     <li>
-                        <a to="/" v-ripple
+                        <NuxtLink to="/ving" v-ripple
+                            class="flex px-6 p-3 lg:px-3 lg:py-2 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 font-medium border-round cursor-pointer transition-colors transition-duration-150 p-ripple">
+                            <i class="pi pi-book mr-2"></i>
+                            <span>Ving Documentation</span>
+                        </NuxtLink>
+                    </li>
+
+                    <li>
+                        <NuxtLink to="/" v-ripple
                             class="flex px-6 p-3 lg:px-3 lg:py-2 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 font-medium border-round cursor-pointer transition-colors transition-duration-150 p-ripple"
                             v-styleclass="{ selector: '@next', enterClass: 'hidden', enterActiveClass: 'scalein', leaveToClass: 'hidden', leaveActiveClass: 'fadeout', hideOnOutsideClick: true }">
-                            <i class="pi pi-users mr-2"></i>
-                            <span>Customers</span>
+                            <i class="pi pi-building mr-2"></i>
+                            <span>Sample Dropdown</span>
                             <i class="pi pi-angle-down ml-auto lg:ml-3"></i>
-                        </a>
+                        </NuxtLink>
                         <ul
                             class="list-none py-3 px-6 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:shadow-2 lg:absolute bg-gray-900 hidden origin-top w-full lg:w-15rem cursor-pointer lg:border-1 border-gray-800">
                             <li>
                                 <NuxtLink to="/" v-ripple
                                     class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple">
-                                    <i class="pi pi-user-plus mr-2"></i>
-                                    <span class="font-medium">Add New</span>
+                                    <i class="pi pi-thumbs-down mr-2"></i>
+                                    <span class="font-medium">Sample Submenu</span>
                                 </NuxtLink>
                             </li>
                             <li class="relative">
@@ -40,42 +48,21 @@
                                     class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple"
                                     v-styleclass="{ selector: '@next', enterClass: 'hidden', enterActiveClass: 'scalein', leaveToClass: 'hidden', leaveActiveClass: 'fadeout', hideOnOutsideClick: true }">
                                     <i class="pi pi-search mr-2"></i>
-                                    <span class="font-medium">Search</span>
-                                    <i class="pi pi-angle-down ml-auto lg:-rotate-90"></i>
+                                    <span class="font-medium">Sample 2</span>
+                                    <i class="pi pi-sliders-h ml-auto lg:-rotate-90"></i>
                                 </NuxtLink>
                                 <ul
                                     class="list-none py-3 pl-3 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:shadow-2 lg:absolute bg-gray-900 hidden origin-top w-full lg:w-15rem cursor-pointer left-100 top-0 lg:border-1 border-gray-800">
                                     <li>
                                         <NuxtLink to="/" v-ripple
                                             class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple">
-                                            <i class="pi pi-shopping-cart mr-2"></i>
-                                            <span class="font-medium">Purchases</span>
-                                        </NuxtLink>
-                                    </li>
-                                    <li class="relative">
-                                        <NuxtLink to="/" v-ripple
-                                            class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple">
                                             <i class="pi pi-comments mr-2"></i>
-                                            <span class="font-medium">Messages</span>
+                                            <span class="font-medium">Sample 3</span>
                                         </NuxtLink>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
-                    </li>
-                    <li>
-                        <NuxtLink to="/" v-ripple
-                            class="flex px-6 p-3 lg:px-3 lg:py-2 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 font-medium border-round cursor-pointer transition-colors transition-duration-150 p-ripple">
-                            <i class="pi pi-calendar mr-2"></i>
-                            <span>Calendar</span>
-                        </NuxtLink>
-                    </li>
-                    <li>
-                        <NuxtLink to="/" v-ripple
-                            class="flex px-6 p-3 lg:px-3 lg:py-2 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 font-medium border-round cursor-pointer transition-colors transition-duration-150 p-ripple">
-                            <i class="pi pi-chart-line mr-2"></i>
-                            <span>Stats</span>
-                        </NuxtLink>
                     </li>
                 </ul>
                 <ul class="list-none p-0 m-0 flex lg:align-items-center select-none flex-column lg:flex-row">
