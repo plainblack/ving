@@ -12,10 +12,6 @@ export const findObject = <T>(field: keyof T, value: string, list: T[]): T => {
     }
 }
 
-export const ucFirst = (string: string): string => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 const errorCodes = {
     400: 'Bad Request',
     401: 'Unauthorized',
