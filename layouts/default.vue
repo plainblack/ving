@@ -70,7 +70,7 @@
                         <div class="flex px-6 p-3 lg:px-3 lg:py-2">
                             <span class="p-input-icon-left w-full">
                                 <i class="pi pi-search text-gray-400"></i>
-                                <InputText type="text" placeholder="Search"
+                                <InputText type="text" placeholder="Search (non-functional)"
                                     class="bg-gray-800 text-gray-400 border-gray-800 w-full" />
                             </span>
                         </div>
