@@ -1,4 +1,4 @@
-import { Describe, TModelName } from '~/app/db';
+import { Describe, ModelName } from '~/types';
 import { ouch } from '~/server/helpers';
 import _ from 'lodash';
 const notify = useNotifyStore();
@@ -60,7 +60,7 @@ function formatPropsBodyData<T extends TModelName>(props: Describe<T>['props'], 
     return form;
 }*/
 
-type VingRecordParams<T extends TModelName> = {
+type VingRecordParams<T extends ModelName> = {
     props?: Describe<T>['props'],
     links?: Describe<T>['links'],
     meta?: Describe<T>['meta'],
@@ -73,7 +73,7 @@ type VingRecordParams<T extends TModelName> = {
     // postFormattingOptions: {}
 }
 
-export interface VingRecord<T extends TModelName> {
+export interface VingRecord<T extends ModelName> {
     props?: Describe<T>['props'],
     links?: Describe<T>['links'],
     meta?: Describe<T>['meta'],
@@ -95,7 +95,7 @@ export interface VingRecord<T extends TModelName> {
     create(props?: Describe<T>['props'], options?: {}): Promise<any>,
 }
 
-export default <T extends TModelName>(behavior: VingRecordParams<T> = { props: {} }) => {
+export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {} }) => {
 
     const VingRecord: VingRecord<T> = {
 
