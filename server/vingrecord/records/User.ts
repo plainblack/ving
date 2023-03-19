@@ -1,5 +1,5 @@
 import { VingRecord, VingKind } from "../VingRecord";
-import { ModelInsert, ModelSelect, DescribeParams, Describe, AuthorizedUser } from '../../../types';
+import { ModelInsert, ModelSelect, DescribeParams, AuthorizedUser } from '../../../types';
 import { RoleOptions, RoleMixin } from '../mixins/Role';
 
 //import { APIKeyKind, APIKeyRecord } from "./APIKeys";
@@ -8,21 +8,6 @@ import bcrypt from 'bcryptjs';
 import { cache } from '../../cache';
 import { db } from '../../drizzle/db';
 import { UserTable } from '../../drizzle/schema/User';
-
-/*
-
-export interface UserRecord extends VingRecord<'User'>, VingRole {
-    displayName: string,
-    avatarUrl: string,
-    testPassword(password: string): Promise<boolean>,
-    setPassword(password: string): void,
-    describe(params: DescribeParams): Promise<Describe<'User'>>,
-    setPostedProps(params: ModelInsert<'User'>, currentUser?: AuthorizedUser): Promise<boolean>,
-    // apiKeys:
-    update(): Promise<void>,
-    set<K extends keyof ModelSelect<'User'>>(key: K, value: ModelSelect<'User'>[K]): ModelSelect<'User'>[K],
-}
-*/
 
 export class UserRecord extends RoleMixin(VingRecord<'User'>) {
     private userChanged = false;

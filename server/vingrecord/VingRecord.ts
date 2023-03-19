@@ -37,34 +37,6 @@ export const findPropInSchema = (name: string | number | symbol, props: vingProp
     return props.find(prop => prop.name == name);
 }
 
-/*
-export interface VingRecord<T extends ModelName> {
-    db: MySql2Database,
-    table: ModelMap[T]['model'],
-    warnings: Describe<T>['warnings'],
-    addWarning(warning: warning): void,
-    get<K extends keyof ModelSelect<T>>(key: K): ModelSelect<T>[K],
-    getAll(): ModelSelect<T>,
-    set<K extends keyof ModelSelect<T>>(key: K, value: ModelSelect<T>[K]): ModelSelect<T>[K],
-    setAll(props: ModelInsert<T>): ModelSelect<T>,
-    isInserted: boolean,
-    insert(): Promise<void>,
-    update(): Promise<void>,
-    delete(): Promise<void>,
-    refresh(): Promise<ModelSelect<T>>,
-    isOwner(currentUser: AuthorizedUser): boolean,
-    canEdit(currentUser: AuthorizedUser): boolean,
-    describe(params: DescribeParams): Promise<Describe<T>>,
-    propOptions(params: DescribeParams): Describe<T>['options'],
-    testCreationProps(params: ModelInsert<T>): boolean,
-    setPostedProps(params: ModelInsert<T>, currentUser?: AuthorizedUser): Promise<boolean>,
-    updateAndVerify(params: ModelSelect<T>, currentUser?: AuthorizedUser): void,
-}
-*/
-
-//export type useVingRecordOptions<T extends ModelName> = { db: MySql2Database, table: ModelMap[T]['model'], props: ModelMap[T]['select'], inserted?: boolean }
-
-
 export class VingRecord<T extends ModelName> {
     constructor(public db: MySql2Database, public table: ModelMap[T]['model'], private props: ModelMap[T]['select'], private inserted = true) { }
 
@@ -340,37 +312,9 @@ export class VingRecord<T extends ModelName> {
     }
 }
 
-
-/*
-export interface VingKind<T extends ModelName, VR extends VingRecord<T>> {
-    db: MySql2Database,
-    table: ModelMap[T]['model'],
-    describeList(params: DescribeListParams, whereCallback?: (condition?: SQL) => SQL | undefined, orderBy?: (SQL | AnyMySqlColumn)[]): Promise<DescribeList<T>>,
-    copy(originalProps: Partial<ModelSelect<T>>): VR,
-    mint(props?: Partial<ModelInsert<T>>): VR,
-    create(props: ModelInsert<T>): Promise<VR>,
-    createAndVerify(props: ModelSelect<T>, currentUser?: AuthorizedUser): Promise<VR>,
-    getDefaultArgs(args?: object): object,
-    get select(): any,
-    get delete(): any,
-    get update(): any,
-    get insert(): any,
-    count(whereCallback?: (condition?: SQL) => SQL | undefined): Promise<number>,
-    find(id: ModelSelect<T>['id']): Promise<VR>,
-    findMany(whereCallback?: (condition?: SQL) => SQL | undefined, options?: { limit?: number, offset?: number, orderBy?: (SQL | AnyMySqlColumn)[] }): Promise<VR[]>,
-    getOptions(): Describe<T>['options'],
-}
-
-export type useVingKindOptions<T extends ModelName, VR extends VingRecord<T>> = {
-    db: MySql2Database, table: ModelMap[T]['model'], recordComposable: (opts: useVingRecordOptions<T>) => VR, propDefaults: Partial<ModelInsert<T>>
-}
-export function useVingKind<T extends ModelName, VR extends VingRecord<T>>({ db, table, recordComposable, propDefaults }: useVingKindOptions<T, VR>) {
-*/
-
 export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
 
     constructor(public db: MySql2Database, public table: ModelMap[T]['model'], public recordClass: Constructable<VR>, private propDefaults: Partial<ModelInsert<T>> = {}) { }
-
 
     public async describeList(
         params: DescribeListParams = {},
@@ -511,16 +455,5 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         const results = (await query) as ModelSelect<T>[];
         return results.map(props => new this.recordClass(this.db, this.table, props));
     }
-    /*
-        public propOptions() {
-            const options: Describe<T>['options'] = {};
-            for (const field of findVingSchema(this.table[Name]).props) {
-                if (field.type == 'enum' && field.enums && field.enums.length > 0) {
-                    options[field.name as keyof ModelInsert<T>] = enum2options(field.enums, field.enumLabels);
-                }
-    
-            }
-            return options;
-        }
-        */
+
 }

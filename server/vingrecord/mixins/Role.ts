@@ -1,15 +1,6 @@
 import { RoleProps, ExtendedRoleOptions, Roles, Constructable } from '../../../types';
 import { ouch } from '../../helpers';
 
-/*
-export interface VingRole {
-    isRole(role: ExtendedRoleOptions): boolean,
-    isaRole(roles: ExtendedRoleOptions[]): boolean,
-    isRoleOrThrow(role: keyof Roles): boolean,
-    getRoleProp<K extends keyof RoleProps>(key: K): RoleProps[K],
-}
-*/
-
 export const RoleOptions = ["admin", "developer"] as const;
 
 export function RoleMixin<T extends Constructable<{ getAll(): any, get<K extends keyof RoleProps>(key: K): RoleProps[K] }>>(Base: T) {
