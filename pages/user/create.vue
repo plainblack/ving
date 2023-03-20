@@ -37,17 +37,17 @@
             <div class="flex justify-content-between">
                 <Button
                     class="mr-2 w-6 font-medium border-1 surface-border surface-100 py-3 px-2 p-component hover:surface-200 active:surface-300 text-900 cursor-pointer transition-colors transition-duration-150 inline-flex align-items-center justify-content-center">
-                    <i class="pi pi-facebook text-indigo-500 mr-2"></i>
+                    <Icon name="prime:facebook" class="text-indigo-500 mr-2" size="50px" />
                     <span>Sign in With Facebook</span>
                 </Button>
                 <Button
                     class="ml-2 w-6 font-medium border-1 surface-border surface-100 py-3 px-2 p-component hover:surface-200 active:surface-300 text-900 cursor-pointer transition-colors transition-duration-150 inline-flex align-items-center justify-content-center">
-                    <i class="pi pi-github text-black-500 mr-2"></i>
+                    <Icon name="prime:github" class="text-black-500 mr-2" size="50px" />
                     <span>Sign in With GitHub</span>
                 </Button>
                 <Button
                     class="ml-2 w-6 font-medium border-1 surface-border surface-100 py-3 px-2 p-component hover:surface-200 active:surface-300 text-900 cursor-pointer transition-colors transition-duration-150 inline-flex align-items-center justify-content-center">
-                    <i class="pi pi-google text-red-500 mr-2"></i>
+                    <Icon name="prime:google" class="text-red-500 mr-2" size="50px" />
                     <span>Sign in With Google</span>
                 </Button>
             </div>

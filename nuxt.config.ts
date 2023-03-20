@@ -3,6 +3,7 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         '@nuxt/content',
+        'nuxt-icon',
     ],
     imports: {
         dirs: [
