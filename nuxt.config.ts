@@ -49,15 +49,10 @@ export default defineNuxtConfig({
     },
     build: {
         transpile: [
-            "@fortawesome/vue-fontawesome",
-            "@fortawesome/fontawesome-svg-core",
-            "@fortawesome/free-solid-svg-icons",
-            "@fortawesome/pro-solid-svg-icons",
             'primevue',
         ],
     },
     css: [
-        '@fortawesome/fontawesome-svg-core/styles.css',
         'primevue/resources/themes/tailwind-light/theme.css',
         'primevue/resources/primevue.css',
         'primeicons/primeicons.css',
