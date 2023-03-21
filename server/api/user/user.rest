@@ -19,6 +19,14 @@ Content-Type: application/json
     "password": "Rock Hammer" 
 }
 
+### test
+POST http://localhost:3000/api/test?test=1
+Content-Type: application/json
+
+{
+    "login": "brooks", 
+    "password": "Rock Hammer" 
+}
 
 ### list
 GET http://localhost:3000/api/user
