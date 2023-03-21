@@ -11,8 +11,6 @@
 
                             {{ user.props?.realName }}
 
-                            <button @click="user.create({ username: 'a', email: 'a@a.a' })">click</button>
-
                         </div>
 
                     </div>
