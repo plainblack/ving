@@ -1,76 +1,39 @@
-import { DateTime } from 'luxon';
 import { ouch } from '~/server/helpers';
-import type { DateTime as LDT } from 'luxon'
+import { format, parseISO, parseJSON, parse, getUnixTime } from 'date-fns';
 
-type DTinput = string | number | string[] | Date | LDT | undefined;
-type FormatDateTimeOptions = { outTimeZone?: string, inTimeZone?: string, format?: string };
+type DTinput = string | string[] | Date | undefined;
 
 const dt = {
 
-    DateTime: DateTime,
-
-    date2luxon(input: DTinput = new Date(), timezone: string = "utc"): LDT {
+    determineDate(input: DTinput) {
         if (Array.isArray(input) && typeof input[0] === "string") {
             // date + input pattern
-            return DateTime.fromFormat(input[0], input[1], {
-                zone: timezone,
-            });
+            return parse(input[0], input[1], new Date());
+        }
+        else if (input instanceof Date) {
+            return input;
+        }
+        else if (typeof input === 'string' && input.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/)) {
+            return parseISO(input);
         }
         else if (typeof input === 'string' && input.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+/)) {
-            // ISO 8601
-            return DateTime.fromISO(input, { zone: 'utc' });
+            return parseJSON(input);
         }
-        else if (typeof input === "string" && input.length == 19) {
-            // mysql datetime
-            return DateTime.fromSQL(input, { zone: timezone });
-        } else if (typeof input === "string" && input.length == 10) {
-            // mysql date
-            return DateTime.fromSQL(input, { zone: timezone });
-        } else if (input instanceof DateTime) {
-            return input;
-        } else if (typeof input === "number" && input > 1000000000000) {
-            // milliseconds since epoch
-            return DateTime.fromMillis(input, { zone: timezone });
-        } else if (typeof input === "number") {
-            // seconds since epoch
-            return DateTime.fromSeconds(input, { zone: timezone });
-        } else if (input instanceof Date) {
-            // must be a normal JS date
-            return DateTime.fromJSDate(input);
-        }
-        else {
-            console.error('Have no idea what type this date is: ', input);
-            throw ouch(400, 'bad date object', input);
-        }
+        console.error('Have no idea what type this date is: ', input);
+        throw ouch(400, 'bad date object', input);
     },
 
-    formatDateTime(input: DTinput, options: FormatDateTimeOptions = {}) {
-        if (!options.format) {
-            options.format = "LLLL d, yyyy h:mm a";
-        }
-        if (!options.outTimeZone) {
-            options.outTimeZone = "local";
-        }
-        if (!options.inTimeZone) {
-            options.inTimeZone = "utc";
-        }
-        let dt = this.date2luxon(input, options.inTimeZone);
-        if (typeof options.outTimeZone !== "undefined") {
-            dt = dt.setZone(options.outTimeZone);
-        }
-        return dt.toFormat(options.format);
+    formatDateTime(input: DTinput, pattern: string = "LLLL d, y h:mm a") {
+        const date = this.determineDate(input);
+        return format(date, pattern)
     },
 
-    formatDate(input: DTinput, options: FormatDateTimeOptions = {}) {
-        if (!options.format) {
-            options.format = "LLLL d, yyyy";
-        }
-        return this.formatDateTime(input, options);
+    formatDate(input: DTinput, pattern: string = "LLLL d, y") {
+        return this.formatDateTime(input, pattern);
     },
 
     formatTimeAgo(input: DTinput) {
-        const duration =
-            DateTime.utc().toSeconds() - this.date2luxon(input).toSeconds();
+        const duration = getUnixTime(new Date()) - getUnixTime(this.determineDate(input));
         const abs_dur = Math.abs(duration);
         let message = '';
         if (abs_dur < 60) {
