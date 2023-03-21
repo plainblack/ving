@@ -1,5 +1,6 @@
 import { vingSchema } from '../../../types/vingschema';
-import { uuid, baseSchemaProps, dbString, zodString, dbText, zodText, dbRelation } from '../helpers';
+import { baseSchemaProps, dbString, zodString, dbText, zodText, dbRelation } from '../helpers';
+import crypto from 'crypto';
 
 export const apikeySchema: vingSchema = {
     kind: 'APIKey',
@@ -45,7 +46,7 @@ export const apikeySchema: vingSchema = {
             name: 'privateKey',
             required: false,
             length: 39,
-            default: () => 'pk_' + uuid(),
+            default: () => 'pk_' + crypto.randomBytes(18).toString('hex'),
             db: (prop) => dbString(prop),
             view: [],
             edit: [],
