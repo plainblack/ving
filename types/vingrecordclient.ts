@@ -1,6 +1,6 @@
 import { Describe, ModelName } from '~/types';
 
-type QueryParams = {
+export type QueryParams = {
     includeOptions?: boolean,
     includeMeta?: boolean,
     includeRelated?: string[],
