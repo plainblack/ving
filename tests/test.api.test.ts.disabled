@@ -5,7 +5,7 @@ describe('Test API', async () => {
 
     await setup({
         // test context options
-        server: true,
+        //  server: true,
     })
 
     test('get /api/test', async () => {

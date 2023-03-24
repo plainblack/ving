@@ -6,7 +6,7 @@ import { RoleOptions, RoleMixin } from '../mixins/Role';
 import { ouch } from '../../helpers';
 import bcrypt from 'bcryptjs';
 import { cache } from '../../cache';
-import { db } from '../../drizzle/db';
+import { useDB } from '../../drizzle/db';
 import { UserTable } from '../../drizzle/schema/User';
 
 export class UserRecord extends RoleMixin(VingRecord<'User'>) {
@@ -121,4 +121,4 @@ export class UserKind extends VingKind<'User', UserRecord>  {
     // add custom Kind code here
 }
 
-export const Users = new UserKind(db, UserTable, UserRecord);
+export const Users = new UserKind(useDB(), UserTable, UserRecord);

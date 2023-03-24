@@ -1,5 +1,5 @@
-import { describe, test, expect } from "vitest";
-import { db, } from '../server/drizzle/db';
+import { describe, test, expect, beforeAll } from "vitest";
+import { useDB } from '../server/drizzle/db';
 import { like, eq, asc, desc, and } from 'drizzle-orm/expressions';
 import { sql } from 'drizzle-orm';
 import { AnyMySqlColumn, } from 'drizzle-orm/mysql-core';
@@ -9,8 +9,11 @@ import type { AnyMySqlSelect, } from 'drizzle-orm/mysql-core/query-builders/sele
 import { ValueOrArray } from 'drizzle-orm/utils';
 
 describe('UserTable', async () => {
-
+    const db = useDB()
     await db.delete(UserTable).where(like(UserTable.email, '%@shawshank.prison'));
+
+    // TODO: There is an issue with this?
+    // beforeAll(async () => { })
 
     test("can insert", async () => {
         const result = await db.insert(UserTable).values({ id: 'a', username: 'warden', email: 'warden@shawshank.prison', realName: 'Warden' });
@@ -49,7 +52,7 @@ describe('UserTable', async () => {
 
     test("use a where callback to extend a query", async () => {
         const startIt = (whereCallback: (condition: SQL) => SQL | undefined = (c) => c) => {
-            return db.select().from(UserTable).where(whereCallback(eq(UserTable.developer, true)));
+            return db.select().from(UserTable).where(whereCallback(like(UserTable.email, '%@shawshank.prison')));
         }
         const result = await startIt((c) => and(c, eq(UserTable.admin, true)));
         expect(result.length).toBe(0);
@@ -57,10 +60,12 @@ describe('UserTable', async () => {
 
     test("use a where callback to extend a query but with nothing to pass in", async () => {
         const startIt = (whereCallback: (condition: SQL) => SQL | undefined = (c) => c) => {
-            return db.select().from(UserTable).where(whereCallback(eq(UserTable.developer, true)));
+            return db.select().from(UserTable).where(whereCallback(
+                like(UserTable.email, '%@shawshank.prison')
+            ));
         }
         const result = await startIt();
-        expect(result.length).toBe(0);
+        expect(result.length).toBe(1);
     });
 
 

@@ -1,5 +1,5 @@
 import { VingRecord, VingKind } from "../VingRecord";
-import { db } from '../../drizzle/db';
+import { useDB } from '../../drizzle/db';
 import { APIKeyTable } from '../../drizzle/schema/APIKey';
 
 
@@ -15,4 +15,4 @@ export class APIKeyKind extends VingKind<'APIKey', APIKeyRecord>  {
     // add custom Kind code here
 }
 
-export const APIKeys = new APIKeyKind(db, APIKeyTable, APIKeyRecord);
+export const APIKeys = new APIKeyKind(useDB(), APIKeyTable, APIKeyRecord);
