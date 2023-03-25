@@ -1,5 +1,5 @@
 import mysql from 'mysql2/promise';
-import { drizzle } from 'drizzle-orm/mysql2'; // https://github.com/drizzle-team/drizzle-orm/issues/163
+import { drizzle } from 'drizzle-orm/mysql2/index.js'; // https://github.com/drizzle-team/drizzle-orm/issues/163
 
 // TODO: Needed for tests/cli
 import * as dotenv from 'dotenv';

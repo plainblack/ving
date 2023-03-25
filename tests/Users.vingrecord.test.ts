@@ -1,8 +1,8 @@
 import { useUsers, UserRecord } from '../server/vingrecord/records/User';
 import { describe, test, expect } from "vitest";
 import { ModelSelect } from "../types";
-import { like, eq, asc, desc, and, inArray } from 'drizzle-orm/expressions';
-import type { SQL } from 'drizzle-orm/sql';
+import { like, eq, asc, desc, and, inArray } from 'drizzle-orm/expressions.js';
+import type { SQL } from 'drizzle-orm/sql/index.js';
 
 const Users = useUsers();
 
