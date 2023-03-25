@@ -1,4 +1,5 @@
-import { Users } from '../../vingrecord/records/User';
+import { useUsers } from '../../vingrecord/records/User';
+const Users = useUsers();
 import { vingDescribe, vingSession, vingBody } from '../../helpers';
 export default defineEventHandler(async (event) => {
     const { id } = getRouterParams(event);

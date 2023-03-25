@@ -1,8 +1,9 @@
-import { Users, UserRecord } from '../server/vingrecord/records/User';
+import { useUsers, UserRecord } from '../server/vingrecord/records/User';
 import { describe, test, expect } from "vitest";
 import { ModelSelect } from "../types";
 import { like, eq, asc, desc, and, inArray } from 'drizzle-orm/expressions';
 
+const Users = useUsers();
 
 
 await Users.delete.where(inArray(Users.table.username, ['warden', 'captain', 'guard']));

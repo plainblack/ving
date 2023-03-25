@@ -1,8 +1,10 @@
-import { APIKeys } from '../server/vingrecord/records/APIKey';
-import { Users } from '../server/vingrecord/records/User';
+import { useAPIKeys } from '../server/vingrecord/records/APIKey';
+import { useUsers } from '../server/vingrecord/records/User';
 import { describe, test, expect } from "vitest";
 import { like, eq, asc, desc, and, inArray } from 'drizzle-orm/expressions';
 
+const APIKeys = useAPIKeys();
+const Users = useUsers();
 await APIKeys.delete.where(eq(APIKeys.table.name, 'Test'));
 await Users.delete.where(eq(Users.table.username, 'guardMert'));
 

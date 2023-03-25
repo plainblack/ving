@@ -1,4 +1,5 @@
-import { Users } from '../../vingrecord/records/User';
+import { useUsers } from '../../vingrecord/records/User';
+const Users = useUsers();
 import { vingDescribeList, vingSession, ouch } from '../../helpers';
 export default defineEventHandler(async (event) => {
   const session = vingSession(event);

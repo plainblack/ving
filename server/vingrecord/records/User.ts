@@ -121,4 +121,13 @@ export class UserKind extends VingKind<'User', UserRecord>  {
     // add custom Kind code here
 }
 
-export const Users = new UserKind(useDB(), UserTable, UserRecord);
+let Users: any = undefined;
+
+export const useUsers = () => {
+    if (Users) {
+        return Users
+    }
+    return Users = new UserKind(useDB(), UserTable, UserRecord);
+}
+
+Users = useUsers();

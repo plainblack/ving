@@ -1,5 +1,7 @@
 import { DescribeParams, Describe, RoleProps } from '../types';
-import { Users, UserRecord } from './vingrecord/records/User';
+import { useUsers, UserRecord } from './vingrecord/records/User';
+const Users = useUsers();
+
 import { RoleMixin, RoleOptions } from './vingrecord/mixins/Role';
 import { ouch } from './helpers';
 import { cache } from './cache';
