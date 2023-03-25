@@ -2,6 +2,7 @@ import { useUsers, UserRecord } from '../server/vingrecord/records/User';
 import { describe, test, expect } from "vitest";
 import { ModelSelect } from "../types";
 import { like, eq, asc, desc, and, inArray } from 'drizzle-orm/expressions';
+import type { SQL } from 'drizzle-orm/sql';
 
 const Users = useUsers();
 
@@ -117,7 +118,7 @@ describe('Users', async () => {
     test("can delete ving record", async () => {
         await warden.delete()
         expect(warden.get('username')).toBe('warden');
-        expect(await Users.count((c) => and(c, eq(Users.table.email, 'warden@shawshank.jail')))).toBe(0);
+        expect(await Users.count((c: SQL) => and(c, eq(Users.table.email, 'warden@shawshank.jail')))).toBe(0);
         await captain.delete()
         await guard.delete()
     });
