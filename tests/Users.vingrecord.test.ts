@@ -118,7 +118,7 @@ describe('Users', async () => {
     test("can delete ving record", async () => {
         await warden.delete()
         expect(warden.get('username')).toBe('warden');
-        expect(await Users.count((c: SQL) => and(c, eq(Users.table.email, 'warden@shawshank.jail')))).toBe(0);
+        expect(await Users.count(eq(Users.table.email, 'warden@shawshank.jail'))).toBe(0);
         await captain.delete()
         await guard.delete()
     });

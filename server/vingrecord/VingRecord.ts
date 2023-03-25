@@ -318,7 +318,7 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
 
     public async describeList(
         params: DescribeListParams = {},
-        whereCallback: (condition?: SQL) => SQL | undefined = (c) => c,
+        where?: SQL,
         orderBy: (SQL | AnyMySqlColumn)[] = [asc(this.table.createdAt)]
     ) {
         const itemsPerPage = params.itemsPerPage === undefined || params.itemsPerPage > 100 || params.itemsPerPage < 1 ? 10 : params.itemsPerPage;
@@ -337,7 +337,7 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         else if (page - fullPages > 1) {
             skipResultSet = true;
         }
-        const totalItems = await this.count(whereCallback);
+        const totalItems = await this.count(where);
         const totalPages = Math.ceil(totalItems / itemsPerPage);
         const out: DescribeList<T> = {
             paging: {
@@ -351,7 +351,7 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
             items: []
         };
         if (!skipResultSet) {
-            const records = await this.findMany(whereCallback, { limit: itemsPerPage, offset: itemsPerPage * (page - 1), orderBy: orderBy });
+            const records = await this.findMany(where, { limit: itemsPerPage, offset: itemsPerPage * (page - 1), orderBy: orderBy });
             for (let record of records) {
                 out.items.push(await record.describe(params.objectParams || {}));
                 maxItemsThisPage--;
@@ -411,8 +411,8 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
     public get update() { return this.db.update(this.table) }
     public get insert() { return this.db.insert(this.table) }
 
-    public async count(whereCallback: (condition?: SQL) => SQL | undefined = (c) => c) {
-        return (await this.db.select({ count: sql<number>`count(*)`.as('count') }).from(this.table).where(whereCallback()))[0].count;
+    public async count(where?: SQL) {
+        return (await this.db.select({ count: sql<number>`count(*)`.as('count') }).from(this.table).where(where))[0].count;
     }
 
     public async find(id: ModelSelect<T>['id']) {
@@ -431,15 +431,15 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         throw ouch(404, `${schema.kind} not found.`)
     }
 
-    public async findOne(whereCallback: (condition?: SQL) => SQL | undefined = (c) => c) {
-        const result = await this.findMany(whereCallback, { limit: 1 });
+    public async findOne(where?: SQL) {
+        const result = await this.findMany(where, { limit: 1 });
         if (result.length)
             return result[0];
         return undefined;
     }
 
     public async findMany(
-        whereCallback: (condition?: SQL) => SQL | undefined = (c) => c,
+        where?: SQL,
         options?: {
             limit?: number,
             offset?: number,
@@ -447,7 +447,7 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         }
     ) {
         //  const customArgs = this.getDefaultArgs(args) as TModel[T]['findMany']['args'];
-        let query = this.select.where(whereCallback());
+        let query = this.select.where(where);
         if (options && options.limit)
             query.limit(options.limit);
         if (options && options.offset)
