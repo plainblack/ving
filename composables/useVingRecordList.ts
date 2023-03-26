@@ -18,7 +18,7 @@ export interface VingRecordList<T extends ModelName> {
     new: Partial<Describe<T>['props']>,
 }
 
-export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {} }) => {
+export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => {
 
     const VingRecordList: VingRecordList<T> = {
 
@@ -33,7 +33,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
             totalItems: 0,
             totalPages: 0,
         },
-        new: _.defaultsDeep({})// behavior.newDefaults)
+        new: _.defaultsDeep({}, behavior.newDefaults)
 
     }
 
