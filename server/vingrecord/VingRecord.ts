@@ -39,6 +39,8 @@ export const findPropInSchema = (name: string | number | symbol, props: vingProp
 export class VingRecord<T extends ModelName> {
     constructor(public db: MySql2Database, public table: ModelMap[T]['model'], private props: ModelMap[T]['select'], private inserted = true) { }
 
+    private deleted = false;
+
     public warnings: Describe<T>['warnings'] = [];
 
     public addWarning(warning: warning) {
@@ -112,6 +114,7 @@ export class VingRecord<T extends ModelName> {
     }
 
     public async delete() {
+        this.deleted = true;
         await this.db.delete(this.table).where(eq(this.table.id, this.props.id));
     }
 
@@ -167,6 +170,9 @@ export class VingRecord<T extends ModelName> {
             out.meta = {
                 kind: schema.kind,
             };
+            if (this.deleted) {
+                out.meta.deleted = true;
+            }
         }
         if (include !== undefined && include.related && include.related.length) {
             out.related = {};
