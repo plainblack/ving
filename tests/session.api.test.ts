@@ -10,16 +10,16 @@ describe('Session API', async () => {
     await Users.delete.where(eq(Users.table.username, 'brooks'));
     const user = (await axios.post(
         base + 'user?includeMeta=true',
-        { username: 'brooks', realName: 'Brooks Hatlen', email: 'brooks@shawshank.jail', password: 'rockhammer' },
+        { username: 'rita', realName: 'Rita Hayworth', email: 'rita@shawshank.jail', password: 'poster' },
     )).data;
 
     test('create user', () => {
-        expect(user.meta.displayName).toBe('brooks');
+        expect(user.meta.displayName).toBe('rita');
     });
 
     const session = (await axios.post(
         base + 'session',
-        { login: 'brooks', password: 'rockhammer' }
+        { login: 'rita', password: 'poster' }
     )).data;
 
     test('login', () => {
@@ -31,7 +31,7 @@ describe('Session API', async () => {
             `${base}session/${session.props.id}?includeRelated=user`,
             { headers: { Cookie: `vingSessionId=${session.props.id}` } }
         )).data;
-        expect(result.related.user.props.username).toBe('brooks');
+        expect(result.related.user.props.username).toBe('rita');
 
     });
 
@@ -44,6 +44,6 @@ describe('Session API', async () => {
     });
 
     afterAll(async () => {
-        await Users.delete.where(eq(Users.table.username, 'brooks'));
+        await Users.delete.where(eq(Users.table.username, 'rita'));
     })
 });
