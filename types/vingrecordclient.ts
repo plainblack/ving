@@ -23,7 +23,7 @@ export type VingRecordParams<T extends ModelName> = {
 }
 
 export interface VingRecord<T extends ModelName> {
-    props?: Describe<T>['props'],
+    props: Describe<T>['props'],
     links?: Describe<T>['links'],
     meta?: Describe<T>['meta'],
     options?: Describe<T>['options'],
