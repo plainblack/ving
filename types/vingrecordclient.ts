@@ -27,10 +27,13 @@ export type VingRecordParams<T extends ModelName> = {
     warnings?: Describe<T>['warnings'],
     createApi?: string | undefined,
     fetchApi?: string | undefined,
-    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void
-    onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void
-    onDelete?: (result: Describe<T>, record: VingRecord<T>) => void
-} & VRBasicOptions<T>
+    onFetch?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onDelete?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onError?: (result: Describe<T>) => void,
+    suppressErrorNotifications?: boolean,
+}
 
 export interface VingRecord<T extends ModelName> {
     props: Describe<T>['props'],

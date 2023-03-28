@@ -3,7 +3,6 @@ import { ouch } from '~/server/helpers';
 import _ from 'lodash';
 const notify = useNotifyStore();
 
-
 /*
  *  VingRecords annot be used in a Pinia store because it contains functions
  */
@@ -53,8 +52,13 @@ function formatPropsBodyData<T extends TModelName>(props: Describe<T>['props'], 
     return form;
 }*/
 
-
 export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {} }) => {
+
+    const onResponseError = (context: any) => {
+        console.dir(context)
+        if (!behavior.suppressErrorNotifications)
+            notify.error(context.response._data.message);
+    }
 
     const VingRecord: VingRecord<T> = {
 
@@ -64,8 +68,8 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
         options: {},
         related: {},
         warnings: [],
-        query: {},
-        behavior: {},
+        query: { includeLinks: true, ...behavior.query },
+        behavior,
 
         setState(result) {
             this.props = result.props;
@@ -117,13 +121,18 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
             const self = this;
             const promise = useFetch(this.getFetchApi(), {
                 query: this.query,
+                onResponseError,
             });
             promise.then((response) => {
                 const data: Describe<T> = response.data.value as Describe<T>;
                 self.setState(data);
+                if (behavior?.onFetch)
+                    behavior.onFetch(data, this);
             })
                 .catch((response) => {
-                    throw response;
+                    const data: Describe<T> = response.data.value as Describe<T>;
+                    if (behavior?.onError)
+                        behavior.onError(data);
                 });
             return promise;
         },
@@ -136,6 +145,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                 query: this.query,
                 method: 'put',
                 body: props,
+                onResponseError,
             });
 
             promise.then((response) => {
@@ -143,7 +153,9 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                 self.setState(data);
             })
                 .catch((response) => {
-                    throw response;
+                    const data: Describe<T> = response.data.value as Describe<T>;
+                    if (behavior?.onError)
+                        behavior.onError(data);
                 });
             return promise;
         },
@@ -183,18 +195,18 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                 query: this.query,
                 method: 'post',
                 body: newProps,
-                onResponseError(context) {
-                    console.dir(context)
-                    notify.error(context.response._data.message);
-                }
+                onResponseError,
             });
 
             promise.then((response) => {
                 const data: Describe<T> = response.data.value as Describe<T>;
                 self.setState(data);
-            }).catch(e => {
-                console.log(e)
-            });
+            })
+                .catch((response) => {
+                    const data: Describe<T> = response.data.value as Describe<T>;
+                    if (behavior?.onError)
+                        behavior.onError(data);
+                });
             return promise;
         },
 
@@ -216,24 +228,25 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                 const promise = useFetch(this.getSelfApi, {
                     query: self.query,
                     method: 'delete',
+                    onResponseError,
                 });
                 promise.then((response) => {
                     const data: Describe<T> = response.data.value as Describe<T>;
-                    if (options?.onSuccess) {
+                    if (options?.onSuccess)
                         options.onSuccess(data);
-                    }
-                    if (behavior?.onDelete) {
+
+                    if (behavior?.onDelete)
                         behavior.onDelete(data, this);
-                    }
+
                 })
                     .catch((response) => {
                         const data: Describe<T> = response.data.value as Describe<T>;
-                        if (options?.onError) {
+                        if (options?.onError)
                             options.onError(data);
-                        }
-                        if (behavior?.onError) {
+
+                        if (behavior?.onError)
                             behavior.onError(data);
-                        }
+
                     });
                 return promise
             }
@@ -241,9 +254,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
         }
     };
 
-    VingRecord.behavior = behavior;
     VingRecord.setState(behavior as Describe<T>);
-    VingRecord.query = { includeLinks: true, ...behavior.query };
 
     return VingRecord;
 }
