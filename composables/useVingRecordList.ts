@@ -19,8 +19,13 @@ type VRLSearchOptions<T extends ModelName> = {
     query?: DescribeListParams,
     accumulate?: boolean,
     unshift?: boolean,
+    page?: number,
     onSuccess?: (result: DescribeList<T>) => void
     onEach?: (result: Describe<T>, record: VingRecord<T>) => void
+}
+
+type VRLAllOptions<T extends ModelName> = VRLSearchOptions<T> & {
+    onAllDone?: () => void
 }
 
 export interface VingRecordList<T extends ModelName> {
@@ -43,6 +48,8 @@ export interface VingRecordList<T extends ModelName> {
     search(options?: VRLSearchOptions<T>): Promise<any>,
     searchFast(options?: VRLSearchOptions<T>): Promise<any>,
     _search(options?: VRLSearchOptions<T>): Promise<any>,
+    all(options?: VRLAllOptions<T>, page?: number): Promise<any>,
+    _all(options?: VRLAllOptions<T>, page?: number): Promise<any>,
     remove(id: Describe<T>['props']['id']): void,
 }
 
@@ -161,8 +168,8 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 console.error("record list listApi is empty");
             }
             let pagination = {
-                page: options?.query?.page || self.paging.page || 1,
-                itemsPerPage: options?.query?.itemsPerPage || self.paging.itemsPerPage || 10,
+                page: options?.page || self.paging.page || 1,
+                itemsPerPage: self.paging.itemsPerPage || 10,
             };
             const query = _.extend({}, pagination, options.query, self.query);
 
@@ -193,6 +200,43 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 });
 
             return promise;
+        },
+
+        all: _.debounce(function (options, page) {
+            // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
+            return this._all(options, page);
+        }, 200),
+
+        _all(options = {}, iterations = 1) {
+            let self = this;
+            return new Promise((resolve, reject) =>
+                self
+                    ._search({
+                        ...options,
+                        accumulate: true,
+                        page: iterations,
+                    })
+                    .then(() => {
+                        if (self.paging.page < self.paging.totalPages) {
+                            if (iterations < 999) {
+                                self
+                                    ._all(options, iterations + 1)
+                                    .then(resolve)
+                                    .catch(reject);
+                            } else {
+                                const message = "infinite loop detected in _all() for " + self.getListApi()
+                                notify.error(message);
+                                throw ouch(400, message);
+                            }
+                        } else {
+                            if (options.onAllDone) {
+                                options.onAllDone();
+                            }
+                            resolve(undefined);
+                        }
+                    })
+                    .catch(reject)
+            );
         },
 
         remove: function (id) {
