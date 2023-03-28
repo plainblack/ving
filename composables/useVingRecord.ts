@@ -132,12 +132,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
             // if we were calling formatPropsBodyData here is where we would call it
             const self = this;
 
-            if (!this.links || !this.links.self) {
-                notify.error('No links.self');
-                throw ouch(400, 'No links.self');
-            }
-
-            const promise = useFetch(this.links.self, {
+            const promise = useFetch(this.getSelfApi, {
                 query: this.query,
                 method: 'put',
                 body: props,
@@ -203,7 +198,48 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
             return promise;
         },
 
-    }
+        getSelfApi() {
+            if (this.links?.self) {
+                return this.links.self;
+            }
+            notify.error('No links.self');
+            throw ouch(400, 'No links.self');
+        },
+
+        delete(options = {}) {
+            const self = this;
+            let message = "Are you sure?";
+            if ("name" in this.props) {
+                message = "Are you sure you want to delete " + this.props.name + "?";
+            }
+            if (options.skipConfirm || confirm(message)) {
+                const promise = useFetch(this.getSelfApi, {
+                    query: self.query,
+                    method: 'delete',
+                });
+                promise.then((response) => {
+                    const data: Describe<T> = response.data.value as Describe<T>;
+                    if (options?.onSuccess) {
+                        options.onSuccess(data);
+                    }
+                    if (behavior?.onDelete) {
+                        behavior.onDelete(data, this);
+                    }
+                })
+                    .catch((response) => {
+                        const data: Describe<T> = response.data.value as Describe<T>;
+                        if (options?.onError) {
+                            options.onError(data);
+                        }
+                        if (behavior?.onError) {
+                            behavior.onError(data);
+                        }
+                    });
+                return promise
+            }
+
+        }
+    };
 
     VingRecord.behavior = behavior;
     VingRecord.setState(behavior as Describe<T>);

@@ -1,66 +1,7 @@
-import type { Describe, DescribeList, DescribeListParams, ModelName, VingRecord, VingRecordParams, QueryParams } from '~/types';
+import type { VingRecordList, VingRecordListParams, DescribeList, ModelName } from '~/types';
 import { ouch } from '~/server/helpers';
 import _ from 'lodash';
 const notify = useNotifyStore();
-
-export type VingRecordListParams<T extends ModelName> = {
-    newDefaults?: Describe<T>['props'],
-    createApi?: string | undefined,
-    optionsApi?: string | undefined,
-    listApi?: string | undefined,
-    query?: DescribeListParams,
-    onSuccess?: (result: DescribeList<T>) => void,
-    onEach?: (result: Describe<T>, record: VingRecord<T>) => void
-    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void
-    onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void
-    onDelete?: (result: Describe<T>, record: VingRecordList<T>) => void
-}
-
-type VRLBasicOptions<T extends ModelName> = {
-    onSuccess?: (result: DescribeList<T>) => void,
-    onError?: (result: DescribeList<T>) => void
-}
-
-type VRLSearchOptions<T extends ModelName> = {
-    query?: DescribeListParams,
-    accumulate?: boolean,
-    unshift?: boolean,
-    page?: number,
-    onEach?: (result: Describe<T>, record: VingRecord<T>) => void
-} & VRLBasicOptions<T>
-
-type VRLAllOptions<T extends ModelName> = VRLSearchOptions<T> & {
-    onAllDone?: () => void
-}
-
-export interface VingRecordList<T extends ModelName> {
-    behavior: VingRecordListParams<T>,
-    query: QueryParams,
-    records: VingRecord<T>[],
-    paging: DescribeList<T>['paging'],
-    new: Partial<Describe<T>['props']>,
-    resetNew(): void,
-    listApi: string | undefined,
-    createApi: string | undefined,
-    propsOptions: Describe<T>['options'],
-    itemsPerPageOptions: { value: number, label: string }[],
-    findIndex(id: VingRecord<T>['props']['id']): number,
-    find(id: VingRecord<T>['props']['id']): VingRecord<T>,
-    mint(params: Describe<T>): VingRecord<T>,
-    append(record: Describe<T>, options: VRLSearchOptions<T>): VingRecord<T>,
-    getListApi(): string,
-    getCreateApi(): string,
-    search(options?: VRLSearchOptions<T>): Promise<any>,
-    searchFast(options?: VRLSearchOptions<T>): Promise<any>,
-    _search(options?: VRLSearchOptions<T>): Promise<any>,
-    all(options?: VRLAllOptions<T>, page?: number): Promise<any>,
-    _all(options?: VRLAllOptions<T>, page?: number): Promise<any>,
-    reset(): VingRecordList<T>,
-    call(method: "post" | "put" | "delete" | "get", url: string, query?: DescribeListParams, options?: VRLBasicOptions<T>): Promise<any>,
-    remove(id: Describe<T>['props']['id']): void,
-    getOptionsApi(): string,
-    fetchOptions(options: VRLBasicOptions<T>): void,
-}
 
 export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => {
 
@@ -102,7 +43,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
         ],
 
         findIndex(id) {
-            return this.records.findIndex((obj: VingRecord<T>) => obj.props.id == id);
+            return this.records.findIndex((obj) => obj.props.id == id);
         },
 
         find(id) {
@@ -173,9 +114,6 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
 
         _search: function (options = {}) {
             const self = this;
-            if (!self.listApi) {
-                console.error("record list listApi is empty");
-            }
             let pagination = {
                 page: options?.page || self.paging.page || 1,
                 itemsPerPage: self.paging.itemsPerPage || 10,
@@ -254,7 +192,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
             return self;
         },
 
-        call(method, url, query, options) {
+        call(method, url, query = {}, options = {}) {
             const self = this;
             const promise = useFetch(url, {
                 query: _.extend({}, self.query, query),
@@ -275,7 +213,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
             return promise;
         },
 
-        getOptionsApi: function () {
+        getFieldOptionsApi: function () {
             const self = this;
             if (behavior.optionsApi != null) {
                 return behavior.optionsApi;
@@ -283,9 +221,9 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
             return self.getCreateApi + "/options";
         },
 
-        fetchOptions(options) {
+        fetchFieldOptions(options = {}) {
             const self = this;
-            const promise = useFetch(self.getOptionsApi);
+            const promise = useFetch(self.getFieldOptionsApi);
             promise.then((response) => {
                 const data: DescribeList<T> = response.data.value as DescribeList<T>;
                 if (options?.onSuccess) {
@@ -301,11 +239,51 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
             return promise;
         },
 
-        remove: function (id) {
+        create(props = {}, options = {}) {
             const self = this;
-            const index = self.findIndex(id);
+            const newProps = _.extend({}, self.new, props);
+            const newRecord = self.mint({ props: newProps });
+            const addIt = function () {
+                if (options?.unshift || behavior?.unshift) {
+                    self.records.unshift(newRecord);
+                } else {
+                    self.records.push(newRecord);
+                }
+                self.paging.totalItems++;
+                self.resetNew();
+            };
+            if (options.onSuccess) {
+                const success = options.onSuccess;
+                options.onSuccess = function (properties) {
+                    addIt();
+                    success(properties);
+                };
+            } else {
+                options.onSuccess = addIt;
+            }
+            return newRecord.create(newProps, options);
+        },
+
+        update: function (index, options) {
+            return this.records[index].update(options);
+        },
+
+        save: function (index, property) {
+            return this.records[index].save(property);
+        },
+
+        partialUpdate: function (index, properties, options) {
+            return this.records[index].partialUpdate(properties, options);
+        },
+
+        delete: function (index, options) {
+            return this.records[index].delete(options);
+        },
+
+        remove: function (id) {
+            const index = this.findIndex(id);
             if (index >= 0) {
-                self.records.splice(index, 1);
+                this.records.splice(index, 1);
             }
         },
     }

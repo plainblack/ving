@@ -8,6 +8,14 @@ export type QueryParams = {
     includeLinks?: boolean,
 };
 
+type VRBasicOptions<T extends ModelName> = {
+    onSuccess?: (result: Describe<T>) => void,
+    onError?: (result: Describe<T>) => void
+}
+
+type VRDeleteOptions<T extends ModelName> = {
+    skipConfirm?: boolean,
+} & VRBasicOptions<T>
 
 export type VingRecordParams<T extends ModelName> = {
     props?: Describe<T>['props'],
@@ -22,7 +30,7 @@ export type VingRecordParams<T extends ModelName> = {
     onCreate?: (result: Describe<T>, record: VingRecord<T>) => void
     onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void
     onDelete?: (result: Describe<T>, record: VingRecord<T>) => void
-}
+} & VRBasicOptions<T>
 
 export interface VingRecord<T extends ModelName> {
     props: Describe<T>['props'],
@@ -44,5 +52,7 @@ export interface VingRecord<T extends ModelName> {
     partialUpdate(props?: Describe<T>['props'], options?: {}): Promise<any>,
     update(options?: {}): Promise<any>,
     create(props?: Describe<T>['props'], options?: {}): Promise<any>,
+    getSelfApi(): string,
+    delete(options?: VRDeleteOptions<T>): Promise<any> | undefined
 }
 
