@@ -6,6 +6,7 @@ const notify = useNotifyStore();
 export type VingRecordListParams<T extends ModelName> = {
     newDefaults?: Describe<T>['props'],
     createApi?: string | undefined,
+    optionsApi?: string | undefined,
     listApi?: string | undefined,
     query?: DescribeListParams,
     onSuccess?: (result: DescribeList<T>) => void,
@@ -15,14 +16,18 @@ export type VingRecordListParams<T extends ModelName> = {
     onDelete?: (result: Describe<T>, record: VingRecordList<T>) => void
 }
 
+type VRLBasicOptions<T extends ModelName> = {
+    onSuccess?: (result: DescribeList<T>) => void,
+    onError?: (result: DescribeList<T>) => void
+}
+
 type VRLSearchOptions<T extends ModelName> = {
     query?: DescribeListParams,
     accumulate?: boolean,
     unshift?: boolean,
     page?: number,
-    onSuccess?: (result: DescribeList<T>) => void
     onEach?: (result: Describe<T>, record: VingRecord<T>) => void
-}
+} & VRLBasicOptions<T>
 
 type VRLAllOptions<T extends ModelName> = VRLSearchOptions<T> & {
     onAllDone?: () => void
@@ -51,8 +56,10 @@ export interface VingRecordList<T extends ModelName> {
     all(options?: VRLAllOptions<T>, page?: number): Promise<any>,
     _all(options?: VRLAllOptions<T>, page?: number): Promise<any>,
     reset(): VingRecordList<T>,
-    call(method: "post" | "put" | "delete" | "get", url: string, query?: DescribeListParams, options?: { onSuccess?: (result: DescribeList<T>) => void, onError?: (result: DescribeList<T>) => void }): Promise<any>,
+    call(method: "post" | "put" | "delete" | "get", url: string, query?: DescribeListParams, options?: VRLBasicOptions<T>): Promise<any>,
     remove(id: Describe<T>['props']['id']): void,
+    getOptionsApi(): string,
+    fetchOptions(options: VRLBasicOptions<T>): void,
 }
 
 export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => {
@@ -253,6 +260,32 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 query: _.extend({}, self.query, query),
                 method,
             });
+            promise.then((response) => {
+                const data: DescribeList<T> = response.data.value as DescribeList<T>;
+                if (options?.onSuccess) {
+                    options?.onSuccess(data);
+                }
+            })
+                .catch((response) => {
+                    const data: DescribeList<T> = response.data.value as DescribeList<T>;
+                    if (options?.onError) {
+                        options?.onError(data);
+                    }
+                });
+            return promise;
+        },
+
+        getOptionsApi: function () {
+            const self = this;
+            if (behavior.optionsApi != null) {
+                return behavior.optionsApi;
+            }
+            return self.getCreateApi + "/options";
+        },
+
+        fetchOptions(options) {
+            const self = this;
+            const promise = useFetch(self.getOptionsApi);
             promise.then((response) => {
                 const data: DescribeList<T> = response.data.value as DescribeList<T>;
                 if (options?.onSuccess) {
