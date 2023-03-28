@@ -19,7 +19,9 @@ export type VingRecordParams<T extends ModelName> = {
     warnings?: Describe<T>['warnings'],
     createApi?: string | undefined,
     fetchApi?: string | undefined,
-    // postFormattingOptions: {}
+    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void
+    onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void
+    onDelete?: (result: Describe<T>, record: VingRecord<T>) => void
 }
 
 export interface VingRecord<T extends ModelName> {
