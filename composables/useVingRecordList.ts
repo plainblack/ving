@@ -50,6 +50,8 @@ export interface VingRecordList<T extends ModelName> {
     _search(options?: VRLSearchOptions<T>): Promise<any>,
     all(options?: VRLAllOptions<T>, page?: number): Promise<any>,
     _all(options?: VRLAllOptions<T>, page?: number): Promise<any>,
+    reset(): VingRecordList<T>,
+    call(method: "post" | "put" | "delete" | "get", url: string, query?: DescribeListParams, options?: { onSuccess?: (result: DescribeList<T>) => void, onError?: (result: DescribeList<T>) => void }): Promise<any>,
     remove(id: Describe<T>['props']['id']): void,
 }
 
@@ -237,6 +239,33 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                     })
                     .catch(reject)
             );
+        },
+
+        reset() {
+            const self = this;
+            self.records = [];
+            return self;
+        },
+
+        call(method, url, query, options) {
+            const self = this;
+            const promise = useFetch(url, {
+                query: _.extend({}, self.query, query),
+                method,
+            });
+            promise.then((response) => {
+                const data: DescribeList<T> = response.data.value as DescribeList<T>;
+                if (options?.onSuccess) {
+                    options?.onSuccess(data);
+                }
+            })
+                .catch((response) => {
+                    const data: DescribeList<T> = response.data.value as DescribeList<T>;
+                    if (options?.onError) {
+                        options?.onError(data);
+                    }
+                });
+            return promise;
         },
 
         remove: function (id) {
