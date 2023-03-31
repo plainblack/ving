@@ -319,7 +319,9 @@ export class VingRecord<T extends ModelName> {
 
 export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
 
-    constructor(public db: MySql2Database, public table: ModelMap[T]['model'], public recordClass: Constructable<VR>, private propDefaults: Partial<ModelInsert<T>> = {}) { }
+    constructor(public db: MySql2Database, public table: ModelMap[T]['model'], public recordClass: Constructable<VR>) { }
+
+    protected propDefaults: { prop: keyof ModelMap[T]['insert'], field: AnyMySqlColumn, value: any }[] = []
 
     public async describeList(
         params: DescribeListParams = {},
@@ -375,6 +377,9 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
 
     public mint(props?: Partial<ModelInsert<T>>) {
         const output: Record<string, any> = {};
+        for (const item of this.propDefaults) {
+            output[item.prop as keyof typeof output] = item.value;
+        }
         for (const prop of findVingSchema(this.table[Name]).props) {
             // @ts-ignore
             if (props && props[prop.name] !== undefined)
@@ -406,18 +411,13 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         return obj;
     }
 
-    public getDefaultArgs(args?: object) {
-        const defaultArgs = Object.keys(this.propDefaults).length ? { where: { ...this.propDefaults } } : {};
-        return _.defaults(defaultArgs, args);
-    }
-
     public get select() { return this.db.select().from(this.table) }
     public get delete() { return this.db.delete(this.table) }
     public get update() { return this.db.update(this.table) }
     public get insert() { return this.db.insert(this.table) }
 
     public async count(where?: SQL) {
-        return (await this.db.select({ count: sql<number>`count(*)`.as('count') }).from(this.table).where(where))[0].count;
+        return (await this.db.select({ count: sql<number>`count(*)`.as('count') }).from(this.table).where(this.calcWhere(where)))[0].count;
     }
 
     public async find(id: ModelSelect<T>['id']) {
@@ -443,6 +443,31 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         return undefined;
     }
 
+    private calcWhere(where?: SQL) {
+        let defaults = undefined;
+        if (this.propDefaults) {
+            for (const item of this.propDefaults) {
+                const pair = eq(item.field, item.value);
+                if (defaults) {
+                    defaults = and(pair, defaults);
+                }
+                else {
+                    defaults = pair;
+                }
+            }
+        }
+        if (where && defaults) {
+            return and(where, defaults);
+        }
+        else if (where) {
+            return where;
+        }
+        else if (defaults) {
+            return defaults;
+        }
+        return undefined;
+    }
+
     public async findMany(
         where?: SQL,
         options?: {
@@ -452,7 +477,7 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         }
     ) {
         //  const customArgs = this.getDefaultArgs(args) as TModel[T]['findMany']['args'];
-        let query = this.select.where(where);
+        let query = this.select.where(this.calcWhere(where));
         if (options && options.limit)
             query.limit(options.limit);
         if (options && options.offset)
