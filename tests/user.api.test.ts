@@ -63,7 +63,6 @@ describe('User API', async () => {
             `${base}user/${user.props.id}?includeMeta=true`,
             { headers: { Cookie: `vingSessionId=${session.props.id}` } }
         )).data;
-        console.log(result)
         expect(result.meta.deleted).toBe(true);
     });
 
