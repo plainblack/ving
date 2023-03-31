@@ -1,8 +1,9 @@
 import { VingRecord, VingKind } from "../VingRecord";
 import { ModelInsert, ModelSelect, DescribeParams, AuthorizedUser } from '../../../types';
 import { RoleOptions, RoleMixin } from '../mixins/Role';
+import { like, eq, asc, desc, and, or, ne } from 'drizzle-orm/mysql-core/expressions.js';
 
-//import { APIKeyKind, APIKeyRecord } from "./APIKeys";
+import { useAPIKeys } from "./APIKey";
 import { ouch } from '../../helpers';
 import bcrypt from 'bcryptjs';
 import { cache } from '../../cache';
@@ -98,10 +99,15 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
         return true;
     }
 
-    //   public get apiKeys() {
-    //      return new APIKeyKind(prisma.aPIKey, APIKeyRecord, { userId: this.id });
-    //  }
-
+    public get apikeys() {
+        const apikeys = useAPIKeys();
+        apikeys.propDefaults.push({
+            prop: 'userId',
+            field: apikeys.table.userId,
+            value: this.get('id')
+        });
+        return apikeys;
+    }
 
     public async update() {
         if (this.userChanged)
