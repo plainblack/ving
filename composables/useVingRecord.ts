@@ -54,7 +54,7 @@ function formatPropsBodyData<T extends TModelName>(props: Describe<T>['props'], 
 
 export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {} }) => {
 
-    const onResponseError = (context: any) => {
+    const onResponseError = async (context: any) => {
         console.dir(context)
         if (!behavior.suppressErrorNotifications)
             notify.error(context.response._data.message);
@@ -132,12 +132,12 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                 .catch((response) => {
                     const data: Describe<T> = response.data.value as Describe<T>;
                     if (behavior?.onError)
-                        behavior.onError(data);
+                        behavior.onError(data, this);
                 });
             return promise;
         },
 
-        _partialUpdate(props, options: {}) {
+        _partialUpdate(props, options = {}) {
             // if we were calling formatPropsBodyData here is where we would call it
             const self = this;
 
@@ -151,11 +151,17 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
             promise.then((response) => {
                 const data: Describe<T> = response.data.value as Describe<T>;
                 self.setState(data);
+                if (options?.onUpdate)
+                    options.onUpdate(data, this);
+                if (behavior?.onUpdate)
+                    behavior.onUpdate(data, this);
             })
                 .catch((response) => {
                     const data: Describe<T> = response.data.value as Describe<T>;
+                    if (options?.onError)
+                        options.onError(data, this);
                     if (behavior?.onError)
-                        behavior.onError(data);
+                        behavior.onError(data, this);
                 });
             return promise;
         },
@@ -201,11 +207,17 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
             promise.then((response) => {
                 const data: Describe<T> = response.data.value as Describe<T>;
                 self.setState(data);
+                if (options?.onCreate)
+                    options.onCreate(data, this);
+                if (behavior?.onCreate)
+                    behavior.onCreate(data, this);
             })
                 .catch((response) => {
                     const data: Describe<T> = response.data.value as Describe<T>;
+                    if (options?.onError)
+                        options.onError(data, this);
                     if (behavior?.onError)
-                        behavior.onError(data);
+                        behavior.onError(data, this);
                 });
             return promise;
         },
@@ -232,21 +244,17 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                 });
                 promise.then((response) => {
                     const data: Describe<T> = response.data.value as Describe<T>;
-                    if (options?.onSuccess)
-                        options.onSuccess(data);
-
+                    if (options?.onDelete)
+                        options.onDelete(data, this);
                     if (behavior?.onDelete)
                         behavior.onDelete(data, this);
-
                 })
                     .catch((response) => {
                         const data: Describe<T> = response.data.value as Describe<T>;
                         if (options?.onError)
-                            options.onError(data);
-
+                            options.onError(data, this);
                         if (behavior?.onError)
-                            behavior.onError(data);
-
+                            behavior.onError(data, this);
                     });
                 return promise
             }

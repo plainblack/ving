@@ -63,11 +63,10 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 createApi: self.createApi,
                 onCreate: behavior.onCreate,
                 onUpdate: behavior.onUpdate,
-                onDelete(params) {
-                    const myself = this;
+                onDelete(params, record) {
                     self.paging.totalItems--;
                     if (behavior.onDelete)
-                        behavior.onDelete(params, self);
+                        behavior.onDelete(params, record);
                     self.remove(params.props.id)
                 },
             });
@@ -134,18 +133,12 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 }
                 self.paging = data.paging;
                 const items = data.items;
-                if (options?.onSuccess) {
-                    options?.onSuccess(data);
-                }
-                if (behavior.onSuccess) {
-                    behavior.onSuccess(data);
-                }
+                if (options?.onSearch)
+                    options?.onSearch(data);
+                if (behavior.onSearch)
+                    behavior.onSearch(data);
                 return items;
             })
-                .catch((response) => {
-                    throw response;
-                });
-
             return promise;
         },
 
@@ -176,9 +169,10 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                                 throw ouch(400, message);
                             }
                         } else {
-                            if (options.onAllDone) {
+                            if (options.onAllDone)
                                 options.onAllDone();
-                            }
+                            if (behavior.onAllDone)
+                                behavior.onAllDone();
                             resolve(undefined);
                         }
                     })
@@ -252,16 +246,16 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 self.paging.totalItems++;
                 self.resetNew();
             };
-            if (options.onSuccess) {
-                const success = options.onSuccess;
-                options.onSuccess = function (properties) {
+            if (options.onCreate) {
+                const success = options.onCreate;
+                options.onCreate = function (properties, record) {
                     addIt();
-                    success(properties);
+                    success(properties, record);
                 };
             } else {
-                options.onSuccess = addIt;
+                options.onCreate = addIt;
             }
-            return newRecord.create(newProps, options);
+            return newRecord.create(newProps, { onCreate: options.onCreate, onError: options.onError });
         },
 
         update: function (index, options) {

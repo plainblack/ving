@@ -1,6 +1,6 @@
-import type { Describe, DescribeList, DescribeListParams, ModelName, VingRecord, VingRecordParams, QueryParams } from '~/types';
+import type { Describe, DescribeList, DescribeListParams, ModelName, VingRecord, QueryParams } from '~/types';
 
-type VRLBasicOptions<T extends ModelName> = {
+type VRLGenericOptions<T extends ModelName> = {
     onSuccess?: (result: DescribeList<T>) => void,
     onError?: (result: DescribeList<T>) => void
 }
@@ -12,25 +12,31 @@ export type VingRecordListParams<T extends ModelName> = {
     listApi?: string | undefined,
     query?: DescribeListParams,
     unshift?: boolean,
-    onEach?: (result: Describe<T>, record: VingRecord<T>) => void
-    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void
-    onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void
-    onDelete?: (result: Describe<T>, record: VingRecordList<T>) => void
-} & VRLBasicOptions<T>
+    onEach?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onDelete?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onSearch?: (result: DescribeList<T>) => void,
+    onAllDone?: () => void,
+}
 
 type VRLCreateOptions<T extends ModelName> = {
     unshift?: boolean,
-} & VRLBasicOptions<T>
+    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
+}
 
 type VRLSearchOptions<T extends ModelName> = {
     query?: DescribeListParams,
     accumulate?: boolean,
     page?: number,
-    onEach?: (result: Describe<T>, record: VingRecord<T>) => void
-} & VRLBasicOptions<T>
+    onSearch?: (result: DescribeList<T>) => void,
+    onEach?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
+}
 
 type VRLAllOptions<T extends ModelName> = VRLSearchOptions<T> & {
-    onAllDone?: () => void
+    onAllDone?: () => void,
 }
 
 export interface VingRecordList<T extends ModelName> {
@@ -56,9 +62,9 @@ export interface VingRecordList<T extends ModelName> {
     all(options?: VRLAllOptions<T>, page?: number): Promise<any>,
     _all(options?: VRLAllOptions<T>, page?: number): Promise<any>,
     reset(): VingRecordList<T>,
-    call(method: "post" | "put" | "delete" | "get", url: string, query?: DescribeListParams, options?: VRLBasicOptions<T>): Promise<any>,
+    call(method: "post" | "put" | "delete" | "get", url: string, query?: DescribeListParams, options?: VRLGenericOptions<T>): Promise<any>,
     getFieldOptionsApi(): string,
-    fetchFieldOptions(options?: VRLBasicOptions<T>): void,
+    fetchFieldOptions(options?: VRLGenericOptions<T>): void,
     create(props?: Describe<T>['props'], options?: VRLCreateOptions<T>): Promise<any>,
     update(index: number, options: {}): Promise<any>,
     save(index: number, prop: keyof Describe<T>['props']): Promise<any>,

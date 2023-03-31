@@ -8,14 +8,22 @@ export type QueryParams = {
     includeLinks?: boolean,
 };
 
-type VRBasicOptions<T extends ModelName> = {
-    onSuccess?: (result: Describe<T>) => void,
-    onError?: (result: Describe<T>) => void
+
+type VRCreateOptions<T extends ModelName> = {
+    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void,
+}
+
+type VRUpdateOptions<T extends ModelName> = {
+    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void,
 }
 
 type VRDeleteOptions<T extends ModelName> = {
+    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onDelete?: (result: Describe<T>, record: VingRecord<T>) => void,
     skipConfirm?: boolean,
-} & VRBasicOptions<T>
+}
 
 export type VingRecordParams<T extends ModelName> = {
     props?: Describe<T>['props'],
@@ -31,7 +39,7 @@ export type VingRecordParams<T extends ModelName> = {
     onCreate?: (result: Describe<T>, record: VingRecord<T>) => void,
     onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void,
     onDelete?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onError?: (result: Describe<T>) => void,
+    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
     suppressErrorNotifications?: boolean,
 }
 
@@ -51,10 +59,10 @@ export interface VingRecord<T extends ModelName> {
     fetch(): Promise<any>,
     _save<K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]): Promise<any>,
     save<K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]): Promise<any>,
-    _partialUpdate(props?: Describe<T>['props'], options?: {}): Promise<any>,
-    partialUpdate(props?: Describe<T>['props'], options?: {}): Promise<any>,
-    update(options?: {}): Promise<any>,
-    create(props?: Describe<T>['props'], options?: {}): Promise<any>,
+    _partialUpdate(props?: Describe<T>['props'], options?: VRUpdateOptions<T>): Promise<any>,
+    partialUpdate(props?: Describe<T>['props'], options?: VRUpdateOptions<T>): Promise<any>,
+    update(options?: VRUpdateOptions<T>): Promise<any>,
+    create(props?: Describe<T>['props'], options?: VRCreateOptions<T>): Promise<any>,
     getSelfApi(): string,
     delete(options?: VRDeleteOptions<T>): Promise<any> | undefined
 }
