@@ -12,7 +12,61 @@
                             <div class="mb-4">
 
 
-                                table of api keys goes here
+                                <DataTable :value="apikeys.records" stripedRows>
+                                    <Column field="props.createdAt" header="Created">
+                                        <template #body="slotProps">
+                                            {{ dt.formatDate(slotProps.data.props.createdAt) }}
+                                        </template>
+                                    </Column>
+                                    <Column field="props.name" header="Name"></Column>
+                                    <Column field="props.id" header="API Key">
+                                        <template #body="slotProps">
+                                            <Button icon="pi pi-copy" outlined rounded class="mr-2" alt="copy to clipboard"
+                                                title="Copy to Clipboard"
+                                                @click="copyToClipboard(slotProps.data.props.id)" />
+                                        </template>
+                                    </Column>
+                                    <Column field="props.privateKey" header="Private Key">
+                                        <template #body="slotProps">
+                                            <Button icon="pi pi-copy" outlined rounded class="mr-2" alt="copy to clipboard"
+                                                title="Copy to Clipboard"
+                                                @click="copyToClipboard(slotProps.data.props.privateKey)" />
+                                        </template>
+                                    </Column>
+                                    <Column header="Manage">
+                                        <template #body="slotProps">
+                                            <Button icon="pi pi-pencil" outlined rounded class="mr-2"
+                                                @click="dialog.current = slotProps.data; dialog.visible = true" />
+                                            <Button icon="pi pi-trash" outlined rounded severity="danger"
+                                                @click="slotProps.data.delete()" />
+                                        </template>
+                                    </Column>
+                                </DataTable>
+
+                                <Dialog v-model:visible="dialog.visible" maximizable modal header="Header"
+                                    :style="{ width: '75vw' }">
+
+                                    <div class="flex gap-5 flex-column-reverse md:flex-row" v-if="dialog.current">
+                                        <div class="flex-auto p-fluid">
+                                            <div class="mb-4">
+                                                <FormInput name="name" type="text" v-model="dialog.current.props.name"
+                                                    required label="Name" />
+                                            </div>
+                                            <div class="mb-4">
+                                                <FormInput name="url" type="text" v-model="dialog.current.props.url"
+                                                    label="URL" />
+                                            </div>
+                                            <div class="mb-4">
+                                                <FormInput name="reason" type="textarea"
+                                                    v-model="dialog.current.props.reason" label="Reason" />
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </Dialog>
+
 
                             </div>
                         </div>
@@ -25,29 +79,28 @@
                     <div class="text-900 font-semibold text-lg">Create API Key</div>
                     <p class="mt-1 mb-4 text-sm text-gray-500">Make a new API Key.</p>
 
-                    <!-- Form :send="apikeys.create()">
+                    <Form :send="() => apikeys.create()">
                         <div class="flex gap-5 flex-column-reverse md:flex-row">
                             <div class="flex-auto p-fluid">
                                 <div class="mb-4">
                                     <FormInput name="name" type="text" v-model="apikeys.new.name" required label="Name" />
                                 </div>
                                 <div class="mb-4">
-                                    <FormInput name="url" type="text" v-model="apikeys.new.url" required label="URL" />
+                                    <FormInput name="url" type="text" v-model="apikeys.new.url" label="URL" />
                                 </div>
                                 <div class="mb-4">
-                                    <FormInput name="reason" type="textarea" v-model="apikeys.new.reason" required
-                                        label="Reason" />
+                                    <FormInput name="reason" type="textarea" v-model="apikeys.new.reason" label="Reason" />
                                 </div>
 
                                 <div>
-                                    <Button type="submit" label="Update Profile" class="w-auto">
-                                        Change Password
+                                    <Button type="submit" class="w-auto">
+                                        Create API Key
                                     </Button>
                                 </div>
                             </div>
 
                         </div>
-                    </Form -->
+                    </Form>
                 </div>
             </div>
 
@@ -56,17 +109,34 @@
 </template>
 
 <script setup lang="ts">
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Dialog from 'primevue/dialog';
+import { boolean } from 'drizzle-orm/mysql-core';
+import { string } from 'zod';
+import { VingRecord } from '~/types';
+const notify = useNotifyStore();
+
 definePageMeta({
     middleware: 'auth'
 });
-/*
-const apikeys = ref(useVingRecordList<'User'>({
-    listApi: '/api/apikey',
-    createApi: '/api/apikey',
-    query: { includeMeta: true }
-}));
-await apikeys.all();*/
 
-
+const dt = useDateTime();
 const currentUser = useCurrentUserStore();
+const apikeys = ref(useVingRecordList<'APIKey'>({
+    listApi: currentUser.links?.self + '/apikeys',
+    createApi: '/api/apikey',
+    query: { includeMeta: true },
+    newDefaults: { name: '', reason: '', url: 'http://', userId: currentUser.props?.id },
+}));
+await apikeys.value.all();
+
+const d: { visible: boolean, current?: VingRecord<'APIKey'> } = { visible: false, current: undefined };
+const dialog = ref(d);
+
+function copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text);
+    notify.info('Copied key to Clipboard');
+}
+
 </script>

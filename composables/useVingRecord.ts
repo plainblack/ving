@@ -250,7 +250,8 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                         behavior.onDelete(data, this);
                 })
                     .catch((response) => {
-                        const data: Describe<T> = response.data.value as Describe<T>;
+                        const data: Describe<T> = response as Describe<T>;
+                        console.log(response)
                         if (options?.onError)
                             options.onError(data, this);
                         if (behavior?.onError)
