@@ -5,7 +5,7 @@ import crypto from 'crypto';
 export const apikeySchema: vingSchema = {
     kind: 'APIKey',
     tableName: 'apikeys',
-    owner: ['$id', 'admin'],
+    owner: ['$userId', 'admin'],
     props: [
         ...baseSchemaProps,
         {
@@ -49,7 +49,7 @@ export const apikeySchema: vingSchema = {
             default: () => 'pk_' + crypto.randomBytes(18).toString('hex'),
             db: (prop) => dbString(prop),
             view: [],
-            edit: [],
+            edit: ['owner'],
         },
         {
             type: "id",
