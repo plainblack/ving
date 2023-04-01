@@ -1,17 +1,19 @@
 import { defineStore } from 'pinia';
 import { Describe } from '../types';
 
-const query = { includeOptions: true, includeMeta: true };
+const query = { includeOptions: true, includeMeta: true, includeLinks: true };
 
 export const useCurrentUserStore = defineStore('currentUser', {
     state: (): {
         props?: Describe<'User'>['props']
         meta?: Describe<'User'>['meta']
         options?: Describe<'User'>['options']
+        links?: Describe<'User'>['links']
     } => ({
         props: {},
         meta: {},
         options: {},
+        links: {},
     }),
     actions: {
         async whoami() {
@@ -27,6 +29,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
             this.props = data.props;
             this.meta = data.meta;
             this.options = data.options;
+            this.links = data.links;
         },
         async login(login: string, password: string) {
             const response = await useFetch('/api/session', {
