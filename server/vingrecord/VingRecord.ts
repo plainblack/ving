@@ -281,14 +281,13 @@ export class VingRecord<T extends ModelName> {
             if (!editable) {
                 continue;
             }
-            if (param === undefined || field.relation) {
+            if (param === undefined || (field.relation && field.relation.type != 'parent')) {
                 continue;
             }
             if (param === '' && field.required) {
                 throw ouch(441, `${fieldName} is required.`, fieldName);
             }
             if (field.name !== undefined && param !== undefined) {
-
                 if (field.unique) {
                     const query = this.db.select({ count: sql<number>`count(*)`.as('count') }).from(this.table);
                     // @ts-ignore - vingSchema knows best
@@ -305,10 +304,25 @@ export class VingRecord<T extends ModelName> {
                 }
                 if (param !== null)
                     this.set(field.name as keyof ModelSelect<T>, param);
+                if (field.relation && field.relation.type == 'parent') {
+                    const parent = await this.parent(field.relation.name);
+                    parent.canEdit(currentUser);
+                }
 
             }
         }
         return true;
+    }
+
+    public parent(name: string) {
+        try {
+            //@ts-expect-error
+            return this[name]
+        }
+        catch {
+            const schema = findVingSchema(this.table[Name])
+            throw ouch(404, `Couldn't find parent "${name}" on ${schema.kind}.`);
+        }
     }
 
     public async updateAndVerify(params: ModelSelect<T>, currentUser?: AuthorizedUser) {
