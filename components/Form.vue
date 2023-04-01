@@ -22,16 +22,16 @@ provide('invalidForm', function (newValue: [string, boolean, string?]) {
 
 const props = withDefaults(
     defineProps<{
-        send?: (e: Event) => void,
+        send?: () => Promise<any>,
     }>(),
     {
-        send() { },
+        async send() { },
     }
 );
 
 const notify = useNotifyStore();
 
-function check(e: Event) {
+async function check(e: Event) {
     if (invalid) {
         const problems = [];
         for (const key in tracker) {
@@ -41,7 +41,7 @@ function check(e: Event) {
         notify.error('Cannot submit form because: <ul><li>' + problems.join('</li><li>') + '</li></ul>');
     }
     else {
-        props.send(e);
+        await props.send();
     }
 }
 
