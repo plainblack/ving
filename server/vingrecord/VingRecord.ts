@@ -360,7 +360,7 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         if (!skipResultSet) {
             const records = await this.findMany(where, { limit: itemsPerPage, offset: itemsPerPage * (page - 1), orderBy: orderBy });
             for (let record of records) {
-                out.items.push(await record.describe(params.objectParams || {}));
+                out.items.push(await record.describe(params.objectParams));
                 maxItemsThisPage--;
                 if (maxItemsThisPage < 1) break;
             }
