@@ -1,5 +1,12 @@
 import type { Describe, DescribeList, DescribeListParams, ModelName, VingRecord, QueryParams } from '~/types';
 
+type ListQueryParams = {
+    itemsPerPage?: number,
+    page?: number,
+    sortOrder?: 'asc' | 'desc',
+    orderBy?: string,
+} & QueryParams
+
 type VRLGenericOptions<T extends ModelName> = {
     onSuccess?: (result: DescribeList<T>) => void,
     onError?: (result: DescribeList<T>) => void
@@ -10,7 +17,7 @@ export type VingRecordListParams<T extends ModelName> = {
     createApi?: string | undefined,
     optionsApi?: string | undefined,
     listApi?: string | undefined,
-    query?: DescribeListParams,
+    query?: ListQueryParams,
     unshift?: boolean,
     onEach?: (result: Describe<T>, record: VingRecord<T>) => void,
     onCreate?: (result: Describe<T>, record: VingRecord<T>) => void,
@@ -41,7 +48,7 @@ type VRLAllOptions<T extends ModelName> = VRLSearchOptions<T> & {
 
 export interface VingRecordList<T extends ModelName> {
     behavior: VingRecordListParams<T>,
-    query: QueryParams,
+    query: ListQueryParams,
     records: VingRecord<T>[],
     paging: DescribeList<T>['paging'],
     new: Partial<Describe<T>['props']>,
