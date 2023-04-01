@@ -9,6 +9,7 @@ export class APIKeyRecord extends VingRecord<'APIKey'> {
     public get user(): any {
         return useUsers().findOrDie(this.get('userId'));
     }
+
 }
 
 export class APIKeyKind extends VingKind<'APIKey', APIKeyRecord>  {

@@ -64,7 +64,7 @@ export const apikeySchema: vingSchema = {
             },
             default: undefined,
             view: ['public'],
-            edit: [],
+            edit: ['owner'],
         },
     ],
 };
