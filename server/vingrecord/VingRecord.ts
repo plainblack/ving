@@ -203,26 +203,14 @@ export class VingRecord<T extends ModelName> {
 
             // related
             if (typeof out.related === 'object'
-                && include.related !== undefined && include.related.length > 0
+                && include.related !== undefined
                 && field.relation
-                && include.related.includes(fieldName)
+                && ['parent', 'sibling'].includes(field.relation.type)
+                && include.related.includes(field.relation?.name)
             ) {
-                //  if (field.relationFromFields.length > 0) { // parent relationship
-                //need to handle related differently, probably by consumers adding their own related processors
-                //         let parent = await this[field.name as keyof this] as VingRecord<T>;
-                //       out.related[fieldName] = await parent.describe({ currentUser: currentUser })
-                //  }
+                const parent = await this.parent(field.relation.name);
+                out.related[fieldName] = await parent.describe(params);
             }
-            /*   if (typeof out.related === 'object'
-                   && include.relatedList !== undefined && include.relatedList.length > 0
-                   && field.relationName
-                   && include.relatedList.includes(fieldName)
-               ) {
-                   if (field.relationFromFields.length == 0) { // child relationship
-                       let childKind = this[field.name as keyof this] as VingKind<T, this>;
-                       out.relatedList[fieldName] = await childKind.describeList({ objectParams: { currentUser: currentUser } })
-                   }
-               }*/
 
         }
 
@@ -486,7 +474,6 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
             orderBy?: (SQL | AnyMySqlColumn)[]
         }
     ) {
-        //  const customArgs = this.getDefaultArgs(args) as TModel[T]['findMany']['args'];
         let query = this.select.where(this.calcWhere(where));
         if (options && options.limit)
             query.limit(options.limit);
