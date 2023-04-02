@@ -11,7 +11,6 @@
                         <div class="flex-auto p-fluid">
                             <div class="mb-4">
 
-
                                 <DataTable :value="apikeys.records" stripedRows>
                                     <Column field="props.createdAt" header="Created">
                                         <template #body="slotProps">
@@ -35,7 +34,7 @@
                                     </Column>
                                     <Column header="Manage">
                                         <template #body="slotProps">
-                                            <Button icon="pi pi-pencil" outlined rounded class="mr-2"
+                                            <Button icon="pi pi-pencil" outlined rounded class="mr-2" severity="success"
                                                 @click="dialog.current = slotProps.data; dialog.visible = true" />
                                             <Button icon="pi pi-trash" outlined rounded severity="danger"
                                                 @click="slotProps.data.delete()" />
@@ -115,6 +114,7 @@ import Dialog from 'primevue/dialog';
 import { boolean } from 'drizzle-orm/mysql-core';
 import { string } from 'zod';
 import { VingRecord } from '~/types';
+
 const notify = useNotifyStore();
 
 definePageMeta({
