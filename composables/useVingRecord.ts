@@ -237,7 +237,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                 message = "Are you sure you want to delete " + this.props.name + "?";
             }
             if (options.skipConfirm || confirm(message)) {
-                const promise = useFetch(this.getSelfApi, {
+                const promise = useFetch(this.getSelfApi(), {
                     query: self.query,
                     method: 'delete',
                     onResponseError,
@@ -250,8 +250,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                         behavior.onDelete(data, this);
                 })
                     .catch((response) => {
-                        const data: Describe<T> = response as Describe<T>;
-                        console.log(response)
+                        const data: Describe<T> = response.data.value as Describe<T>;
                         if (options?.onError)
                             options.onError(data, this);
                         if (behavior?.onError)

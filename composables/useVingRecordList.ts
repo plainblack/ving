@@ -9,7 +9,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
 
         behavior,
 
-        query: _.defaultsDeep({}, behavior.query),
+        query: _.defaultsDeep({}, { includeLinks: true }, behavior.query),
 
         records: [],
 
