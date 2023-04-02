@@ -206,10 +206,10 @@ export class VingRecord<T extends ModelName> {
                 && include.related !== undefined
                 && field.relation
                 && ['parent', 'sibling'].includes(field.relation.type)
-                && include.related.includes(field.relation?.name)
+                && include.related.includes(field.relation.name)
             ) {
                 const parent = await this.parent(field.relation.name);
-                out.related[fieldName] = await parent.describe(params);
+                out.related[field.relation.name] = await parent.describe(params);
             }
 
         }
