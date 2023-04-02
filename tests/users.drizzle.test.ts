@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeAll } from "vitest";
 import { useDB } from '../server/drizzle/db';
-import { like, eq, asc, desc, and, sql, AnyMySqlColumn, SQL, AnyMySqlSelect } from '~/server/drizzle/orm';
+import { like, eq, asc, desc, and, sql, AnyMySqlColumn, SQL, AnyMySqlSelect } from '../server/drizzle/orm';
 import { UserTable } from '../server/drizzle/schema/User';
 
 describe('UserTable', async () => {

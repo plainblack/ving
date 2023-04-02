@@ -31,7 +31,7 @@ export const makeTableFile = async (schema: vingSchema) => {
             references.push(`import {${prop.relation.kind}Table} from './${prop.relation.kind}';`);
         }
     }
-    const content = `import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from '~/server/drizzle/orm';
+    const content = `import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from '../orm';
 ${references.join("\n")}
 
 ${makeTable(schema)}

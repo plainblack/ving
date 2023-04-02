@@ -2,7 +2,7 @@ import { ModelMap, Roles, ExtendedRoleOptions, ModelName, vingSchema, vingProp, 
 import { vingSchemas } from '../vingschema';
 import { findObject, ouch } from '../helpers';
 import _ from 'lodash';
-import { MySql2Database, like, eq, asc, desc, and, or, ne, SQL, sql, Name, AnyMySqlColumn } from '~/server/drizzle/orm';
+import { MySql2Database, like, eq, asc, desc, and, or, ne, SQL, sql, Name, AnyMySqlColumn } from '../../server/drizzle/orm';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers';
 
 export const findVingSchema = (nameToFind: string = '-unknown-') => {

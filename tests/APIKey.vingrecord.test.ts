@@ -1,7 +1,7 @@
 import { useAPIKeys } from '../server/vingrecord/records/APIKey';
 import { useUsers } from '../server/vingrecord/records/User';
 import { describe, test, expect } from "vitest";
-import { like, eq, asc, desc, and, inArray } from '~/server/drizzle/orm';
+import { like, eq, asc, desc, and, inArray } from '../server/drizzle/orm';
 
 const APIKeys = useAPIKeys();
 const Users = useUsers();
