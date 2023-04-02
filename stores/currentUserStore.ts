@@ -2,6 +2,26 @@ import { defineStore } from 'pinia';
 import { Describe } from '../types';
 
 const query = { includeOptions: true, includeMeta: true, includeLinks: true };
+const notify = useNotifyStore();
+const throbber = useThrobberStore();
+
+const onRequest = async (context: any) => {
+    throbber.working();
+}
+
+const onRequestError = async (context: any) => {
+    throbber.done();
+}
+
+const onResponse = async (context: any) => {
+    throbber.done();
+}
+
+const onResponseError = async (context: any) => {
+    throbber.done();
+    console.dir(context)
+    notify.error(context.response._data.message);
+}
 
 export const useCurrentUserStore = defineStore('currentUser', {
     state: (): {
@@ -19,6 +39,10 @@ export const useCurrentUserStore = defineStore('currentUser', {
         async whoami() {
             const response = await useFetch('/api/user/whoami', {
                 query,
+                onRequest,
+                onRequestError,
+                onResponse,
+                onResponseError,
             });
             if (response.data.value) {
                 this.setState(response.data.value);
@@ -38,6 +62,10 @@ export const useCurrentUserStore = defineStore('currentUser', {
                     login,
                     password
                 },
+                onRequest,
+                onRequestError,
+                onResponse,
+                onResponseError,
             });
             if (response.error?.value) {
                 throw response.error?.value.data;
@@ -50,6 +78,10 @@ export const useCurrentUserStore = defineStore('currentUser', {
         async logout() {
             const response = await useFetch('/api/session', {
                 method: 'delete',
+                onRequest,
+                onRequestError,
+                onResponse,
+                onResponseError,
             });
             this.setState({});
             return response;
@@ -59,6 +91,10 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 method: 'put',
                 body: this.props,
                 query,
+                onRequest,
+                onRequestError,
+                onResponse,
+                onResponseError,
             });
             this.setState(response.data.value as Describe<'User'>)
             return response;
@@ -67,7 +103,11 @@ export const useCurrentUserStore = defineStore('currentUser', {
             const response = await useFetch('/api/user', {
                 method: 'post',
                 body: newUser,
-                query: { includeOptions: true }
+                query: { includeOptions: true },
+                onRequest,
+                onRequestError,
+                onResponse,
+                onResponseError,
             });
             if (response.error?.value) {
                 throw response.error?.value.data;
