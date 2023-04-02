@@ -5,6 +5,27 @@ const notify = useNotifyStore();
 
 export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => {
 
+    const throbber = useThrobberStore();
+
+    const onRequest = async (context: any) => {
+        throbber.working();
+    }
+
+    const onRequestError = async (context: any) => {
+        throbber.done();
+    }
+
+    const onResponse = async (context: any) => {
+        throbber.done();
+    }
+
+    const onResponseError = async (context: any) => {
+        throbber.done();
+        console.dir(context)
+        if (!behavior.suppressErrorNotifications)
+            notify.error(context.response._data.message);
+    }
+
     const VingRecordList: VingRecordList<T> = {
 
         behavior,
@@ -121,6 +142,10 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
 
             const promise = useFetch(this.getListApi(), {
                 query: query,
+                onRequest,
+                onRequestError,
+                onResponse,
+                onResponseError,
             });
             promise.then((response) => {
                 const data: DescribeList<T> = response.data.value as DescribeList<T>;
@@ -191,6 +216,10 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
             const promise = useFetch(url, {
                 query: _.extend({}, self.query, query),
                 method,
+                onRequest,
+                onRequestError,
+                onResponse,
+                onResponseError,
             });
             promise.then((response) => {
                 const data: DescribeList<T> = response.data.value as DescribeList<T>;
@@ -217,7 +246,12 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
 
         fetchFieldOptions(options = {}) {
             const self = this;
-            const promise = useFetch(self.getFieldOptionsApi);
+            const promise = useFetch(self.getFieldOptionsApi, {
+                onRequest,
+                onRequestError,
+                onResponse,
+                onResponseError,
+            });
             promise.then((response) => {
                 const data: DescribeList<T> = response.data.value as DescribeList<T>;
                 if (options?.onSuccess) {

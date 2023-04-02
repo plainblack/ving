@@ -54,7 +54,22 @@ function formatPropsBodyData<T extends TModelName>(props: Describe<T>['props'], 
 
 export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {} }) => {
 
+    const throbber = useThrobberStore();
+
+    const onRequest = async (context: any) => {
+        throbber.working();
+    }
+
+    const onRequestError = async (context: any) => {
+        throbber.done();
+    }
+
+    const onResponse = async (context: any) => {
+        throbber.done();
+    }
+
     const onResponseError = async (context: any) => {
+        throbber.done();
         console.dir(context)
         if (!behavior.suppressErrorNotifications)
             notify.error(context.response._data.message);
@@ -121,6 +136,9 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
             const self = this;
             const promise = useFetch(this.getFetchApi(), {
                 query: this.query,
+                onRequest,
+                onRequestError,
+                onResponse,
                 onResponseError,
             });
             promise.then((response) => {
@@ -145,6 +163,9 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                 query: this.query,
                 method: 'put',
                 body: props,
+                onRequest,
+                onRequestError,
+                onResponse,
                 onResponseError,
             });
 
@@ -201,6 +222,9 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                 query: this.query,
                 method: 'post',
                 body: newProps,
+                onRequest,
+                onRequestError,
+                onResponse,
                 onResponseError,
             });
 
@@ -240,6 +264,9 @@ export default <T extends ModelName>(behavior: VingRecordParams<T> = { props: {}
                 const promise = useFetch(this.getSelfApi(), {
                     query: self.query,
                     method: 'delete',
+                    onRequest,
+                    onRequestError,
+                    onResponse,
                     onResponseError,
                 });
                 promise.then((response) => {

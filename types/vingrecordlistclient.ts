@@ -25,6 +25,7 @@ export type VingRecordListParams<T extends ModelName> = {
     onDelete?: (result: Describe<T>, record: VingRecord<T>) => void,
     onSearch?: (result: DescribeList<T>) => void,
     onAllDone?: () => void,
+    suppressErrorNotifications?: boolean,
 }
 
 type VRLCreateOptions<T extends ModelName> = {

@@ -128,6 +128,7 @@
         </div>
     </div>
     <Notify />
+    <Throbber />
 </template>
 
 <script setup lang="ts">
