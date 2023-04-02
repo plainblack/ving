@@ -1,6 +1,4 @@
-import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from 'drizzle-orm/mysql-core/index.js';
-import type { AnyMySqlColumn } from 'drizzle-orm/mysql-core/index.js';
-import { AnyMySqlColumnBuilder } from 'drizzle-orm/mysql-core/columns/common.js';
+import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text, AnyMySqlColumnBuilder, AnyMySqlColumn } from '~/server/drizzle/orm';
 import { vingSchema, vingProp } from '../../types/vingschema';
 import { v4 } from 'uuid';
 import { z } from 'zod';

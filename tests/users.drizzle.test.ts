@@ -1,12 +1,7 @@
 import { describe, test, expect, beforeAll } from "vitest";
 import { useDB } from '../server/drizzle/db';
-import { like, eq, asc, desc, and } from 'drizzle-orm/expressions.js';
-import { sql } from 'drizzle-orm/index.js';
-import { AnyMySqlColumn, } from 'drizzle-orm/mysql-core/index.js';
+import { like, eq, asc, desc, and, sql, AnyMySqlColumn, SQL, AnyMySqlSelect } from '~/server/drizzle/orm';
 import { UserTable } from '../server/drizzle/schema/User';
-import type { SQL } from 'drizzle-orm/sql/index.js';
-import type { AnyMySqlSelect, } from 'drizzle-orm/mysql-core/query-builders/select.types';
-import { ValueOrArray } from 'drizzle-orm/utils.js';
 
 describe('UserTable', async () => {
     const db = useDB()

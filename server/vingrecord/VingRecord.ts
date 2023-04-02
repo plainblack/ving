@@ -2,12 +2,8 @@ import { ModelMap, Roles, ExtendedRoleOptions, ModelName, vingSchema, vingProp, 
 import { vingSchemas } from '../vingschema';
 import { findObject, ouch } from '../helpers';
 import _ from 'lodash';
-import type { MySql2Database } from 'drizzle-orm/mysql2/index.js';
-import { SQL, sql } from 'drizzle-orm/sql/index.js';
-import { like, eq, asc, desc, and, or, ne } from 'drizzle-orm/mysql-core/expressions.js';
-import { Name } from "drizzle-orm/table.js";
+import { MySql2Database, like, eq, asc, desc, and, or, ne, SQL, sql, Name, AnyMySqlColumn } from '~/server/drizzle/orm';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers';
-import { AnyMySqlColumn } from 'drizzle-orm/mysql-core/index.js';
 
 export const findVingSchema = (nameToFind: string = '-unknown-') => {
     try {

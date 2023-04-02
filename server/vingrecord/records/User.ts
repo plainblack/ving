@@ -1,8 +1,6 @@
 import { VingRecord, VingKind } from "../VingRecord";
 import { ModelInsert, ModelSelect, DescribeParams, AuthorizedUser } from '../../../types';
 import { RoleOptions, RoleMixin } from '../mixins/Role';
-import { like, eq, asc, desc, and, or, ne } from 'drizzle-orm/mysql-core/expressions.js';
-
 import { useAPIKeys } from "./APIKey";
 import { ouch } from '../../helpers';
 import bcrypt from 'bcryptjs';

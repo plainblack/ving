@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useUsers } from '../server/vingrecord/records/User';
 import { describe, test, expect, afterAll } from "vitest";
-import { like, eq, asc, desc, and } from 'drizzle-orm/expressions.js';
+import { like, eq, asc, desc, and } from '~/server/drizzle/orm';
 
 const Users = useUsers();
 const base = 'http://localhost:3000/api/';
