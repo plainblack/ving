@@ -20,24 +20,23 @@
                                     <Column field="props.name" header="Name"></Column>
                                     <Column field="props.id" header="API Key">
                                         <template #body="slotProps">
-                                            <Button icon="pi pi-copy" outlined rounded class="mr-2" alt="copy to clipboard"
+                                            <Button icon="pi pi-copy" class="mr-2" alt="copy to clipboard"
                                                 title="Copy to Clipboard"
                                                 @click="copyToClipboard(slotProps.data.props.id)" />
                                         </template>
                                     </Column>
                                     <Column field="props.privateKey" header="Private Key">
                                         <template #body="slotProps">
-                                            <Button icon="pi pi-copy" outlined rounded class="mr-2" alt="copy to clipboard"
+                                            <Button icon="pi pi-copy" class="mr-2" alt="copy to clipboard"
                                                 title="Copy to Clipboard"
                                                 @click="copyToClipboard(slotProps.data.props.privateKey)" />
                                         </template>
                                     </Column>
                                     <Column header="Manage">
                                         <template #body="slotProps">
-                                            <Button icon="pi pi-pencil" outlined rounded class="mr-2" severity="success"
+                                            <Button icon="pi pi-pencil" class="mr-2" severity="success"
                                                 @click="dialog.current = slotProps.data; dialog.visible = true" />
-                                            <Button icon="pi pi-trash" outlined rounded severity="danger"
-                                                @click="slotProps.data.delete()" />
+                                            <Button icon="pi pi-trash" severity="danger" @click="slotProps.data.delete()" />
                                         </template>
                                     </Column>
                                 </DataTable>
