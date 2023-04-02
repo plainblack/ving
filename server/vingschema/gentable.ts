@@ -7,9 +7,11 @@ export const makeTable = (schema: vingSchema) => {
     const columns: string[] = [];
     const uniqueIndexes: string[] = [];
     for (const prop of schema.props) {
-        columns.push(`${prop.name}: ${prop.db(prop as never)}`)
-        if (prop.unique) {
-            uniqueIndexes.push(`${prop.name}Index: uniqueIndex('${prop.name}Index').on(table.${prop.name})`);
+        if (prop.type != 'virtual') {
+            columns.push(`${prop.name}: ${prop.db(prop as never)}`)
+            if (prop.unique) {
+                uniqueIndexes.push(`${prop.name}Index: uniqueIndex('${prop.name}Index').on(table.${prop.name})`);
+            }
         }
     }
     return `

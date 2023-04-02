@@ -58,6 +58,9 @@ export type vingProp =
         db: (prop: Extract<vingProp, { type: 'id' }>) => string,
         zod?: (prop: Extract<vingProp, { type: 'id' }>) => ZodTypeAny,
         default: undefined | (() => string),
+    } & basicVingProps
+    | {
+        type: 'virtual',
     } & basicVingProps;
 
 export type vingSchema = {

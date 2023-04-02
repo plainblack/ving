@@ -55,7 +55,7 @@ export class VingRecord<T extends ModelName> {
         const schema = findVingSchema(this.table[Name]);
         const prop = findPropInSchema(key, schema.props);
         if (prop) {
-            if (prop.zod) {
+            if (prop.type != 'virtual' && prop.zod) {
                 const result = prop.zod(prop as never).safeParse(value);
                 if (result.success) {
                     value = result.data;
@@ -252,7 +252,7 @@ export class VingRecord<T extends ModelName> {
     public testCreationProps(params: ModelInsert<T>) {
         const schema = findVingSchema(this.table[Name]);
         for (const prop of schema.props) {
-            if (!prop.required || (prop.default !== undefined && prop.default !== '') || prop.relation)
+            if (!prop.required || prop.type == 'virtual' || (prop.default !== undefined && prop.default !== '') || prop.relation)
                 continue;
             // @ts-ignore - vingSchema 
             if (params[prop.name] !== undefined && params[prop.name] != '')

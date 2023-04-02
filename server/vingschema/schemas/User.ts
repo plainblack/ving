@@ -98,6 +98,18 @@ export const userSchema: vingSchema = {
             view: [],
             edit: ['owner'],
         },
+        {
+            type: "virtual",
+            name: 'apikeys',
+            required: false,
+            view: ['public'],
+            edit: [],
+            relation: {
+                type: 'child',
+                name: 'apikeys',
+                kind: 'APIKey',
+            },
+        },
     ],
 };
 
