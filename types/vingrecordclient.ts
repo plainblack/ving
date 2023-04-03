@@ -9,23 +9,24 @@ export type QueryParams = {
 };
 
 
-type VRCreateOptions<T extends ModelName> = {
-    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void,
+export type VRCreateOptions<T extends ModelName> = {
+    onError?: (result: Describe<T>) => void,
+    onCreate?: (result: Describe<T>) => void,
 }
 
-type VRUpdateOptions<T extends ModelName> = {
-    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void,
+export type VRUpdateOptions<T extends ModelName> = {
+    onError?: (result: Describe<T>) => void,
+    onUpdate?: (result: Describe<T>) => void,
 }
 
-type VRDeleteOptions<T extends ModelName> = {
-    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onDelete?: (result: Describe<T>, record: VingRecord<T>) => void,
+export type VRDeleteOptions<T extends ModelName> = {
+    onError?: (result: Describe<T>) => void,
+    onDelete?: (result: Describe<T>) => void,
     skipConfirm?: boolean,
 }
 
 export type VingRecordParams<T extends ModelName> = {
+    key?: string,
     props?: Describe<T>['props'],
     links?: Describe<T>['links'],
     meta?: Describe<T>['meta'],
@@ -35,11 +36,11 @@ export type VingRecordParams<T extends ModelName> = {
     warnings?: Describe<T>['warnings'],
     createApi?: string | undefined,
     fetchApi?: string | undefined,
-    onFetch?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onDelete?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onFetch?: (result: Describe<T>) => void,
+    onCreate?: (result: Describe<T>) => void,
+    onUpdate?: (result: Describe<T>) => void,
+    onDelete?: (result: Describe<T>) => void,
+    onError?: (result: Describe<T>) => void,
     suppressErrorNotifications?: boolean,
 }
 

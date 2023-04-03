@@ -135,5 +135,4 @@
 const config = useRuntimeConfig();
 const currentUser = useCurrentUserStore();
 await currentUser.isAuthenticated();
-const notify = useNotifyStore();
 </script>
