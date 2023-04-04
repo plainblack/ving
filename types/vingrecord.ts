@@ -69,7 +69,7 @@ export type DescribeList<T extends ModelName> = {
 }
 
 export type Describe<T extends ModelName> = {
-    props: Partial<ModelSelect<T>>
+    props: Partial<ModelMap[T]['select']>
     links?: Record<string, string>
     meta?: Record<string, any>
     extra?: Record<string, any>

@@ -1,54 +1,54 @@
 import type { Describe, DescribeList, DescribeListParams, ModelName, VingRecord, QueryParams } from '~/types';
 
-type ListQueryParams = {
+export type ListQueryParams = {
     itemsPerPage?: number,
     page?: number,
     sortOrder?: 'asc' | 'desc',
     orderBy?: string,
 } & QueryParams
 
-type VRLGenericOptions<T extends ModelName> = {
+export type VRLGenericOptions<T extends ModelName> = {
     onSuccess?: (result: DescribeList<T>) => void,
     onError?: (result: DescribeList<T>) => void
 }
 
 export type VingRecordListParams<T extends ModelName> = {
+    id?: string,
     newDefaults?: Describe<T>['props'],
     createApi?: string | undefined,
     optionsApi?: string | undefined,
     listApi?: string | undefined,
     query?: ListQueryParams,
     unshift?: boolean,
-    onEach?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onUpdate?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onDelete?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onEach?: (result: Describe<T>) => void,
+    onCreate?: (result: Describe<T>) => void,
+    onUpdate?: (result: Describe<T>) => void,
+    onDelete?: (result: Describe<T>) => void,
     onSearch?: (result: DescribeList<T>) => void,
     onAllDone?: () => void,
     suppressErrorNotifications?: boolean,
 }
 
-type VRLCreateOptions<T extends ModelName> = {
+export type VRLCreateOptions<T extends ModelName> = {
     unshift?: boolean,
-    onCreate?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onCreate?: (result: Describe<T>) => void,
+    onError?: (result: Describe<T>) => void,
 }
 
-type VRLSearchOptions<T extends ModelName> = {
+export type VRLSearchOptions<T extends ModelName> = {
     query?: DescribeListParams,
     accumulate?: boolean,
     page?: number,
     onSearch?: (result: DescribeList<T>) => void,
-    onEach?: (result: Describe<T>, record: VingRecord<T>) => void,
-    onError?: (result: Describe<T>, record: VingRecord<T>) => void,
+    onEach?: (result: Describe<T>) => void,
+    onError?: (result: Describe<T>) => void,
 }
 
-type VRLAllOptions<T extends ModelName> = VRLSearchOptions<T> & {
+export type VRLAllOptions<T extends ModelName> = VRLSearchOptions<T> & {
     onAllDone?: () => void,
 }
 
 export interface VingRecordList<T extends ModelName> {
-    behavior: VingRecordListParams<T>,
     query: ListQueryParams,
     records: VingRecord<T>[],
     paging: DescribeList<T>['paging'],

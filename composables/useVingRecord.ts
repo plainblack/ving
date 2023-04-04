@@ -4,6 +4,7 @@ import type { UnwrapRef } from 'vue'
 import { ouch } from '~/server/helpers';
 import _ from 'lodash';
 import { v4 } from 'uuid';
+import { VingRecord } from '~~/server/vingrecord/VingRecord';
 
 export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
     const notify = useNotifyStore();

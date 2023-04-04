@@ -122,13 +122,13 @@ definePageMeta({
 
 const dt = useDateTime();
 const currentUser = useCurrentUserStore();
-const apikeys = ref(useVingRecordList<'APIKey'>({
+const apikeys = useVingRecordList<'APIKey'>({
     listApi: currentUser.links?.apikeys,
     createApi: '/api/apikey',
     query: { includeMeta: true },
     newDefaults: { name: '', reason: '', url: 'http://', userId: currentUser.props?.id },
-}));
-await apikeys.value.all();
+});
+await apikeys.all();
 
 const d: { visible: boolean, current?: VingRecord<'APIKey'> } = { visible: false, current: undefined };
 const dialog = ref(d);
