@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { TVingOption } from '~/app/db'
+import { vingOption } from '../types'
 const props = withDefaults(
     defineProps<{
         label?: string,
@@ -18,7 +18,7 @@ const props = withDefaults(
         autocomplete?: string
         modelValue: string | number | undefined | null | boolean
         placeholder?: string
-        options: TVingOption[] | undefined,
+        options: vingOption[] | undefined,
     }>(),
     {
         type: 'text',

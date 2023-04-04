@@ -26,10 +26,13 @@
 <script setup lang="ts">
 const route = useRoute();
 const dt = useDateTime();
+
 const user = useVingRecord<'User'>({
     fetchApi: '/api/user/' + route.params.id,
     createApi: '/api/user',
-    query: { includeMeta: true },
+    query: { includeMeta: true, includeOptions: true },
 });
+
 await user.fetch()
+
 </script>

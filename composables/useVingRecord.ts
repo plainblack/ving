@@ -1,35 +1,32 @@
 import { defineStore } from 'pinia';
-import type { Describe, ModelName, VingRecord, VingRecordParams, QueryParams, VRUpdateOptions, VRCreateOptions, VRDeleteOptions, ModelSelect, vingOption } from '~/types';
+import type { Describe, ModelName, VingRecordParams, QueryParams, VRUpdateOptions, VRCreateOptions, VRDeleteOptions, ModelSelect, vingOption } from '~/types';
 import type { UnwrapRef } from 'vue'
 import { ouch } from '~/server/helpers';
-import { v4 } from 'uuid';
 import _ from 'lodash';
-const notify = useNotifyStore();
+import { v4 } from 'uuid';
 
 export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
-
+    const notify = useNotifyStore();
     const throbber = useThrobberStore();
+    const requestHandlers = {
+        async onRequest(context: any) {
+            throbber.working();
+        },
+        async onRequestError(context: any) {
+            throbber.done();
+        },
+        async onResponse(context: any) {
+            throbber.done();
+        },
+        async onResponseError(context: any) {
+            throbber.done();
+            console.dir(context)
+            if (!behavior.suppressErrorNotifications)
+                notify.error(context.response._data.message);
+        },
+    };
 
-    const onRequest = async (context: any) => {
-        throbber.working();
-    }
-
-    const onRequestError = async (context: any) => {
-        throbber.done();
-    }
-
-    const onResponse = async (context: any) => {
-        throbber.done();
-    }
-
-    const onResponseError = async (context: any) => {
-        throbber.done();
-        console.dir(context)
-        if (!behavior.suppressErrorNotifications)
-            notify.error(context.response._data.message);
-    }
-
-    const generate = defineStore(behavior.key || v4(), {
+    const generate = defineStore(behavior.id || v4(), {
         state: (): {
             props?: Describe<T>['props'],
             meta?: Describe<T>['meta'],
@@ -38,18 +35,21 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
             related?: Describe<T>['related'],
             warnings?: Describe<T>['warnings'],
             query?: QueryParams,
-            behavior: VingRecordParams<T>,
+            createApi?: string,
+            fetchApi?: string,
         } => ({
-            props: {},
-            meta: {},
-            options: {},
-            links: {},
-            related: {},
-            warnings: [],
+            props: behavior.props || {},
+            meta: behavior.meta || {},
+            options: behavior.options || {},
+            links: behavior.links || {},
+            related: behavior.related || {},
+            warnings: behavior.warnings || [],
             query: { includeLinks: true, ...behavior.query },
-            behavior,
+            createApi: behavior.createApi,
+            fetchApi: behavior.fetchApi,
         }),
         actions: {
+            ...behavior.extendActions,
 
             setState(result: Describe<T>) {
                 this.props = result.props as UnwrapRef<Partial<ModelSelect<T>>>;
@@ -76,22 +76,22 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
             },
 
             getCreateApi(): string {
-                if (this.behavior.createApi) {
-                    return this.behavior.createApi;
+                if (this.createApi) {
+                    return this.createApi;
                 }
-                else if (this.behavior.links?.base) {
-                    return this.behavior.links.base;
+                else if (this.links?.base) {
+                    return this.links.base;
                 }
                 notify.error('No createApi');
                 throw ouch(401, 'No createApi');
             },
 
             getFetchApi() {
-                if (this.behavior.fetchApi) {
-                    return this.behavior.fetchApi;
+                if (this.fetchApi) {
+                    return this.fetchApi;
                 }
-                else if (this.behavior.links?.self) {
-                    return this.behavior.links.self;
+                else if (this.links?.self) {
+                    return this.links.self;
                 }
                 notify.error('No fetchApi');
                 throw ouch(401, 'No fetchApi');
@@ -101,10 +101,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 const self = this;
                 const promise = useFetch(this.getFetchApi(), {
                     query: this.query,
-                    onRequest,
-                    onRequestError,
-                    onResponse,
-                    onResponseError,
+                    ...requestHandlers,
                 });
                 promise.then((response) => {
                     const data: Describe<T> = response.data.value as Describe<T>;
@@ -128,10 +125,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     query: this.query,
                     method: 'put',
                     body: props,
-                    onRequest,
-                    onRequestError,
-                    onResponse,
-                    onResponseError,
+                    ...requestHandlers,
                 });
 
                 promise.then((response) => {
@@ -188,10 +182,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     query: this.query,
                     method: 'post',
                     body: newProps,
-                    onRequest,
-                    onRequestError,
-                    onResponse,
-                    onResponseError,
+                    ...requestHandlers,
                 });
 
                 promise.then((response) => {
@@ -230,10 +221,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     const promise = useFetch(this.getSelfApi(), {
                         query: self.query,
                         method: 'delete',
-                        onRequest,
-                        onRequestError,
-                        onResponse,
-                        onResponseError,
+                        ...requestHandlers,
                     });
                     promise.then((response) => {
                         const data: Describe<T> = response.data.value as Describe<T>;
@@ -256,7 +244,5 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
         }
     });
 
-    const VingRecord = generate();
-    VingRecord.setState(behavior as Describe<T>);
-    return VingRecord;
+    return generate();
 }

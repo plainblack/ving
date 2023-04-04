@@ -1,129 +1,25 @@
 import { defineStore } from 'pinia';
 import { Describe } from '../types';
 
-
-export const useCurrentUserStore = () => {
-    const userRecord = useVingRecord<'User'>({
-        key: 'currentUser',
-        fetchApi: '/api/user/whoami',
-        createApi: '/api/user',
-        query: { includeOptions: true, includeMeta: true },
-    });
-
-    const notify = useNotifyStore();
-    const throbber = useThrobberStore();
-
-    const onRequest = async (context: any) => {
-        throbber.working();
-    }
-
-    const onRequestError = async (context: any) => {
-        throbber.done();
-    }
-
-    const onResponse = async (context: any) => {
-        throbber.done();
-    }
-
-    const onResponseError = async (context: any) => {
-        throbber.done();
-        console.dir(context)
-        notify.error(context.response._data.message);
-    }
-
-    return {
-        get props() {
-            return userRecord.props
-        },
-        set props(value) {
-            userRecord.props = value;
-        },
-        get meta() {
-            return userRecord.meta
-        },
-        get links() {
-            return userRecord.links
-        },
-        get options() {
-            return userRecord.options
-        },
-        async whoami() {
-            await userRecord.fetch();
-        },
-        async login(login: string, password: string) {
-            const response = await useFetch('/api/session', {
-                method: 'POST',
-                body: {
-                    login,
-                    password
-                },
-                onRequest,
-                onRequestError,
-                onResponse,
-                onResponseError,
-            });
-            if (response.error?.value) {
-                throw response.error?.value.data;
-            }
-            else {
-                await this.whoami();
-            }
-            return response;
-        },
-        async logout() {
-            const response = await useFetch('/api/session', {
-                method: 'delete',
-                onRequest,
-                onRequestError,
-                onResponse,
-                onResponseError,
-            });
-            userRecord.setState({ props: {}, meta: {}, links: {} });
-            return response;
-        },
-        async save() {
-            await userRecord.update();
-        },
-        async create(newUser: { username: string, email: string, password: string, realName: string }) {
-            const self = this;
-            await userRecord.create(newUser, {
-                async onCreate() {
-                    await self.login(newUser.email, newUser.password);
-                }
-            });
-        },
-        async isAuthenticated() {
-            if (this.props?.id === undefined) {
-                await this.whoami();
-            }
-            return this.props?.id !== undefined;
-        },
-    }
-}
-
-/*
-
 const query = { includeOptions: true, includeMeta: true, includeLinks: true };
 const notify = useNotifyStore();
 const throbber = useThrobberStore();
-
-const onRequest = async (context: any) => {
-    throbber.working();
-}
-
-const onRequestError = async (context: any) => {
-    throbber.done();
-}
-
-const onResponse = async (context: any) => {
-    throbber.done();
-}
-
-const onResponseError = async (context: any) => {
-    throbber.done();
-    console.dir(context)
-    notify.error(context.response._data.message);
-}
+const requestHandlers = {
+    async onRequest(context: any) {
+        throbber.working();
+    },
+    async onRequestError(context: any) {
+        throbber.done();
+    },
+    async onResponse(context: any) {
+        throbber.done();
+    },
+    async onResponseError(context: any) {
+        throbber.done();
+        console.dir(context)
+        notify.error(context.response._data.message);
+    },
+};
 
 export const useCurrentUserStore = defineStore('currentUser', {
     state: (): {
@@ -138,13 +34,10 @@ export const useCurrentUserStore = defineStore('currentUser', {
         links: {},
     }),
     actions: {
-        async whoami() {
+        async fetch() {
             const response = await useFetch('/api/user/whoami', {
                 query,
-                onRequest,
-                onRequestError,
-                onResponse,
-                onResponseError,
+                ...requestHandlers,
             });
             if (response.data.value) {
                 this.setState(response.data.value);
@@ -164,39 +57,30 @@ export const useCurrentUserStore = defineStore('currentUser', {
                     login,
                     password
                 },
-                onRequest,
-                onRequestError,
-                onResponse,
-                onResponseError,
+                ...requestHandlers,
             });
             if (response.error?.value) {
                 throw response.error?.value.data;
             }
             else {
-                await this.whoami();
+                await this.fetch();
             }
             return response;
         },
         async logout() {
             const response = await useFetch('/api/session', {
                 method: 'delete',
-                onRequest,
-                onRequestError,
-                onResponse,
-                onResponseError,
+                ...requestHandlers,
             });
             this.setState({});
             return response;
         },
-        async save() {
+        async update() {
             const response = await useFetch('/api/user/' + this.props?.id, {
                 method: 'put',
                 body: this.props,
                 query,
-                onRequest,
-                onRequestError,
-                onResponse,
-                onResponseError,
+                ...requestHandlers,
             });
             this.setState(response.data.value as Describe<'User'>)
             return response;
@@ -206,10 +90,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 method: 'post',
                 body: newUser,
                 query: { includeOptions: true },
-                onRequest,
-                onRequestError,
-                onResponse,
-                onResponseError,
+                ...requestHandlers,
             });
             if (response.error?.value) {
                 throw response.error?.value.data;
@@ -221,10 +102,9 @@ export const useCurrentUserStore = defineStore('currentUser', {
         },
         async isAuthenticated() {
             if (this.props?.id === undefined) {
-                await this.whoami();
+                await this.fetch();
             }
             return this.props?.id !== undefined;
         },
     },
 });
-*/

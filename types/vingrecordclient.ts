@@ -26,7 +26,7 @@ export type VRDeleteOptions<T extends ModelName> = {
 }
 
 export type VingRecordParams<T extends ModelName> = {
-    key?: string,
+    id?: string,
     props?: Describe<T>['props'],
     links?: Describe<T>['links'],
     meta?: Describe<T>['meta'],
@@ -42,29 +42,5 @@ export type VingRecordParams<T extends ModelName> = {
     onDelete?: (result: Describe<T>) => void,
     onError?: (result: Describe<T>) => void,
     suppressErrorNotifications?: boolean,
+    extendActions?: Record<string, ((...args: any) => any)>
 }
-
-export interface VingRecord<T extends ModelName> {
-    props: Describe<T>['props'],
-    links?: Describe<T>['links'],
-    meta?: Describe<T>['meta'],
-    options?: Describe<T>['options'],
-    related?: Describe<T>['related'],
-    warnings: Describe<T>['warnings'],
-    query?: QueryParams,
-    behavior: VingRecordParams<T>,
-    setState(result: Describe<T>): void,
-    dispatchWarnings(): void,
-    getCreateApi(): string,
-    getFetchApi(): string,
-    fetch(): Promise<any>,
-    _save<K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]): Promise<any>,
-    save<K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]): Promise<any>,
-    _partialUpdate(props?: Describe<T>['props'], options?: VRUpdateOptions<T>): Promise<any>,
-    partialUpdate(props?: Describe<T>['props'], options?: VRUpdateOptions<T>): Promise<any>,
-    update(options?: VRUpdateOptions<T>): Promise<any>,
-    create(props?: Describe<T>['props'], options?: VRCreateOptions<T>): Promise<any>,
-    getSelfApi(): string,
-    delete(options?: VRDeleteOptions<T>): Promise<any> | undefined
-}
-
