@@ -113,6 +113,11 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
         await super.update();
     }
 
+    public async delete() {
+        this.apikeys.deleteMany();
+        await super.delete();
+    }
+
     public set<K extends keyof ModelSelect<'User'>>(key: K, value: ModelSelect<'User'>[K]) {
         if (key in ['password', ...RoleOptions])
             this.userChanged = true;
