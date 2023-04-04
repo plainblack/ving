@@ -1,4 +1,4 @@
-import type { ListQueryParams, VingRecord, VRLSearchOptions, VRLAllOptions, VRDeleteOptions, VRUpdateOptions, VingRecordListParams, VRLCreateOptions, VRLGenericOptions, Describe, DescribeListParams, DescribeList, ModelName } from '~/types';
+import type { ListQueryParams, VingRecord, VKSearchOptions, VKAllOptions, VRDeleteOptions, VRUpdateOptions, VingRecordListParams, VKCreateOptions, VKGenericOptions, Describe, DescribeListParams, DescribeList, ModelName } from '~/types';
 import { ouch } from '~/server/helpers';
 import _ from 'lodash';
 import { v4 } from 'uuid';
@@ -94,7 +94,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 });
             },
 
-            append(record: Describe<T>, options: VRLSearchOptions<T>) {
+            append(record: Describe<T>, options: VKSearchOptions<T>) {
                 const self = this;
                 const newRecord = self.mint(record);
                 self.records.push(newRecord);
@@ -133,7 +133,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 return this._search(options);
             }, 200),
 
-            _search: function (options: VRLSearchOptions<T> = {}) {
+            _search: function (options: VKSearchOptions<T> = {}) {
                 const self = this;
                 let pagination = {
                     page: options?.page || self.paging.page || 1,
@@ -170,7 +170,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 return this._all(options, page);
             }, 200),
 
-            _all(options: VRLAllOptions<T> = {}, iterations = 1) {
+            _all(options: VKAllOptions<T> = {}, iterations = 1) {
                 let self = this;
                 return new Promise((resolve, reject) =>
                     self
@@ -209,7 +209,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 return self;
             },
 
-            call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeListParams = {}, options: VRLGenericOptions<T> = {}) {
+            call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeListParams = {}, options: VKGenericOptions<T> = {}) {
                 const self = this;
                 const promise = useFetch(url, {
                     query: _.extend({}, self.query, query),
@@ -239,7 +239,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 return self.getCreateApi + "/options";
             },
 
-            fetchFieldOptions(options: VRLGenericOptions<T> = {}) {
+            fetchFieldOptions(options: VKGenericOptions<T> = {}) {
                 const self = this;
                 const promise = useFetch(self.getFieldOptionsApi, {
                     ...requestHandlers,
@@ -259,7 +259,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 return promise;
             },
 
-            create(props: Describe<T>['props'] = {}, options: VRLCreateOptions<T> = {}) {
+            create(props: Describe<T>['props'] = {}, options: VKCreateOptions<T> = {}) {
                 const self = this;
                 const newProps = _.extend({}, self.new, props);
                 const newRecord = self.mint({ props: newProps });
