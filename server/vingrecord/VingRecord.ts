@@ -485,4 +485,11 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         return results.map(props => new this.recordClass(this.db, this.table, props));
     }
 
+    public async deleteMany(
+        where?: SQL,
+    ) {
+        let query = this.delete.where(this.calcWhere(where));
+        await query;
+    }
+
 }
