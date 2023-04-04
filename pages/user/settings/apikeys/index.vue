@@ -115,7 +115,7 @@ import { VingRecord } from '~/types';
 const notify = useNotifyStore();
 
 definePageMeta({
-    middleware: 'auth'
+    middleware: ['auth']
 });
 
 const dt = useDateTime();

@@ -60,7 +60,7 @@
   
 <script setup lang="ts">
 definePageMeta({
-    middleware: 'auth'
+    middleware: ['auth']
 });
 const notify = useNotifyStore();
 const currentUser = useCurrentUserStore();

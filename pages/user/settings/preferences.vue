@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-    middleware: 'auth'
+    middleware: ['auth']
 });
 const currentUser = useCurrentUserStore();
 </script>
