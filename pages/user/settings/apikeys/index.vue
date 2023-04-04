@@ -110,8 +110,6 @@
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Dialog from 'primevue/dialog';
-import { boolean } from 'drizzle-orm/mysql-core';
-import { string } from 'zod';
 import { VingRecord } from '~/types';
 
 const notify = useNotifyStore();
