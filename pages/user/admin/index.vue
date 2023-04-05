@@ -1,5 +1,5 @@
 <template>
-    <div class="surface-ground px-4">
+    <div class="surface-ground">
         <div class="surface-card p-5 shadow-2 border-round">
             <h1 class="mt-0">Users</h1>
 
@@ -22,8 +22,9 @@
                             </Column>
                             <Column header="Manage">
                                 <template #body="slotProps">
-                                    <Button icon="pi pi-pencil" class="mr-2" severity="success"
-                                        :href="`/users/admin/${slotProps.data.props.id}`" />
+                                    <NuxtLink :to="`/user/admin/${slotProps.data.props.id}`" class="mr-2 no-underline">
+                                        <Button icon="pi pi-pencil" severity="success" />
+                                    </NuxtLink>
                                     <Button icon="pi pi-trash" severity="danger" @click="slotProps.data.delete()" />
                                 </template>
                             </Column>
