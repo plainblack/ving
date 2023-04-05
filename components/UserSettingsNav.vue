@@ -34,5 +34,6 @@ const navigation: nav[] = [
     { name: 'Account', href: '/user/settings/account', icon: 'pi pi-key' },
     { name: 'Preferences', href: '/user/settings/preferences', icon: 'pi pi-sliders-h' },
     { name: 'API Keys', href: '/user/settings/apikeys', icon: 'pi pi-unlock', condition: 'developer' },
+    { name: 'Admin', href: '/user/admin', icon: 'pi pi-users', condition: 'admin' },
 ]
 </script>
