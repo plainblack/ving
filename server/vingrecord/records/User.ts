@@ -114,7 +114,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
     }
 
     public async delete() {
-        this.apikeys.deleteMany();
+        await this.apikeys.deleteMany();
         await super.delete();
     }
 
@@ -130,13 +130,7 @@ export class UserKind extends VingKind<'User', UserRecord>  {
     // add custom Kind code here
 }
 
-let Users: any = undefined;
 
 export const useUsers = () => {
-    if (Users) {
-        return Users
-    }
-    return Users = new UserKind(useDB(), UserTable, UserRecord);
+    return new UserKind(useDB(), UserTable, UserRecord);
 }
-
-Users = useUsers();

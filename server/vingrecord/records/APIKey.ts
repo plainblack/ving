@@ -16,14 +16,6 @@ export class APIKeyKind extends VingKind<'APIKey', APIKeyRecord>  {
     // add custom Kind code here
 }
 
-
-let APIKeys: any = undefined;
-
 export const useAPIKeys = () => {
-    if (APIKeys) {
-        return APIKeys
-    }
-    return APIKeys = new APIKeyKind(useDB(), APIKeyTable, APIKeyRecord);
+    return new APIKeyKind(useDB(), APIKeyTable, APIKeyRecord);
 }
-
-APIKeys = useAPIKeys();

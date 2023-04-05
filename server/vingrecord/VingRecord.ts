@@ -321,7 +321,7 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
 
     constructor(public db: MySql2Database, public table: ModelMap[T]['model'], public recordClass: Constructable<VR>) { }
 
-    protected propDefaults: { prop: keyof ModelMap[T]['insert'], field: AnyMySqlColumn, value: any }[] = []
+    public propDefaults: { prop: keyof ModelMap[T]['insert'], field: AnyMySqlColumn, value: any }[] = []
 
     public async describeList(
         params: DescribeListParams = {},
