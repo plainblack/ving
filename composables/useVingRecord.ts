@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia';
 import type { Describe, ModelName, VingRecordParams, QueryParams, VRUpdateOptions, VRCreateOptions, VRDeleteOptions, ModelSelect, vingOption } from '~/types';
-import type { UnwrapRef } from 'vue'
 import { ouch } from '~/server/helpers';
 import _ from 'lodash';
 import { v4 } from 'uuid';
-import { VingRecord } from '~~/server/vingrecord/VingRecord';
 
 export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
     const notify = useNotifyStore();
@@ -53,10 +51,12 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
             ...behavior.extendActions,
 
             setState(result: Describe<T>) {
-                this.props = result.props as UnwrapRef<Partial<ModelSelect<T>>>;
+                // @ts-expect-error - https://github.com/vuejs/core/issues/7278
+                this.props = result.props;
                 this.links = result.links;
                 this.meta = result.meta;
-                this.options = result.options as UnwrapRef<{ [property in keyof Partial<ModelSelect<T>>]?: vingOption[] | undefined; }>;
+                // @ts-expect-error - https://github.com/vuejs/core/issues/7278
+                this.options = result.options;
                 this.related = result.related;
                 this.warnings = result.warnings;
                 this.dispatchWarnings();
@@ -147,12 +147,12 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 return promise;
             },
 
-            partialUpdate: _.debounce(function (props, options) {
+            partialUpdate: _.debounce(function (props: Describe<T>['props'], options: VRUpdateOptions<T>) {
                 // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._partialUpdate(props, options);
             }, 200),
 
-            save: _.debounce(function (name, value) {
+            save: _.debounce(function <K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]) {
                 // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._save(name, value);
             }, 200),
@@ -161,7 +161,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 const self = this;
                 const update: Describe<T>['props'] = {};
                 if (self.props && value === undefined) {
-                    //@ts-expect-error
+                    //@ts-ignore
                     update[name] = self.props[name];
                 }
                 else if (value !== undefined) {
@@ -171,7 +171,8 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 return self._partialUpdate(update);
             },
 
-            update(options?: {}) {
+            update(options?: VRUpdateOptions<T>) {
+                //@ts-expect-error - https://github.com/vuejs/core/issues/7278
                 return this.partialUpdate(this.props, options);
             },
 

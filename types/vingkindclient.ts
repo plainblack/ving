@@ -1,6 +1,6 @@
-import type { Describe, DescribeList, DescribeListParams, ModelName, VingRecord, QueryParams } from '~/types';
+import type { Describe, DescribeList, DescribeListParams, ModelName, QueryParams } from '~/types';
 
-export type ListQueryParams = {
+export type VKQueryParams = {
     itemsPerPage?: number,
     page?: number,
     sortOrder?: 'asc' | 'desc',
@@ -12,13 +12,13 @@ export type VKGenericOptions<T extends ModelName> = {
     onError?: (result: DescribeList<T>) => void
 }
 
-export type VingRecordListParams<T extends ModelName> = {
+export type VingKindParams<T extends ModelName> = {
     id?: string,
     newDefaults?: Describe<T>['props'],
     createApi?: string | undefined,
     optionsApi?: string | undefined,
     listApi?: string | undefined,
-    query?: ListQueryParams,
+    query?: VKQueryParams,
     unshift?: boolean,
     onEach?: (result: Describe<T>) => void,
     onCreate?: (result: Describe<T>) => void,

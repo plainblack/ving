@@ -1,10 +1,10 @@
-import type { ListQueryParams, VingRecord, VKSearchOptions, VKAllOptions, VRDeleteOptions, VRUpdateOptions, VingRecordListParams, VKCreateOptions, VKGenericOptions, Describe, DescribeListParams, DescribeList, ModelName } from '~/types';
+import type { VKQueryParams, VingRecord, VKSearchOptions, VKAllOptions, VRDeleteOptions, VRUpdateOptions, VingKindParams, VKCreateOptions, VKGenericOptions, Describe, DescribeListParams, DescribeList, ModelName } from '~/types';
 import { ouch } from '~/server/helpers';
 import _ from 'lodash';
 import { v4 } from 'uuid';
 import { defineStore } from 'pinia';
 
-export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => {
+export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
     const notify = useNotifyStore();
     const throbber = useThrobberStore();
     const requestHandlers = {
@@ -27,7 +27,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
 
     const generate = defineStore(behavior.id || v4(), {
         state: (): {
-            query: ListQueryParams,
+            query: VKQueryParams,
             records: any[],
             paging: DescribeList<T>['paging'],
             new: Partial<Describe<T>['props']>,
@@ -123,12 +123,12 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 throw ouch(401, 'No createApi');
             },
 
-            search: _.debounce(function (options) {
+            search: _.debounce(function (options: VKSearchOptions<T>) {
                 // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._search(options);
             }, 500),
 
-            searchFast: _.debounce(function (options) {
+            searchFast: _.debounce(function (options: VKSearchOptions<T>) {
                 // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._search(options);
             }, 200),
@@ -165,7 +165,7 @@ export default <T extends ModelName>(behavior: VingRecordListParams<T> = {}) => 
                 return promise;
             },
 
-            all: _.debounce(function (options?, page?) {
+            all: _.debounce(function (options?: VKAllOptions<T>, page?: number) {
                 // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._all(options, page);
             }, 200),
