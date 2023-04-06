@@ -45,8 +45,8 @@
                         :options="user.options?.developer" label="Are you a software developer?" name="developer" />
                 </div>
 
-                <div class="flex flex-column align-items-center flex-or">
-                    <span class="font-medium text-900 mb-2">Profile Picture</span>
+                <div class="mb-4">
+                    <span class="font-medium text-900 mb-2">Profile Picture</span><br>
                     <Avatar :image="user.meta?.avatarUrl" alt="user avatar" class="h-10rem w-10rem" shape="circle" />
                 </div>
             </Fieldset>
