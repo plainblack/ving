@@ -106,6 +106,8 @@ export class VingRecord<T extends ModelName> {
     }
 
     public async update() {
+        // @ts-expect-error TS thinks you can't set a date to a date
+        this.set('updatedAt', new Date());
         await this.db.update(this.table).set(this.props).where(eq(this.table.id, this.props.id));
     }
 
