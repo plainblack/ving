@@ -124,12 +124,12 @@ export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
             },
 
             search: _.debounce(function (options: VKSearchOptions<T>) {
-                // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
+                // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._search(options);
             }, 500),
 
             searchFast: _.debounce(function (options: VKSearchOptions<T>) {
-                // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
+                // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._search(options);
             }, 200),
 
@@ -166,7 +166,7 @@ export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
             },
 
             all: _.debounce(function (options?: VKAllOptions<T>, page?: number) {
-                // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
+                // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._all(options, page);
             }, 200),
 

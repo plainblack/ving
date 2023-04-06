@@ -67,7 +67,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     for (const warning of this.warnings) {
                         document.dispatchEvent(
                             new CustomEvent("wing_warn", {
-                                // @ts-ignore
+                                // @ts-expect-error
                                 message: warning.message,
                             })
                         );
@@ -148,12 +148,12 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
             },
 
             partialUpdate: _.debounce(function (props: Describe<T>['props'], options: VRUpdateOptions<T>) {
-                // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
+                // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._partialUpdate(props, options);
             }, 200),
 
             save: _.debounce(function <K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]) {
-                // @ts-ignore - i think the nature of the construction of this method makes ts think there is a problem when there isn't
+                // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._save(name, value);
             }, 200),
 
@@ -161,11 +161,11 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 const self = this;
                 const update: Describe<T>['props'] = {};
                 if (self.props && value === undefined) {
-                    //@ts-ignore
+                    //@ts-expect-error
                     update[name] = self.props[name];
                 }
                 else if (value !== undefined) {
-                    // @ts-ignore - not sure why this is a problem since it is properly typed in the interface
+                    // @ts-expect-error - not sure why this is a problem since it is properly typed in the interface
                     update[name] = value;
                 }
                 return self._partialUpdate(update);

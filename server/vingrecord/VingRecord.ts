@@ -244,7 +244,7 @@ export class VingRecord<T extends ModelName> {
         for (const prop of schema.props) {
             if (!prop.required || prop.type == 'virtual' || (prop.default !== undefined && prop.default !== '') || prop.relation)
                 continue;
-            // @ts-ignore - vingSchema 
+            // @ts-expect-error - vingSchema 
             if (params[prop.name] !== undefined && params[prop.name] != '')
                 continue;
             const fieldName = prop.name.toString();
@@ -259,7 +259,7 @@ export class VingRecord<T extends ModelName> {
 
         for (const field of schema.props) {
             const fieldName = field.name.toString();
-            // @ts-ignore - vingSchema is a safe bet
+            // @ts-expect-error - vingSchema is a safe bet
             const param = params[field.name];
             const roles = [...field.edit];
             const editable = (roles.includes('owner') && (isOwner || !this.isInserted))
@@ -276,10 +276,10 @@ export class VingRecord<T extends ModelName> {
             if (field.name !== undefined && param !== undefined) {
                 if (field.unique) {
                     const query = this.db.select({ count: sql<number>`count(*)`.as('count') }).from(this.table);
-                    // @ts-ignore - vingSchema knows best
+                    // @ts-expect-error - vingSchema knows best
                     let where = eq(this.table[field.name], params[field.name as keyof ModelInsert<T>]);
                     if (this.isInserted)
-                        // @ts-ignore - vingSchema knows best
+                        // @ts-expect-error - vingSchema knows best
                         where = and(where, ne(this.table.id, this.get('id')));
 
                     let count = (await query.where(where))[0].count
@@ -381,9 +381,9 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
             output[item.prop as keyof typeof output] = item.value;
         }
         for (const prop of findVingSchema(this.table[Name]).props) {
-            // @ts-ignore
+            // @ts-expect-error
             if (props && props[prop.name] !== undefined)
-                // @ts-ignore
+                // @ts-expect-error
                 output[prop.name] = props[prop.name]
             else if (prop.type == 'string' || prop.type == 'enum' || prop.type == 'id')
                 output[prop.name] = stringDefault(prop)
