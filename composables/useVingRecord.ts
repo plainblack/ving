@@ -147,7 +147,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 return promise;
             },
 
-            partialUpdate: _.debounce(function (props: Describe<T>['props'], options: VRUpdateOptions<T>) {
+            partialUpdate: _.debounce(function (props: Describe<T>['props'], options?: VRUpdateOptions<T>) {
                 // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._partialUpdate(props, options);
             }, 200),
