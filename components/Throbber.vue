@@ -7,6 +7,5 @@
 </template>
 
 <script setup lang="ts">
-import ProgressBar from 'primevue/progressbar';
 const throbber = useThrobberStore();
 </script>

@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import Fieldset from 'primevue/fieldset';
 
 const props = withDefaults(
     defineProps<{

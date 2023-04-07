@@ -12,6 +12,9 @@ import Message from 'primevue/message';
 import Password from 'primevue/password';
 import InputNumber from 'primevue/inputnumber';
 import TextArea from 'primevue/textarea';
+import Fieldset from 'primevue/fieldset';
+import Breadcrumb from 'primevue/breadcrumb';
+import ProgressBar from 'primevue/progressbar';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
@@ -27,6 +30,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Password', Password);
     nuxtApp.vueApp.component('InputNumber', InputNumber);
     nuxtApp.vueApp.component('TextArea', TextArea);
+    nuxtApp.vueApp.component('Fieldset', Fieldset);
+    nuxtApp.vueApp.component('Breadcrumb', Breadcrumb);
+    nuxtApp.vueApp.component('ProgressBar', ProgressBar);
 
     return {
         provide: {
