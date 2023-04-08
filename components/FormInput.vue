@@ -42,7 +42,7 @@ const props = withDefaults(
         modelValue: string | number | undefined | null,
         placeholder?: string,
         required?: boolean,
-        step: number,
+        step?: number,
         mustMatch?: { field: string, value: string | number | undefined | null } | undefined,
         class?: string,
     }>(),
