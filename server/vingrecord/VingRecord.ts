@@ -79,16 +79,6 @@ export class VingRecord<T extends ModelName> {
             if (!field?.noSetAll)
                 this.set(key, props[key] as any);
         }
-        return this;
-    }
-
-    public(props: ModelInsert<T>): ModelSelect<T> {
-        const schema = findVingSchema(this.table[Name]);
-        for (const key in props) {
-            const field = findPropInSchema(key, schema.props)
-            if (!field?.noSetAll)
-                this.set(key, this.props[key]);
-        }
         return this.props;
     }
 
