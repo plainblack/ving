@@ -1,5 +1,5 @@
 <template>
-    <Crumbtrail :crumbs="breadcrumbs" />
+    <AdminNav :crumbs="breadcrumbs" />
     <h1>Edit User {{ user.props?.username }}</h1>
 
 
@@ -60,7 +60,6 @@
 </template>
   
 <script setup lang="ts">
-import Fieldset from 'primevue/fieldset';
 definePageMeta({
     middleware: ['auth', 'admin']
 });
@@ -80,7 +79,7 @@ const user = useVingRecord<'User'>({
 const password = ref('');
 
 const breadcrumbs = [
-    // { label: 'Admin', to: '/admin' },
+    { label: 'Admin', to: '/admin' },
     { label: 'Users', to: '/user/admin' },
     { label: 'Edit User' },
 ];

@@ -7,7 +7,7 @@
             <NuxtLink to="/user/create" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create one today!
             </NuxtLink>
         </div>
-        <div class="surface-card p-4 shadow-2 border-round ">
+        <div class="surface-card p-4 border-1 surface-border border-round ">
 
             <Form>
                 <FormInput name="login" v-model="login" id="login2" required label="Email or Username" autocomplete="email"

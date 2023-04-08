@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="bg-gray-900 py-3 px-3 md:px-6 shadow-2 flex align-items-center justify-content-between relative lg:static border-bottom-1 border-gray-800"
+        <div class="bg-gray-900 px-3 md:px-5 border-1 surface-border flex align-items-center justify-content-between relative lg:static border-bottom-1 border-gray-800"
             style="min-height: 84px">
             <img :src="config.public.logoUrl" :alt="config.public.companyName" height="40" class="mr-0 lg:mr-6">
             <a v-ripple class="cursor-pointer block lg:hidden text-gray-400 p-ripple"
@@ -8,7 +8,7 @@
                 <Icon name="prime:bars" class="text-4xl" />
             </a>
             <div
-                class="align-items-center flex-grow-1 justify-content-between hidden lg:flex absolute lg:static w-full bg-gray-900 left-0 top-100 z-1 shadow-2 lg:shadow-none border-1 lg:border-none border-gray-800">
+                class="align-items-center flex-grow-1 justify-content-between hidden lg:flex absolute lg:static w-full bg-gray-900 left-0 top-100 z-1 border-1 surface-border lg:shadow-none border-1 lg:border-none border-gray-800">
                 <ul class="list-none p-0 m-0 flex lg:align-items-center select-none flex-column lg:flex-row">
                     <li>
                         <NuxtLink to="/" v-ripple
@@ -35,7 +35,7 @@
                             <Icon name="prime:angle-down" class="ml-auto lg:ml-3" />
                         </NuxtLink>
                         <ul
-                            class="list-none py-3 px-6 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:shadow-2 lg:absolute bg-gray-900 hidden origin-top w-full lg:w-15rem cursor-pointer lg:border-1 border-gray-800">
+                            class="list-none py-3 px-6 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:border-1 surface-border lg:absolute bg-gray-900 hidden origin-top w-full lg:w-15rem cursor-pointer lg:border-1 border-gray-800">
                             <li>
                                 <NuxtLink to="/" v-ripple
                                     class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple">
@@ -52,7 +52,7 @@
                                     <Icon name="prime:sliders-h" class="ml-auto lg:-rotate-90" />
                                 </NuxtLink>
                                 <ul
-                                    class="list-none py-3 pl-3 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:shadow-2 lg:absolute bg-gray-900 hidden origin-top w-full lg:w-15rem cursor-pointer left-100 top-0 lg:border-1 border-gray-800">
+                                    class="list-none py-3 pl-3 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:border-1 surface-border lg:absolute bg-gray-900 hidden origin-top w-full lg:w-15rem cursor-pointer left-100 top-0 lg:border-1 border-gray-800">
                                     <li>
                                         <NuxtLink to="/" v-ripple
                                             class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple">
@@ -86,7 +86,7 @@
                             <Icon name="prime:angle-down" class="ml-auto lg:ml-3 mr-3 lg:mr-0" />
                         </div>
                         <ul
-                            class="list-none py-3 px-6 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:shadow-2 lg:absolute bg-gray-900 hidden origin-top w-full lg:w-15rem cursor-pointer lg:border-1 border-gray-800">
+                            class="absolute right-0 list-none py-3 px-6 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:border-1 surface-border lg:absolute bg-gray-900 hidden origin-top w-full lg:w-12rem cursor-pointer lg:border-1 border-gray-800">
                             <li>
                                 <NuxtLink :to="'/user/profile/' + currentUser.props.id" v-ripple
                                     class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple">
@@ -121,8 +121,8 @@
                 </ul>
             </div>
         </div>
-        <div class="px-0 py-4 md:px-5">
-            <div class="p-3" style="min-height: 20rem">
+        <div class="px-0 py-4 md:px-4">
+            <div style="min-height: 20rem">
                 <slot />
             </div>
         </div>

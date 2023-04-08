@@ -40,6 +40,9 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+    middleware: ['auth', 'admin']
+});
 const swa = ref({ message: '', ttl: 60 * 60, severity: 'success' })
 const ttlOptions = [
     { value: 60 * 60, label: '1 hour' },

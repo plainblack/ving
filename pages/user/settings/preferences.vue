@@ -3,7 +3,7 @@
         <div class="p-fluid flex flex-column lg:flex-row">
             <UserSettingsNav />
             <div v-if="currentUser.props" class="flex-auto">
-                <div class="surface-card p-5 shadow-2 border-round">
+                <div class="surface-card p-5 border-1 surface-border border-round">
                     <div class="text-900 font-semibold text-lg">Preferences</div>
                     <p class="mt-1 mb-4 text-sm text-gray-500">These settings will change your experience on the site.</p>
 

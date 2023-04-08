@@ -1,7 +1,7 @@
 <template>
     <div class="surface-ground px-4 md:px-6 lg:px-8">
         <div class="p-fluid flex flex-column lg:flex-row">
-            <div class="surface-card p-5 shadow-2 border-round flex-auto">
+            <div class="surface-card p-5 border-1 surface-border border-round flex-auto">
                 <div class="text-900 font-semibold text-lg mt-3">User profile for {{ user.meta?.displayName }}</div>
 
                 Created on {{ dt.formatDate(user.props?.createdAt) }}

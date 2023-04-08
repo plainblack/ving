@@ -7,7 +7,7 @@
             <NuxtLink to="/user/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in
             </NuxtLink>
         </div>
-        <div class="surface-card p-4 shadow-2 border-round ">
+        <div class="surface-card p-4 border-1 surface-border border-round ">
 
             <Form :send="createAccount">
 
