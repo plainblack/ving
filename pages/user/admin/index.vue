@@ -36,6 +36,7 @@
             </Column>
         </DataTable>
 
+        <Pager :kind="users" />
 
 
 
@@ -89,6 +90,5 @@ const breadcrumbs = [
     { label: 'Admin', to: '/admin' },
     { label: 'Users', to: '/user/admin' },
 ];
-
 
 </script>
