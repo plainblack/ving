@@ -1,6 +1,8 @@
-import { cache } from '../server/cache';
+import { useCache } from '../server/cache';
 import { sleep } from '../server/helpers';
 import { test, expect } from "vitest";
+
+const cache = useCache();
 
 const data = [
     { name: "foo" },

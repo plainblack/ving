@@ -1,7 +1,7 @@
 import { vingSession } from '../../helpers';
-import { cache } from '../../cache';
+import { useCache } from '../../cache';
 export default defineEventHandler(async (event) => {
     const session = vingSession(event);
-    await cache.delete('system-wide-alert');
+    await useCache().delete('system-wide-alert');
     return { success: true };
 });

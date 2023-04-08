@@ -4,7 +4,7 @@ import { RoleOptions, RoleMixin } from '../mixins/Role';
 import { useAPIKeys } from "./APIKey";
 import { ouch } from '../../helpers';
 import bcrypt from 'bcryptjs';
-import { cache } from '../../cache';
+import { useCache } from '../../cache';
 import { useDB } from '../../drizzle/db';
 import { UserTable } from '../../drizzle/schema/User';
 
@@ -109,7 +109,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
 
     public async update() {
         if (this.userChanged)
-            await cache.set('user-changed-' + this.get('id'), true, 1000 * 60 * 60 * 24 * 7);
+            await useCache().set('user-changed-' + this.get('id'), true, 1000 * 60 * 60 * 24 * 7);
         await super.update();
     }
 

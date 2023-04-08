@@ -4,7 +4,7 @@ const Users = useUsers();
 
 import { RoleMixin, RoleOptions } from './vingrecord/mixins/Role';
 import { ouch } from './helpers';
-import { cache } from './cache';
+import { useCache } from './cache';
 import { v4 } from 'uuid';
 
 /*
@@ -47,11 +47,11 @@ class ProtoSession {
     }
 
     public async end() {
-        await cache.delete('session-' + this.id);
+        await useCache().delete('session-' + this.id);
     }
 
     public async extend() {
-        const userChanged = await cache.get('user-changed-' + this.props.id);
+        const userChanged = await useCache().get('user-changed-' + this.props.id);
         if (userChanged) {
             const user = await this.user();
             if (this.props.password != user.get('password')) { // password changed since session created
@@ -63,7 +63,7 @@ class ProtoSession {
                 }
             }
         }
-        await cache.set('session-' + this.id, this.props, 1000 * 60 * 60 * 24 * 7);
+        await useCache().set('session-' + this.id, this.props, 1000 * 60 * 60 * 24 * 7);
     }
 
     public async describe(params: DescribeParams = {}) {
@@ -101,7 +101,7 @@ class ProtoSession {
     }
 
     static async fetch(id: string) {
-        const data: RoleProps | undefined = await cache.get('session-' + id);
+        const data: RoleProps | undefined = await useCache().get('session-' + id);
         if (data !== undefined) {
             return new Session(data, id);
         }
