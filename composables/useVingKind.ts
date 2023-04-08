@@ -104,12 +104,12 @@ export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
                 throw ouch(401, 'No createApi');
             },
 
-            search: _.debounce(function (options: VKSearchOptions<T>) {
+            search: _.debounce(function (options?: VKSearchOptions<T>) {
                 // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._search(options);
             }, 500),
 
-            searchFast: _.debounce(function (options: VKSearchOptions<T>) {
+            searchFast: _.debounce(function (options?: VKSearchOptions<T>) {
                 // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
                 return this._search(options);
             }, 200),
