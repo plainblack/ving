@@ -5,41 +5,40 @@
 
     <div class="surface-card p-4 border-1 surface-border border-round">
 
-        <div class="flex gap-5 flex-column-reverse md:flex-row">
-            <div class="flex-auto p-fluid">
-                <div class="mb-4">
-
-                    <DataTable :value="users.records" stripedRows>
-                        <Column field="props.username" header="Username"></Column>
-                        <Column field="props.realName" header="Real Name"></Column>
-                        <Column field="props.email" header="Email Address">
-                            <template #body="slotProps">
-                                <a :href="`mailto:${slotProps.data.props.email}`">{{ slotProps.data.props.email }}</a>
-                            </template>
-                        </Column>
-                        <Column field="props.createdAt" header="Created">
-                            <template #body="slotProps">
-                                {{ dt.formatDateTime(slotProps.data.props.createdAt) }}
-                            </template>
-                        </Column>
-                        <Column header="Manage">
-                            <template #body="slotProps">
-                                <NuxtLink :to="`/user/admin/${slotProps.data.props.id}`" class="mr-2 no-underline">
-                                    <Button icon="pi pi-pencil" severity="success" />
-                                </NuxtLink>
-                                <Button icon="pi pi-trash" severity="danger" @click="slotProps.data.delete()" />
-                            </template>
-                        </Column>
-                    </DataTable>
-
-
-
-                </div>
-            </div>
-
-
-
+        <div class="p-inputgroup flex-1">
+            <span class="p-input-icon-left w-full">
+                <i class="pi pi-search" />
+                <InputText type="text" placeholder="Search Users" class="w-full" v-model="users.query.search" />
+            </span>
+            <Button label="Search" @click="users.search()" />
         </div>
+
+        <DataTable :value="users.records" stripedRows>
+            <Column field="props.username" header="Username"></Column>
+            <Column field="props.realName" header="Real Name"></Column>
+            <Column field="props.email" header="Email Address">
+                <template #body="slotProps">
+                    <a :href="`mailto:${slotProps.data.props.email}`">{{ slotProps.data.props.email }}</a>
+                </template>
+            </Column>
+            <Column field="props.createdAt" header="Created">
+                <template #body="slotProps">
+                    {{ dt.formatDateTime(slotProps.data.props.createdAt) }}
+                </template>
+            </Column>
+            <Column header="Manage">
+                <template #body="slotProps">
+                    <NuxtLink :to="`/user/admin/${slotProps.data.props.id}`" class="mr-2 no-underline">
+                        <Button icon="pi pi-pencil" severity="success" />
+                    </NuxtLink>
+                    <Button icon="pi pi-trash" severity="danger" @click="slotProps.data.delete()" />
+                </template>
+            </Column>
+        </DataTable>
+
+
+
+
     </div>
     <div class="mt-5 surface-card p-5 border-1 surface-border border-round">
         <h2 class="mt-0">Create User</h2>
@@ -70,8 +69,6 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
 
 const notify = useNotifyStore();
 
@@ -86,7 +83,7 @@ const users = useVingKind<'User'>({
     query: { includeMeta: true },
     newDefaults: { username: '', realName: '', email: '' },
 });
-await users.all();
+await users.search();
 
 const breadcrumbs = [
     { label: 'Admin', to: '/admin' },

@@ -1,6 +1,6 @@
 import { Describe, ModelName } from '~/types';
 
-export type QueryParams = {
+export type VRQueryParams = {
     includeOptions?: boolean,
     includeMeta?: boolean,
     includeRelated?: string[],
@@ -32,7 +32,7 @@ export type VingRecordParams<T extends ModelName> = {
     meta?: Describe<T>['meta'],
     options?: Describe<T>['options'],
     related?: Describe<T>['related'],
-    query?: QueryParams,
+    query?: VRQueryParams,
     warnings?: Describe<T>['warnings'],
     createApi?: string | undefined,
     fetchApi?: string | undefined,
@@ -52,7 +52,7 @@ export interface VingRecord<T extends ModelName> {
     options?: Describe<T>['options'],
     related?: Describe<T>['related'],
     warnings: Describe<T>['warnings'],
-    query?: QueryParams,
+    query?: VRQueryParams,
     behavior: VingRecordParams<T>,
     setState(result: Describe<T>): void,
     dispatchWarnings(): void,

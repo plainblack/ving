@@ -1,11 +1,8 @@
-import type { Describe, DescribeList, DescribeListParams, ModelName, QueryParams } from '~/types';
+import type { Describe, DescribeList, DescribeListParams, ModelName, VRQueryParams } from '~/types';
 
-export type VKQueryParams = {
-    itemsPerPage?: number,
-    page?: number,
-    sortOrder?: 'asc' | 'desc',
-    orderBy?: string,
-} & QueryParams
+export type VKQueryParams = Exclude<DescribeListParams, 'objectParams'> & VRQueryParams & {
+    [key: string]: any,
+}
 
 export type VKGenericOptions<T extends ModelName> = {
     onSuccess?: (result: DescribeList<T>) => void,
