@@ -1,6 +1,6 @@
 <template>
-    <label v-if="label" :for="computedId" class="block font-medium text-900 mb-2">{{ label }}</label>
-    <select v-model="selected" :id="computedId" :name="name" v-bind="$attrs" class="p-inputtext w-full">
+    <FormLabel :label="label" :id="computedId" />
+    <select v-model="selected" :id="computedId" :name="name" class="p-inputtext w-full">
         <option v-for="option in options" :selected="selected === option.value" :value="option.value">
             {{ option.label }}
         </option>
@@ -8,26 +8,20 @@
 </template>
 
 <script setup lang="ts">
-import { vingOption } from '../types'
 const props = withDefaults(
     defineProps<{
         label?: string,
-        type?: 'text' | 'password' | 'number',
         name: string,
         id?: string,
-        autocomplete?: string
         modelValue: string | number | undefined | null | boolean
-        placeholder?: string
-        options: vingOption[] | undefined,
+        options: { label: string, value: string | number | boolean }[] | undefined,
     }>(),
     {
-        type: 'text',
-        autocomplete: 'off'
     }
 );
 
 const computedId = props.id || props.name;
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const selected = computed({
     get() {
@@ -35,6 +29,7 @@ const selected = computed({
     },
     set(val) {
         emit('update:modelValue', val)
+        emit('change')
     }
 })
 </script>

@@ -10,7 +10,7 @@
                 <div class="flex gap-5 flex-column-reverse md:flex-row">
                     <div class="flex-auto p-fluid">
                         <div class="mb-4">
-                            <VingOptionSelect @change="currentUser.update" v-model="currentUser.props.useAsDisplayName"
+                            <FormSelect @change="currentUser.update" v-model="currentUser.props.useAsDisplayName"
                                 :options="currentUser.options?.useAsDisplayName" name="useAsDisplayName"
                                 label="Use As Display Name" />
                         </div>

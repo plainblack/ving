@@ -1,6 +1,6 @@
 <template>
     <div :class="class">
-        <label v-if="label" :for="computedId" class="block font-medium text-900 mb-1">{{ label }}</label>
+        <FormLabel :label="label" :id="computedId" />
         <InputNumber v-if="type == 'number' && (_.isNumber(val) || _.isNull(val) || _.isUndefined(val))" v-model="val"
             showButtons :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
             :required="required" :inputClass="fieldClass" />
