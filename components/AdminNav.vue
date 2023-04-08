@@ -18,7 +18,8 @@
             </ul>
         </div>
     </div>
-    <Crumbtrail v-if="crumbs" :crumbs="crumbs" class="pt-2 pb-2 text-sm border-noround-top bg-transparent" />
+    <Crumbtrail v-if="crumbs" :crumbs="crumbs"
+        class="pt-2 pb-2 text-sm border-noround-top border-top-none bg-transparent" />
 </template>
 
 <script setup lang="ts">
