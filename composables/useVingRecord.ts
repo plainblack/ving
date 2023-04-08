@@ -6,24 +6,6 @@ import { v4 } from 'uuid';
 
 export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
     const notify = useNotifyStore();
-    const throbber = useThrobberStore();
-    const requestHandlers = {
-        async onRequest(context: any) {
-            throbber.working();
-        },
-        async onRequestError(context: any) {
-            throbber.done();
-        },
-        async onResponse(context: any) {
-            throbber.done();
-        },
-        async onResponseError(context: any) {
-            throbber.done();
-            console.dir(context)
-            if (!behavior.suppressErrorNotifications)
-                notify.error(context.response._data.message);
-        },
-    };
 
     const generate = defineStore(behavior.id || v4(), {
         state: (): {
@@ -100,9 +82,9 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
 
             fetch() {
                 const self = this;
-                const promise = useFetch(this.getFetchApi(), {
+                const promise = useHTTP(this.getFetchApi(), {
                     query: this.query,
-                    ...requestHandlers,
+                    suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
                 promise.then((response) => {
                     const data: Describe<T> = response.data.value as Describe<T>;
@@ -122,11 +104,11 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 // if we were calling formatPropsBodyData here is where we would call it
                 const self = this;
 
-                const promise = useFetch(this.getSelfApi, {
+                const promise = useHTTP(this.getSelfApi(), {
                     query: this.query,
                     method: 'put',
                     body: props,
-                    ...requestHandlers,
+                    suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
 
                 promise.then((response) => {
@@ -180,11 +162,11 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 const self = this;
                 const newProps = _.extend({}, this.props, props);
 
-                const promise = useFetch(this.getCreateApi(), {
+                const promise = useHTTP(this.getCreateApi(), {
                     query: this.query,
                     method: 'post',
                     body: newProps,
-                    ...requestHandlers,
+                    suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
 
                 promise.then((response) => {
@@ -220,10 +202,10 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     message = "Are you sure you want to delete " + this.props.name + "?";
                 }
                 if (options.skipConfirm || confirm(message)) {
-                    const promise = useFetch(this.getSelfApi(), {
+                    const promise = useHTTP(this.getSelfApi(), {
                         query: self.query,
                         method: 'delete',
-                        ...requestHandlers,
+                        suppressErrorNotifications: behavior.suppressErrorNotifications,
                     });
                     promise.then((response) => {
                         const data: Describe<T> = response.data.value as Describe<T>;

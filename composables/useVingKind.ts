@@ -6,25 +6,6 @@ import { defineStore } from 'pinia';
 
 export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
     const notify = useNotifyStore();
-    const throbber = useThrobberStore();
-    const requestHandlers = {
-        async onRequest(context: any) {
-            throbber.working();
-        },
-        async onRequestError(context: any) {
-            throbber.done();
-        },
-        async onResponse(context: any) {
-            throbber.done();
-        },
-        async onResponseError(context: any) {
-            throbber.done();
-            console.dir(context)
-            if (!behavior.suppressErrorNotifications)
-                notify.error(context.response._data.message);
-        },
-    };
-
     const generate = defineStore(behavior.id || v4(), {
         state: (): {
             query: VKQueryParams,
@@ -141,9 +122,9 @@ export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
                 };
                 const query = _.extend({}, pagination, options.query, self.query);
 
-                const promise = useFetch(this.getListApi(), {
+                const promise = useHTTP(this.getListApi(), {
                     query: query,
-                    ...requestHandlers,
+                    suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
                 promise.then((response) => {
                     const data: DescribeList<T> = response.data.value as DescribeList<T>;
@@ -211,10 +192,10 @@ export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
 
             call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeListParams = {}, options: VKGenericOptions<T> = {}) {
                 const self = this;
-                const promise = useFetch(url, {
+                const promise = useHTTP(url, {
                     query: _.extend({}, self.query, query),
                     method,
-                    ...requestHandlers,
+                    suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
                 promise.then((response) => {
                     const data: DescribeList<T> = response.data.value as DescribeList<T>;
@@ -241,8 +222,8 @@ export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
 
             fetchFieldOptions(options: VKGenericOptions<T> = {}) {
                 const self = this;
-                const promise = useFetch(self.getFieldOptionsApi, {
-                    ...requestHandlers,
+                const promise = useHTTP(self.getFieldOptionsApi(), {
+                    suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
                 promise.then((response) => {
                     const data: DescribeList<T> = response.data.value as DescribeList<T>;

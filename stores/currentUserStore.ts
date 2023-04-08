@@ -3,23 +3,6 @@ import { Describe } from '../types';
 
 const query = { includeOptions: true, includeMeta: true, includeLinks: true };
 const notify = useNotifyStore();
-const throbber = useThrobberStore();
-const requestHandlers = {
-    async onRequest(context: any) {
-        throbber.working();
-    },
-    async onRequestError(context: any) {
-        throbber.done();
-    },
-    async onResponse(context: any) {
-        throbber.done();
-    },
-    async onResponseError(context: any) {
-        throbber.done();
-        console.dir(context)
-        notify.error(context.response._data.message);
-    },
-};
 
 export const useCurrentUserStore = defineStore('currentUser', {
     state: (): {
@@ -35,9 +18,8 @@ export const useCurrentUserStore = defineStore('currentUser', {
     }),
     actions: {
         async fetch() {
-            const response = await useFetch('/api/user/whoami', {
+            const response = await useHTTP('/api/user/whoami', {
                 query,
-                ...requestHandlers,
             });
             if (response.data.value) {
                 this.setState(response.data.value);
@@ -51,13 +33,12 @@ export const useCurrentUserStore = defineStore('currentUser', {
             this.links = data.links;
         },
         async login(login: string, password: string) {
-            const response = await useFetch('/api/session', {
-                method: 'POST',
+            const response = await useHTTP('/api/session', {
+                method: 'post',
                 body: {
                     login,
                     password
                 },
-                ...requestHandlers,
             });
             if (response.error?.value) {
                 throw response.error?.value.data;
@@ -68,29 +49,26 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         async logout() {
-            const response = await useFetch('/api/session', {
+            const response = await useHTTP('/api/session', {
                 method: 'delete',
-                ...requestHandlers,
             });
             this.setState({});
             return response;
         },
         async update() {
-            const response = await useFetch('/api/user/' + this.props?.id, {
+            const response = await useHTTP('/api/user/' + this.props?.id, {
                 method: 'put',
                 body: this.props,
                 query,
-                ...requestHandlers,
             });
             this.setState(response.data.value as Describe<'User'>)
             return response;
         },
         async create(newUser: { username: string, email: string, password: string, realName: string }) {
-            const response = await useFetch('/api/user', {
+            const response = await useHTTP('/api/user', {
                 method: 'post',
                 body: newUser,
                 query: { includeOptions: true },
-                ...requestHandlers,
             });
             if (response.error?.value) {
                 throw response.error?.value.data;
