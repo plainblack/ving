@@ -23,6 +23,10 @@
                         <Button type="button" icon="pi pi-pencil" class="p-button-rounded -mt-4"></Button>
                     </div>
                 </div>
+
+                <NuxtLink :to="'/user/profile/' + currentUser.props.id" v-ripple>
+                    View your profile as other see it
+                </NuxtLink>
             </div>
         </div>
     </div>

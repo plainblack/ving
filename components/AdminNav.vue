@@ -7,7 +7,7 @@
             <Icon name="prime:bars" class="text-4xl" />
         </a>
         <div
-            class="align-items-center bg-white flex-grow-1 justify-content-between hidden lg:flex absolute lg:static w-full left-0 top-100 z-1 border-1 surface-border lg:shadow-none border-1 lg:border-none">
+            class="align-items-center bg-white flex-grow-1 justify-content-between hidden lg:flex absolute lg:static w-full left-0 top-100 border-1 surface-border lg:shadow-none border-1 lg:border-none">
             <ul class="list-none p-0 m-0 flex lg:align-items-center select-none flex-column lg:flex-row">
                 <li>
                     <NuxtLink to="/user/admin" v-ripple

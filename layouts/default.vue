@@ -86,12 +86,12 @@
                             <Icon name="prime:angle-down" class="ml-auto lg:ml-3 mr-3 lg:mr-0" />
                         </div>
                         <ul
-                            class="absolute right-0 list-none py-3 px-6 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:border-1 surface-border lg:absolute bg-gray-900 hidden origin-top w-full lg:w-12rem cursor-pointer lg:border-1 border-gray-800">
+                            class="absolute right-0 list-none py-3 px-6 m-0 lg:px-0 lg:py-0 border-round shadow-0 lg:border-1 surface-border lg:absolute bg-gray-900 hidden origin-top w-full lg:w-12rem cursor-pointer z-5 lg:border-1 border-gray-800">
                             <li>
-                                <NuxtLink :to="'/user/profile/' + currentUser.props.id" v-ripple
+                                <NuxtLink to="/admin" v-ripple v-if="currentUser.props.admin"
                                     class="flex p-3 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 transition-colors transition-duration-150 p-ripple">
                                     <Icon name="prime:user-plus" class="mr-2" />
-                                    <span class="font-medium">View profile</span>
+                                    <span class="font-medium">Admin</span>
                                 </NuxtLink>
                             </li>
                             <li>
