@@ -8,4 +8,5 @@
 
 <script setup lang="ts">
 const throbber = useThrobberStore();
+onMounted(() => throbber.counter = 0);
 </script>
