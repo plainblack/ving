@@ -2,6 +2,7 @@ import { vingSession } from '../../helpers';
 import { useCache } from '../../cache';
 export default defineEventHandler(async (event) => {
     const session = vingSession(event);
+    session.isRoleOrDie('admin');
     await useCache().delete('system-wide-alert');
-    return { success: true };
+    return { message: '', ttl: 60 * 60, severity: 'success' };
 });

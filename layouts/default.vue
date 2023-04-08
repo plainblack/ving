@@ -121,6 +121,7 @@
                 </ul>
             </div>
         </div>
+        <Message v-if="swa.message" :closable="false" :severity="swa.severity">{{ swa.message }}</Message>
         <div class="px-0 py-4 md:px-4">
             <div style="min-height: 20rem">
                 <slot />
@@ -135,4 +136,9 @@
 const config = useRuntimeConfig();
 const currentUser = useCurrentUserStore();
 await currentUser.isAuthenticated();
+const swa = useSystemWideAlertStore();
+await swa.get();
+//onMounted(async () => {
+//    await swa.check();
+//})
 </script>

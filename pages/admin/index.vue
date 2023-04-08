@@ -36,6 +36,9 @@
             </div>
         </div>
 
+        <Button @click="swa.post" severity="success" class="mr-2">Save</Button>
+        <Button v-if="swa.message" @click="swa.delete" severity="danger" class="mr-2">Delete</Button>
+
     </div>
 </template>
 
@@ -43,7 +46,6 @@
 definePageMeta({
     middleware: ['auth', 'admin']
 });
-const swa = ref({ message: '', ttl: 60 * 60, severity: 'success' })
 const ttlOptions = [
     { value: 60 * 60, label: '1 hour' },
     { value: 60 * 60 * 4, label: '4 hours' },
@@ -53,5 +55,8 @@ const ttlOptions = [
     { value: 60 * 60 * 24 * 2, label: '2 days' },
     { value: 60 * 60 * 24 * 3, label: '3 days' },
     { value: 60 * 60 * 24 * 7, label: '1 week' },
-]
+];
+
+const swa = useSystemWideAlertStore();
+
 </script>

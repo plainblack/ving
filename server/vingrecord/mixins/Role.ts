@@ -26,7 +26,7 @@ export function RoleMixin<T extends Constructable<{ getAll(): any, get<K extends
             return false;
         }
 
-        public isRoleOrThrow(role: keyof Roles): boolean {
+        public isRoleOrDie(role: keyof Roles): boolean {
             if (this.isRole(role)) {
                 return true;
             }

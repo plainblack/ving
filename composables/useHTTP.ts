@@ -6,7 +6,7 @@ type Behavior = {
     headers?: Record<string, string>
 }
 
-export default (url: string, behavior: Behavior) => {
+export default (url: string, behavior: Behavior = {}) => {
     const notify = useNotifyStore();
     const throbber = useThrobberStore();
     return useFetch(url, {
