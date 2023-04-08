@@ -8,7 +8,8 @@
         <div class="p-inputgroup flex-1">
             <span class="p-input-icon-left w-full">
                 <i class="pi pi-search" />
-                <InputText type="text" placeholder="Search Users" class="w-full" v-model="users.query.search" />
+                <InputText type="text" placeholder="Search Users" class="w-full" v-model="users.query.search"
+                    @keydown.enter="users.search" />
             </span>
             <Button label="Search" @click="users.search()" />
         </div>
