@@ -15,6 +15,7 @@ import TextArea from 'primevue/textarea';
 import Fieldset from 'primevue/fieldset';
 import Breadcrumb from 'primevue/breadcrumb';
 import ProgressBar from 'primevue/progressbar';
+import RadioButton from 'primevue/radiobutton';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
@@ -33,6 +34,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Fieldset', Fieldset);
     nuxtApp.vueApp.component('Breadcrumb', Breadcrumb);
     nuxtApp.vueApp.component('ProgressBar', ProgressBar);
+    nuxtApp.vueApp.component('RadioButton', RadioButton);
 
     return {
         provide: {
