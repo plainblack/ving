@@ -1,3 +1,5 @@
+import { Session } from '../session';
 export default defineEventHandler((event) => {
-    event.context.ving = {};
+    const vingContext: { session?: InstanceType<typeof Session> } = {};
+    event.context.ving = vingContext;
 })
