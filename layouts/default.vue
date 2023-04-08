@@ -137,8 +137,8 @@ const config = useRuntimeConfig();
 const currentUser = useCurrentUserStore();
 await currentUser.isAuthenticated();
 const swa = useSystemWideAlertStore();
-await swa.get();
-//onMounted(async () => {
-//    await swa.check();
-//})
+await swa.get(); // shouldn't have to run this as check() should do it
+onMounted(async () => {
+    await swa.check();
+})
 </script>

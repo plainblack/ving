@@ -47,14 +47,14 @@ definePageMeta({
     middleware: ['auth', 'admin']
 });
 const ttlOptions = [
-    { value: 60 * 60, label: '1 hour' },
-    { value: 60 * 60 * 4, label: '4 hours' },
-    { value: 60 * 60 * 8, label: '8 hours' },
-    { value: 60 * 60 * 12, label: '12 hours' },
-    { value: 60 * 60 * 24, label: '1 day' },
-    { value: 60 * 60 * 24 * 2, label: '2 days' },
-    { value: 60 * 60 * 24 * 3, label: '3 days' },
-    { value: 60 * 60 * 24 * 7, label: '1 week' },
+    { value: 1000 * 60 * 60, label: '1 hour' },
+    { value: 1000 * 60 * 60 * 4, label: '4 hours' },
+    { value: 1000 * 60 * 60 * 8, label: '8 hours' },
+    { value: 1000 * 60 * 60 * 12, label: '12 hours' },
+    { value: 1000 * 60 * 60 * 24, label: '1 day' },
+    { value: 1000 * 60 * 60 * 24 * 2, label: '2 days' },
+    { value: 1000 * 60 * 60 * 24 * 3, label: '3 days' },
+    { value: 1000 * 60 * 60 * 24 * 7, label: '1 week' },
 ];
 
 const swa = useSystemWideAlertStore();

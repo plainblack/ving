@@ -7,7 +7,7 @@ export const useSystemWideAlertStore = defineStore('system-wide-alert', {
         severity: SystemWideAlert['severity'],
         timer?: any,
     } => ({
-        message: '', ttl: 60 * 60, severity: 'success'
+        message: '', ttl: 1000 * 60 * 60, severity: 'success'
     }),
     actions: {
         setState(data: SystemWideAlert) {
@@ -17,7 +17,7 @@ export const useSystemWideAlertStore = defineStore('system-wide-alert', {
         },
         async get() {
             const response = await useHTTP('/api/system-wide-alert');
-            if (response.data.value && typeof response.data.value == 'object') {
+            if (response.data.value) {
                 this.setState(response.data.value as SystemWideAlert);
             }
         },
@@ -42,7 +42,7 @@ export const useSystemWideAlertStore = defineStore('system-wide-alert', {
             if (self.timer) {
                 clearTimeout(self.timer);
             }
-            self.timer = setTimeout(async () => await self.get(), 5 * 60 * 60);
+            self.timer = setTimeout(async () => await self.check(), 1000 * 60 * 15);
         }
     },
 });
