@@ -471,22 +471,53 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
 
     public async findMany(
         where?: SQL,
-        options?: {
+        options: {
             limit?: number,
             offset?: number,
             orderBy?: (SQL | AnyMySqlColumn)[]
-        }
+        } = {}
     ) {
         let query = this.select.where(this.calcWhere(where));
-        if (options && options.orderBy)
+        if (options.orderBy)
             query.orderBy(...options.orderBy);
-        if (options && options.limit)
+        if (options.limit)
             query.limit(options.limit);
-        if (options && options.offset)
+        if (options.offset)
             query.offset(options.offset);
         const results = (await query) as ModelSelect<T>[];
         return results.map(props => new this.recordClass(this.db, this.table, props));
     }
+
+    /*
+    public async findIterator(
+        where?: SQL,
+        options: {
+            limit?: number,
+            orderBy?: (SQL | AnyMySqlColumn)[]
+        } = {}
+    ) {
+        const hardLimit = options.limit || 999999999;
+        const limitPerBatch = 2;
+        let counter = 0;
+        for (let counter = 0; counter < hardLimit; counter + 2) {
+            const requestedLimit = limitPerBatch < hardLimit ? limitPerBatch : hardLimit;
+            const result = await this.findMany(where, {
+                limit: requestedLimit,
+                offset: counter,
+                orderBy: options.orderBy
+            });
+            for (const row of result) {
+
+            }
+        }
+        return {
+            next() {
+
+                return { done: true }
+            }
+        }
+    }
+    */
 
     public async deleteMany(
         where?: SQL,
