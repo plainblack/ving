@@ -10,6 +10,7 @@ const main = defineCommand({
   subCommands: {
     build: () => import('./commands/build').then((r) => r.default),
     deploy: () => import('./commands/deploy').then((r) => r.default),
+    cache: () => import('./commands/cache').then((r) => r.default),
     user: () => import('./commands/user').then((r) => r.default),
   },
 });
