@@ -14,15 +14,15 @@
             <Button label="Search" @click="users.search()" />
         </div>
 
-        <DataTable :value="users.records" stripedRows>
-            <Column field="props.username" header="Username"></Column>
-            <Column field="props.realName" header="Real Name"></Column>
-            <Column field="props.email" header="Email Address">
+        <DataTable :value="users.records" stripedRows @sort="users.sortDataTable">
+            <Column field="props.username" header="Username" sortable></Column>
+            <Column field="props.realName" header="Real Name" sortable></Column>
+            <Column field="props.email" header="Email Address" sortable>
                 <template #body="slotProps">
                     <a :href="`mailto:${slotProps.data.props.email}`">{{ slotProps.data.props.email }}</a>
                 </template>
             </Column>
-            <Column field="props.createdAt" header="Created">
+            <Column field="props.createdAt" header="Created" sortable>
                 <template #body="slotProps">
                     {{ dt.formatDateTime(slotProps.data.props.createdAt) }}
                 </template>
@@ -82,7 +82,7 @@ const dt = useDateTime();
 const users = useVingKind<'User'>({
     listApi: '/api/user',
     createApi: '/api/user',
-    query: { includeMeta: true, sortBy: ['username'], sortOrder: 'desc' },
+    query: { includeMeta: true, sortBy: 'username', sortOrder: 'asc' },
     newDefaults: { username: '', realName: '', email: '' },
 });
 await users.search();
