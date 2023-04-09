@@ -21,7 +21,7 @@ let children: Ref<Record<string, string>> = ref({});
 
 const sortedChildren = () => {
     let out: { id: string, name: string }[] = [];
-    for (const name of Object.keys(children.value).sort()) {
+    for (const name of Object.keys(children.value)) {
         out.push({
             id: children.value[name],
             name: name,
