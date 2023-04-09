@@ -8,6 +8,10 @@ export type VRQueryParams = {
     includeLinks?: boolean,
 };
 
+export type VRGenericOptions<T extends ModelName> = {
+    onSuccess?: (result: Describe<T>) => void,
+    onError?: (result: Describe<T>) => void
+}
 
 export type VRCreateOptions<T extends ModelName> = {
     onError?: (result: Describe<T>) => void,

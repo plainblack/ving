@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { Describe, ModelName, VingRecordParams, QueryParams, VRUpdateOptions, VRCreateOptions, VRDeleteOptions, ModelSelect, vingOption } from '~/types';
+import type { Describe, ModelName, VingRecordParams, VRQueryParams, VRUpdateOptions, VRCreateOptions, VRDeleteOptions, DescribeParams, VRGenericOptions } from '~/types';
 import { ouch } from '~/server/helpers';
 import _ from 'lodash';
 import { v4 } from 'uuid';
@@ -15,7 +15,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
             links?: Describe<T>['links'],
             related?: Describe<T>['related'],
             warnings?: Describe<T>['warnings'],
-            query?: QueryParams,
+            query?: VRQueryParams,
             createApi?: string,
             fetchApi?: string,
         } => ({
@@ -193,6 +193,30 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 }
                 notify.error('No links.self');
                 throw ouch(400, 'No links.self');
+            },
+
+            call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeParams = {}, options: VRGenericOptions<T> = {}) {
+                const self = this;
+                const promise = useHTTP(url, {
+                    query: _.extend({}, self.query, query),
+                    method,
+                    suppressErrorNotifications: behavior.suppressErrorNotifications,
+                });
+                promise.then((response) => {
+                    const data: Describe<T> = response.data.value as Describe<T>;
+                    self.setState(data);
+
+                    if (options?.onSuccess) {
+                        options?.onSuccess(data);
+                    }
+                })
+                    .catch((response) => {
+                        const data: Describe<T> = response.data.value as Describe<T>;
+                        if (options?.onError) {
+                            options?.onError(data);
+                        }
+                    });
+                return promise;
             },
 
             delete(options: VRDeleteOptions<T> = {}) {

@@ -56,6 +56,12 @@
                 Updated at {{ dt.formatDateTime(user.props.updatedAt) }}
             </div>
         </FieldsetItem>
+
+        <FieldsetItem name="Actions">
+            <Button @click="user.delete" severity="danger" class="mr-2 mb-2">Delete</Button>
+            <Button @click="become" severity="warn" class="mr-2 mb-2">Become</Button>
+        </FieldsetItem>
+
     </FieldsetNav>
 </template>
   
@@ -74,7 +80,20 @@ const user = useVingRecord<'User'>({
     onUpdate() {
         notify.success('Updated user.');
     },
+    onDelete() {
+        navigateTo('/user/admin');
+    },
 });
+
+function become() {
+    user.call('post', user.links?.self + '/become', undefined, {
+        onSuccess() {
+            const currentUser = useCurrentUserStore();
+            currentUser.fetch();
+            navigateTo('/');
+        }
+    })
+}
 
 const password = ref('');
 
