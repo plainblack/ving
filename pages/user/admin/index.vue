@@ -11,7 +11,7 @@
                 <InputText type="text" placeholder="Search Users" class="w-full" v-model="users.query.search"
                     @keydown.enter="users.search" />
             </span>
-            <Button label="Search" @click="users.search()" />
+            <Button label="Search" @click="users._search()" />
         </div>
 
         <DataTable :value="users.records" stripedRows @sort="users.sortDataTable">
@@ -85,7 +85,7 @@ const users = useVingKind<'User'>({
     query: { includeMeta: true, sortBy: 'username', sortOrder: 'asc' },
     newDefaults: { username: '', realName: '', email: '' },
 });
-await users.search();
+await users._search();
 
 const breadcrumbs = [
     { label: 'Admin', to: '/admin' },
