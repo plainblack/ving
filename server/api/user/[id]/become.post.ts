@@ -1,9 +1,8 @@
 import { useUsers } from '../../../vingrecord/records/User';
-import { vingDescribe, vingSession } from '../../../helpers';
+import { vingDescribe, vingSessionIsRole } from '../../../helpers';
 import { Session } from '../../../session';
 export default defineEventHandler(async (event) => {
-    let session = vingSession(event);
-    session.isRoleOrDie('admin');
+    let session = vingSessionIsRole(event, 'admin');
     const Users = useUsers();
     const { id } = getRouterParams(event);
     const user = await Users.findOrDie(id);

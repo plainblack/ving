@@ -1,4 +1,4 @@
-import { DescribeListParams, DescribeParams } from '../types';
+import { DescribeListParams, DescribeParams, Roles } from '../types';
 import _ from 'lodash';
 import { H3Event, createError, getQuery, readBody } from 'h3';
 
@@ -82,6 +82,15 @@ export const vingSession = (event: H3Event) => {
         return event.context.ving.session;
     }
     return undefined;
+}
+
+export const vingSessionIsRole = (event: H3Event, role: keyof Roles) => {
+    const session = vingSession(event);
+    if (session) {
+        session.isRoleOrDie(role);
+        return session;
+    }
+    throw ouch(401, 'Login required.')
 }
 
 export const vingInclude = (event: H3Event) => {
