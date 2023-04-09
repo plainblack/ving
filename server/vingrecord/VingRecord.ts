@@ -317,9 +317,18 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
 
     public async describeList(
         params: DescribeListParams = {},
-        where?: SQL,
-        orderBy: (SQL | AnyMySqlColumn)[] = [asc(this.table.createdAt)]
+        where?: SQL
     ) {
+        const sortMethod = (params.sortOrder == 'desc') ? desc : asc;
+        let orderBy: (SQL | AnyMySqlColumn)[] = [sortMethod(this.table.createdAt)];
+        if (params.sortBy) {
+            const cols: (SQL | AnyMySqlColumn)[] = [];
+            for (const field of params.sortBy) {
+                // @ts-expect-error
+                cols.push(sortMethod(this.table[field]));
+            }
+            orderBy = cols;
+        }
         const itemsPerPage = params.itemsPerPage === undefined || params.itemsPerPage > 100 || params.itemsPerPage < 1 ? 10 : params.itemsPerPage;
         const page = params.page || 1;
         const maxItems = params.maxItems || 100000000000;
@@ -469,6 +478,8 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         }
     ) {
         let query = this.select.where(this.calcWhere(where));
+        if (options && options.orderBy)
+            query.orderBy(...options.orderBy);
         if (options && options.limit)
             query.limit(options.limit);
         if (options && options.offset)

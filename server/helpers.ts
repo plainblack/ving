@@ -125,15 +125,17 @@ export const vingDescribeList = (event: H3Event) => {
 
 export const vingPaging = (event: H3Event) => {
     const params = getQuery(event);
-    const paging: DescribeListParams = { itemsPerPage: 10, page: 1, orderBy: 'dateCreated', sortOrder: 'asc' };
+    const paging: DescribeListParams = { itemsPerPage: 10, page: 1, sortBy: ['createdAt'], sortOrder: 'asc' };
     if (params !== undefined) {
         if (params.itemsPerPage)
             paging.itemsPerPage = Number(params.itemsPerPage);
         if (params.page)
             paging.page = Number(params.page);
-        if (params.orderBy && _.isString(params.orderBy))
-            paging.orderBy = params.orderBy;
-        if (params.sortOrder && _.isString(params.sortOrder) && params.sortOrder in ['asc', 'desc'])
+        if (params.sortBy && _.isString(params.sortBy))
+            paging.sortBy = [params.sortBy];
+        if (params.sortBy && _.isArray(params.sortBy))
+            paging.sortBy = params.sortBy as string[];
+        if (params.sortOrder && _.isString(params.sortOrder) && ['asc', 'desc'].includes(params.sortOrder))
             paging.sortOrder = params.sortOrder as 'asc' | 'desc';
     }
     return paging;

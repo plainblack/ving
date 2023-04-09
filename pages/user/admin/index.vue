@@ -82,7 +82,7 @@ const dt = useDateTime();
 const users = useVingKind<'User'>({
     listApi: '/api/user',
     createApi: '/api/user',
-    query: { includeMeta: true },
+    query: { includeMeta: true, sortBy: ['username'], sortOrder: 'desc' },
     newDefaults: { username: '', realName: '', email: '' },
 });
 await users.search();
