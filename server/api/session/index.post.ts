@@ -7,9 +7,9 @@ import { eq } from 'drizzle-orm/mysql-core/expressions.js';
 export default defineEventHandler(async (event) => {
     const body = await vingBody(event)
     testRequired(['login', 'password'], body);
-    let user = await Users.findOne(() => eq(Users.table.email, body.login));
+    let user = await Users.findOne(eq(Users.table.email, body.login));
     if (!user) {
-        user = await Users.findOne(() => eq(Users.table.username, body.login));
+        user = await Users.findOne(eq(Users.table.username, body.login));
         if (!user)
             throw ouch(404, 'User not found.')
     }
