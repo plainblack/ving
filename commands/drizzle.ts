@@ -13,14 +13,17 @@ export default defineCommand({
         tables: {
             type: "boolean",
             description: "Generate drizzle table files from ving schemas",
+            alias: "t",
         },
         prepare: {
             type: "boolean",
             description: "Generate migration files from table changes",
+            alias: "p",
         },
         up: {
             type: "boolean",
             description: "Run migrations",
+            alias: "u",
         },
     },
     async run({ args }) {
