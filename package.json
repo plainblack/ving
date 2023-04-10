@@ -10,7 +10,6 @@
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
         "tests": "vitest",
-        "ving:gentables": "esbuild server/vingschema/gentable.ts --platform=node --bundle --log-level=warning --outfile=.output/server/vingschema/gentable.js && node .output/server/vingschema/gentable.js",
         "drizzle:gen": "drizzle-kit generate:mysql --out ./server/drizzle/migrations --schema server/drizzle/schema",
         "drizzle:migrate": "esbuild server/drizzle/migrate.ts --platform=node --bundle --log-level=warning --outfile=.output/server/drizzle/migrate.js && node .output/server/drizzle/migrate.js"
     },

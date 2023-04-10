@@ -11,6 +11,7 @@ const main = defineCommand({
     build: () => import('./commands/build').then((r) => r.default),
     deploy: () => import('./commands/deploy').then((r) => r.default),
     cache: () => import('./commands/cache').then((r) => r.default),
+    schema: () => import('./commands/schema').then((r) => r.default),
     user: () => import('./commands/user').then((r) => r.default),
   },
 });

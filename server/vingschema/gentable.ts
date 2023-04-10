@@ -44,7 +44,3 @@ export type ${schema.kind}Model = typeof ${schema.kind}Table;
     await writeFileSafely(path, content);
     console.log('Generated ' + path)
 }
-
-for (const schema of vingSchemas) {
-    makeTableFile(schema);
-}
