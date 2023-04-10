@@ -12,6 +12,7 @@ const main = defineCommand({
     // deploy: () => import('./commands/deploy').then((r) => r.default),
     cache: () => import('./commands/cache').then((r) => r.default),
     drizzle: () => import('./commands/drizzle').then((r) => r.default),
+    record: () => import('./commands/record').then((r) => r.default),
     schema: () => import('./commands/schema').then((r) => r.default),
     user: () => import('./commands/user').then((r) => r.default),
   },
