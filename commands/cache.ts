@@ -3,8 +3,8 @@ import { useCache } from '../server/cache'
 
 export default defineCommand({
     meta: {
-        name: "cache",
-        description: "Manage cache",
+        name: "Cache",
+        description: "CRUD cache entries",
     },
     args: {
         clear: {

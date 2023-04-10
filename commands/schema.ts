@@ -1,31 +1,20 @@
 import { defineCommand } from "citty";
-import { makeTableFile } from '../server/vingschema/gentable';
-import { vingSchemas } from '../server/vingschema/index';
 import { generateSchema } from '../server/vingschema/genskeleton';
 import { getContext } from '@feathershq/pinion';
 
 export default defineCommand({
     meta: {
         name: "Ving Schema",
-        description: "Manage Ving Schemas",
+        description: "Ving Schema code generation",
     },
     args: {
         new: {
             type: "string",
             description: "Generate a new schema skeleton file",
         },
-        tables: {
-            type: "boolean",
-            description: "Generate drizzle table files from schemas",
-        },
     },
     async run({ args }) {
-        if (args.tables) {
-            for (const schema of vingSchemas) {
-                await makeTableFile(schema);
-            }
-        }
-        else if (args.new) {
+        if (args.new) {
             await generateSchema({ ...getContext({}), name: args.new });
         }
     },

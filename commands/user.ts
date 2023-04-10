@@ -4,8 +4,8 @@ import { like, or, eq } from '../server/drizzle/orm';
 
 export default defineCommand({
     meta: {
-        name: "user",
-        description: "Manage users",
+        name: "User Administration",
+        description: "Basic CRUD for users, use web UI for more",
     },
     args: {
         list: {
@@ -50,13 +50,13 @@ export default defineCommand({
         if (args.list) {
             formatList(await Users.findMany());
         }
-        if (args.admins) {
+        else if (args.admins) {
             formatList(await Users.findMany(eq(Users.table.admin, true)));
         }
-        if (args.search) {
+        else if (args.search) {
             formatList(await Users.findMany(or(like(Users.table.username, `%${args.search}%`), like(Users.table.realName, `%${args.search}%`), like(Users.table.email, `%${args.search}%`))));
         }
-        if (args.add) {
+        else if (args.add) {
             const user = Users.mint({
                 username: args.add,
                 realName: args.add,
@@ -67,7 +67,7 @@ export default defineCommand({
             await user.insert();
             formatList([user]);
         }
-        if (args.modify) {
+        else if (args.modify) {
             const user = await Users.findOne(eq(Users.table.username, args.modify));
             if (user) {
                 if (args.email)
@@ -85,7 +85,7 @@ export default defineCommand({
                 console.log(`Could not find user: ${args.modify}`);
             }
         }
-        //@ts-ignore
+        //@ts-expect-error - session is a private method, but i don't want to pass around the connection pool
         Users.db.session.client.pool.end();
     },
 });

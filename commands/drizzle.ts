@@ -1,16 +1,22 @@
 import { defineCommand } from "citty";
 import { exec } from "child_process";
 import { runMigrations } from '../server/drizzle/migrate';
+import { makeTableFile } from '../server/vingschema/gentable';
+import { vingSchemas } from '../server/vingschema/index';
 
 export default defineCommand({
     meta: {
         name: "Drizzle ORM",
-        description: "Manage Drizzle migrations",
+        description: "Manage Drizzle migrations and code generation",
     },
     args: {
+        tables: {
+            type: "boolean",
+            description: "Generate drizzle table files from ving schemas",
+        },
         prepare: {
             type: "boolean",
-            description: "Generate a migration",
+            description: "Generate migration files from table changes",
         },
         up: {
             type: "boolean",
@@ -18,7 +24,12 @@ export default defineCommand({
         },
     },
     async run({ args }) {
-        if (args.up) {
+        if (args.tables) {
+            for (const schema of vingSchemas) {
+                await makeTableFile(schema);
+            }
+        }
+        else if (args.up) {
             runMigrations();
         }
         else if (args.prepare) {
