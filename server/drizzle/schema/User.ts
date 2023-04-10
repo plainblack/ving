@@ -6,7 +6,7 @@ export const UserTable = mysqlTable('users',
     {
         id: varchar('id', { length: 36 }).notNull().default('uuid-will-be-generated').primaryKey(),
 		createdAt: timestamp('createdAt').defaultNow().notNull(),
-		updatedAt: timestamp('updatedAt').defaultNow().notNull(),
+		updatedAt: timestamp('updatedAt').defaultNow().notNull().onUpdateNow(),
 		username: varchar('username', { length: 60 }).notNull().default(''),
 		email: varchar('email', { length: 256 }).notNull().default(''),
 		realName: varchar('realName', { length: 60 }).notNull().default(''),

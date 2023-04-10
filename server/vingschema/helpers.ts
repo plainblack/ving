@@ -127,7 +127,7 @@ export const baseSchemaProps: vingProp[] = [
         name: "updatedAt",
         required: true,
         default: () => new Date(),
-        db: (prop) => dbTimestamp(prop),
+        db: (prop) => dbTimestamp(prop) + '.onUpdateNow()',
         view: ['public'],
         edit: [],
     },

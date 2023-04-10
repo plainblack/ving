@@ -15,6 +15,13 @@
       "when": 1679107573132,
       "tag": "0001_freezing_callisto",
       "breakpoints": false
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1681134127250,
+      "tag": "0002_tidy_makkari",
+      "breakpoints": false
     }
   ]
 }
