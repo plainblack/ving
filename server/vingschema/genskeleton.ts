@@ -15,7 +15,7 @@ export const ${name.toLowerCase()}Schema: vingSchema = {
     owner: ['$userId', 'admin'],
     props: [
         ...baseSchemaProps,
-        // email field
+        // unique email field
         {
             type: "string",
             name: "email",
@@ -103,6 +103,22 @@ export const ${name.toLowerCase()}Schema: vingSchema = {
             },
         },*/
         // N:1 relationship - aka a relationship to my parent
+        /*{
+            type: "id",
+            name: '${name.toLowerCase()}GroupId',
+            required: true,
+            length: 36,
+            db: (prop) => dbRelation(prop),
+            relation: {
+                type: 'parent',
+                name: '${name.toLowerCase()}group',
+                kind: '${name}Group',
+            },
+            default: undefined,
+            view: ['public'],
+            edit: ['owner'],
+        },*/
+        // a user relationship
         {
             type: "id",
             name: 'userId',
