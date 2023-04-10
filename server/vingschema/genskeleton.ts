@@ -92,14 +92,14 @@ export const ${name.toLowerCase()}Schema: vingSchema = {
         // 1:N relationship - aka a relationship to my children
        /* {
             type: "virtual",
-            name: '${name.toLowerCase()}replies',
+            name: '${name.toLowerCase()}comments',
             required: false,
             view: ['public'],
             edit: [],
             relation: {
                 type: 'child',
-                name: '${name.toLowerCase()}replies',
-                kind: '${name}Reply',
+                name: '${name.toLowerCase()}comments',
+                kind: '${name}Comment',
             },
         },*/
         // N:1 relationship - aka a relationship to my parent
