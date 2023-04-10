@@ -12,6 +12,8 @@ export default defineCommand({
         new: {
             type: "string",
             description: "Generate a new Ving Record file",
+            valueHint: "name",
+            alias: "n",
         },
     },
     async run({ args }) {

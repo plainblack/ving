@@ -11,22 +11,30 @@ export default defineCommand({
         list: {
             type: "boolean",
             description: "List all users",
+            alias: "l",
         },
         admins: {
             type: "boolean",
             description: "List all users that are admins",
+            alias: "a",
         },
         search: {
             type: "string",
             description: "Search all users by keyword",
+            valueHint: "keyword",
+            alias: "s",
         },
         add: {
             type: "string",
             description: "Create a new user",
+            valueHint: "username",
+            alias: "a",
         },
         modify: {
             type: "string",
             description: "Change an existing user",
+            valueHint: "username",
+            alias: "m",
         },
         email: {
             type: "string",

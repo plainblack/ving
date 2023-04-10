@@ -10,26 +10,36 @@ export default defineCommand({
         clear: {
             type: "boolean",
             description: "Delete everything in the cache",
+            alias: "c",
         },
         get: {
             type: "string",
+            valueHint: "name",
             description: "Fetch a cache entry",
+            alias: "g",
         },
         delete: {
             type: "string",
+            valueHint: "name",
             description: "Remove a cache entry",
+            alias: "d",
         },
         set: {
             type: "string",
+            valueHint: "name",
             description: "Set a cache entry",
+            alias: "s",
         },
         value: {
             type: "string",
+            valueHint: "string|json",
             description: "The value of the entry to set",
         },
         ttl: {
             type: "string",
             description: "Timeout in milliseconds for the cache entry to live",
+            valueHint: 'ms',
+            default: (1000 * 60 * 60 * 24).toString(),
         },
     },
     async run({ args }) {
