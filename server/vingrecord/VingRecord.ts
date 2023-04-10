@@ -5,9 +5,9 @@ import _ from 'lodash';
 import { MySql2Database, like, eq, asc, desc, and, or, ne, SQL, sql, Name, AnyMySqlColumn } from '../../server/drizzle/orm';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers';
 
-export const findVingSchema = (nameToFind: string = '-unknown-') => {
+export const findVingSchema = (nameToFind: string = '-unknown-', by: 'tableName' | 'kind' = 'tableName') => {
     try {
-        return findObject('tableName', nameToFind, vingSchemas) as vingSchema;
+        return findObject(by, nameToFind, vingSchemas) as vingSchema;
     }
     catch {
         throw ouch(404, 'ving schema ' + nameToFind + ' not found');
