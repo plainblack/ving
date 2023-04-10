@@ -58,8 +58,10 @@
         </FieldsetItem>
 
         <FieldsetItem name="Actions">
-            <Button @click="user.delete" severity="danger" class="mr-2 mb-2">Delete</Button>
-            <Button @click="become" severity="warn" class="mr-2 mb-2">Become</Button>
+            <Button @click="user.delete" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete User"><i
+                    class="pi pi-trash mr-1"></i> Delete</Button>
+            <Button @click="become" severity="warn" class="mr-2 mb-2" title="Become" alt="Become User"><i
+                    class="pi pi-arrow-right-arrow-left mr-1"></i> Become</Button>
         </FieldsetItem>
 
     </FieldsetNav>
