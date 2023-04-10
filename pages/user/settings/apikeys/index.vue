@@ -91,8 +91,8 @@
                                 </div>
 
                                 <div>
-                                    <Button type="submit" class="w-auto">
-                                        Create API Key
+                                    <Button type="submit" class="w-auto" severity="success">
+                                        <i class="pi pi-plus mr-1"></i> Create API Key
                                     </Button>
                                 </div>
                             </div>

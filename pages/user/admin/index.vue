@@ -49,18 +49,18 @@
             <div class="flex gap-5 flex-column-reverse md:flex-row">
                 <div class="flex-auto p-fluid">
                     <div class="mb-4">
-                        <FormInput name="name" type="text" v-model="users.new.username" required label="Username" />
+                        <FormInput name="nausernameme" type="text" v-model="users.new.username" required label="Username" />
                     </div>
                     <div class="mb-4">
                         <FormInput name="realName" type="text" v-model="users.new.realName" required label="Real Name" />
                     </div>
                     <div class="mb-4">
-                        <FormInput name="email" type="text" v-model="users.new.email" required label="Email" />
+                        <FormInput name="email" type="email" v-model="users.new.email" required label="Email" />
                     </div>
 
                     <div>
-                        <Button type="submit" class="w-auto">
-                            Create User
+                        <Button type="submit" class="w-auto" severity="success">
+                            <i class="pi pi-plus mr-1"></i> Create User
                         </Button>
                     </div>
                 </div>
