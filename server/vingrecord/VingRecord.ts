@@ -165,6 +165,7 @@ export class VingRecord<T extends ModelName> {
         if (include !== undefined && include.meta) {
             out.meta = {
                 kind: schema.kind,
+                isOwner: isOwner,
             };
             if (this.deleted) {
                 out.meta.deleted = true;
