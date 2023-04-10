@@ -12,6 +12,7 @@ const main = defineCommand({
     drizzle: () => import('./commands/drizzle').then((r) => r.default),
     record: () => import('./commands/record').then((r) => r.default),
     schema: () => import('./commands/schema').then((r) => r.default),
+    token: () => import('./commands/token').then((r) => r.default),
     user: () => import('./commands/user').then((r) => r.default),
   },
 });
