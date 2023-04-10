@@ -6,7 +6,7 @@ import { useUsers } from './User'
 export class APIKeyRecord extends VingRecord<'APIKey'> {
     // add custom Record code here
 
-    public get user(): any {
+    public get user() {
         return useUsers().findOrDie(this.get('userId'));
     }
 
