@@ -9,9 +9,7 @@
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
-        "tests": "vitest",
-        "drizzle:gen": "drizzle-kit generate:mysql --out ./server/drizzle/migrations --schema server/drizzle/schema",
-        "drizzle:migrate": "esbuild server/drizzle/migrate.ts --platform=node --bundle --log-level=warning --outfile=.output/server/drizzle/migrate.js && node .output/server/drizzle/migrate.js"
+        "tests": "vitest"
     },
     "devDependencies": {
         "@nuxt/content": "^2.5.2",

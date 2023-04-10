@@ -4,9 +4,9 @@ import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 import * as dotenv from 'dotenv';
 dotenv.config();
-const dbConfig = new URL(process.env.DRIZZLE_DATABASE || '');
+const dbConfig = new URL(process.env.DATABASE || '');
 
-async function main() {
+export async function runMigrations() {
     const con = await mysql.createConnection({
         host: dbConfig.hostname,
         port: parseInt(dbConfig.port),
@@ -21,4 +21,3 @@ async function main() {
     await con.end();
     console.log('Migration complete!');
 }
-main();
