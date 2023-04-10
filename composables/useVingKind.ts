@@ -218,7 +218,7 @@ export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
                 return promise;
             },
 
-            getFieldOptionsApi: function () {
+            getPropsOptionsApi: function () {
                 const self = this;
                 if (behavior.optionsApi != null) {
                     return behavior.optionsApi;
@@ -226,21 +226,23 @@ export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
                 return self.getCreateApi + "/options";
             },
 
-            fetchFieldOptions(options: VKGenericOptions<T> = {}) {
+            fetchPropsOptions(options: VKGenericOptions<T> = {}) {
                 const self = this;
-                const promise = useHTTP(self.getFieldOptionsApi(), {
+                const promise = useHTTP(self.getPropsOptionsApi(), {
                     suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
                 promise.then((response) => {
-                    const data: DescribeList<T> = response.data.value as DescribeList<T>;
+                    const data: Describe<T>['options'] = response.data.value as Describe<T>['options'];
+                    // @ts-expect-error - https://github.com/vuejs/core/issues/7278
+                    this.propsOptions = data;
                     if (options?.onSuccess) {
-                        options?.onSuccess(data);
+                        options?.onSuccess(data as any);
                     }
                 })
                     .catch((response) => {
-                        const data: DescribeList<T> = response.data.value as DescribeList<T>;
+                        const data: Describe<T>['options'] = response.data.value as Describe<T>['options'];
                         if (options?.onError) {
-                            options?.onError(data);
+                            options?.onError(data as any);
                         }
                     });
                 return promise;
