@@ -48,6 +48,7 @@ export type vingProp =
     } & basicVingProps
     | {
         type: 'date',
+        autoUpdate?: boolean,
         default: (() => Date),
         db: (prop: Extract<vingProp, { type: 'date' }>) => string,
         zod?: (prop: Extract<vingProp, { type: 'date' }>) => ZodTypeAny,

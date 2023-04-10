@@ -59,7 +59,7 @@ export const zodText = (prop: Extract<vingProp, { type: "string" }>) => {
 }
 
 export const dbTimestamp = (prop: Extract<vingProp, { type: "date" }>) => {
-    return `timestamp('${prop.name}').defaultNow().notNull()`;
+    return `timestamp('${prop.name}').defaultNow().notNull()` + (prop.autoUpdate ? '.onUpdateNow()' : '');
 }
 
 export const dbString = (prop: Extract<vingProp, { type: "string" }>) => {
@@ -126,8 +126,9 @@ export const baseSchemaProps: vingProp[] = [
         type: "date",
         name: "updatedAt",
         required: true,
+        autoUpdate: true,
         default: () => new Date(),
-        db: (prop) => dbTimestamp(prop) + '.onUpdateNow()',
+        db: (prop) => dbTimestamp(prop),
         view: ['public'],
         edit: [],
     },

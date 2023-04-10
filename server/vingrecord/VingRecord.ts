@@ -59,6 +59,13 @@ export class VingRecord<T extends ModelName> {
                 const result = prop.zod(prop as never).safeParse(value);
                 if (result.success) {
                     value = result.data;
+                    // auto-update auto-updating date fields
+                    for (const field of schema.props) {
+                        if (field.type == 'date' && field.autoUpdate) {
+                            // @ts-expect-error schema knows best
+                            this.props[field.name] = new Date();
+                        }
+                    }
                 }
                 else {
                     const formatted = result.error.format();
@@ -96,8 +103,6 @@ export class VingRecord<T extends ModelName> {
     }
 
     public async update() {
-        // @ts-expect-error TS thinks you can't set a date to a date
-        this.set('updatedAt', new Date());
         await this.db.update(this.table).set(this.props).where(eq(this.table.id, this.props.id));
     }
 
