@@ -1,4 +1,4 @@
-import { vingBody } from '../helpers';
+import { getBody } from '../utils/rest';
 export default defineEventHandler(async (event) => {
     const query = getQuery(event);
     const httpMethod = getMethod(event)
@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
         query,
     }
     if (['POST', 'PUT'].includes(httpMethod)) {
-        out.body = await vingBody(event);
+        out.body = await getBody(event);
     }
     return out;
 });

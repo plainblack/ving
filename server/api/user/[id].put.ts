@@ -1,10 +1,11 @@
 import { useUsers } from '../../vingrecord/records/User';
 const Users = useUsers();
-import { vingDescribe, vingSession, vingBody } from '../../helpers';
+import { describeParams, obtainSession, getBody } from '../../utils/rest';
 export default defineEventHandler(async (event) => {
     const { id } = getRouterParams(event);
     const user = await Users.findOrDie(id);
-    user.canEdit(vingSession(event));
-    await user.updateAndVerify(await vingBody(event), vingSession(event));
-    return user.describe(vingDescribe(event));
+    const session = obtainSession(event);
+    user.canEdit(session);
+    await user.updateAndVerify(await getBody(event), session);
+    return user.describe(describeParams(event));
 });

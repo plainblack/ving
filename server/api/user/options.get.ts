@@ -1,6 +1,6 @@
 import { useUsers } from '../../vingrecord/records/User';
 const Users = useUsers();
-import { vingDescribe } from '../../helpers';
+import { describeParams } from '../../utils/rest';
 export default defineEventHandler(async (event) => {
-    return Users.mint().propOptions(vingDescribe(event), true);
+    return Users.mint().propOptions(describeParams(event), true);
 })

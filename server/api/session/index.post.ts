@@ -1,12 +1,13 @@
 import { useUsers } from '../../vingrecord/records/User';
 const Users = useUsers();
-import { testRequired, vingBody, vingDescribe } from '../../helpers';
+import { getBody, describeParams } from '../../utils/rest';
 import { Session } from '../../session';
 import { eq } from 'drizzle-orm/mysql-core/expressions.js';
 import { ouch } from '../../../utils/ouch';
+import { testRequired } from '../../utils/rest';
 
 export default defineEventHandler(async (event) => {
-    const body = await vingBody(event)
+    const body = await getBody(event)
     testRequired(['login', 'password'], body);
     let user = await Users.findOne(eq(Users.table.email, body.login));
     if (!user) {
@@ -17,5 +18,5 @@ export default defineEventHandler(async (event) => {
     await user.testPassword(body.password);
     const session = await Session.start(user);
     setCookie(event, 'vingSessionId', session.id, { maxAge: 60 * 24 * 365 * 5, httpOnly: true });
-    return await session.describe(vingDescribe(event));
+    return await session.describe(describeParams(event));
 })

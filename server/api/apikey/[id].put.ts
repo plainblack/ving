@@ -1,10 +1,11 @@
 import { useAPIKeys } from '../../vingrecord/records/APIKey';
-import { vingDescribe, vingSession, vingBody } from '../../helpers';
+import { describeParams, obtainSession, getBody } from '../../utils/rest';
 export default defineEventHandler(async (event) => {
     const APIKeys = useAPIKeys();
     const { id } = getRouterParams(event);
     const apikey = await APIKeys.findOrDie(id);
-    apikey.canEdit(vingSession(event));
-    await apikey.updateAndVerify(await vingBody(event), vingSession(event));
-    return apikey.describe(vingDescribe(event));
+    const session = obtainSession(event);
+    apikey.canEdit(session);
+    await apikey.updateAndVerify(await getBody(event), session);
+    return apikey.describe(describeParams(event));
 });

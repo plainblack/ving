@@ -1,6 +1,6 @@
 import { useAPIKeys } from '../../vingrecord/records/APIKey';
-import { vingDescribe } from '../../helpers';
+import { describeParams } from '../../utils/rest';
 export default defineEventHandler(async (event) => {
     const APIKeys = useAPIKeys();
-    return APIKeys.mint().propOptions(vingDescribe(event), true);
+    return APIKeys.mint().propOptions(describeParams(event), true);
 });
