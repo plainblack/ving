@@ -1,6 +1,6 @@
 import { defineCommand } from "citty";
 import { generateRecord } from '../server/vingrecord/genskeleton';
-import { generateApis } from '../server/vingrecord/genapis';
+import { generateApis } from '../server/vingrecord/genrest';
 import { generatePages } from '../server/vingrecord/genpages';
 import { getContext } from '@feathershq/pinion';
 import { findVingSchema } from '../server/vingrecord/VingRecord';
@@ -17,15 +17,15 @@ export default defineCommand({
             valueHint: "ClassName",
             alias: "n",
         },
-        apis: {
+        rest: {
             type: "string",
-            description: "Generate APIs for this record",
+            description: "Generate REST APIs for this record",
             valueHint: "ClassName",
-            alias: "a",
+            alias: "r",
         },
         pages: {
             type: "string",
-            description: "Generate Pages for this record",
+            description: "Generate Web Pages for this record",
             valueHint: "ClassName",
             alias: "p",
         },
@@ -34,8 +34,8 @@ export default defineCommand({
         if (args.new) {
             await generateRecord({ ...getContext({}), name: args.new, schema: findVingSchema(args.new, 'kind') });
         }
-        else if (args.apis) {
-            await generateApis({ ...getContext({}), name: args.apis, schema: findVingSchema(args.apis, 'kind') });
+        else if (args.rest) {
+            await generateApis({ ...getContext({}), name: args.rest, schema: findVingSchema(args.rest, 'kind') });
         }
         else if (args.pages) {
             await generatePages({ ...getContext({}), name: args.pages, schema: findVingSchema(args.pages, 'kind') });
