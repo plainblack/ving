@@ -25,10 +25,10 @@ export default defineEventHandler(async (event) => {
 
 const indexGetTemplate = ({ name }: Context) =>
     `import { use${name}s } from '../../vingrecord/records/${name}';
-import { describeListParams } from '../../utils/rest';
+import { describeListParams, describeListWhere } from '../../utils/rest';
 export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
-    return await ${name}s.describeList(describeListParams(event));
+    return await ${name}s.describeList(describeListParams(event), describeListWhere(event, ${name}s.describeListFilter()));
 });`;
 
 const idPutTemplate = ({ name }: Context) =>
