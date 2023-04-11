@@ -223,7 +223,7 @@ export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
                 if (behavior.optionsApi != null) {
                     return behavior.optionsApi;
                 }
-                return self.getCreateApi + "/options";
+                return self.getCreateApi() + "/options";
             },
 
             fetchPropsOptions(options: VKGenericOptions<T> = {}) {
@@ -233,6 +233,7 @@ export default <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
                 });
                 promise.then((response) => {
                     const data: Describe<T>['options'] = response.data.value as Describe<T>['options'];
+                    console.log(data);
                     // @ts-expect-error - https://github.com/vuejs/core/issues/7278
                     this.propsOptions = data;
                     if (options?.onSuccess) {
