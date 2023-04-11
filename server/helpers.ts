@@ -82,6 +82,7 @@ export const vingFilter = (event: H3Event, kind: any) => {
     const query = getQuery(event);
     let where = undefined;
     const filter = kind.describeListFilter() as QueryFilter;
+    /*
     if (query.search && filter.queryable.length) {
         let list = [];
         for (const column of filter.queryable) {
@@ -89,6 +90,7 @@ export const vingFilter = (event: H3Event, kind: any) => {
         }
         where = or(...list);
     }
+    */
     return where;
 }
 
