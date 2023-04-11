@@ -3,7 +3,6 @@ import { useUsers, UserRecord } from './vingrecord/records/User';
 const Users = useUsers();
 
 import { RoleMixin, RoleOptions } from './vingrecord/mixins/Role';
-import { ouch } from './helpers';
 import { useCache } from './cache';
 import { v4 } from 'uuid';
 

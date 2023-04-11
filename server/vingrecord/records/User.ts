@@ -2,7 +2,6 @@ import { VingRecord, VingKind } from "../VingRecord";
 import { ModelInsert, ModelSelect, DescribeParams, AuthorizedUser } from '../../../types';
 import { RoleOptions, RoleMixin } from '../mixins/Role';
 import { useAPIKeys } from "./APIKey";
-import { ouch } from '../../helpers';
 import bcrypt from 'bcryptjs';
 import { useCache } from '../../cache';
 import { useDB } from '../../drizzle/db';

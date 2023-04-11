@@ -1,4 +1,3 @@
-import { ouch } from '~/server/helpers';
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const currentUser = useCurrentUserStore();
     if (!currentUser.props?.admin) {

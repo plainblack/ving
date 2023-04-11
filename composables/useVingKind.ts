@@ -1,5 +1,4 @@
 import type { VKQueryParams, VingRecord, VKSearchOptions, VKAllOptions, VRDeleteOptions, VRUpdateOptions, VingKindParams, VKCreateOptions, VKGenericOptions, Describe, DescribeListParams, DescribeList, ModelName } from '~/types';
-import { ouch } from '~/server/helpers';
 import _ from 'lodash';
 import { v4 } from 'uuid';
 import { defineStore } from 'pinia';

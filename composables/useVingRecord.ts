@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import type { Describe, ModelName, VingRecordParams, VRQueryParams, VRUpdateOptions, VRCreateOptions, VRDeleteOptions, DescribeParams, VRGenericOptions } from '~/types';
-import { ouch } from '~/server/helpers';
 import _ from 'lodash';
 import { v4 } from 'uuid';
 

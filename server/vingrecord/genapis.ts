@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
 
 const indexGetTemplate = ({ name }: Context) =>
     `import { use${name}s } from '../../vingrecord/records/${name}';
-import { vingDescribeList, vingSession, ouch } from '../../helpers';
+import { vingDescribeList, vingSession } from '../../helpers';
 export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
     return await ${name}s.describeList(vingDescribeList(event));

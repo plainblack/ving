@@ -1,5 +1,4 @@
 import { RoleProps, ExtendedRoleOptions, Roles, Constructable } from '../../../types';
-import { ouch } from '../../helpers';
 
 export const RoleOptions = ["admin", "developer"] as const;
 

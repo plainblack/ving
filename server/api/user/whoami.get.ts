@@ -1,4 +1,4 @@
-import { vingDescribe, vingSession, ouch } from '../../helpers';
+import { vingDescribe, vingSession } from '../../helpers';
 export default defineEventHandler(async (event) => {
     const session = vingSession(event);
     try {
