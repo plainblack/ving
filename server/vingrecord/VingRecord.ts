@@ -460,7 +460,7 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         return undefined;
     }
 
-    private calcWhere(where?: SQL) {
+    public calcWhere(where?: SQL) {
         let defaults = undefined;
         if (this.propDefaults) {
             for (const item of this.propDefaults) {

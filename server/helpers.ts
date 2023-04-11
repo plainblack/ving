@@ -78,6 +78,20 @@ export const testRequired = (list: string[], params: Record<string, any>) => {
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+export const vingFilter = (event: H3Event, kind: any) => {
+    const query = getQuery(event);
+    let where = undefined;
+    const filter = kind.describeListFilter() as QueryFilter;
+    if (query.search && filter.queryable.length) {
+        let list = [];
+        for (const column of filter.queryable) {
+            list.push(like(column, `%${query.search}%`));
+        }
+        where = or(...list);
+    }
+    return where;
+}
+
 export const vingSession = (event: H3Event) => {
     if (event && event.context && event.context.ving && event.context.ving.session) {
         return event.context.ving.session;

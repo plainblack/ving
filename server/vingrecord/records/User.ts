@@ -134,7 +134,10 @@ export class UserKind extends VingKind<'User', UserRecord>  {
         filter.queryable.push(this.table.username, this.table.email, this.table.realName);
         return filter;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> vingFilter
 }
 
 
