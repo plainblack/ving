@@ -1,9 +1,24 @@
-import { MySql2Database, like, eq, asc, desc, and, or, ne, SQL, sql, Name, AnyMySqlColumn } from '../../server/drizzle/orm';
+import { like, eq, and, or, gt, lt, gte, lte, ne, SQL, AnyMySqlColumn } from '../../server/drizzle/orm';
 import { H3Event, getQuery, readBody } from 'h3';
 import { QueryFilter } from '../../types';
 import { ouch } from '../../utils/ouch';
 import { DescribeListParams, DescribeParams, Roles } from '../../types';
 import _ from 'lodash';
+
+const fixColumnData = (column: AnyMySqlColumn, data: any) => {
+    if (column.getSQLType() == 'timestamp') {
+        if (!data.match(/^"/)) // make it JSON compatible
+            data = '"' + data + '"';
+        return JSON.parse(data);
+    }
+    if (column.getSQLType() == 'boolean') {
+        return data == 'true' ? true : false;
+    }
+    if (column.getSQLType() == 'number') {
+        return Number(data);
+    }
+    return data;
+}
 
 export const describeListWhere = (event: H3Event, filter: QueryFilter) => {
     let where: SQL | undefined = undefined;
@@ -16,6 +31,64 @@ export const describeListWhere = (event: H3Event, filter: QueryFilter) => {
             else {
                 where = or(where, like(column, `%${query.search}%`));
             }
+        }
+    }
+    const ands = [];
+    for (const key in query) {
+        const value = query[key] || '';
+        const matchRange = key.match(/^_(start|end)_(.*)$/);
+        if (matchRange) {
+            const matchColumn = filter.ranged.find(col => col.name == matchRange[2]);
+            if (matchColumn) {
+                const data = fixColumnData(matchColumn, value);
+                if (matchRange[1] == 'start') {
+                    ands.push(gte(matchColumn, data));
+                }
+                else if (matchRange[1] == 'end') {
+                    ands.push(lte(matchColumn, data));
+                }
+            }
+        }
+        const matchColumn = filter.qualifiers.find(col => col.name == key);
+        if (matchColumn) {
+            const matchOp = value.toString().match(/^(>|<|>=|<=|!=|<>)?(.+)$/);
+            if (matchOp) {
+                const data = fixColumnData(matchColumn, matchOp[2]);
+                switch (matchOp[1]) {
+                    case '!=':
+                    case '<>': {
+                        ands.push(ne(matchColumn, data));
+                        break;
+                    }
+                    case '>': {
+                        ands.push(gt(matchColumn, data));
+                        break;
+                    }
+                    case '<': {
+                        ands.push(lt(matchColumn, data));
+                        break;
+                    }
+                    case '>=': {
+                        ands.push(gte(matchColumn, data));
+                        break;
+                    }
+                    case '<=': {
+                        ands.push(lte(matchColumn, data));
+                        break;
+                    }
+                    default: {
+                        ands.push(eq(matchColumn, data));
+                    }
+                }
+            }
+        }
+    }
+    for (const item of ands) {
+        if (where === undefined) {
+            where = item;
+        }
+        else {
+            where = and(where, item);
         }
     }
     return where;

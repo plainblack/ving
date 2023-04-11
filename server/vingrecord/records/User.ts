@@ -132,6 +132,7 @@ export class UserKind extends VingKind<'User', UserRecord>  {
     public describeListFilter() {
         const filter = super.describeListFilter();
         filter.queryable.push(this.table.username, this.table.email, this.table.realName);
+        filter.qualifiers.push(this.table.admin, this.table.developer, this.table.createdAt)
         return filter;
     }
 }

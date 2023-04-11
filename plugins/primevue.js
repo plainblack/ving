@@ -20,6 +20,7 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Paginator from 'primevue/paginator';
 import Dialog from 'primevue/dialog';
+import Calendar from 'primevue/calendar';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
@@ -43,6 +44,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Column', Column);
     nuxtApp.vueApp.component('Paginator', Paginator);
     nuxtApp.vueApp.component('Dialog', Dialog);
+    nuxtApp.vueApp.component('Calendar', Calendar);
 
     return {
         provide: {

@@ -6,8 +6,8 @@ import type { InferModel, AnyMySqlTable, AnyMySqlColumn } from '../server/drizzl
 
 export type QueryFilter = {
     queryable: AnyMySqlColumn[],
-    ranged: [],
-    qualifiers: [],
+    ranged: AnyMySqlColumn[],
+    qualifiers: AnyMySqlColumn[],
 }
 
 type MakeModelMap<T extends Record<string, AnyMySqlTable>> = {

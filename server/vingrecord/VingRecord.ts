@@ -377,12 +377,10 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         return out;
     }
 
-
-
     public describeListFilter() {
         const filter: QueryFilter = {
             queryable: [],
-            ranged: [],
+            ranged: [this.table.createdAt, this.table.updatedAt],
             qualifiers: [],
         };
         return filter;

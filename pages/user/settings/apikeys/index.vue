@@ -20,6 +20,11 @@
                                     <Button label="Search" @click="apikeys._search()" />
                                 </div>
 
+                                <Calendar id="calendar-12h" v-model="apikeys.query._start_createdAt" showTime
+                                    hideOnDateTimeSelect hourFormat="12" style="width: 200px;" />
+                                <Calendar id="calendar-12h" v-model="apikeys.query._end_createdAt" showTime
+                                    hideOnDateTimeSelect hourFormat="12" />
+
                                 <DataTable :value="apikeys.records" stripedRows @sort="apikeys.sortDataTable">
                                     <Column field="props.createdAt" header="Created" sortable>
                                         <template #body="slotProps">
