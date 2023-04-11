@@ -51,15 +51,26 @@ function addRelationships({ name, schema }: Pick<Context, 'name' | 'schema'>) {
 }
 
 function addFilter({ name, schema }: Pick<Context, 'name' | 'schema'>) {
-    let out = '';
     if (schema.props.filter((prop) => prop.name == 'name'))
-        out = `
+        return `
+        // if you want to do some advanced searching via rest
         public describeListFilter() {
             const filter = super.describeListFilter();
             filter.queryable.push(this.table.name);
+            //filter.qualifiers.push( column names go here );
+            //filter.range.push( number/date column names go here );
             return filter;
         }`;
-    return out;
+    else
+        return `
+        // if you want to do some advanced searching via rest
+        /*public describeListFilter() {
+            const filter = super.describeListFilter();
+            filter.queryable.push(string column names go here);
+            filter.qualifiers.push(column names go here);
+            filter.range.push(number/date column names go here);
+        return filter;
+        }*/`;
 }
 
 const recordTemplate = ({ name, schema }: Context) =>
