@@ -11,13 +11,22 @@
                         <div class="flex-auto p-fluid">
                             <div class="mb-4">
 
-                                <DataTable :value="apikeys.records" stripedRows>
-                                    <Column field="props.createdAt" header="Created">
+                                <div class="p-inputgroup flex-1">
+                                    <span class="p-input-icon-left w-full">
+                                        <i class="pi pi-search" />
+                                        <InputText type="text" placeholder="Search Users" class="w-full"
+                                            v-model="apikeys.query.search" @keydown.enter="apikeys.search" />
+                                    </span>
+                                    <Button label="Search" @click="apikeys._search()" />
+                                </div>
+
+                                <DataTable :value="apikeys.records" stripedRows @sort="apikeys.sortDataTable">
+                                    <Column field="props.createdAt" header="Created" sortable>
                                         <template #body="slotProps">
                                             {{ dt.formatDate(slotProps.data.props.createdAt) }}
                                         </template>
                                     </Column>
-                                    <Column field="props.name" header="Name"></Column>
+                                    <Column field="props.name" header="Name" sortable></Column>
                                     <Column field="props.id" header="API Key">
                                         <template #body="slotProps">
                                             <Button icon="pi pi-copy" class="mr-2" alt="copy to clipboard"
@@ -40,6 +49,8 @@
                                         </template>
                                     </Column>
                                 </DataTable>
+
+                                <Pager :kind="apikeys" />
 
                                 <Dialog v-model:visible="dialog.visible" maximizable modal header="Header"
                                     :style="{ width: '75vw' }">
@@ -123,7 +134,7 @@ const apikeys = useVingKind<'APIKey'>({
     query: { includeMeta: true },
     newDefaults: { name: '', reason: '', url: 'http://', userId: currentUser.props?.id },
 });
-await apikeys.all();
+await apikeys.search();
 
 const d: { visible: boolean, current?: VingRecord<'APIKey'> } = { visible: false, current: undefined };
 const dialog = ref(d);
