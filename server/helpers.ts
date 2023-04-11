@@ -1,7 +1,6 @@
-import { DescribeListParams, DescribeParams, Roles, QueryFilter } from '../types';
+import { DescribeListParams, DescribeParams, Roles } from '../types';
 import _ from 'lodash';
 import { H3Event, createError, getQuery, readBody } from 'h3';
-import { like, or } from './drizzle/orm';
 
 export const findObjectIndex = <T>(field: keyof T, value: string, list: T[]): number => {
     return list.findIndex((obj: T) => obj[field] == value);
@@ -77,22 +76,6 @@ export const testRequired = (list: string[], params: Record<string, any>) => {
 }
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-export const vingFilter = (event: H3Event, kind: any) => {
-    const query = getQuery(event);
-    let where = undefined;
-    const filter = kind.describeListFilter() as QueryFilter;
-    /*
-    if (query.search && filter.queryable.length) {
-        let list = [];
-        for (const column of filter.queryable) {
-            list.push(like(column, `%${query.search}%`));
-        }
-        where = or(...list);
-    }
-    */
-    return where;
-}
 
 export const vingSession = (event: H3Event) => {
     if (event && event.context && event.context.ving && event.context.ving.session) {

@@ -4,6 +4,7 @@ import { findObject, ouch } from '../helpers';
 import _ from 'lodash';
 import { MySql2Database, like, eq, asc, desc, and, or, ne, SQL, sql, Name, AnyMySqlColumn } from '../../server/drizzle/orm';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers';
+import { H3Event, createError, getQuery, readBody } from 'h3';
 
 export const findVingSchema = (nameToFind: string = '-unknown-', by: 'tableName' | 'kind' = 'tableName') => {
     try {
@@ -376,7 +377,24 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         return out;
     }
 
-    public describeListFilter() {
+    public describeListFilter(event: H3Event) {
+        let where: SQL | undefined = undefined;
+        const query = getQuery(event);
+        const filter = this.describeListFilterConfig();
+        if (query.search) {
+            for (const column of filter.queryable) {
+                if (where === undefined) {
+                    where = like(column, `%${query.search}%`);
+                }
+                else {
+                    where = or(where, like(column, `%${query.search}%`));
+                }
+            }
+        }
+        return where;
+    }
+
+    public describeListFilterConfig() {
         const filter: QueryFilter = {
             queryable: [],
             ranged: [],

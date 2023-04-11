@@ -85,7 +85,7 @@ const users = useVingKind<'User'>({
     query: { includeMeta: true, sortBy: 'username', sortOrder: 'asc' },
     newDefaults: { username: '', realName: '', email: '' },
 });
-await users._search();
+await users.search();
 
 const breadcrumbs = [
     { label: 'Admin', to: '/admin' },
