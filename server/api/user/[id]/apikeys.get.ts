@@ -4,5 +4,6 @@ export default defineEventHandler(async (event) => {
     const Users = useUsers();
     const { id } = getRouterParams(event);
     const user = await Users.findOrDie(id);
-    return await user.apikeys.describeList(describeListParams(event));
+    const APIKeys = user.apikeys;
+    return await APIKeys.describeList(describeListParams(event), describeListWhere(event, APIKeys.describeListFilter()));
 });

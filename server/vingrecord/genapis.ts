@@ -73,7 +73,8 @@ export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
     const { id } = getRouterParams(event);
     const ${name.toLowerCase()} = await ${name}s.findOrDie(id);
-    return await ${name.toLowerCase()}.${prop.relation!.name}.describeList(describeListParams(event));
+    const ${prop.relation!.kind}s = ${name.toLowerCase()}.${prop.relation!.name};
+    return await ${prop.relation!.kind}s.describeList(describeListParams(event), describeListWhere(event, ${prop.relation!.kind}s.describeListFilter()));
 });`;
 
 const parentGetTemplate = ({ name, prop }: { name: string, prop: vingProp }) =>
