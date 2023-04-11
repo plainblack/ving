@@ -1,4 +1,4 @@
-import { ModelMap, Roles, ExtendedRoleOptions, ModelName, vingSchema, vingProp, ModelSelect, ModelInsert, Describe, warning, AuthorizedUser, DescribeParams, DescribeListParams, vingOption, DescribeList, Constructable } from '../../types';
+import { ModelMap, Roles, QueryFilter, ModelName, vingSchema, vingProp, ModelSelect, ModelInsert, Describe, warning, AuthorizedUser, DescribeParams, DescribeListParams, vingOption, DescribeList, Constructable } from '../../types';
 import { vingSchemas } from '../vingschema';
 import { findObject, ouch } from '../helpers';
 import _ from 'lodash';
@@ -374,6 +374,15 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
             }
         }
         return out;
+    }
+
+    public describeListFilter() {
+        const filter: QueryFilter = {
+            queryable: [],
+            ranged: [],
+            qualifiers: [],
+        };
+        return filter;
     }
 
     public copy(originalProps: Partial<ModelSelect<T>>) {
