@@ -45,6 +45,9 @@ const prop2type = (prop: vingProp) => {
     if (prop.type == 'number') {
         return 'number';
     }
+    if (prop.type == 'string' && prop.length > 256) {
+        return 'textarea';
+    }
     else {
         return 'text';
     }
@@ -149,7 +152,7 @@ const ${schema.tableName} = useVingKind<'${name}'>({
     newDefaults: { ${newDefaults(schema)} },
 });
 await Promise.all([
-    ${schema.tableName}._search(),
+    ${schema.tableName}.search(),
     ${schema.tableName}.fetchPropsOptions(),
 ]);
 </script>`;
@@ -173,10 +176,13 @@ const viewProps = (schema: vingSchema) => {
     return out;
 };
 
+const nameOrId = (schema: vingSchema) => schema.props.find((prop) => prop.name == 'name') ? 'name' : 'id';
+
+
 const viewTemplate = ({ name, schema }: Context) =>
     `<template>
     <Crumbtrail :crumbs="breadcrumbs" />
-    <h1>{{${name.toLowerCase()}.props?.id}}</h1>
+    <h1>{{${name.toLowerCase()}.props?.${nameOrId(schema)}}}</h1>
     <div class="surface-card p-4 border-1 surface-border border-round flex-auto">
         ${viewProps(schema)}
     </div>
@@ -229,7 +235,7 @@ const editProps = (schema: vingSchema) => {
 const statProps = (schema: vingSchema) => {
     let out = '';
     for (const prop of schema.props) {
-        if (prop.view.length > 0) {
+        if (prop.view.length > 0 && prop.edit.length == 0) {
             if (prop.type == 'date') {
                 out += `
             <div class="mb-4"><b>${makeLabel(prop.name)}</b>: {{dt.formatDateTime(${schema.kind.toLowerCase()}.props?.${prop.name})}}</div>
@@ -260,8 +266,8 @@ const editTemplate = ({ name, schema }: Context) =>
         </FieldsetItem>
 
         <FieldsetItem name="Actions">
-            <NuxtLink :to="\`/${name.toLowerCase()}/\${${name.toLowerCase()}.props?.id}\`" class="no-underline mr-2 mb-2">
-                <Button title="View" alt="View ${makeWords(name)}"><i class="pi pi-eye mr-1"></i> View</Button>
+            <NuxtLink :to="\`/${name.toLowerCase()}/\${${name.toLowerCase()}.props?.id}\`" class="no-underline">
+                <Button title="View" alt="View ${makeWords(name)}" class="mr-2 mb-2"><i class="pi pi-eye mr-1"></i> View</Button>
             </NuxtLink>
             <Button @click="${name.toLowerCase()}.delete" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete ${makeWords(name)}"><i class="pi pi-trash mr-1"></i> Delete</Button>
         </FieldsetItem>
