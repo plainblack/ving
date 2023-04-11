@@ -3,6 +3,7 @@ const Users = useUsers();
 import { testRequired, vingBody, vingDescribe } from '../../helpers';
 import { Session } from '../../session';
 import { eq } from 'drizzle-orm/mysql-core/expressions.js';
+import { ouch } from '../../../utils/ouch';
 
 export default defineEventHandler(async (event) => {
     const body = await vingBody(event)

@@ -1,27 +1,8 @@
 import { DescribeListParams, DescribeParams, Roles } from '../types';
 import _ from 'lodash';
-import { H3Event, createError, getQuery, readBody } from 'h3';
+import { H3Event, getQuery, readBody } from 'h3';
+import { ouch } from '../utils/ouch';
 
-export const findObjectIndex = <T>(field: keyof T, value: string, list: T[]): number => {
-    return list.findIndex((obj: T) => obj[field] == value);
-}
-
-export const findObject = <T>(field: keyof T, value: string, list: T[]): T => {
-    const index = findObjectIndex(field, value, list);
-    if (index >= 0) {
-        return list[index];
-    }
-    else {
-        throw ouch(404, `cannot find "${value}" in "${field.toString()}" of  object`);
-    }
-}
-
-export const bleep = (error: any): string => {
-    if ('message' in error) {
-        return error.message;
-    }
-    return error;
-}
 
 export const testRequired = (list: string[], params: Record<string, any>) => {
     if (params === undefined) {
@@ -33,8 +14,6 @@ export const testRequired = (list: string[], params: Record<string, any>) => {
         }
     }
 }
-
-export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export const vingSession = (event: H3Event) => {
     if (event && event.context && event.context.ving && event.context.ving.session) {

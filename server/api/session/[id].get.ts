@@ -1,5 +1,6 @@
 import { testSession } from '../../session';
-import { ouch, vingSession, vingDescribe } from '../../helpers';
+import { vingSession, vingDescribe } from '../../helpers';
+import { ouch } from '../../../utils/ouch';
 export default defineEventHandler(async (event) => {
     const session = vingSession(event);
     testSession(session);

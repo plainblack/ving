@@ -1,5 +1,5 @@
-import { findObject } from '../server/helpers';
 import { test, expect } from "vitest";
+import { findObject } from '../utils/findObject';
 
 const data = [
 	{ name: "foo" },

@@ -1,5 +1,5 @@
 import { useCache } from '../server/cache';
-import { sleep } from '../server/helpers';
+import { sleep } from '../utils/sleep';
 import { test, expect } from "vitest";
 
 const cache = useCache();

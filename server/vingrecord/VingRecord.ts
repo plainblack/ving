@@ -1,6 +1,7 @@
 import { ModelMap, Roles, QueryFilter, ModelName, vingSchema, vingProp, ModelSelect, ModelInsert, Describe, warning, AuthorizedUser, DescribeParams, DescribeListParams, vingOption, DescribeList, Constructable } from '../../types';
 import { vingSchemas } from '../vingschema';
-import { findObject } from '../helpers';
+import { findObject } from '../../utils/findObject';
+import { ouch } from '../../utils/ouch';
 import _ from 'lodash';
 import { MySql2Database, like, eq, asc, desc, and, or, ne, SQL, sql, Name, AnyMySqlColumn } from '../../server/drizzle/orm';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers';

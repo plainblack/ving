@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs';
 import { useCache } from '../../cache';
 import { useDB } from '../../drizzle/db';
 import { UserTable } from '../../drizzle/schema/User';
+import { ouch } from '../../../utils/ouch';
 
 export class UserRecord extends RoleMixin(VingRecord<'User'>) {
     private userChanged = false;
