@@ -50,6 +50,18 @@ function addRelationships({ name, schema }: Pick<Context, 'name' | 'schema'>) {
     return out;
 }
 
+function addFilter({ name, schema }: Pick<Context, 'name' | 'schema'>) {
+    let out = '';
+    if (schema.props.filter((prop) => prop.name == 'name'))
+        out = `
+        public describeListFilter() {
+            const filter = super.describeListFilter();
+            filter.queryable.push(this.table.name);
+            return filter;
+        }`;
+    return out;
+}
+
 const recordTemplate = ({ name, schema }: Context) =>
     `import { VingRecord, VingKind } from "../VingRecord";
 import { useDB } from '../../drizzle/db';
@@ -63,6 +75,7 @@ export class ${name}Record extends VingRecord<'${name}'> {
 
 export class ${name}Kind extends VingKind<'${name}', ${name}Record>  {
     // add custom Kind code here
+    ${addFilter({ name, schema })}
 }
 
 export const use${name}s = () => {
