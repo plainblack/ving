@@ -1,6 +1,7 @@
-import { DescribeListParams, DescribeParams, Roles } from '../types';
+import { DescribeListParams, DescribeParams, Roles, QueryFilter } from '../types';
 import _ from 'lodash';
 import { H3Event, createError, getQuery, readBody } from 'h3';
+import { like, or } from './drizzle/orm';
 
 export const findObjectIndex = <T>(field: keyof T, value: string, list: T[]): number => {
     return list.findIndex((obj: T) => obj[field] == value);
