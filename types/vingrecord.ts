@@ -2,7 +2,13 @@ import type { UserModel } from '../server/drizzle/schema/User';
 import type { UserRecord } from '../server/vingrecord/records/User';
 import { RoleOptions } from '../server/vingschema/schemas/User';
 import type { APIKeyModel } from '../server/drizzle/schema/APIKey';
-import type { InferModel, AnyMySqlTable } from 'drizzle-orm/mysql-core';
+import type { InferModel, AnyMySqlTable, AnyMySqlColumn } from '../server/drizzle/orm';
+
+export type QueryFilter = {
+    queryable: AnyMySqlColumn[],
+    ranged: [],
+    qualifiers: [],
+}
 
 type MakeModelMap<T extends Record<string, AnyMySqlTable>> = {
     [K in keyof T]: {
