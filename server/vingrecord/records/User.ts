@@ -129,8 +129,8 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
 export class UserKind extends VingKind<'User', UserRecord>  {
     // add custom Kind code here
 
-    public describeListFilterConfig() {
-        const filter = super.describeListFilterConfig();
+    public describeListFilter() {
+        const filter = super.describeListFilter();
         filter.queryable.push(this.table.username, this.table.email, this.table.realName);
         return filter;
     }
