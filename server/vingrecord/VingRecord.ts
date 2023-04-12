@@ -5,6 +5,7 @@ import { ouch } from '../../utils/ouch';
 import _ from 'lodash';
 import { MySql2Database, like, eq, asc, desc, and, or, ne, SQL, sql, Name, AnyMySqlColumn } from '../../server/drizzle/orm';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers';
+import { ReadStream } from "fs";
 
 export const findVingSchema = (nameToFind: string = '-unknown-', by: 'tableName' | 'kind' = 'tableName') => {
     try {
@@ -505,35 +506,65 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         return results.map(props => new this.recordClass(this.db, this.table, props));
     }
 
-    /*
-    public async findIterator(
-        where?: SQL,
-        options: {
-            limit?: number,
-            orderBy?: (SQL | AnyMySqlColumn)[]
-        } = {}
-    ) {
-        const hardLimit = options.limit || 999999999;
-        const limitPerBatch = 2;
-        let counter = 0;
-        for (let counter = 0; counter < hardLimit; counter + 2) {
-            const requestedLimit = limitPerBatch < hardLimit ? limitPerBatch : hardLimit;
-            const result = await this.findMany(where, {
-                limit: requestedLimit,
-                offset: counter,
-                orderBy: options.orderBy
-            });
-            for (const row of result) {
+    /* 
+    // not sure how to get this working
+    public async iterator(where?: SQL, batchSize = 100): Promise<AsyncIterator<VR>> {
+        let offset = 0; // Offset for pagination
+        let totalRecords = 0; // Total number of records
+        let fetchedRecords = 0; // Number of records fetched so far
+        const self = this;
 
-            }
-        }
-        return {
-            next() {
+        // Fetch the total number of records
+        totalRecords = await this.count(where)
 
-                return { done: true }
-            }
-        }
+        // Define an async iterator
+        const iterator: AsyncIterator<VR, VR, { done: boolean, value: VR | null }> = {
+            // @ts-ignore
+            async next() {
+                // Check if all records have been fetched
+                if (fetchedRecords >= totalRecords) {
+                    return { done: true, value: null };
+                }
+
+                // Fetch the next batch of records
+                const records = await self.findMany(where, { limit: batchSize, offset })
+
+                // Update the fetched records count and offset for the next batch
+                fetchedRecords += records.length;
+                offset += batchSize;
+
+                return { done: false, value: records.shift() || null };
+            },
+            [Symbol.asyncIterator]() {
+                return this;
+            },
+        };
+        // @ts-ignore
+        return iterator;
     }
+    */
+
+    // here's some example usage of it
+    /*
+    const Users = useUsers();
+
+    (async () => {
+
+        const iterator = await Users.fetchRecordsInBatches(undefined, 1);
+
+        // Fetch records in batches using the async iterator
+        //@ts-ignore
+        for await (const record of iterator) {
+            if (record) {
+                console.log(record.get('username')); // Process the fetched record
+            }
+        }
+
+        // Close the database connection
+
+        //@ts-ignore
+        Users.db.session.client.pool.end()
+    })();
     */
 
     public async deleteMany(
