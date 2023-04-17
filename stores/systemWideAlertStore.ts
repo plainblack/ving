@@ -37,12 +37,13 @@ export const useSystemWideAlertStore = defineStore('system-wide-alert', {
             }
         },
         async check() {
-            const self = this;
-            await self.get();
-            if (self.timer) {
-                clearTimeout(self.timer);
+            if (process.client) {
+                await this.get();
+                if (this.timer) {
+                    clearTimeout(this.timer);
+                }
+                this.timer = setTimeout(async () => await this.check(), 1000 * 60 * 15);
             }
-            self.timer = setTimeout(async () => await self.check(), 1000 * 60 * 15);
         }
     },
 });
