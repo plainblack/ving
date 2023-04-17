@@ -118,7 +118,7 @@ export class VingRecord<T extends ModelName> {
         return this.props = (await this.db.select().from(this.table).where(eq(this.table.id, this.props.id)))[0] as ModelSelect<T>;
     }
 
-    public isOwner(currentUser: AuthorizedUser) {
+    public isOwner(currentUser?: AuthorizedUser) {
         if (currentUser === undefined)
             return false;
         const schema = findVingSchema(this.table[Name]);
@@ -139,7 +139,7 @@ export class VingRecord<T extends ModelName> {
         return false;
     }
 
-    public canEdit(currentUser: AuthorizedUser) {
+    public canEdit(currentUser?: AuthorizedUser) {
         if (this.isOwner(currentUser)) {
             return true;
         }

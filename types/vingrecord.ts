@@ -3,6 +3,7 @@ import type { UserRecord } from '../server/vingrecord/records/User';
 import { RoleOptions } from '../server/vingschema/schemas/User';
 import type { APIKeyModel } from '../server/drizzle/schema/APIKey';
 import type { InferModel, AnyMySqlTable, AnyMySqlColumn } from '../server/drizzle/orm';
+import type { Session } from '../server/session';
 
 export type QueryFilter = {
     queryable: AnyMySqlColumn[],
@@ -28,7 +29,7 @@ export type ModelName = keyof ModelMap;
 export type ModelSelect<T extends ModelName> = ModelMap[T]['select'];
 export type ModelInsert<T extends ModelName> = ModelMap[T]['insert'];
 
-export type AuthorizedUser = UserRecord;
+export type AuthorizedUser = Session | UserRecord;
 
 export type Roles = Pick<ModelSelect<'User'>, typeof RoleOptions[number]>;
 export type ExtendedRoleOptions = keyof Roles | "public" | "owner" | string;
