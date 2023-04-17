@@ -137,7 +137,7 @@ const config = useRuntimeConfig();
 const currentUser = useCurrentUserStore();
 await currentUser.isAuthenticated();
 const swa = useSystemWideAlertStore();
-await swa.get(); // shouldn't have to run this as check() should do it
+await swa.get(); // either have to do this, or duplicate useHTTP to have a version that uses $fetch when run inside of onMounted()
 onMounted(async () => {
     await swa.check();
 })
