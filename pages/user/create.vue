@@ -64,7 +64,7 @@ const notify = useNotifyStore();
 async function createAccount() {
     try {
         await currentUser.create(newUser.value);
-        navigateTo('/');
+        await navigateTo('/');
     }
     catch (e) {
         if (e !== undefined && typeof (e) == 'object' && e !== null && 'message' in e && typeof e.message == 'string') {

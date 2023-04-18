@@ -6,14 +6,18 @@ type Behavior = {
     headers?: Record<string, string>
 }
 
-export default (url: string, behavior: Behavior = {}) => {
+export default async function (url: string, behavior: Behavior = {}) {
     const notify = useNotifyStore();
     const throbber = useThrobberStore();
-    return useFetch(url, {
+    let error = null
+    const response = await $fetch(url, {
         method: behavior.method || 'get',
         query: behavior.query,
         body: behavior.body,
-        headers: behavior.headers,
+        headers: {
+            ...useRequestHeaders() as any,
+            ...behavior.headers
+        },
         async onRequest(context: any) {
             throbber.working();
         },
@@ -29,5 +33,13 @@ export default (url: string, behavior: Behavior = {}) => {
             if (!behavior.suppressErrorNotifications)
                 notify.error(context.response._data.message);
         },
+    }).catch((_error) => {
+        // console.error('Fetch error', url, _error)
+        error = _error
+        return null
     })
+    return {
+        error: ref(error),
+        data: ref(response)
+    }
 }

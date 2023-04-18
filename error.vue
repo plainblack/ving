@@ -2,10 +2,10 @@
     <div class="surface-section px-4 py-8 md:px-6 lg:px-8">
         <div class="flex flex-column lg:flex-row justify-content-center align-items-center gap-7">
             <div class="text-center lg:text-right">
-                <div class="mt-6 mb-3 font-bold text-7xl text-900">{{ error.statusCode }}</div>
-                <div class="mt-6 mb-3 font-bold text-6xl text-900">{{ error.statusMessage }}</div>
-                <p class="text-700 text-3xl mt-0 mb-6">{{ error.message }}</p>
-                <p class="text-700 text-3xl mt-0 mb-6">{{ error.description }}</p>
+                <div class="mt-6 mb-3 font-bold text-7xl text-900">{{ error?.statusCode || 500 }}</div>
+                <div class="mt-6 mb-3 font-bold text-6xl text-900">{{ error?.statusMessage || "" }}</div>
+                <p class="text-700 text-3xl mt-0 mb-6">{{ error?.message || "" }}</p>
+                <p class="text-700 text-3xl mt-0 mb-6">{{ error?.description || "" }}</p>
                 <NuxtLink to="/" v-slot="{ navigate }" custom>
                     <Button @click="navigate" type="button" label="Go back to home page" class="p-button-outlined"></Button>
                 </NuxtLink>
@@ -20,5 +20,4 @@
 <script setup>
 const error = useError();
 const config = useRuntimeConfig();
-
 </script>
