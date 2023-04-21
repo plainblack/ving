@@ -199,8 +199,8 @@ const route = useRoute();
 const ${name.toLowerCase()} = useVingRecord<'${name}'>({
     fetchApi: '/api/${name.toLowerCase()}/' + route.params.id,
     query: { includeMeta: true, includeOptions: true },
-    onDelete() {
-        navigateTo('/${name.toLowerCase()}');
+    async onDelete() {
+        await navigateTo('/${name.toLowerCase()}');
     },
 });
 await ${name.toLowerCase()}.fetch()
@@ -289,8 +289,8 @@ const ${name.toLowerCase()} = useVingRecord<'${name}'>({
     onUpdate() {
         notify.success('Updated ${makeWords(name)}.');
     },
-    onDelete() {
-        navigateTo('/${name.toLowerCase()}');
+    async onDelete() {
+        await navigateTo('/${name.toLowerCase()}');
     },
 });
 await ${name.toLowerCase()}.fetch()

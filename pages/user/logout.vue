@@ -8,5 +8,5 @@ definePageMeta({
 const currentUser = useCurrentUserStore();
 
 await currentUser.logout();
-navigateTo('/');
+await navigateTo('/');
 </script>

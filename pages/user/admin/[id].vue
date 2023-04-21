@@ -82,17 +82,17 @@ const user = useVingRecord<'User'>({
     onUpdate() {
         notify.success('Updated user.');
     },
-    onDelete() {
-        navigateTo('/user/admin');
+    async onDelete() {
+        await navigateTo('/user/admin');
     },
 });
 
 function become() {
     user.call('post', user.links?.self + '/become', undefined, {
-        onSuccess() {
+        async onSuccess() {
             const currentUser = useCurrentUserStore();
             currentUser.fetch();
-            navigateTo('/');
+            await navigateTo('/');
         }
     })
 }

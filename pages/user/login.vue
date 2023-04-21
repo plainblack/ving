@@ -67,9 +67,9 @@ async function tryLogin() {
         await currentUser.login(login.value, password.value);
         const query = useRoute().query;
         if (query.redirectAfter && typeof query.redirectAfter == 'string')
-            navigateTo(query.redirectAfter)
+            await navigateTo(query.redirectAfter)
         else
-            navigateTo('/');
+            await navigateTo('/');
     }
     catch (e) {
         if (e !== undefined && typeof (e) == 'object' && e !== null && 'message' in e) {
