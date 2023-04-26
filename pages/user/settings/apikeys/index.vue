@@ -15,15 +15,10 @@
                                     <span class="p-input-icon-left w-full">
                                         <i class="pi pi-search" />
                                         <InputText type="text" placeholder="Search Users" class="w-full"
-                                            v-model="apikeys.query.search" @keydown.enter="apikeys.search" />
+                                            v-model="apikeys.query.search" @keydown.enter="apikeys._search()" />
                                     </span>
                                     <Button label="Search" @click="apikeys._search()" />
                                 </div>
-
-                                <Calendar id="calendar-12h" v-model="apikeys.query._start_createdAt" showTime
-                                    hideOnDateTimeSelect hourFormat="12" style="width: 200px;" />
-                                <Calendar id="calendar-12h" v-model="apikeys.query._end_createdAt" showTime
-                                    hideOnDateTimeSelect hourFormat="12" />
 
                                 <DataTable :value="apikeys.records" stripedRows @sort="apikeys.sortDataTable">
                                     <Column field="props.createdAt" header="Created" sortable>
@@ -50,29 +45,30 @@
                                         <template #body="slotProps">
                                             <Button icon="pi pi-pencil" class="mr-2" severity="success"
                                                 @click="dialog.current = slotProps.data; dialog.visible = true" />
-                                            <Button icon="pi pi-trash" severity="danger" @click="slotProps.data.delete()" />
+                                            <Button icon="pi pi-trash" severity="danger"
+                                                @click=" slotProps.data.delete() " />
                                         </template>
                                     </Column>
                                 </DataTable>
 
-                                <Pager :kind="apikeys" />
+                                <Pager :kind=" apikeys " />
 
-                                <Dialog v-model:visible="dialog.visible" maximizable modal header="Header"
-                                    :style="{ width: '75vw' }">
+                                <Dialog v-model:visible=" dialog.visible " maximizable modal header="Header"
+                                    :style=" { width: '75vw' } ">
 
-                                    <div class="flex gap-5 flex-column-reverse md:flex-row" v-if="dialog.current">
+                                    <div class="flex gap-5 flex-column-reverse md:flex-row" v-if=" dialog.current ">
                                         <div class="flex-auto p-fluid">
                                             <div class="mb-4">
-                                                <FormInput name="name" type="text" v-model="dialog.current.props.name"
+                                                <FormInput name="name" type="text" v-model=" dialog.current.props.name "
                                                     required label="Name" />
                                             </div>
                                             <div class="mb-4">
-                                                <FormInput name="url" type="text" v-model="dialog.current.props.url"
+                                                <FormInput name="url" type="text" v-model=" dialog.current.props.url "
                                                     label="URL" />
                                             </div>
                                             <div class="mb-4">
                                                 <FormInput name="reason" type="textarea"
-                                                    v-model="dialog.current.props.reason" label="Reason" />
+                                                    v-model=" dialog.current.props.reason " label="Reason" />
                                             </div>
 
                                         </div>
@@ -93,17 +89,18 @@
                     <div class="text-900 font-semibold text-lg">Create API Key</div>
                     <p class="mt-1 mb-4 text-sm text-gray-500">Make a new API Key.</p>
 
-                    <Form :send="() => apikeys.create()">
+                    <Form :send=" () => apikeys.create() ">
                         <div class="flex gap-5 flex-column-reverse md:flex-row">
                             <div class="flex-auto p-fluid">
                                 <div class="mb-4">
-                                    <FormInput name="name" type="text" v-model="apikeys.new.name" required label="Name" />
+                                    <FormInput name="name" type="text" v-model=" apikeys.new.name " required label="Name" />
                                 </div>
                                 <div class="mb-4">
-                                    <FormInput name="url" type="text" v-model="apikeys.new.url" label="URL" />
+                                    <FormInput name="url" type="text" v-model=" apikeys.new.url " label="URL" />
                                 </div>
                                 <div class="mb-4">
-                                    <FormInput name="reason" type="textarea" v-model="apikeys.new.reason" label="Reason" />
+                                    <FormInput name="reason" type="textarea" v-model=" apikeys.new.reason "
+                                        label="Reason" />
                                 </div>
 
                                 <div>
@@ -139,7 +136,7 @@ const apikeys = useVingKind<'APIKey'>({
     query: { includeMeta: true },
     newDefaults: { name: '', reason: '', url: 'http://', userId: currentUser.props?.id },
 });
-await apikeys.search();
+await apikeys._search();
 
 const d: { visible: boolean, current?: VingRecord<'APIKey'> } = { visible: false, current: undefined };
 const dialog = ref(d);
@@ -148,5 +145,7 @@ function copyToClipboard(text: string) {
     navigator.clipboard.writeText(text);
     notify.info('Copied key to Clipboard');
 }
+
+
 
 </script>
