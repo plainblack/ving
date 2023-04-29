@@ -20,7 +20,7 @@
 
             <div class="mb-4">
                 <FormInput name="password" v-model="password" label="Password"
-                    @change="user._partialUpdate({ password: password })" />
+                    @change="user.partialUpdate({ password: password })" />
             </div>
         </FieldsetItem>
 

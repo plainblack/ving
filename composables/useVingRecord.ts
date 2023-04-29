@@ -99,7 +99,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 return promise;
             },
 
-            _partialUpdate(props?: Describe<T>['props'], options: VRUpdateOptions<T> = {}) {
+            partialUpdate(props?: Describe<T>['props'], options: VRUpdateOptions<T> = {}) {
                 // if we were calling formatPropsBodyData here is where we would call it
                 const self = this;
 
@@ -128,17 +128,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 return promise;
             },
 
-            partialUpdate: _.debounce(function (props: Describe<T>['props'], options?: VRUpdateOptions<T>) {
-                // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
-                return this._partialUpdate(props, options);
-            }, 200),
-
-            save: _.debounce(function <K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]) {
-                // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
-                return this._save(name, value);
-            }, 200),
-
-            _save: function <K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]) {
+            save: function <K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]) {
                 const self = this;
                 const update: Describe<T>['props'] = {};
                 if (self.props && value === undefined) {
@@ -149,7 +139,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     // @ts-expect-error - not sure why this is a problem since it is properly typed in the interface
                     update[name] = value;
                 }
-                return self._partialUpdate(update);
+                return self.partialUpdate(update);
             },
 
             update(options?: VRUpdateOptions<T>) {
