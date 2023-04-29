@@ -15,9 +15,9 @@
                                     <span class="p-input-icon-left w-full">
                                         <i class="pi pi-search" />
                                         <InputText type="text" placeholder="Search Users" class="w-full"
-                                            v-model="apikeys.query.search" @keydown.enter="apikeys._search()" />
+                                            v-model="apikeys.query.search" @keydown.enter="apikeys.search()" />
                                     </span>
-                                    <Button label="Search" @click="apikeys._search()" />
+                                    <Button label="Search" @click="apikeys.search()" />
                                 </div>
 
 
@@ -138,7 +138,7 @@ const apikeys = useVingKind<'APIKey'>({
     query: { includeMeta: true },
     newDefaults: { name: '', reason: '', url: 'http://', userId: currentUser.props?.id },
 });
-await apikeys._search();
+await apikeys.search();
 
 const d: { visible: boolean, current?: VingRecord<'APIKey'> } = { visible: false, current: undefined };
 const dialog = ref(d);

@@ -103,9 +103,9 @@ const indexTemplate = ({ name, schema }: Context) =>
             <span class="p-input-icon-left w-full">
                 <i class="pi pi-search" />
                 <InputText type="text" placeholder="Search ${makeWords(name)}s" class="w-full" v-model="${schema.tableName}.query.search"
-                    @keydown.enter="${schema.tableName}.search" />
+                    @keydown.enter="${schema.tableName}.search()" />
             </span>
-            <Button label="Search" @click="${schema.tableName}._search()" />
+            <Button label="Search" @click="${schema.tableName}.search()" />
         </div>
 
         <DataTable :value="${schema.tableName}.records" stripedRows @sort="(e:Event) => ${schema.tableName}.sortDataTable(e)">

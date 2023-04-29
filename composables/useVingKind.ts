@@ -1,5 +1,6 @@
 import type { VKQueryParams, VingRecord, VKSearchOptions, VKAllOptions, VRDeleteOptions, VRUpdateOptions, VingKindParams, VKCreateOptions, VKGenericOptions, Describe, DescribeListParams, DescribeList, ModelName } from '~/types';
 import _ from 'lodash';
+import { debounce } from 'perfect-debounce'
 
 const notify = useNotifyStore();
 class VingKind<T extends ModelName> {
@@ -135,20 +136,14 @@ class VingKind<T extends ModelName> {
     public async sortDataTable(event: any) {
         this.query.sortOrder = event.sortOrder > 0 ? 'asc' : 'desc';
         this.query.sortBy = event.sortField.split('.')[1];
-        await this._search();
+        await this.search();
     }
 
-    public search = () => _.debounce(function (options?: VKSearchOptions<T>) {
-        // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
-        return this._search(options);
-    }, 500)
+    public searchDebounced = debounce(async (options?: VKSearchOptions<T>) => {
+        return this.search(options);
+    }, 500, { leading: true })
 
-    public searchFast = () => _.debounce(function (options?: VKSearchOptions<T>) {
-        // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
-        return this._search(options);
-    }, 200)
-
-    public _search(options: VKSearchOptions<T> = {}) {
+    public search(options: VKSearchOptions<T> = {}) {
         const self = this;
         let pagination = {
             page: options?.page || self.paging.page || 1,
@@ -180,16 +175,11 @@ class VingKind<T extends ModelName> {
         return promise;
     }
 
-    public all = () => _.debounce(function (options?: VKAllOptions<T>, page?: number) {
-        // @ts-expect-error - i think the nature of the construction of this method makes ts think there is a problem when there isn't
-        return this._all(options, page);
-    }, 200)
-
-    public _all(options: VKAllOptions<T> = {}, iterations = 1) {
+    public all(options: VKAllOptions<T> = {}, iterations = 1) {
         let self = this;
         return new Promise((resolve, reject) =>
             self
-                ._search({
+                .search({
                     ...options,
                     accumulate: true,
                     page: iterations,
@@ -198,11 +188,11 @@ class VingKind<T extends ModelName> {
                     if (self.paging.page < self.paging.totalPages) {
                         if (iterations < 999) {
                             self
-                                ._all(options, iterations + 1)
+                                .all(options, iterations + 1)
                                 .then(resolve)
                                 .catch(reject);
                         } else {
-                            const message = "infinite loop detected in _all() for " + self.getListApi()
+                            const message = "infinite loop detected in all() for " + self.getListApi()
                             notify.error(message);
                             throw ouch(400, message);
                         }

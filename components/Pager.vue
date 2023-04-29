@@ -21,6 +21,6 @@ const props = withDefaults(
 
 function changePage(page: any) {
     props.kind.query.page = page.page + 1
-    props.kind._search();
+    props.kind.search();
 }
 </script>

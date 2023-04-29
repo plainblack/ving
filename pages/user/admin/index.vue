@@ -9,9 +9,9 @@
             <span class="p-input-icon-left w-full">
                 <i class="pi pi-search" />
                 <InputText type="text" placeholder="Search Users" class="w-full" v-model="users.query.search"
-                    @keydown.enter="users.search" />
+                    @keydown.enter="users.search()" />
             </span>
-            <Button label="Search" @click="users._search()" />
+            <Button label="Search" @click="users.search()" />
         </div>
 
         <DataTable :value="users.records" stripedRows @sort="users.sortDataTable">
