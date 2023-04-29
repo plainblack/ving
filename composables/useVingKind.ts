@@ -95,7 +95,7 @@ class VingKind<T extends ModelName> {
             createApi: self.getCreateApi(),
             onCreate: self.behavior.onCreate,
             onUpdate: self.behavior.onUpdate,
-            onDelete(params) {
+            onDelete(params: Describe<T>) {
                 self.paging.totalItems--;
                 if (self.behavior.onDelete)
                     self.behavior.onDelete(params);
