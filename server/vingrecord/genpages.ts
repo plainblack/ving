@@ -108,7 +108,7 @@ const indexTemplate = ({ name, schema }: Context) =>
             <Button label="Search" @click="${schema.tableName}._search()" />
         </div>
 
-        <DataTable :value="${schema.tableName}.records" stripedRows @sort="${schema.tableName}.sortDataTable">
+        <DataTable :value="${schema.tableName}.records" stripedRows @sort="(e:Event) => ${schema.tableName}.sortDataTable(e)">
             ${columns(schema)}
             <Column header="Manage">
                 <template #body="slotProps">
@@ -190,7 +190,7 @@ const viewTemplate = ({ name, schema }: Context) =>
         <NuxtLink :to="\`/${name.toLowerCase()}/\${${name.toLowerCase()}.props?.id}/edit\`" class="no-underline mr-2 mb-2">
             <Button severity="success" title="Edit" alt="Edit ${makeWords(name)}"><i class="pi pi-pencil mr-1"></i> Edit</Button>
         </NuxtLink>
-        <Button @click="${name.toLowerCase()}.delete" severity="danger" title="Delete" alt="Delete ${makeWords(name)}"><i class="pi pi-trash mr-1"></i> Delete</Button>
+        <Button @click="${name.toLowerCase()}.delete()" severity="danger" title="Delete" alt="Delete ${makeWords(name)}"><i class="pi pi-trash mr-1"></i> Delete</Button>
     </div>
 </template>
   
@@ -218,13 +218,13 @@ const editProps = (schema: vingSchema) => {
             if (['enum', 'boolean'].includes(prop.type)) {
                 out += `
                     <div class="mb-4">
-                        <FormSelect name="${prop.name}" :options="${schema.kind.toLowerCase()}.options?.${prop.name}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.update" />
+                        <FormSelect name="${prop.name}" :options="${schema.kind.toLowerCase()}.options?.${prop.name}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.update()" />
                     </div>`;
             }
             else if (prop.type != 'virtual') {
                 out += `
                     <div class="mb-4">
-                        <FormInput name="${prop.name}" type="${prop2type(prop)}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" ${prop.required ? 'required' : ''} label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.update" />
+                        <FormInput name="${prop.name}" type="${prop2type(prop)}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" ${prop.required ? 'required' : ''} label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.update()" />
                     </div>`;
             }
         }
@@ -269,7 +269,7 @@ const editTemplate = ({ name, schema }: Context) =>
             <NuxtLink :to="\`/${name.toLowerCase()}/\${${name.toLowerCase()}.props?.id}\`" class="no-underline">
                 <Button title="View" alt="View ${makeWords(name)}" class="mr-2 mb-2"><i class="pi pi-eye mr-1"></i> View</Button>
             </NuxtLink>
-            <Button @click="${name.toLowerCase()}.delete" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete ${makeWords(name)}"><i class="pi pi-trash mr-1"></i> Delete</Button>
+            <Button @click="${name.toLowerCase()}.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete ${makeWords(name)}"><i class="pi pi-trash mr-1"></i> Delete</Button>
         </FieldsetItem>
 
     </FieldsetNav>

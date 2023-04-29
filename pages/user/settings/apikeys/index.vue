@@ -20,7 +20,9 @@
                                     <Button label="Search" @click="apikeys._search()" />
                                 </div>
 
-                                <DataTable :value="apikeys.records" stripedRows @sort="apikeys.sortDataTable">
+
+                                <DataTable :value="apikeys.records" stripedRows
+                                    @sort="(event: Event) => apikeys.sortDataTable(event)">
                                     <Column field="props.createdAt" header="Created" sortable>
                                         <template #body="slotProps">
                                             {{ dt.formatDate(slotProps.data.props.createdAt) }}

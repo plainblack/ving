@@ -11,15 +11,15 @@
                         <div class="flex-auto p-fluid">
                             <div class="mb-4">
                                 <FormInput name="username" v-model="currentUser.props.username" required label="Username"
-                                    autocomplete="username" @change="currentUser.update" />
+                                    autocomplete="username" @change="currentUser.update()" />
                             </div>
                             <div class="mb-4">
                                 <FormInput type="email" name="email" v-model="currentUser.props.email" label="Email"
-                                    required autocomplete="email" @change="currentUser.update" />
+                                    required autocomplete="email" @change="currentUser.update()" />
                             </div>
                             <div class="mb-4">
                                 <FormInput name="realName" v-model="currentUser.props.realName" label="Real Name"
-                                    autocomplete="name" @change="currentUser.update" />
+                                    autocomplete="name" @change="currentUser.update()" />
                             </div>
                         </div>
 

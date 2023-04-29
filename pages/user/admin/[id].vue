@@ -7,14 +7,15 @@
     <FieldsetNav v-if="user.props">
         <FieldsetItem name="Account">
             <div class="mb-4">
-                <FormInput name="username" v-model="user.props.username" required label="Username" @change="user.update" />
+                <FormInput name="username" v-model="user.props.username" required label="Username"
+                    @change="user.update()" />
             </div>
             <div class="mb-4">
                 <FormInput type="email" name="email" v-model="user.props.email" label="Email" required
-                    @change="user.update" />
+                    @change="user.update()" />
             </div>
             <div class="mb-4">
-                <FormInput name="realName" v-model="user.props.realName" label="Real Name" @change="user.update" />
+                <FormInput name="realName" v-model="user.props.realName" label="Real Name" @change="user.update()" />
             </div>
 
             <div class="mb-4">
@@ -25,19 +26,19 @@
 
         <FieldsetItem name="Privileges">
             <div class="mb-4">
-                <FormSelect @change="user.update" v-model="user.props.admin" :options="user.options?.admin" name="admin"
+                <FormSelect @change="user.update()" v-model="user.props.admin" :options="user.options?.admin" name="admin"
                     label="Admin" />
             </div>
         </FieldsetItem>
 
         <FieldsetItem name="Preferences">
             <div class="mb-4">
-                <FormSelect @change="user.update" v-model="user.props.useAsDisplayName"
+                <FormSelect @change="user.update()" v-model="user.props.useAsDisplayName"
                     :options="user.options?.useAsDisplayName" name="useAsDisplayName" label="Use As Display Name" />
             </div>
 
             <div class="mb-4">
-                <FormSelect @change="user.update" v-model="user.props.developer" :options="user.options?.developer"
+                <FormSelect @change="user.update()" v-model="user.props.developer" :options="user.options?.developer"
                     label="Are you a software developer?" name="developer" />
             </div>
 
@@ -58,7 +59,7 @@
         </FieldsetItem>
 
         <FieldsetItem name="Actions">
-            <Button @click="user.delete" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete User"><i
+            <Button @click="user.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete User"><i
                     class="pi pi-trash mr-1"></i> Delete</Button>
             <Button @click="become" severity="warn" class="mr-2 mb-2" title="Become" alt="Become User"><i
                     class="pi pi-arrow-right-arrow-left mr-1"></i> Become</Button>

@@ -36,8 +36,8 @@
             </div>
         </div>
 
-        <Button @click="swa.post" severity="success" class="mr-2">Save</Button>
-        <Button v-if="swa.message" @click="swa.delete" severity="danger" class="mr-2">Delete</Button>
+        <Button @click="swa.post()" severity="success" class="mr-2">Save</Button>
+        <Button v-if="swa.message" @click="swa.delete()" severity="danger" class="mr-2">Delete</Button>
 
     </div>
 </template>
