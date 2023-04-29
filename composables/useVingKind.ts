@@ -149,7 +149,7 @@ class VingKind<T extends ModelName> {
             page: options?.page || self.paging.page || 1,
             itemsPerPage: self.paging.itemsPerPage || 10,
         };
-        const query = _.extend({}, pagination, options.query, self.query);
+        const query = _.defaultsDeep({}, pagination, options.query, self.query);
 
         const promise = useHTTP(self.getListApi(), {
             query: query,
@@ -216,7 +216,7 @@ class VingKind<T extends ModelName> {
     public call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeListParams = {}, options: VKGenericOptions<T> = {}) {
         const self = this;
         const promise = useHTTP(url, {
-            query: _.extend({}, self.query, query),
+            query: _.defaultsDeep({}, self.query, query),
             method,
             suppressErrorNotifications: self.behavior.suppressErrorNotifications,
         });
@@ -265,7 +265,7 @@ class VingKind<T extends ModelName> {
 
     public create(props: Describe<T>['props'] = {}, options: VKCreateOptions<T> = {}) {
         const self = this;
-        const newProps = _.extend({}, self.new, props);
+        const newProps = _.defaultsDeep({}, self.new, props);
         const newRecord = self.mint({ props: newProps });
         const addIt = function () {
             if (options?.unshift || self.behavior?.unshift) {

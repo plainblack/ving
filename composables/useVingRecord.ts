@@ -159,7 +159,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
 
             create(props?: Describe<T>['props'], options?: VRCreateOptions<T>) {
                 const self = this;
-                const newProps = _.extend({}, this.props, props);
+                const newProps = _.defaultsDeep({}, this.props, props);
 
                 const promise = useHTTP(this.getCreateApi(), {
                     query: this.query,
@@ -197,7 +197,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
             call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeParams = {}, options: VRGenericOptions<T> = {}) {
                 const self = this;
                 const promise = useHTTP(url, {
-                    query: _.extend({}, self.query, query),
+                    query: _.defaultsDeep({}, self.query, query),
                     method,
                     suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
