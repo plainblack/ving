@@ -20,16 +20,16 @@ export const useCurrentUserStore = defineStore('currentUser', {
             const response = await useRest('/api/user/whoami', {
                 query,
             });
-            if (response.data) {
+            if (response.data && typeof response.data == 'object') {
                 this.setState(response.data);
             }
             return response;
         },
         setState(data: Partial<Describe<'User'>>) {
-            this.props = data.props;
-            this.meta = data.meta;
-            this.options = data.options;
-            this.links = data.links;
+            this.props = data.props || {};
+            this.meta = data.meta || {};
+            this.options = data.options || {};
+            this.links = data.links || {};
         },
         async login(login: string, password: string) {
             const response = await useRest('/api/session', {
