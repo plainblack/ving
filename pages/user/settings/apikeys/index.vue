@@ -62,15 +62,16 @@
                                         <div class="flex-auto p-fluid">
                                             <div class="mb-4">
                                                 <FormInput name="name" type="text" v-model=" dialog.current.props.name "
-                                                    required label="Name" />
+                                                    required label="Name" @change=" dialog.current.update() " />
                                             </div>
                                             <div class="mb-4">
                                                 <FormInput name="url" type="text" v-model=" dialog.current.props.url "
-                                                    label="URL" />
+                                                    label="URL" @change=" dialog.current.update() " />
                                             </div>
                                             <div class="mb-4">
                                                 <FormInput name="reason" type="textarea"
-                                                    v-model=" dialog.current.props.reason " label="Reason" />
+                                                    v-model=" dialog.current.props.reason " label="Reason"
+                                                    @change=" dialog.current.update() " />
                                             </div>
 
                                         </div>
