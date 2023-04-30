@@ -107,6 +107,7 @@ class VingKind<T extends ModelName> {
 
     public append(record: Describe<T>, options: VKSearchOptions<T>) {
         const newRecord = this.mint(record);
+        newRecord.setState(record); // need to override state with newly fetched data in case its already loaded
         this.records.push(newRecord);
         if (options.onEach) {
             options.onEach(record);
@@ -160,7 +161,8 @@ class VingKind<T extends ModelName> {
                 this.reset();
             }
             for (let index = 0; index < data.items.length; index++) {
-                this.append(data.items[index], options);
+                // @ts-expect-error - id is guaranteed on all objects
+                this.append({ id: data.items[index].props.id, ...data.items[index] }, options);
             }
             this.paging = data.paging;
             const items = data.items;

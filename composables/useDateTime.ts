@@ -23,8 +23,13 @@ const dt = {
     },
 
     formatDateTime(input: DTinput, pattern: string = "LLLL d, y h:mm a") {
-        const date = this.determineDate(input);
-        return format(date, pattern)
+        try {
+            const date = this.determineDate(input);
+            return format(date, pattern)
+        }
+        catch {
+            return 'bad date object';
+        }
     },
 
     formatDate(input: DTinput, pattern: string = "LLLL d, y") {

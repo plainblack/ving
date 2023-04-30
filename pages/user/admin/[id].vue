@@ -76,8 +76,10 @@ const route = useRoute();
 const dt = useDateTime();
 const notify = useNotifyStore();
 
+const id = route.params.id.toString();
 const user = useVingRecord<'User'>({
-    fetchApi: '/api/user/' + route.params.id,
+    id,
+    fetchApi: '/api/user/' + id,
     createApi: '/api/user',
     query: { includeMeta: true, includeOptions: true },
     onUpdate() {

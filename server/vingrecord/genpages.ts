@@ -196,8 +196,10 @@ const viewTemplate = ({ name, schema }: Context) =>
   
 <script setup lang="ts">
 const route = useRoute();
+const id = route.params.id.toString();
 const ${name.toLowerCase()} = useVingRecord<'${name}'>({
-    fetchApi: '/api/${name.toLowerCase()}/' + route.params.id,
+    id,
+    fetchApi: '/api/${name.toLowerCase()}/' + id,
     query: { includeMeta: true, includeOptions: true },
     async onDelete() {
         await navigateTo('/${name.toLowerCase()}');
@@ -282,8 +284,10 @@ definePageMeta({
 const route = useRoute();
 const dt = useDateTime();
 const notify = useNotifyStore();
+const id = route.params.id.toString();
 const ${name.toLowerCase()} = useVingRecord<'${name}'>({
-    fetchApi: '/api/${name.toLowerCase()}/' + route.params.id,
+    id,
+    fetchApi: '/api/${name.toLowerCase()}/' + id,
     createApi: '/api/${name.toLowerCase()}',
     query: { includeMeta: true, includeOptions: true },
     onUpdate() {
