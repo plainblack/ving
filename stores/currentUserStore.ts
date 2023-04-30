@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { Describe } from '../types';
 
 const query = { includeOptions: true, includeMeta: true, includeLinks: true };
-const notify = useNotifyStore();
 
 export const useCurrentUserStore = defineStore('currentUser', {
     state: (): {
