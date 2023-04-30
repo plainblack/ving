@@ -29,7 +29,6 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
             fetchApi: behavior.fetchApi,
         }),
         actions: {
-            ...behavior.extendActions,
 
             setState(result: Describe<T>) {
                 // @ts-expect-error - https://github.com/vuejs/core/issues/7278
