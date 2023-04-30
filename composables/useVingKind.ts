@@ -151,7 +151,7 @@ class VingKind<T extends ModelName> {
         };
         const query = _.defaultsDeep({}, pagination, options.query, self.query);
 
-        const promise = useHTTP(self.getListApi(), {
+        const promise = useRest(self.getListApi(), {
             query: query,
             suppressErrorNotifications: self.behavior.suppressErrorNotifications,
         });
@@ -215,7 +215,7 @@ class VingKind<T extends ModelName> {
 
     public call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeListParams = {}, options: VKGenericOptions<T> = {}) {
         const self = this;
-        const promise = useHTTP(url, {
+        const promise = useRest(url, {
             query: _.defaultsDeep({}, self.query, query),
             method,
             suppressErrorNotifications: self.behavior.suppressErrorNotifications,
@@ -244,7 +244,7 @@ class VingKind<T extends ModelName> {
 
     public fetchPropsOptions(options: VKGenericOptions<T> = {}) {
         const self = this;
-        const promise = useHTTP(self.getPropsOptionsApi(), {
+        const promise = useRest(self.getPropsOptionsApi(), {
             suppressErrorNotifications: self.behavior.suppressErrorNotifications,
         });
         promise.then((response) => {

@@ -17,7 +17,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
     }),
     actions: {
         async fetch() {
-            const response = await useHTTP('/api/user/whoami', {
+            const response = await useRest('/api/user/whoami', {
                 query,
             });
             if (response.data) {
@@ -32,7 +32,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
             this.links = data.links;
         },
         async login(login: string, password: string) {
-            const response = await useHTTP('/api/session', {
+            const response = await useRest('/api/session', {
                 method: 'post',
                 body: {
                     login,
@@ -45,14 +45,14 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         async logout() {
-            const response = await useHTTP('/api/session', {
+            const response = await useRest('/api/session', {
                 method: 'delete',
             });
             this.setState({});
             return response;
         },
         async update() {
-            const response = await useHTTP('/api/user/' + this.props?.id, {
+            const response = await useRest('/api/user/' + this.props?.id, {
                 method: 'put',
                 body: this.props,
                 query,
@@ -61,7 +61,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         async create(newUser: { username: string, email: string, password: string, realName: string }) {
-            const response = await useHTTP('/api/user', {
+            const response = await useRest('/api/user', {
                 method: 'post',
                 body: newUser,
                 query: { includeOptions: true },

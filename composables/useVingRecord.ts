@@ -81,7 +81,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
 
             fetch() {
                 const self = this;
-                const promise = useHTTP(this.getFetchApi(), {
+                const promise = useRest(this.getFetchApi(), {
                     query: this.query,
                     suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
@@ -103,7 +103,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 // if we were calling formatPropsBodyData here is where we would call it
                 const self = this;
 
-                const promise = useHTTP(this.getSelfApi(), {
+                const promise = useRest(this.getSelfApi(), {
                     query: this.query,
                     method: 'put',
                     body: props,
@@ -151,7 +151,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 const self = this;
                 const newProps = _.defaultsDeep({}, this.props, props);
 
-                const promise = useHTTP(this.getCreateApi(), {
+                const promise = useRest(this.getCreateApi(), {
                     query: this.query,
                     method: 'post',
                     body: newProps,
@@ -186,7 +186,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
 
             call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeParams = {}, options: VRGenericOptions<T> = {}) {
                 const self = this;
-                const promise = useHTTP(url, {
+                const promise = useRest(url, {
                     query: _.defaultsDeep({}, self.query, query),
                     method,
                     suppressErrorNotifications: behavior.suppressErrorNotifications,
@@ -215,7 +215,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     message = "Are you sure you want to delete " + this.props.name + "?";
                 }
                 if (options.skipConfirm || confirm(message)) {
-                    const promise = useHTTP(this.getSelfApi(), {
+                    const promise = useRest(this.getSelfApi(), {
                         query: self.query,
                         method: 'delete',
                         suppressErrorNotifications: behavior.suppressErrorNotifications,

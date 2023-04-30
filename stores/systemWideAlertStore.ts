@@ -16,19 +16,19 @@ export const useSystemWideAlertStore = defineStore('system-wide-alert', {
             this.severity = data.severity;
         },
         async get() {
-            const response = await useHTTP('/api/system-wide-alert');
+            const response = await useRest('/api/system-wide-alert');
             if (response.data) {
                 this.setState(response.data as SystemWideAlert);
             }
         },
         async delete() {
-            const response = await useHTTP('/api/system-wide-alert', { method: 'delete' });
+            const response = await useRest('/api/system-wide-alert', { method: 'delete' });
             if (response.data) {
                 this.setState(response.data as SystemWideAlert);
             }
         },
         async post() {
-            const response = await useHTTP('/api/system-wide-alert', {
+            const response = await useRest('/api/system-wide-alert', {
                 method: 'post',
                 body: this.$state,
             });
