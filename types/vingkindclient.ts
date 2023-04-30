@@ -6,7 +6,7 @@ export type VKQueryParams = Exclude<DescribeListParams, 'objectParams'> & VRQuer
 
 export type VKGenericOptions<T extends ModelName> = {
     onSuccess?: (result: DescribeList<T>) => void,
-    onError?: (result: DescribeList<T>) => void
+    onError?: (result: Record<string, any>) => void
 }
 
 export type VingKindParams<T extends ModelName> = {
@@ -29,7 +29,7 @@ export type VingKindParams<T extends ModelName> = {
 export type VKCreateOptions<T extends ModelName> = {
     unshift?: boolean,
     onCreate?: (result: Describe<T>) => void,
-    onError?: (result: Describe<T>) => void,
+    onError?: (result: Record<string, any>) => void,
 }
 
 export type VKSearchOptions<T extends ModelName> = {
@@ -38,7 +38,7 @@ export type VKSearchOptions<T extends ModelName> = {
     page?: number,
     onSearch?: (result: DescribeList<T>) => void,
     onEach?: (result: Describe<T>) => void,
-    onError?: (result: Describe<T>) => void,
+    onError?: (result: Record<string, any>) => void,
 }
 
 export type VKAllOptions<T extends ModelName> = VKSearchOptions<T> & {

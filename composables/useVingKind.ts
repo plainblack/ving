@@ -217,12 +217,12 @@ class VingKind<T extends ModelName> {
             method,
             suppressErrorNotifications: this.behavior.suppressErrorNotifications,
         });
-        const data: DescribeList<T> = response.data as DescribeList<T>;
         if (response.error) {
             if (options?.onError)
-                options?.onError(data);
+                options?.onError(response.error);
         }
         else {
+            const data: DescribeList<T> = response.data as DescribeList<T>;
             if (options?.onSuccess)
                 options?.onSuccess(data);
         }
@@ -240,12 +240,12 @@ class VingKind<T extends ModelName> {
         const response = await useRest(this.getPropsOptionsApi(), {
             suppressErrorNotifications: this.behavior.suppressErrorNotifications,
         });
-        const data: Describe<T>['options'] = response.data as Describe<T>['options'];
         if (response.error) {
             if (options?.onError)
-                options?.onError(data as any);
+                options?.onError(response.error);
         }
         else {
+            const data: Describe<T>['options'] = response.data as Describe<T>['options'];
             if (options?.onSuccess)
                 options?.onSuccess(data as any);
         }

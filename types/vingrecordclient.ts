@@ -9,22 +9,22 @@ export type VRQueryParams = {
 };
 
 export type VRGenericOptions<T extends ModelName> = {
+    onError?: (result: Record<string, any>) => void
     onSuccess?: (result: Describe<T>) => void,
-    onError?: (result: Describe<T>) => void
 }
 
 export type VRCreateOptions<T extends ModelName> = {
-    onError?: (result: Describe<T>) => void,
+    onError?: (result: Record<string, any>) => void,
     onCreate?: (result: Describe<T>) => void,
 }
 
 export type VRUpdateOptions<T extends ModelName> = {
-    onError?: (result: Describe<T>) => void,
+    onError?: (result: Record<string, any>) => void,
     onUpdate?: (result: Describe<T>) => void,
 }
 
 export type VRDeleteOptions<T extends ModelName> = {
-    onError?: (result: Describe<T>) => void,
+    onError?: (result: Record<string, any>) => void,
     onDelete?: (result: Describe<T>) => void,
     skipConfirm?: boolean,
 }
@@ -44,7 +44,7 @@ export type VingRecordParams<T extends ModelName> = {
     onCreate?: (result: Describe<T>) => void,
     onUpdate?: (result: Describe<T>) => void,
     onDelete?: (result: Describe<T>) => void,
-    onError?: (result: Describe<T>) => void,
+    onError?: (result: Record<string, any>) => void,
     suppressErrorNotifications?: boolean,
     extendActions?: Record<string, ((...args: any) => any)>
 }
