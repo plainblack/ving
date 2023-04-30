@@ -86,13 +86,13 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
                 promise.then((response) => {
-                    const data: Describe<T> = response.data.value as Describe<T>;
+                    const data: Describe<T> = response.data as Describe<T>;
                     self.setState(data);
                     if (behavior?.onFetch)
                         behavior.onFetch(data);
                 })
                     .catch((response) => {
-                        const data: Describe<T> = response.data.value as Describe<T>;
+                        const data: Describe<T> = response.data as Describe<T>;
                         if (behavior?.onError)
                             behavior.onError(data);
                     });
@@ -111,7 +111,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 });
 
                 promise.then((response) => {
-                    const data: Describe<T> = response.data.value as Describe<T>;
+                    const data: Describe<T> = response.data as Describe<T>;
                     self.setState(data);
                     if (options?.onUpdate)
                         options.onUpdate(data);
@@ -119,7 +119,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                         behavior.onUpdate(data);
                 })
                     .catch((response) => {
-                        const data: Describe<T> = response.data.value as Describe<T>;
+                        const data: Describe<T> = response.data as Describe<T>;
                         if (options?.onError)
                             options.onError(data);
                         if (behavior?.onError)
@@ -159,7 +159,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                 });
 
                 promise.then((response) => {
-                    const data: Describe<T> = response.data.value as Describe<T>;
+                    const data: Describe<T> = response.data as Describe<T>;
                     self.setState(data);
                     if (options?.onCreate)
                         options.onCreate(data);
@@ -167,7 +167,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                         behavior.onCreate(data);
                 })
                     .catch((response) => {
-                        const data: Describe<T> = response.data.value as Describe<T>;
+                        const data: Describe<T> = response.data as Describe<T>;
                         if (options?.onError)
                             options.onError(data);
                         if (behavior?.onError)
@@ -192,7 +192,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
                 promise.then((response) => {
-                    const data: Describe<T> = response.data.value as Describe<T>;
+                    const data: Describe<T> = response.data as Describe<T>;
                     self.setState(data);
 
                     if (options?.onSuccess) {
@@ -200,7 +200,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     }
                 })
                     .catch((response) => {
-                        const data: Describe<T> = response.data.value as Describe<T>;
+                        const data: Describe<T> = response.data as Describe<T>;
                         if (options?.onError) {
                             options?.onError(data);
                         }
@@ -221,14 +221,14 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                         suppressErrorNotifications: behavior.suppressErrorNotifications,
                     });
                     promise.then((response) => {
-                        const data: Describe<T> = response.data.value as Describe<T>;
+                        const data: Describe<T> = response.data as Describe<T>;
                         if (options?.onDelete)
                             options.onDelete(data);
                         if (behavior?.onDelete)
                             behavior.onDelete(data);
                     })
                         .catch((response) => {
-                            const data: Describe<T> = response.data.value as Describe<T>;
+                            const data: Describe<T> = response.data as Describe<T>;
                             if (options?.onError)
                                 options.onError(data);
                             if (behavior?.onError)

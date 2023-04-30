@@ -59,20 +59,10 @@
 let newUser = ref({ username: '', email: '', realName: '', password: '', password2: '' });
 const config = useRuntimeConfig();
 const currentUser = useCurrentUserStore();
-const notify = useNotifyStore();
 
 async function createAccount() {
-    try {
-        await currentUser.create(newUser.value);
+    const response = await currentUser.create(newUser.value);
+    if (!response.error)
         await navigateTo('/');
-    }
-    catch (e) {
-        if (e !== undefined && typeof (e) == 'object' && e !== null && 'message' in e && typeof e.message == 'string') {
-            notify.error(e.message);
-        }
-        else {
-            notify.error(e as string)
-        }
-    }
 }
 </script>

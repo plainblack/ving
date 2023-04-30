@@ -60,24 +60,14 @@ let login = ref('');
 let password = ref('');
 const config = useRuntimeConfig();
 const currentUser = useCurrentUserStore();
-const notify = useNotifyStore();
 
 async function tryLogin() {
-    try {
-        await currentUser.login(login.value, password.value);
-        const query = useRoute().query;
+    const response = await currentUser.login(login.value, password.value);
+    const query = useRoute().query;
+    if (!response.error)
         if (query.redirectAfter && typeof query.redirectAfter == 'string')
             await navigateTo(query.redirectAfter)
         else
             await navigateTo('/');
-    }
-    catch (e) {
-        if (e !== undefined && typeof (e) == 'object' && e !== null && 'message' in e) {
-            notify.error(e.message as string);
-        }
-        else {
-            notify.error(e as string);
-        }
-    }
 }
 </script>

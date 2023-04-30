@@ -156,7 +156,7 @@ class VingKind<T extends ModelName> {
             suppressErrorNotifications: self.behavior.suppressErrorNotifications,
         });
         promise.then((response) => {
-            const data: DescribeList<T> = response.data.value as DescribeList<T>;
+            const data: DescribeList<T> = response.data as DescribeList<T>;
 
             if (options.accumulate != true) {
                 self.reset();
@@ -221,13 +221,13 @@ class VingKind<T extends ModelName> {
             suppressErrorNotifications: self.behavior.suppressErrorNotifications,
         });
         promise.then((response) => {
-            const data: DescribeList<T> = response.data.value as DescribeList<T>;
+            const data: DescribeList<T> = response.data as DescribeList<T>;
             if (options?.onSuccess) {
                 options?.onSuccess(data);
             }
         })
             .catch((response) => {
-                const data: DescribeList<T> = response.data.value as DescribeList<T>;
+                const data: DescribeList<T> = response.data as DescribeList<T>;
                 if (options?.onError) {
                     options?.onError(data);
                 }
@@ -248,14 +248,14 @@ class VingKind<T extends ModelName> {
             suppressErrorNotifications: self.behavior.suppressErrorNotifications,
         });
         promise.then((response) => {
-            const data: Describe<T>['options'] = response.data.value as Describe<T>['options'];
+            const data: Describe<T>['options'] = response.data as Describe<T>['options'];
             self.propsOptions = data;
             if (options?.onSuccess) {
                 options?.onSuccess(data as any);
             }
         })
             .catch((response) => {
-                const data: Describe<T>['options'] = response.data.value as Describe<T>['options'];
+                const data: Describe<T>['options'] = response.data as Describe<T>['options'];
                 if (options?.onError) {
                     options?.onError(data as any);
                 }

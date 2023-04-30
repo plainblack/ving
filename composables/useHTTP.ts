@@ -34,12 +34,11 @@ export default async function (url: string, behavior: Behavior = {}) {
                 notify.error(context.response._data.message);
         },
     }).catch((_error) => {
-        // console.error('Fetch error', url, _error)
-        error = _error
+        error = { response: _error.response, request: _error.request };
         return null
     })
     return {
-        error: ref(error),
-        data: ref(response)
+        error: error,
+        data: response,
     }
 }

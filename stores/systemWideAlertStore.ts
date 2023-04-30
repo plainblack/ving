@@ -17,14 +17,14 @@ export const useSystemWideAlertStore = defineStore('system-wide-alert', {
         },
         async get() {
             const response = await useHTTP('/api/system-wide-alert');
-            if (response.data.value) {
-                this.setState(response.data.value as SystemWideAlert);
+            if (response.data) {
+                this.setState(response.data as SystemWideAlert);
             }
         },
         async delete() {
             const response = await useHTTP('/api/system-wide-alert', { method: 'delete' });
-            if (response.data.value) {
-                this.setState(response.data.value as SystemWideAlert);
+            if (response.data) {
+                this.setState(response.data as SystemWideAlert);
             }
         },
         async post() {
@@ -32,8 +32,8 @@ export const useSystemWideAlertStore = defineStore('system-wide-alert', {
                 method: 'post',
                 body: this.$state,
             });
-            if (response.data.value) {
-                this.setState(response.data.value as SystemWideAlert);
+            if (response.data) {
+                this.setState(response.data as SystemWideAlert);
             }
         },
         async check() {

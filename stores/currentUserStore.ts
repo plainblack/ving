@@ -21,8 +21,8 @@ export const useCurrentUserStore = defineStore('currentUser', {
             const response = await useHTTP('/api/user/whoami', {
                 query,
             });
-            if (response.data.value) {
-                this.setState(response.data.value);
+            if (response.data) {
+                this.setState(response.data);
             }
             return response;
         },
@@ -40,10 +40,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
                     password
                 },
             });
-            if (response.error?.value) {
-                throw response.error?.value.data;
-            }
-            else {
+            if (!response.error) {
                 await this.fetch();
             }
             return response;
@@ -61,7 +58,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 body: this.props,
                 query,
             });
-            this.setState(response.data.value as Describe<'User'>)
+            this.setState(response.data as Describe<'User'>)
             return response;
         },
         async create(newUser: { username: string, email: string, password: string, realName: string }) {
@@ -70,10 +67,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 body: newUser,
                 query: { includeOptions: true },
             });
-            if (response.error?.value) {
-                throw response.error?.value.data;
-            }
-            else {
+            if (!response.error) {
                 await this.login(newUser.email, newUser.password);
             }
             return response;
