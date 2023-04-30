@@ -143,36 +143,34 @@ class VingKind<T extends ModelName> {
         return this.search(options);
     }, 500, { leading: true })
 
-    public search(options: VKSearchOptions<T> = {}) {
-        const self = this;
+    public async search(options: VKSearchOptions<T> = {}) {
         let pagination = {
-            page: options?.page || self.paging.page || 1,
-            itemsPerPage: self.paging.itemsPerPage || 10,
+            page: options?.page || this.paging.page || 1,
+            itemsPerPage: this.paging.itemsPerPage || 10,
         };
-        const query = _.defaultsDeep({}, pagination, options.query, self.query);
+        const query = _.defaultsDeep({}, pagination, options.query, this.query);
 
-        const promise = useRest(self.getListApi(), {
+        const response = await useRest(this.getListApi(), {
             query: query,
-            suppressErrorNotifications: self.behavior.suppressErrorNotifications,
+            suppressErrorNotifications: this.behavior.suppressErrorNotifications,
         });
-        promise.then((response) => {
+        if (!response.error) {
             const data: DescribeList<T> = response.data as DescribeList<T>;
-
             if (options.accumulate != true) {
-                self.reset();
+                this.reset();
             }
-            for (var index = 0; index < data.items.length; index++) {
-                self.append(data.items[index], options);
+            for (let index = 0; index < data.items.length; index++) {
+                this.append(data.items[index], options);
             }
-            self.paging = data.paging;
+            this.paging = data.paging;
             const items = data.items;
             if (options?.onSearch)
                 options?.onSearch(data);
-            if (self.behavior.onSearch)
-                self.behavior.onSearch(data);
+            if (this.behavior.onSearch)
+                this.behavior.onSearch(data);
             return items;
-        })
-        return promise;
+        }
+        return response;
     }
 
     public all(options: VKAllOptions<T> = {}, iterations = 1) {
@@ -213,26 +211,22 @@ class VingKind<T extends ModelName> {
         return this;
     }
 
-    public call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeListParams = {}, options: VKGenericOptions<T> = {}) {
-        const self = this;
-        const promise = useRest(url, {
-            query: _.defaultsDeep({}, self.query, query),
+    public async call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeListParams = {}, options: VKGenericOptions<T> = {}) {
+        const response = await useRest(url, {
+            query: _.defaultsDeep({}, this.query, query),
             method,
-            suppressErrorNotifications: self.behavior.suppressErrorNotifications,
+            suppressErrorNotifications: this.behavior.suppressErrorNotifications,
         });
-        promise.then((response) => {
-            const data: DescribeList<T> = response.data as DescribeList<T>;
-            if (options?.onSuccess) {
+        const data: DescribeList<T> = response.data as DescribeList<T>;
+        if (response.error) {
+            if (options?.onError)
+                options?.onError(data);
+        }
+        else {
+            if (options?.onSuccess)
                 options?.onSuccess(data);
-            }
-        })
-            .catch((response) => {
-                const data: DescribeList<T> = response.data as DescribeList<T>;
-                if (options?.onError) {
-                    options?.onError(data);
-                }
-            });
-        return promise;
+        }
+        return response;
     }
 
     public getPropsOptionsApi() {
@@ -242,25 +236,20 @@ class VingKind<T extends ModelName> {
         return this.getCreateApi() + "/options";
     }
 
-    public fetchPropsOptions(options: VKGenericOptions<T> = {}) {
-        const self = this;
-        const promise = useRest(self.getPropsOptionsApi(), {
-            suppressErrorNotifications: self.behavior.suppressErrorNotifications,
+    public async fetchPropsOptions(options: VKGenericOptions<T> = {}) {
+        const response = await useRest(this.getPropsOptionsApi(), {
+            suppressErrorNotifications: this.behavior.suppressErrorNotifications,
         });
-        promise.then((response) => {
-            const data: Describe<T>['options'] = response.data as Describe<T>['options'];
-            self.propsOptions = data;
-            if (options?.onSuccess) {
+        const data: Describe<T>['options'] = response.data as Describe<T>['options'];
+        if (response.error) {
+            if (options?.onError)
+                options?.onError(data as any);
+        }
+        else {
+            if (options?.onSuccess)
                 options?.onSuccess(data as any);
-            }
-        })
-            .catch((response) => {
-                const data: Describe<T>['options'] = response.data as Describe<T>['options'];
-                if (options?.onError) {
-                    options?.onError(data as any);
-                }
-            });
-        return promise;
+        }
+        return response;
     }
 
     public create(props: Describe<T>['props'] = {}, options: VKCreateOptions<T> = {}) {
