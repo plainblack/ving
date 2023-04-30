@@ -88,8 +88,8 @@ const user = useVingRecord<'User'>({
     },
 });
 
-function become() {
-    user.call('post', user.links?.self + '/become', undefined, {
+async function become() {
+    await user.call('post', user.links?.self + '/become', undefined, {
         async onSuccess() {
             const currentUser = useCurrentUserStore();
             currentUser.fetch();
