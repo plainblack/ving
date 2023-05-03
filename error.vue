@@ -11,7 +11,7 @@
                 </NuxtLink>
             </div>
             <div>
-                <img :src="config.public.logoUrl" :alt="config.public.companyName" class="w-full md:w-28rem" />
+                <img :src="config.public.site.logoUrl" :alt="config.public.site.name" class="w-full md:w-28rem" />
             </div>
         </div>
     </div>

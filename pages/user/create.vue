@@ -1,7 +1,7 @@
 <template>
     <div class="w-full lg:w-7 mx-auto">
         <div class="text-center mb-5">
-            <img :src="config.public.logoUrl" :alt="config.public.companyName" height="50" class="mb-3">
+            <img :src="config.public.site.logoUrl" :alt="config.public.site.name" height="50" class="mb-3">
             <div class="text-900 text-3xl font-medium mb-3">Create an Account</div>
             <span class="text-600 font-medium line-height-3">Already have an account?</span>
             <NuxtLink to="/user/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in

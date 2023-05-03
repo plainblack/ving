@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import ving from './ving.json';
+
 export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
@@ -61,8 +63,7 @@ export default defineNuxtConfig({
     ],
     runtimeConfig: {
         public: {
-            companyName: 'ving',
-            logoUrl: '/ving.svg',
+            site: ving.site,
         },
     },
     content: {

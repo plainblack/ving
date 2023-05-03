@@ -2,7 +2,7 @@
     <div>
         <div class="bg-gray-900 px-3 md:px-5 border-1 surface-border flex align-items-center justify-content-between relative lg:static border-bottom-1 border-gray-800"
             style="min-height: 84px">
-            <img :src="config.public.logoUrl" :alt="config.public.companyName" height="40" class="mr-0 lg:mr-6">
+            <img :src="config.public.site.logoUrl" :alt="config.public.site.name" height="40" class="mr-0 lg:mr-6">
             <a v-ripple class="cursor-pointer block lg:hidden text-gray-400 p-ripple"
                 v-styleclass="{ selector: '@next', enterClass: 'hidden', leaveToClass: 'hidden', hideOnOutsideClick: true }">
                 <Icon name="prime:bars" class="text-4xl" />
