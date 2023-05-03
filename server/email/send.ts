@@ -77,7 +77,7 @@ export const sendMail = async (props: SendMailProps) => {
         views: {
             root: './server/email/templates',
             options: {
-                extension: 'nunjucks',
+                extension: 'njk',
             },
         },
         send: !options.preview,
