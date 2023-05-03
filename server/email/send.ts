@@ -38,17 +38,18 @@ export const customTransporter = (options: TransporterOptions) => {
 }
 
 interface MailInterface {
-    from?: string;
-    fromName?: string;
-    to: string | string[];
-    toName?: string;
-    cc?: string | string[];
-    bcc?: string | string[];
+    from?: string,
+    fromName?: string,
+    to: string | string[],
+    toName?: string,
+    cc?: string | string[],
+    bcc?: string | string[],
     attachments?: {
         filename: string,
         path: string,
-        contentType: string
-    }[];
+        contentType: string,
+    }[],
+    preview: boolean,
 }
 
 export type SendMailProps = {
@@ -62,6 +63,7 @@ export const sendMail = async (props: SendMailProps) => {
     const options = props.options;
     options.from = options.from ?? vingConfig.site.email;
     options.fromName = options.fromName ?? vingConfig.site.name;
+    options.preview = options.preview ?? false;
     const customTrasporter = props.transporter;
     const transporter = customTrasporter ?? defaultTransporter;
     await new Email({
@@ -78,8 +80,8 @@ export const sendMail = async (props: SendMailProps) => {
                 extension: 'nunjucks',
             },
         },
-        send: true,
-        preview: false,
+        send: !options.preview,
+        preview: options.preview,
         transport: transporter,
     })
         .send({

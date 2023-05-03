@@ -18,12 +18,17 @@ export default defineCommand({
             description: "Template name",
             default: 'test',
         },
+        preview: {
+            type: "boolean",
+            description: "Display preview instead of sending",
+            default: false,
+        },
     },
     async run({ args }) {
         if (args.to) {
             await sendMail({
                 template: args.template,
-                options: { to: args.to, from: 'info@thegamecrafter.com' },
+                options: { to: args.to, from: 'info@thegamecrafter.com', preview: args.preview },
             });
             console.log('Email sent');
         }
