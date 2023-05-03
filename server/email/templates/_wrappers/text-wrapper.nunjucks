@@ -1,0 +1,7 @@
+
+{% block content %}{% endblock %}
+
+{{ site.name }}
+{% for line in site.streetAddress %}
+{{line}}
+{% endfor %}

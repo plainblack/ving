@@ -1,0 +1,5 @@
+{% extends "html-wrapper.nunjucks" %}
+{% block summary %}This is a test!{% endblock %}
+{% block content%}
+  Congratulations! You have configured email correctly!
+{% endblock %}

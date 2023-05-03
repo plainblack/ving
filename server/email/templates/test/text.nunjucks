@@ -1,0 +1,4 @@
+{% extends "text-wrapper.nunjucks" %}
+{% block content%}
+    Congratulations! You have configured email correctly!
+{% endblock %}
