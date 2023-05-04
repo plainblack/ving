@@ -49,19 +49,18 @@ interface MailInterface {
         path: string,
         contentType: string,
     }[],
-    preview: boolean,
+    preview?: boolean,
 }
 
 export type SendMailProps = {
-    template: string,
     vars?: Record<string, any>,
     options: MailInterface,
     transporter?: Transporter<SMTPTransport.SentMessageInfo> | null,
 }
 
-export const sendMail = async (props: SendMailProps) => {
+export const sendMail = async (template: string, props: SendMailProps) => {
     const options = props.options;
-    options.from = options.from ?? vingConfig.site.email;
+    options.from = process.env.EMAIL_TO_OVERRIDE ?? options.from ?? vingConfig.site.email;
     options.fromName = options.fromName ?? vingConfig.site.name;
     options.preview = options.preview ?? false;
     const customTrasporter = props.transporter;
@@ -85,7 +84,7 @@ export const sendMail = async (props: SendMailProps) => {
         transport: transporter,
     })
         .send({
-            template: props.template,
+            template,
             locals: {
                 ...props.vars,
                 settings: { views: './server/email/templates/_wrappers' },
