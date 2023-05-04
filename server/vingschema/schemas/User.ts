@@ -78,6 +78,17 @@ export const userSchema: vingSchema = {
         },
         {
             type: "boolean",
+            name: 'verifiedEmail',
+            required: true,
+            default: false,
+            db: (prop) => dbBoolean(prop),
+            enums: [false, true],
+            enumLabels: ['Verified', 'Not Yet Verified'],
+            view: ['owner'],
+            edit: ['admin'],
+        },
+        {
+            type: "boolean",
             name: 'admin',
             required: true,
             default: false,

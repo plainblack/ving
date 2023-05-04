@@ -13,6 +13,7 @@ export const UserTable = mysqlTable('users',
 		password: varchar('password', { length: 256 }).notNull().default('no-password-specified'),
 		passwordType: mysqlEnum('passwordType', ['bcrypt']).notNull().default('bcrypt'),
 		useAsDisplayName: mysqlEnum('useAsDisplayName', ['username','email','realName']).notNull().default('username'),
+		verifiedEmail: boolean('verifiedEmail').notNull().default(false),
 		admin: boolean('admin').notNull().default(false),
 		developer: boolean('developer').notNull().default(false)
     }, 
