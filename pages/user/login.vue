@@ -9,17 +9,6 @@
         </div>
         <div class="surface-card p-4 border-1 surface-border border-round ">
 
-            <Form>
-                <FormInput name="login" v-model="login" id="login2" required label="Email or Username" autocomplete="email"
-                    class="mb-3" />
-
-                <Button icon="pi pi-envelope" class="w-full">Sign In with Magic Link</Button>
-            </Form>
-
-            <Divider align="center" class="my-4">
-                <span class="text-600 font-normal text-sm">OR</span>
-            </Divider>
-
             <Form :send="tryLogin">
                 <FormInput name="login" v-model="login" id="login1" required label="Email or Username" autocomplete="email"
                     class="mb-3" />
@@ -29,6 +18,14 @@
 
                 <Button type="submit" icon="pi pi-user" class="w-full">Sign In with Password</Button>
             </Form>
+
+            <div class="mt-3">
+                <span class="text-600 font-medium line-height-3">Forgot your password?</span>
+                <NuxtLink to="/user/reset-password" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Reset
+                    your
+                    password.
+                </NuxtLink>
+            </div>
 
             <Divider align="center" class="my-4">
                 <span class="text-600 font-normal text-sm">OR</span>

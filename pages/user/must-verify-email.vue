@@ -15,6 +15,6 @@ const config = useRuntimeConfig();
 onMounted(async () => {
     const currentUser = useCurrentUserStore();
     const query = useRoute().query;
-    await currentUser.sendVerifyEmail(query.verify?.toString());
+    await currentUser.sendVerifyEmail(query.redirectAfter?.toString());
 });
 </script>

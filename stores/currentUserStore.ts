@@ -74,7 +74,6 @@ export const useCurrentUserStore = defineStore('currentUser', {
         },
         async sendVerifyEmail(redirectAfter?: string) {
             const parser = new ua(navigator.userAgent);
-            console.log(this.links!.self)
             const response = await useRest(this.links!.self + '/send-verify-email', {
                 method: 'post',
                 query: { includeOptions: true, redirectAfter, browser: parser.getBrowser().name, os: parser.getOS().name },
