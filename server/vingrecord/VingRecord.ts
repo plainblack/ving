@@ -152,9 +152,6 @@ export class VingRecord<T extends ModelName> {
         const include = params.include || {};
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
         const schema = findVingSchema(this.table[Name]);
-
-        console.log(this.get('id'))
-
         let out: Describe<T> = { props: {} };
         out.props.id = this.get('id');
         if (include !== undefined && include.links) {

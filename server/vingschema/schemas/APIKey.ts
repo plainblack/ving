@@ -68,35 +68,3 @@ export const apikeySchema: vingSchema = {
         },
     ],
 };
-/*
-export const APIKeyTable = makeTable(apikeySchema);
-
-export type APIKeyModel = typeof APIKeyTable;
-
-
-// temporary measure until we can get the types worked out for auto-generation
-import { mysqlTable, varchar, timestamp, text } from 'drizzle-orm/mysql-core';
-export const apikeysTemp = mysqlTable('apikeys',
-    {
-        id: varchar('id', { length: 36 }).primaryKey(),
-        createdAt: timestamp('createdAt').defaultNow().notNull(),
-        updatedAt: timestamp('updatedAt').defaultNow().notNull(),
-        name: varchar('name', { length: 60 }).notNull(),
-        url: varchar('url', { length: 256 }).notNull().default(''),
-        reason: text('reason').notNull().default(''),
-        privateKey: varchar('privateKey', { length: 36 }).notNull(),
-        userId: varchar('userId', { length: 36 }).notNull().references(() => UserTable.id),
-    },
-);
-export type APIKeySelect = InferModel<typeof apikeysTemp, 'select'>; // return type when queried
-export type APIKeyInsert = InferModel<typeof apikeysTemp, 'insert'>; // insert type
-export type APIKeyProps = {
-    id: string,
-    createdAt: Date,
-    updatedAt: Date,
-    name: string,
-    url: string,
-    privateKey: string,
-    userId: string,
-}
-*/
