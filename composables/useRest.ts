@@ -31,7 +31,7 @@ export default async function (url: string, behavior: Behavior = {}) {
             throbber.done();
             console.dir(context)
             if (!behavior.suppressErrorNotifications)
-                notify.error(context.response._data.message);
+                notify.error(context.response._data.message || context.response.statusText);
         },
     }).catch((_error) => {
         error = { response: _error.response, request: _error.request };
