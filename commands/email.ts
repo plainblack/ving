@@ -26,8 +26,7 @@ export default defineCommand({
     },
     async run({ args }) {
         if (args.to) {
-            await sendMail({
-                template: args.template,
+            await sendMail(args.template, {
                 options: { to: args.to, from: 'info@thegamecrafter.com', preview: args.preview },
             });
             console.log('Email sent');
