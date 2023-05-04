@@ -34,7 +34,7 @@ export type AuthorizedUser = Session | UserRecord;
 export type Roles = Pick<ModelSelect<'User'>, typeof RoleOptions[number]>;
 export type ExtendedRoleOptions = keyof Roles | "public" | "owner" | string;
 
-export type RoleProps = Roles & Pick<ModelSelect<'User'>, 'id' | 'password'>;
+export type RoleProps = Roles & Pick<ModelSelect<'User'>, 'id' | 'password' | 'verifiedEmail'>;
 
 export type vingOption = {
     value: string | boolean,

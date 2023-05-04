@@ -7,20 +7,6 @@ import { RoleMixin, RoleOptions } from './vingrecord/mixins/Role';
 import { useCache } from './cache';
 import { v4 } from 'uuid';
 
-/*
-export interface Session extends VingRole {
-    _userObj: UserRecord | undefined,
-    user(userObj?: UserRecord): Promise<UserRecord>,
-    getAll(): Describe<'User'>['props'],
-    end(): void,
-    extend(): void,
-    describe(params: DescribeParams): Promise<Describe<'User'>>,
-    start(user: UserRecord): Promise<Session>,
-    fetch(id: string): Promise<Session>,
-}
-*/
-
-
 class ProtoSession {
 
     constructor(private props: RoleProps, public id = v4()) { }
@@ -58,6 +44,7 @@ class ProtoSession {
                 throw ouch(401, 'Session expired.');
             }
             else {
+                this.props.verifiedEmail = user.get('verifiedEmail');
                 for (const role of RoleOptions) {
                     this.props[role] = user.get(role);
                 }
@@ -110,7 +97,6 @@ class ProtoSession {
 }
 
 export class Session extends RoleMixin(ProtoSession) { }
-
 
 export const testSession = (session: Session | undefined) => {
     if (session === undefined) {
