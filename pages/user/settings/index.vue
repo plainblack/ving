@@ -24,7 +24,7 @@
                     </div>
                 </div>
 
-                <NuxtLink :to="'/user/profile/' + currentUser.props.id" v-ripple>
+                <NuxtLink :to="'/user/' + currentUser.props.id + '/profile'" v-ripple>
                     View your profile as other see it
                 </NuxtLink>
             </div>
