@@ -60,7 +60,7 @@ export type SendMailProps = {
 
 export const sendMail = async (template: string, props: SendMailProps) => {
     const options = props.options;
-    options.from = process.env.EMAIL_TO_OVERRIDE ?? options.from ?? vingConfig.site.email;
+    options.from = options.from ?? vingConfig.site.email;
     options.fromName = options.fromName ?? vingConfig.site.name;
     options.preview = options.preview ?? false;
     const customTrasporter = props.transporter;
@@ -68,7 +68,7 @@ export const sendMail = async (template: string, props: SendMailProps) => {
     await new Email({
         message: {
             from: `${options.fromName} ${options.from}`,
-            to: `${options.toName || ''} ${options.to}`,
+            to: `${options.toName || ''} ${process.env.EMAIL_TO_OVERRIDE ?? options.to}`,
             cc: options.cc,
             bcc: options.bcc,
             attachments: options.attachments

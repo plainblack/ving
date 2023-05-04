@@ -2,8 +2,8 @@
     "site": {
         "email": "info@thegamecrafter.com",
         "name": "ving",
-        "logoUrl": "http://localhost/ving.svg",
-        "url": "http://localhost",
+        "logoUrl": "http://localhost:3000/ving.svg",
+        "url": "http://localhost:3000",
         "streetAddress": [
             "123 Main Street",
             "Madison, WI 53701",

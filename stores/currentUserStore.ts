@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { Describe } from '../types';
+import ua from 'ua-parser-js';
 
 const query = { includeOptions: true, includeMeta: true, includeLinks: true };
 
@@ -69,6 +70,22 @@ export const useCurrentUserStore = defineStore('currentUser', {
             if (!response.error) {
                 await this.login(newUser.email, newUser.password);
             }
+            return response;
+        },
+        async sendVerifyEmail(redirectAfter?: string) {
+            const parser = new ua(navigator.userAgent);
+            console.log(this.links!.self)
+            const response = await useRest(this.links!.self + '/send-verify-email', {
+                method: 'post',
+                query: { includeOptions: true, redirectAfter, browser: parser.getBrowser().name, os: parser.getOS().name },
+            });
+        },
+        async verifyEmail(verify?: string) {
+            const response = await useRest(this.links!.self + '/verify-email', {
+                method: 'post',
+                query: { includeOptions: true, verify },
+            });
+            this.setState(response.data as Describe<'User'>)
             return response;
         },
         async isAuthenticated() {
