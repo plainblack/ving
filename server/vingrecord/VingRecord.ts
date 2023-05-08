@@ -503,67 +503,6 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
         return results.map(props => new this.recordClass(this.db, this.table, props));
     }
 
-    /* 
-    // not sure how to get this working
-    public async iterator(where?: SQL, batchSize = 100): Promise<AsyncIterator<VR>> {
-        let offset = 0; // Offset for pagination
-        let totalRecords = 0; // Total number of records
-        let fetchedRecords = 0; // Number of records fetched so far
-        const self = this;
-
-        // Fetch the total number of records
-        totalRecords = await this.count(where)
-
-        // Define an async iterator
-        const iterator: AsyncIterator<VR, VR, { done: boolean, value: VR | null }> = {
-            // @ts-ignore
-            async next() {
-                // Check if all records have been fetched
-                if (fetchedRecords >= totalRecords) {
-                    return { done: true, value: null };
-                }
-
-                // Fetch the next batch of records
-                const records = await self.findMany(where, { limit: batchSize, offset })
-
-                // Update the fetched records count and offset for the next batch
-                fetchedRecords += records.length;
-                offset += batchSize;
-
-                return { done: false, value: records.shift() || null };
-            },
-            [Symbol.asyncIterator]() {
-                return this;
-            },
-        };
-        // @ts-ignore
-        return iterator;
-    }
-    */
-
-    // here's some example usage of it
-    /*
-    const Users = useUsers();
-
-    (async () => {
-
-        const iterator = await Users.fetchRecordsInBatches(undefined, 1);
-
-        // Fetch records in batches using the async iterator
-        //@ts-ignore
-        for await (const record of iterator) {
-            if (record) {
-                console.log(record.get('username')); // Process the fetched record
-            }
-        }
-
-        // Close the database connection
-
-        //@ts-ignore
-        Users.db.session.client.pool.end()
-    })();
-    */
-
     public async deleteMany(
         where?: SQL,
     ) {
