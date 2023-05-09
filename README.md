@@ -14,12 +14,12 @@ Ving is a modern reimplementation of [Wing](http://wingapi.com) written entirely
 
 ## Documentation
 
-- [About](content/ving/1.index.md)
-- [Install](content/ving/2.installation.md)
-  - [Node Modules](content/ving/2.installation/1.node-modules.md)
-  - [VS Code](content/ving/2.installation/2.vs-code.md)  
-  - [MySQL](content/ving/2.installation/3.mysql.md)  
-  - [CLI](content/ving/4.cli/1.node-modules.md)
+- [About](content/ving/1.about/1.index.md)
+- [Install](content/ving/2.installation/1.index.md)
+  - [Node Modules](content/ving/2.installation/2.node-modules.md)
+  - [VS Code](content/ving/2.installation/3.vs-code.md)  
+  - [MySQL](content/ving/2.installation/4.mysql.md)  
+  - [Startup](content/ving/2.installation/5.startup.md)  
 
 And after you've done those steps, you'll be able to see our [extensive documention](content/ving) self-hosted in Ving by starting up the dev server like:
 
