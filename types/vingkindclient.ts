@@ -33,11 +33,17 @@ export type VKCreateOptions<T extends ModelName> = {
 }
 
 export type VKSearchOptions<T extends ModelName> = {
+    /** Object full of query parameters.*/
     query?: DescribeListParams,
+    /** Whether or not the `records` list should be `reset()` between `search()`es. */
     accumulate?: boolean,
+    /** The page number to `search()` for. */
     page?: number,
+    /** A function to be called when a `search` completes. */
     onSearch?: (result: DescribeList<T>) => void,
+    /** A function to be called each time a record is fetched and added to `records`. */
     onEach?: (result: Describe<T>) => void,
+    /** A function to be called if an API endpoint interaction has an exception. */
     onError?: (result: Record<string, any>) => void,
 }
 
