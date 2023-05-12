@@ -359,7 +359,7 @@ class VingKind<T extends ModelName> {
     /**
      * Updates just a defined segment of a specified record.
      * 
-     * Usage: `await Users.update(0, {realName : 'George'});
+     * Usage: `await Users.partialUpdate(0, {realName : 'George'});
      * 
      * @param index An index number on the `records` list
      * @param props The props you wish to update
