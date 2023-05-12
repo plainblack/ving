@@ -1,11 +1,35 @@
 type Behavior = {
+    /** Defaults to `false`, but if `true` will hide ving error notifications in the UI. */
     suppressErrorNotifications?: boolean,
+    /** HTTP method. Defaults to `get`. */
     method?: 'get' | 'post' | 'put' | 'delete',
+    /** An object containing query paramters. */
     query?: any,
+    /** An object containing body parameters. */
     body?: Record<string, any>,
+    /** An object containing HTTP headers. */
     headers?: Record<string, string>
 }
 
+/**
+ * A wrapper around the Nuxt composable `$fetch()` that allows for streamlined fetches, but integrate's with ving's subsystems.
+ * 
+ * Usage: `const response = await useRest('/api/user/xxx')`
+ * 
+  * 
+ * @param url An endpoint that you wish to interact with like `/api/user`.
+ * @param behavior An object that modifies the behavior of this function.
+ * @returns It ultimately returns an object that looks like:
+ *
+ *```json
+ *{
+ *    "data" : {},
+ *    "error" : null,
+ *}
+ *```
+ *
+ * The `error` is `null` unless there is an error, and the `data` contains an object response from the endpoint.
+ */
 export default async function (url: string, behavior: Behavior = {}) {
     const notify = useNotifyStore();
     const throbber = useThrobberStore();
