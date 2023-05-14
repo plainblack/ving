@@ -116,6 +116,7 @@ export const baseSchemaProps: vingProp[] = [
     {
         type: "date",
         name: "createdAt",
+        filterRange: true,
         required: true,
         default: () => new Date(),
         db: (prop) => dbTimestamp(prop),
@@ -125,6 +126,7 @@ export const baseSchemaProps: vingProp[] = [
     {
         type: "date",
         name: "updatedAt",
+        filterRange: true,
         required: true,
         autoUpdate: true,
         default: () => new Date(),

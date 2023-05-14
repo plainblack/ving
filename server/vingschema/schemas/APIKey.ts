@@ -11,6 +11,7 @@ export const apikeySchema: vingSchema = {
         {
             type: "string",
             name: 'name',
+            filterQuery: true,
             required: true,
             length: 60,
             db: (prop) => dbString(prop),

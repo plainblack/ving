@@ -691,16 +691,29 @@ export class VingKind<T extends ModelName, VR extends VingRecord<T>> {
     }
 
     /**
-     * You'll never call this directly, but instead you'll override it in a subclass to define a variety of filters available for the `describeList`
+     * Generates a list of `describeList` filters based upon ving schema. Can be overriden to do fancy filters.
      * 
      * @returns A list of filters
      */
     public describeListFilter() {
+
         const filter: QueryFilter = {
             queryable: [],
-            ranged: [this.table.createdAt, this.table.updatedAt],
+            ranged: [],//[this.table.createdAt, this.table.updatedAt],
             qualifiers: [],
         };
+        const schema = findVingSchema(this.table[Name]);
+        for (const prop of schema.props) {
+            if (prop.filterQuery)
+                //@ts-expect-error
+                filter.queryable.push(this.table[prop.name]);
+            if (prop.filterQualifier)
+                //@ts-expect-error
+                filter.qualifiers.push(this.table[prop.name]);
+            if (prop.filterRange)
+                //@ts-expect-error
+                filter.ranged.push(this.table[prop.name]);
+        }
         return filter;
     }
 

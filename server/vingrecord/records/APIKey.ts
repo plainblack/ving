@@ -14,13 +14,6 @@ export class APIKeyRecord extends VingRecord<'APIKey'> {
 
 export class APIKeyKind extends VingKind<'APIKey', APIKeyRecord>  {
     // add custom Kind code here
-
-    public describeListFilter() {
-        const filter = super.describeListFilter();
-        filter.queryable.push(this.table.name);
-        return filter;
-    }
-
 }
 
 export const useAPIKeys = () => {

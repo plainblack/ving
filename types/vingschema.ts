@@ -8,6 +8,12 @@ type basicVingProps = {
     view: string[],
     /** the list of roles that can edit this prop, may also include `owner` or `public` */
     edit: string[],
+    /** whether to allow Rest filtering by keyword on this field */
+    filterQuery?: boolean,
+    /** whether to allow Rest filtering by qualifiers on this field */
+    filterQualifier?: boolean,
+    /** whether to allow Rest filter bing range on this field */
+    filterRange?: boolean,
     /** whether or not to skip this prop when calling `setAll`, defaults to false  */
     noSetAll?: boolean,
     /** whether this prop must be specified in order to create this record */
