@@ -87,6 +87,8 @@ const users = useVingKind<'User'>({
 });
 await users.search();
 
+onBeforeRouteLeave(() => users.dispose());
+
 const breadcrumbs = [
     { label: 'Admin', to: '/admin' },
     { label: 'Users', to: '/user/admin' },

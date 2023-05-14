@@ -89,6 +89,9 @@ const user = useVingRecord<'User'>({
         await navigateTo('/user/admin');
     },
 });
+await user.fetch()
+
+onBeforeRouteLeave(() => user.dispose());
 
 async function become() {
     await user.call('post', user.links?.self + '/become', undefined, {
@@ -108,5 +111,4 @@ const breadcrumbs = [
     { label: 'Edit User' },
 ];
 
-await user.fetch()
 </script>

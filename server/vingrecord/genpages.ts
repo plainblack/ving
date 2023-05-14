@@ -155,6 +155,7 @@ await Promise.all([
     ${schema.tableName}.search(),
     ${schema.tableName}.fetchPropsOptions(),
 ]);
+onBeforeRouteLeave(() => ${schema.tableName}.dispose());
 </script>`;
 
 const viewProps = (schema: vingSchema) => {
@@ -205,7 +206,8 @@ const ${name.toLowerCase()} = useVingRecord<'${name}'>({
         await navigateTo('/${name.toLowerCase()}');
     },
 });
-await ${name.toLowerCase()}.fetch()
+await ${name.toLowerCase()}.fetch();
+onBeforeRouteLeave(() => ${name}.dispose());
 const dt = useDateTime();
 const breadcrumbs = [
     { label: '${makeWords(name)}s', to: '/${name.toLowerCase()}' },

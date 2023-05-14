@@ -154,6 +154,18 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
             },
 
             /**
+             * Frees the memory associated with this record
+             * 
+             * Usage: `onBeforeRouteLeave(() => user.dispose());`
+             */
+            dispose() {
+                this.$reset();
+                this.$dispose();
+                const pinia = usePinia();
+                delete pinia.state.value[this.$id];
+            },
+
+            /**
             * Fetches the configured object from the server.
             * 
             * Usage: `await user.fetch()`

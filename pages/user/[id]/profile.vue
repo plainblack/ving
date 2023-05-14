@@ -34,8 +34,9 @@ const user = useVingRecord<'User'>({
     createApi: '/api/user',
     query: { includeMeta: true, includeOptions: true },
 });
-
 await user.fetch()
+
+onBeforeRouteLeave(() => user.dispose());
 
 const currentUser = useCurrentUserStore();
 

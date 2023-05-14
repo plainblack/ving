@@ -38,7 +38,6 @@
 <script setup lang="ts">
 const route = useRoute();
 const query = route.query;
-console.log(query.code)
 const newPassword = reactive({ password: '', password2: '', code: query.code?.toString() || '' });
 const config = useRuntimeConfig();
 const notify = useNotifyStore();

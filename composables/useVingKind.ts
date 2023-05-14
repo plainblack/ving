@@ -235,6 +235,18 @@ class VingKind<T extends ModelName> {
     }
 
     /**
+     * Frees the memory associated with the list of records
+     * 
+     * Usage: `onBeforeRouteLeave(() => users.dispose());`
+     */
+    dispose() {
+        for (const record of this.records) {
+            record.dispose();
+        }
+        this.reset();
+    }
+
+    /**
      * Fetches the list of enum options for this kind, which can be helpful when creating a new record.
      * 
      * Usage: `await Users.fetchPropsOptions()`

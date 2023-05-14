@@ -48,30 +48,30 @@
                                             <Button icon="pi pi-pencil" class="mr-2" severity="success"
                                                 @click="dialog.current = slotProps.data; dialog.visible = true" />
                                             <Button icon="pi pi-trash" severity="danger"
-                                                @click=" slotProps.data.delete() " />
+                                                @click=" slotProps.data.delete()" />
                                         </template>
                                     </Column>
                                 </DataTable>
 
-                                <Pager :kind=" apikeys " />
+                                <Pager :kind="apikeys" />
 
-                                <Dialog v-model:visible=" dialog.visible " maximizable modal header="Header"
-                                    :style=" { width: '75vw' } ">
+                                <Dialog v-model:visible="dialog.visible" maximizable modal header="Header"
+                                    :style="{ width: '75vw' }">
 
-                                    <div class="flex gap-5 flex-column-reverse md:flex-row" v-if=" dialog.current ">
+                                    <div class="flex gap-5 flex-column-reverse md:flex-row" v-if="dialog.current">
                                         <div class="flex-auto p-fluid">
                                             <div class="mb-4">
-                                                <FormInput name="name" type="text" v-model=" dialog.current.props.name "
-                                                    required label="Name" @change=" dialog.current.update() " />
+                                                <FormInput name="name" type="text" v-model="dialog.current.props.name"
+                                                    required label="Name" @change=" dialog.current.update()" />
                                             </div>
                                             <div class="mb-4">
-                                                <FormInput name="url" type="text" v-model=" dialog.current.props.url "
-                                                    label="URL" @change=" dialog.current.update() " />
+                                                <FormInput name="url" type="text" v-model="dialog.current.props.url"
+                                                    label="URL" @change=" dialog.current.update()" />
                                             </div>
                                             <div class="mb-4">
                                                 <FormInput name="reason" type="textarea"
-                                                    v-model=" dialog.current.props.reason " label="Reason"
-                                                    @change=" dialog.current.update() " />
+                                                    v-model="dialog.current.props.reason" label="Reason"
+                                                    @change=" dialog.current.update()" />
                                             </div>
 
                                         </div>
@@ -92,18 +92,17 @@
                     <div class="text-900 font-semibold text-lg">Create API Key</div>
                     <p class="mt-1 mb-4 text-sm text-gray-500">Make a new API Key.</p>
 
-                    <Form :send=" () => apikeys.create() ">
+                    <Form :send="() => apikeys.create()">
                         <div class="flex gap-5 flex-column-reverse md:flex-row">
                             <div class="flex-auto p-fluid">
                                 <div class="mb-4">
-                                    <FormInput name="name" type="text" v-model=" apikeys.new.name " required label="Name" />
+                                    <FormInput name="name" type="text" v-model="apikeys.new.name" required label="Name" />
                                 </div>
                                 <div class="mb-4">
-                                    <FormInput name="url" type="text" v-model=" apikeys.new.url " label="URL" />
+                                    <FormInput name="url" type="text" v-model="apikeys.new.url" label="URL" />
                                 </div>
                                 <div class="mb-4">
-                                    <FormInput name="reason" type="textarea" v-model=" apikeys.new.reason "
-                                        label="Reason" />
+                                    <FormInput name="reason" type="textarea" v-model="apikeys.new.reason" label="Reason" />
                                 </div>
 
                                 <div>
@@ -140,6 +139,7 @@ const apikeys = useVingKind<'APIKey'>({
     newDefaults: { name: '', reason: '', url: 'http://', userId: currentUser.props?.id },
 });
 await apikeys.search();
+onBeforeRouteLeave(() => apikeys.dispose());
 
 const d: { visible: boolean, current?: VingRecord<'APIKey'> } = { visible: false, current: undefined };
 const dialog = ref(d);
