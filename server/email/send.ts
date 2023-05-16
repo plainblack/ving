@@ -1,8 +1,8 @@
 import Email from 'email-templates';
-import { createTransport, Transporter } from 'nodemailer';
-import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { createTransport } from 'nodemailer';
 import vingConfig from '../../ving.json';
 import * as dotenv from 'dotenv';
+import type { TransporterOptions, SendMailProps } from '../../types/email';
 dotenv.config();
 const emailConfig = new URL(process.env.EMAIL || '');
 
@@ -17,14 +17,7 @@ const defaultTransporter = createTransport({
     attachments: null
 } as unknown as TransporterOptions);
 
-export type TransporterOptions = {
-    service?: string,
-    host?: string,
-    port?: number,
-    secure?: boolean,
-    auth?: { user: string, pass: string },
-    attachments?: [],
-}
+
 
 export const customTransporter = (options: TransporterOptions) => {
     return createTransport({
@@ -37,26 +30,6 @@ export const customTransporter = (options: TransporterOptions) => {
     })
 }
 
-interface MailInterface {
-    from?: string,
-    fromName?: string,
-    to: string | string[],
-    toName?: string,
-    cc?: string | string[],
-    bcc?: string | string[],
-    attachments?: {
-        filename: string,
-        path: string,
-        contentType: string,
-    }[],
-    preview?: boolean,
-}
-
-export type SendMailProps = {
-    vars?: Record<string, any>,
-    options: MailInterface,
-    transporter?: Transporter<SMTPTransport.SentMessageInfo> | null,
-}
 
 export const sendMail = async (template: string, props: SendMailProps) => {
     const options = props.options;
