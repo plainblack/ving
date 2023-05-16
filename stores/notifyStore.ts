@@ -26,5 +26,9 @@ export const useNotifyStore = defineStore('notify', {
         success(message: string) {
             this.successMessage = message;
         },
+        notify(type: 'info' | 'success' | 'danger' | 'warning', message: string) {
+            // @ts-expect-error
+            this[type + 'Message'] = message;
+        },
     },
 });
