@@ -1,7 +1,7 @@
 import { like, eq, and, or, gt, lt, gte, lte, ne, SQL, AnyMySqlColumn } from '../../server/drizzle/orm';
 import { H3Event, getQuery, readBody } from 'h3';
 import { QueryFilter } from '../../types';
-import { ouch } from '../../utils/ouch';
+import { ouch } from '../../utils/ouch.mjs';
 import { DescribeListParams, DescribeParams, Roles } from '../../types';
 import _ from 'lodash';
 

@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { findObject } from '../utils/findObject';
+import { findObject } from '../utils/findObject.mjs';
 
 const data = [
 	{ name: "foo" },
@@ -11,7 +11,7 @@ type TestObj = {
 };
 
 test('findObject', () => {
-	let result = findObject<TestObj>('name', 'bar', data);
+	let result = findObject('name', 'bar', data);
 	expect(result.name).toBe('bar');
-	expect(() => findObject<TestObj>('name', 'barf', data)).toThrowError();
+	expect(() => findObject('name', 'barf', data)).toThrowError();
 });

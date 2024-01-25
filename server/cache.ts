@@ -1,5 +1,5 @@
 import Keyv from 'keyv'
-import { ouch } from '../utils/ouch'
+import { ouch } from '../utils/ouch.mjs'
 let cache: any = undefined;
 
 export const useCache = () => {

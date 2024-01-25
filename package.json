@@ -2,7 +2,7 @@
     "name": "ving",
     "description": "An opinionated web services starter for Nuxt3 that provides REST and per-field privileges out of the box.",
     "private": true,
-    "type": "commonjs",
+    "type": "module",
     "scripts": {
         "build": "nuxt build",
         "dev": "nuxt dev",

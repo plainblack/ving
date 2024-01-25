@@ -3,7 +3,7 @@ const Users = useUsers();
 import { getBody, describeParams } from '../../utils/rest';
 import { Session } from '../../session';
 import { eq } from 'drizzle-orm/mysql-core/expressions.js';
-import { ouch } from '../../../utils/ouch';
+import { ouch } from '../../../utils/ouch.mjs';
 import { testRequired } from '../../utils/rest';
 
 export default defineEventHandler(async (event) => {

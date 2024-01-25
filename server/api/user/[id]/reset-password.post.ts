@@ -1,7 +1,7 @@
 import { useUsers } from '../../../vingrecord/records/User';
 import { describeParams } from '../../../utils/rest';
 import { useCache } from '../../../cache';
-import { ouch } from '../../../../utils/ouch';
+import { ouch } from '../../../../utils/ouch.mjs';
 
 export default defineEventHandler(async (event) => {
     const Users = useUsers();
