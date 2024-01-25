@@ -1,4 +1,4 @@
-import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from '~/server/drizzle/orm.mjs';
+import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from '../drizzle/orm.mjs';
 import { v4 } from 'uuid';
 import { z } from 'zod';
 export const uuid = v4;
