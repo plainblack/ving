@@ -1,4 +1,4 @@
-import { like, eq, and, or, gt, lt, gte, lte, ne, SQL, AnyMySqlColumn } from '../../server/drizzle/orm';
+import { like, eq, and, or, gt, lt, gte, lte, ne, SQL, AnyMySqlColumn } from '../drizzle/orm.mjs';
 import { H3Event, getQuery, readBody } from 'h3';
 import { QueryFilter } from '../../types';
 import { ouch } from '../../utils/ouch.mjs';

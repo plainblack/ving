@@ -1,7 +1,7 @@
 import { sendMail } from '../../email/send';
 import { useUsers } from '../../vingrecord/records/User';
 import { useCache } from '../../cache';
-import { eq } from '../../drizzle/orm';
+import { eq } from '../../drizzle/orm.mjs';
 import { ouch } from '../../../utils/ouch.mjs';
 import { obtainSession, describeParams } from '../../utils/rest';
 import crypto from 'crypto';

@@ -3,7 +3,7 @@ import { vingSchemas } from '../vingschema';
 import { findObject } from '../../utils/findObject.mjs';
 import { ouch } from '../../utils/ouch.mjs';
 import _ from 'lodash';
-import { MySql2Database, like, eq, asc, desc, and, or, ne, SQL, sql, Name, AnyMySqlColumn } from '../../server/drizzle/orm';
+import { MySql2Database, like, eq, asc, desc, and, or, ne, SQL, sql, Name, AnyMySqlColumn } from '../drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers';
 import { ReadStream } from "fs";
 

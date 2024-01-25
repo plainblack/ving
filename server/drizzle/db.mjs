@@ -1,12 +1,12 @@
 import mysql from 'mysql2/promise';
-import { drizzle } from './orm';
+import { drizzle } from './orm.mjs';
 
 // TODO: Needed for tests/cli
 import * as dotenv from 'dotenv';
 dotenv.config();
 const dbConfig = new URL(process.env.DATABASE || '');
 
-let db: any = undefined;
+let db = undefined;
 
 export const useDB = () => {
     if (db) {

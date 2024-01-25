@@ -1,6 +1,6 @@
 import { defineCommand } from "citty";
 import { useUsers, UserRecord } from '../server/vingrecord/records/User'
-import { like, or, eq } from '../server/drizzle/orm';
+import { like, or, eq } from '../server/drizzle/orm.mjs';
 
 export default defineCommand({
     meta: {

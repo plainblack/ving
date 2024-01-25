@@ -1,6 +1,6 @@
 import { defineCommand } from "citty";
 import { exec } from "child_process";
-import { runMigrations } from '../server/drizzle/migrate';
+import { runMigrations } from '../server/drizzle/migrate.mjs';
 import { makeTableFile } from '../server/vingschema/gentable';
 import { vingSchemas } from '../server/vingschema/index';
 
