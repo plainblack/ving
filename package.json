@@ -32,7 +32,7 @@
         "@pinia/nuxt": "^0.4.7",
         "@types/nunjucks": "^3.2.2",
         "bcryptjs": "^2.4.3",
-        "citty": "^0.1.1",
+        "citty": "^0.1.5",
         "date-fns": "^2.29.3",
         "drizzle-orm": "^0.22.0-7239945",
         "email-templates": "^11.0.3",
