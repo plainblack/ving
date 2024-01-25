@@ -1,15 +1,9 @@
-import { PinionContext, generator, renderTemplate, toFile, after, inject } from '@feathershq/pinion';
+import { generator, renderTemplate, toFile, after, inject } from '@feathershq/pinion';
 
-interface Context extends PinionContext {
-    // Add the types from prompts and command line arguments here
-    name: string
-}
+const schemaTemplate = ({ name }) =>
+    `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbTimestamp } from '../helpers';
 
-const schemaTemplate = ({ name }: Context) =>
-    `import { vingSchema } from '../../../types/vingschema';
-import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbTimestamp } from '../helpers';
-
-export const ${name.toLowerCase()}Schema: vingSchema = {
+export const ${name.toLowerCase()}Schema = {
     kind: '${name}',
     tableName: '${name.toLowerCase()}s',
     owner: ['$userId', 'admin'],
@@ -147,7 +141,7 @@ export const ${name.toLowerCase()}Schema: vingSchema = {
     ],
 };`;
 
-export const generateSchema = (context: Context) => generator(context)
-    .then(renderTemplate(schemaTemplate(context), toFile(`server/vingschema/schemas/${context.name}.ts`)))
-    .then(inject(`import { ${context.name.toLowerCase()}Schema } from "./schemas/${context.name}";`, after('import { apikeySchema } from "./schemas/APIKey";'), toFile('server/vingschema/index.ts')))
-    .then(inject(`    ${context.name.toLowerCase()}Schema,`, after('    apikeySchema,'), toFile('server/vingschema/index.ts')));
+export const generateSchema = (context) => generator(context)
+    .then(renderTemplate(schemaTemplate(context), toFile(`server/vingschema/schemas/${context.name}.mjs`)))
+    .then(inject(`import { ${context.name.toLowerCase()}Schema } from "./schemas/${context.name}";`, after('import { apikeySchema } from "./schemas/APIKey";'), toFile('server/vingschema/index.mjs')))
+    .then(inject(`    ${context.name.toLowerCase()}Schema,`, after('    apikeySchema,'), toFile('server/vingschema/index.mjs')));

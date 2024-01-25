@@ -1,12 +1,11 @@
-import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text, AnyMySqlColumnBuilder, AnyMySqlColumn } from '~/server/drizzle/orm.mjs';
-import { vingSchema, vingProp } from '../../types/vingschema';
+import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from '~/server/drizzle/orm.mjs';
 import { v4 } from 'uuid';
 import { z } from 'zod';
 export const uuid = v4;
 import * as fs from 'fs';
 import * as path from 'path';
 
-export const stringDefault = (prop: Extract<vingProp, { type: "string" | "enum" | "id" }>, skipFunc: boolean = false): string => {
+export const stringDefault = (prop, skipFunc = false) => {
     if (typeof prop.default == 'string')
         return prop.default;
     if (!skipFunc && typeof prop.default == 'function') {
@@ -17,7 +16,7 @@ export const stringDefault = (prop: Extract<vingProp, { type: "string" | "enum" 
     return '';
 }
 
-export const numberDefault = (prop: Extract<vingProp, { type: "number" }>, skipFunc: boolean = false): number => {
+export const numberDefault = (prop, skipFunc = false) => {
     if (typeof prop.default == 'number')
         return prop.default;
     if (!skipFunc && typeof prop.default == 'function') {
@@ -28,7 +27,7 @@ export const numberDefault = (prop: Extract<vingProp, { type: "number" }>, skipF
     return 0;
 }
 
-export const booleanDefault = (prop: Extract<vingProp, { type: "boolean" }>, skipFunc: boolean = false): boolean => {
+export const booleanDefault = (prop, skipFunc = false) => {
     if (typeof prop.default == 'boolean')
         return prop.default;
     if (!skipFunc && typeof prop.default == 'function') {
@@ -39,7 +38,7 @@ export const booleanDefault = (prop: Extract<vingProp, { type: "boolean" }>, ski
     return false;
 }
 
-export const dateDefault = (prop: Extract<vingProp, { type: "date" }>, skipFunc: boolean = false): Date => {
+export const dateDefault = (prop, skipFunc = false) => {
     if (prop.default instanceof Date)
         return prop.default;
     if (!skipFunc && typeof prop.default == 'function') {
@@ -50,35 +49,35 @@ export const dateDefault = (prop: Extract<vingProp, { type: "date" }>, skipFunc:
     return new Date();
 }
 
-export const zodString = (prop: Extract<vingProp, { type: "string" }>) => {
+export const zodString = (prop) => {
     return z.string().min(1).max(prop.length);
 }
 
-export const zodText = (prop: Extract<vingProp, { type: "string" }>) => {
+export const zodText = (prop) => {
     return z.string().min(1).max(prop.length);
 }
 
-export const dbTimestamp = (prop: Extract<vingProp, { type: "date" }>) => {
+export const dbTimestamp = (prop) => {
     return `timestamp('${prop.name}').defaultNow().notNull()` + (prop.autoUpdate ? '.onUpdateNow()' : '');
 }
 
-export const dbString = (prop: Extract<vingProp, { type: "string" }>) => {
+export const dbString = (prop) => {
     return `varchar('${prop.name}', { length: ${prop.length} }).notNull().default('${stringDefault(prop, true)}')`;
 }
 
-export const dbText = (prop: Extract<vingProp, { type: "string" }>) => {
+export const dbText = (prop) => {
     return `text('${prop.name}').notNull()`;
 }
 
-export const dbEnum = (prop: Extract<vingProp, { type: "enum" }>) => {
+export const dbEnum = (prop) => {
     return `mysqlEnum('${prop.name}', ['${prop.enums.join("','")}']).notNull().default('${stringDefault(prop, true)}')`;
 }
 
-export const dbBoolean = (prop: Extract<vingProp, { type: "boolean" }>) => {
+export const dbBoolean = (prop) => {
     return `boolean('${prop.name}').notNull().default(${booleanDefault(prop, true)})`;
 }
 
-export const dbId = (prop: Extract<vingProp, { type: "id" }>) => {
+export const dbId = (prop) => {
     let col = `varchar('${prop.name}', { length: 36 })`;
     if (prop.required) {
         col += `.notNull()`;
@@ -86,15 +85,15 @@ export const dbId = (prop: Extract<vingProp, { type: "id" }>) => {
     return col;
 }
 
-export const dbPk = (prop: Extract<vingProp, { type: "id" }>) => {
+export const dbPk = (prop) => {
     return `${dbId(prop)}.default('uuid-will-be-generated').primaryKey()`;
 }
 
-export const dbRelation = (prop: Extract<vingProp, { type: "id" }>) => {
+export const dbRelation = (prop) => {
     return `${dbId(prop)}.references(() => ${prop.relation?.kind}Table.id)`;
 }
 
-export const writeFileSafely = async (writeLocation: string, content: any) => {
+export const writeFileSafely = async (writeLocation, content) => {
     fs.mkdirSync(path.dirname(writeLocation), {
         recursive: true,
     })
@@ -102,7 +101,7 @@ export const writeFileSafely = async (writeLocation: string, content: any) => {
     fs.writeFileSync(writeLocation, content)
 }
 
-export const baseSchemaProps: vingProp[] = [
+export const baseSchemaProps = [
     {
         type: "id",
         name: "id",

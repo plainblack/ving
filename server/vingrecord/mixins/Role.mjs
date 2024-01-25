@@ -1,22 +1,21 @@
-import { RoleProps, ExtendedRoleOptions, Roles, Constructable } from '../../../types';
 import { ouch } from '../../../utils/ouch.mjs';
 
-export const RoleOptions = ["admin", "developer"] as const;
+export const RoleOptions = ["admin", "developer"];
 
-export function RoleMixin<T extends Constructable<{ getAll(): any, get<K extends keyof RoleProps>(key: K): RoleProps[K] }>>(Base: T) {
+export function RoleMixin(Base) {
     class RoleMixin extends Base {
 
-        public isRole(role: ExtendedRoleOptions): boolean {
+        public isRole(role) {
             if (role == 'public') return true;
             if (role == 'owner') return false; // can't do owner check this way, use isOwner() instead
             let props = this.getAll();
             if (role in props) {
-                return props[role as keyof Roles] || props.admin || false;
+                return props[role] || props.admin || false;
             }
             return false;
         }
 
-        public isaRole(roles: ExtendedRoleOptions[]): boolean {
+        public isaRole(roles) {
             for (const role of roles) {
                 const result = this.isRole(role);
                 if (result) {
@@ -26,20 +25,17 @@ export function RoleMixin<T extends Constructable<{ getAll(): any, get<K extends
             return false;
         }
 
-        public isRoleOrDie(role: keyof Roles): boolean {
+        public isRoleOrDie(role) {
             if (this.isRole(role)) {
                 return true;
             }
             throw ouch(403, `Not a member of ${role}`, role);
         }
 
-        public getRoleProp<K extends keyof RoleProps>(key: K): RoleProps[K] {
+        public getRoleProp(key) {
             return this.get(key);
         }
     }
 
-    return RoleMixin as {
-        new(...args: any): RoleMixin;
-        prototype: any;
-    } & T;
+    return RoleMixin;
 }

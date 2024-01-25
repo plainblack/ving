@@ -1,4 +1,4 @@
-import { useAPIKeys } from '../../vingrecord/records/APIKey';
+import { useAPIKeys } from '../../vingrecord/records/APIKey.mjs';
 import { describeParams, obtainSession, getBody } from '../../utils/rest';
 export default defineEventHandler(async (event) => {
     const APIKeys = useAPIKeys();

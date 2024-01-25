@@ -1,9 +1,9 @@
 import type { UserModel } from '../server/drizzle/schema/User';
-import type { UserRecord } from '../server/vingrecord/records/User';
-import { RoleOptions } from '../server/vingschema/schemas/User';
+import type { UserRecord } from '../server/vingrecord/records/User.mjs';
+import { RoleOptions } from '../server/vingschema/schemas/User.mjs';
 import type { APIKeyModel } from '../server/drizzle/schema/APIKey';
 import type { InferModel, AnyMySqlTable, AnyMySqlColumn } from '../server/drizzle/orm.mjs';
-import type { Session } from '../server/session';
+import type { Session } from '../server/session.mjs';
 
 export type QueryFilter = {
     /** A list of props that can be searched via rest */

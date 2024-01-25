@@ -1,5 +1,5 @@
-import { useAPIKeys } from '../server/vingrecord/records/APIKey';
-import { useUsers } from '../server/vingrecord/records/User';
+import { useAPIKeys } from '../server/vingrecord/records/APIKey.mjs';
+import { useUsers } from '../server/vingrecord/records/User.mjs';
 import { describe, test, expect } from "vitest";
 import { like, eq, asc, desc, and, inArray } from '../server/drizzle/orm.mjs';
 

@@ -1,4 +1,4 @@
-import { useUsers } from '../../vingrecord/records/User';
+import { useUsers } from '../../vingrecord/records/User.mjs';
 const Users = useUsers();
 import { describeParams, obtainSession, getBody } from '../../utils/rest';
 export default defineEventHandler(async (event) => {

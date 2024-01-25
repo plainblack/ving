@@ -1,4 +1,4 @@
-import { testSession } from '../../session';
+import { testSession } from '../../session.mjs';
 import { obtainSession, describeParams } from '../../utils/rest';
 import { ouch } from '../../../utils/ouch.mjs';
 export default defineEventHandler(async (event) => {

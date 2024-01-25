@@ -1,7 +1,6 @@
-import { vingSchema } from '../../../types/vingschema';
-import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean } from '../helpers';
+import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean } from '../helpers.mjs';
 
-export const userSchema: vingSchema = {
+export const userSchema = {
     kind: 'User',
     tableName: 'users',
     owner: ['$id', 'admin'],
@@ -129,4 +128,4 @@ export const userSchema: vingSchema = {
     ],
 };
 
-export const RoleOptions = ["admin", "developer"] as const;
+export const RoleOptions = ["admin", "developer"];

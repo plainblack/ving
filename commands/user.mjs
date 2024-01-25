@@ -1,5 +1,5 @@
 import { defineCommand } from "citty";
-import { useUsers, UserRecord } from '../server/vingrecord/records/User'
+import { useUsers } from '../server/vingrecord/records/User.mjs'
 import { like, or, eq } from '../server/drizzle/orm.mjs';
 
 export default defineCommand({
@@ -98,7 +98,7 @@ export default defineCommand({
     },
 });
 
-function formatList(users: UserRecord[]) {
+function formatList(users) {
     console.log(
         'Username'.padEnd(30),
         'Email'.padEnd(60),

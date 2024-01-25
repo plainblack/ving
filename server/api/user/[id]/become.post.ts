@@ -1,6 +1,6 @@
-import { useUsers } from '../../../vingrecord/records/User';
+import { useUsers } from '../../../vingrecord/records/User.mjs';
 import { describeParams, obtainSessionIfRole } from '../../../utils/rest';
-import { Session } from '../../../session';
+import { Session } from '../../../session.mjs';
 export default defineEventHandler(async (event) => {
     let session = obtainSessionIfRole(event, 'admin');
     const Users = useUsers();

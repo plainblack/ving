@@ -1,4 +1,4 @@
-import { useUsers } from '../../../vingrecord/records/User';
+import { useUsers } from '../../../vingrecord/records/User.mjs';
 import { describeParams } from '../../../utils/rest';
 import { useCache } from '../../../cache';
 import { ouch } from '../../../../utils/ouch.mjs';

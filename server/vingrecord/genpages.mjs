@@ -1,17 +1,12 @@
-import { PinionContext, generator, renderTemplate, toFile } from '@feathershq/pinion';
-import { vingSchema, vingProp } from '../../types/vingschema';
+import { generator, renderTemplate, toFile } from '@feathershq/pinion';
 import { splitByCase, upperFirst } from 'scule';
-import { stringDefault, booleanDefault, numberDefault } from '../vingschema/helpers';
+import { stringDefault, booleanDefault, numberDefault } from '../vingschema/helpers.mjs';
 
-const makeWords = (value: string) => splitByCase(value).join(' ');
-const makeLabel = (value: string) => upperFirst(splitByCase(value).join(' '));
+const makeWords = (value) => splitByCase(value).join(' ');
+const makeLabel = (value) => upperFirst(splitByCase(value).join(' '));
 
-interface Context extends PinionContext {
-    name: string,
-    schema: vingSchema,
-}
 
-const columns = (schema: vingSchema) => {
+const columns = (schema) => {
     let out = '';
     for (const prop of schema.props) {
         if (prop.name == 'email') {
@@ -38,7 +33,7 @@ const columns = (schema: vingSchema) => {
     return out;
 }
 
-const prop2type = (prop: vingProp) => {
+const prop2type = (prop) => {
     if (prop.name == 'email') {
         return 'email';
     }
@@ -53,7 +48,7 @@ const prop2type = (prop: vingProp) => {
     }
 }
 
-const createProps = (schema: vingSchema) => {
+const createProps = (schema) => {
     let out = '';
     for (const prop of schema.props) {
         if (prop.required && prop.edit.length > 0) {
@@ -74,8 +69,8 @@ const createProps = (schema: vingSchema) => {
     return out;
 }
 
-const newDefaults = (schema: vingSchema) => {
-    let out: string[] = [];
+const newDefaults = (schema) => {
+    let out = [];
     for (const prop of schema.props) {
         if (prop.edit.length > 0 && (prop.required || prop.relation?.type == 'parent')) {
             if (prop.type == 'string' || prop.type == 'enum')
@@ -93,7 +88,7 @@ const newDefaults = (schema: vingSchema) => {
     return out.join(', ');
 }
 
-const indexTemplate = ({ name, schema }: Context) =>
+const indexTemplate = ({ name, schema }) =>
     `<template>
     <h1>${makeWords(name)}s</h1>
 
@@ -143,9 +138,9 @@ const indexTemplate = ({ name, schema }: Context) =>
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const dt = useDateTime();
-const ${schema.tableName} = useVingKind<'${name}'>({
+const ${schema.tableName} = useVingKind({
     listApi: '/api/${name.toLowerCase()}',
     createApi: '/api/${name.toLowerCase()}',
     query: { includeMeta: true, sortBy: 'createdAt', sortOrder: 'desc' },
@@ -158,7 +153,7 @@ await Promise.all([
 onBeforeRouteLeave(() => ${schema.tableName}.dispose());
 </script>`;
 
-const viewProps = (schema: vingSchema) => {
+const viewProps = (schema) => {
     let out = '';
     for (const prop of schema.props) {
         if (prop.view.length > 0 || prop.edit.length > 0) {
@@ -177,10 +172,10 @@ const viewProps = (schema: vingSchema) => {
     return out;
 };
 
-const nameOrId = (schema: vingSchema) => schema.props.find((prop) => prop.name == 'name') ? 'name' : 'id';
+const nameOrId = (schema) => schema.props.find((prop) => prop.name == 'name') ? 'name' : 'id';
 
 
-const viewTemplate = ({ name, schema }: Context) =>
+const viewTemplate = ({ name, schema }) =>
     `<template>
     <Crumbtrail :crumbs="breadcrumbs" />
     <h1>{{${name.toLowerCase()}.props?.${nameOrId(schema)}}}</h1>
@@ -195,10 +190,10 @@ const viewTemplate = ({ name, schema }: Context) =>
     </div>
 </template>
   
-<script setup lang="ts">
+<script setup>
 const route = useRoute();
 const id = route.params.id.toString();
-const ${name.toLowerCase()} = useVingRecord<'${name}'>({
+const ${name.toLowerCase()} = useVingRecord({
     id,
     fetchApi: '/api/${name.toLowerCase()}/' + id,
     query: { includeMeta: true, includeOptions: true },
@@ -215,14 +210,14 @@ const breadcrumbs = [
 ];
 </script>`;
 
-const editProps = (schema: vingSchema) => {
+const editProps = (schema) => {
     let out = '';
     for (const prop of schema.props) {
         if (prop.edit.length > 0) {
             if (['enum', 'boolean'].includes(prop.type)) {
                 out += `
                     <div class="mb-4">
-                        <FormSelect name="${prop.name}" :options="${schema.kind.toLowerCase()}.options?.${prop.name}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.update()" />
+                        <FormSelect name="${prop.name}" :options="${schema.kind.toLowerCase()}.options.${prop.name}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.update()" />
                     </div>`;
             }
             else if (prop.type != 'virtual') {
@@ -236,13 +231,13 @@ const editProps = (schema: vingSchema) => {
     return out;
 }
 
-const statProps = (schema: vingSchema) => {
+const statProps = (schema) => {
     let out = '';
     for (const prop of schema.props) {
         if (prop.view.length > 0 && prop.edit.length == 0) {
             if (prop.type == 'date') {
                 out += `
-            <div class="mb-4"><b>${makeLabel(prop.name)}</b>: {{dt.formatDateTime(${schema.kind.toLowerCase()}.props?.${prop.name})}}</div>
+            <div class="mb-4"><b>${makeLabel(prop.name)}</b>: {{dt.formatDateTime(${schema.kind.toLowerCase()}.props.${prop.name})}}</div>
             `;
             }
             else if (prop.type != 'virtual') {
@@ -255,7 +250,7 @@ const statProps = (schema: vingSchema) => {
     return out;
 }
 
-const editTemplate = ({ name, schema }: Context) =>
+const editTemplate = ({ name, schema }) =>
     `<template>
     <Crumbtrail :crumbs="breadcrumbs" />
     <h1>Edit ${makeWords(name)}</h1>
@@ -279,7 +274,7 @@ const editTemplate = ({ name, schema }: Context) =>
     </FieldsetNav>
 </template>
   
-<script setup lang="ts">
+<script setup>
 definePageMeta({
     middleware: ['auth']
 });
@@ -287,7 +282,7 @@ const route = useRoute();
 const dt = useDateTime();
 const notify = useNotifyStore();
 const id = route.params.id.toString();
-const ${name.toLowerCase()} = useVingRecord<'${name}'>({
+const ${name.toLowerCase()} = useVingRecord({
     id,
     fetchApi: '/api/${name.toLowerCase()}/' + id,
     createApi: '/api/${name.toLowerCase()}',
@@ -302,12 +297,12 @@ const ${name.toLowerCase()} = useVingRecord<'${name}'>({
 await ${name.toLowerCase()}.fetch()
 const breadcrumbs = [
     { label: '${makeWords(name)}s', to: '/${name.toLowerCase()}' },
-    { label: 'View', to: '/${name.toLowerCase()}/'+${name.toLowerCase()}.props!.id },
+    { label: 'View', to: '/${name.toLowerCase()}/'+${name.toLowerCase()}.props.id },
     { label: 'Edit' },
 ];
 </script>`;
 
-export const generatePages = (context: Context) => generator(context)
+export const generatePages = (context) => generator(context)
     .then(renderTemplate(indexTemplate(context), toFile(`pages/${context.name.toLowerCase()}/index.vue`)))
     .then(renderTemplate(viewTemplate(context), toFile(`pages/${context.name.toLowerCase()}/[id]/index.vue`)))
     .then(renderTemplate(editTemplate(context), toFile(`pages/${context.name.toLowerCase()}/[id]/edit.vue`)));

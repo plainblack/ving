@@ -1,17 +1,16 @@
-import { VingRecord, VingKind } from "../VingRecord";
-import { ModelInsert, ModelSelect, DescribeParams, AuthorizedUser } from '../../../types';
-import { RoleOptions, RoleMixin } from '../mixins/Role';
-import { useAPIKeys } from "./APIKey";
+import { VingRecord, VingKind } from "../VingRecord.mjs";
+import { RoleOptions, RoleMixin } from '../mixins/Role.mjs';
+import { useAPIKeys } from "./APIKey.mjs";
 import bcrypt from 'bcryptjs';
-import { useCache } from '../../cache';
-import { useDB } from '../../drizzle/db';
-import { UserTable } from '../../drizzle/schema/User';
+import { useCache } from '../../cache.mjs';
+import { useDB } from '../../drizzle/db.mjs';
+import { UserTable } from '../../drizzle/schema/User.mjs';
 import { ouch } from '../../../utils/ouch.mjs';
 
-export class UserRecord extends RoleMixin(VingRecord<'User'>) {
-    private userChanged = false;
+export class UserRecord extends RoleMixin(VingRecord) {
+    #userChanged = false;
 
-    public get displayName() {
+    get displayName() {
         switch (this.get('useAsDisplayName')) {
             case 'realName':
                 return this.get('realName') || '-unknown-';
@@ -22,7 +21,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
         }
     }
 
-    public get avatarUrl() {
+    get avatarUrl() {
         const id = this.get('id');
         let url = `https://robohash.org/${id}/size_300x300`;
 
@@ -48,7 +47,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
         return url;
     }
 
-    public async testPassword(password: string) {
+    async testPassword(password) {
         if (this.get('password') == undefined)
             throw ouch(400, 'User has no password, you must log in via another provider.');
         if (password == undefined || password == '')
@@ -68,13 +67,13 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
         throw ouch(454, 'Password does not match.');
     }
 
-    public async setPassword(password: string) {
+    async setPassword(password) {
         const hashedPass = bcrypt.hashSync(password, 10);
         this.set('password', hashedPass);
         this.set('passwordType', 'bcrypt');
     }
 
-    public async describe(params: DescribeParams = {}) {
+    async describe(params = {}) {
         const out = await super.describe(params);
         if (params?.include?.meta && out.meta) {
             out.meta.displayName = this.displayName;
@@ -89,7 +88,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
         return out;
     }
 
-    public async setPostedProps(params: ModelInsert<'User'>, currentUser?: AuthorizedUser) {
+    async setPostedProps(params, currentUser) {
         if (params.password && (currentUser === undefined || this.isOwner(currentUser))) {
             await this.setPassword(params.password);
         }
@@ -100,7 +99,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
         return true;
     }
 
-    public get apikeys() {
+    get apikeys() {
         const apikeys = useAPIKeys();
         apikeys.propDefaults.push({
             prop: 'userId',
@@ -110,18 +109,18 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
         return apikeys;
     }
 
-    public async update() {
+    async update() {
         if (this.userChanged)
             await useCache().set('user-changed-' + this.get('id'), true, 1000 * 60 * 60 * 24 * 7);
         await super.update();
     }
 
-    public async delete() {
+    async delete() {
         await this.apikeys.deleteMany();
         await super.delete();
     }
 
-    public set<K extends keyof ModelSelect<'User'>>(key: K, value: ModelSelect<'User'>[K]) {
+    set(key, value) {
         if (key in ['password', 'verifiedEmail', ...RoleOptions])
             this.userChanged = true;
         return super.set(key, value);
@@ -129,7 +128,7 @@ export class UserRecord extends RoleMixin(VingRecord<'User'>) {
 }
 
 
-export class UserKind extends VingKind<'User', UserRecord>  {
+export class UserKind extends VingKind {
     // add custom Kind code here
 }
 

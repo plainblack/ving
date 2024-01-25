@@ -1,8 +1,7 @@
-import { vingSchema } from '../../../types/vingschema';
-import { baseSchemaProps, dbString, zodString, dbText, zodText, dbRelation } from '../helpers';
+import { baseSchemaProps, dbString, zodString, dbText, zodText, dbRelation } from '../helpers.mjs';
 import crypto from 'crypto';
 
-export const apikeySchema: vingSchema = {
+export const apikeySchema = {
     kind: 'APIKey',
     tableName: 'apikeys',
     owner: ['$userId', 'admin'],

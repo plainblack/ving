@@ -1,14 +1,13 @@
-import { writeFileSafely } from './helpers';
-import { vingSchemas } from './index';
-import type { vingSchema } from '../../types';
+import { writeFileSafely } from './helpers.mjs';
+import { vingSchemas } from './index.mjs';
 
 
-export const makeTable = (schema: vingSchema) => {
-    const columns: string[] = [];
-    const uniqueIndexes: string[] = [];
+export const makeTable = (schema) => {
+    const columns = [];
+    const uniqueIndexes = [];
     for (const prop of schema.props) {
         if (prop.type != 'virtual') {
-            columns.push(`${prop.name}: ${prop.db(prop as never)}`)
+            columns.push(`${prop.name}: ${prop.db(prop)}`)
             if (prop.unique) {
                 uniqueIndexes.push(`${prop.name}Index: uniqueIndex('${prop.name}Index').on(table.${prop.name})`);
             }
@@ -26,8 +25,8 @@ export const ${schema.kind}Table = mysqlTable('${schema.tableName}',
 `;
 }
 
-export const makeTableFile = async (schema: vingSchema) => {
-    const references: string[] = [];
+export const makeTableFile = async (schema) => {
+    const references = [];
     for (const prop of schema.props) {
         if (prop.relation && ['parent', 'sibling'].includes(prop.relation.type)) {
             references.push(`import {${prop.relation.kind}Table} from './${prop.relation.kind}';`);
@@ -38,7 +37,6 @@ ${references.join("\n")}
 
 ${makeTable(schema)}
 
-export type ${schema.kind}Model = typeof ${schema.kind}Table;
 `;
     const path = `server/drizzle/schema/${schema.kind}.ts`;
     await writeFileSafely(path, content);
