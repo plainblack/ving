@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ModelMap } from '~/types'
+import type { ModelMap } from '~/types'
 const route = useRoute();
 const currentUser = useCurrentUserStore();
 
