@@ -1,6 +1,6 @@
 
-import { migrate } from 'drizzle-orm/mysql2/migrator';
-import { drizzle } from 'drizzle-orm/mysql2';
+import { migrate } from 'drizzle-orm/mysql2/migrator.js';
+import { drizzle } from 'drizzle-orm/mysql2/index.js';
 import mysql from 'mysql2/promise';
 import * as dotenv from 'dotenv';
 dotenv.config();
