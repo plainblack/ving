@@ -22,7 +22,7 @@ const errorCodes = {
     504: 'Could Not Connect',
 };
 
-export const ouch = (code: keyof typeof errorCodes, error: string | unknown, data?: any) => {
+export const ouch = (code, error, data) => {
     let message = '';
     if (_.isString(error)) {
         message = error;
@@ -42,7 +42,7 @@ export const ouch = (code: keyof typeof errorCodes, error: string | unknown, dat
     })
 }
 
-export const bleep = (error: any): string => {
+export const bleep = (error) => {
     if ('message' in error) {
         return error.message;
     }

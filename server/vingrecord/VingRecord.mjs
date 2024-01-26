@@ -2,9 +2,8 @@ import { vingSchemas } from '../vingschema/index.mjs';
 import { findObject } from '../../utils/findObject.mjs';
 import { ouch } from '../../utils/ouch.mjs';
 import _ from 'lodash';
-import { like, eq, asc, desc, and, or, ne, SQL, sql, Name } from '../drizzle/orm.mjs';
+import { eq, asc, desc, and, ne, sql, Name } from '../drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers.mjs';
-import { ReadStream } from "fs";
 
 /**
  * Get the schema for a specific kind within the ving schema list.
@@ -578,7 +577,7 @@ export class VingKind {
      * @returns A count of the records
      */
     async count(where) {
-        return (await this.db.select({ count: sql < number > `count(*)`.as('count') }).from(this.table).where(this.calcWhere(where)))[0].count;
+        return (await this.db.select({ count: sql`count(*)`.as('count') }).from(this.table).where(this.calcWhere(where)))[0].count;
     }
 
     /**
