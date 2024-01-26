@@ -7,7 +7,7 @@ function addImports({ schema }) {
     let out = '';
     for (const prop of schema.props) {
         if (prop.relation) {
-            out += `import { use${prop.relation.kind}s } from './${prop.relation.kind}';` + "\n";
+            out += `import { use${prop.relation.kind}s } from './${prop.relation.kind}.mjs';` + "\n";
         }
     }
     return out;
@@ -15,7 +15,7 @@ function addImports({ schema }) {
 
 const childTemplate = ({ name, prop }) => `
     // ${prop.relation.kind} - child relationship
-    public get ${prop.relation.name}() {
+    get ${prop.relation.name}() {
         const ${prop.relation.kind}s = use${prop.relation.kind}s();
         ${prop.relation.kind}s.propDefaults.push({
             prop: '${camelCase(name)}Id',
@@ -28,7 +28,7 @@ const childTemplate = ({ name, prop }) => `
 
 const parentTemplate = ({ prop }) => `
     // ${prop.relation.kind} - parent relationship
-    public get ${prop.relation.name}() {
+    get ${prop.relation.name}() {
         return use${prop.relation.kind}s().findOrDie(this.get('${prop.name}'));
     }
 `;
@@ -47,17 +47,17 @@ function addRelationships({ name, schema }) {
 }
 
 const recordTemplate = ({ name, schema }) =>
-    `import { VingRecord, VingKind } from "../VingRecord";
-import { useDB } from '../../drizzle/db';
-import { ${name}Table } from '../../drizzle/schema/${name}';
+    `import { VingRecord, VingKind } from "../VingRecord.mjs";
+import { useDB } from '../../drizzle/db.mjs';
+import { ${name}Table } from '../../drizzle/schema/${name}.mjs';
 ${addImports({ schema })}
 
-export class ${name}Record extends VingRecord<'${name}'> {
+export class ${name}Record extends VingRecord {
     // add custom Record code here
     ${addRelationships({ name, schema })}
 }
 
-export class ${name}Kind extends VingKind<'${name}', ${name}Record>  {
+export class ${name}Kind extends VingKind  {
     // add custom Kind code here
 }
 
