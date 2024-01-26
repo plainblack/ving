@@ -103,7 +103,7 @@ const indexTemplate = ({ name, schema }) =>
             <Button label="Search" @click="${schema.tableName}.search()" />
         </div>
 
-        <DataTable :value="${schema.tableName}.records" stripedRows @sort="(e:Event) => ${schema.tableName}.sortDataTable(e)">
+        <DataTable :value="${schema.tableName}.records" stripedRows @sort="(e) => ${schema.tableName}.sortDataTable(e)">
             ${columns(schema)}
             <Column header="Manage">
                 <template #body="slotProps">
