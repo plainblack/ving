@@ -143,5 +143,5 @@ export const ${name.toLowerCase()}Schema = {
 
 export const generateSchema = (context) => generator(context)
     .then(renderTemplate(schemaTemplate(context), toFile(`server/vingschema/schemas/${context.name}.mjs`)))
-    .then(inject(`import { ${context.name.toLowerCase()}Schema } from "./schemas/${context.name}";`, after('import { apikeySchema } from "./schemas/APIKey";'), toFile('server/vingschema/index.mjs')))
+    .then(inject(`import { ${context.name.toLowerCase()}Schema } from "./schemas/${context.name}";`, after('import { apikeySchema } from "./schemas/APIKey.mjs";'), toFile('server/vingschema/index.mjs')))
     .then(inject(`    ${context.name.toLowerCase()}Schema,`, after('    apikeySchema,'), toFile('server/vingschema/index.mjs')));
