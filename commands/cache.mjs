@@ -1,5 +1,5 @@
 import { defineCommand } from "citty";
-import { useCache } from '../server/cache'
+import { useCache } from '../server/cache.mjs'
 
 export default defineCommand({
     meta: {
@@ -34,12 +34,14 @@ export default defineCommand({
             type: "string",
             valueHint: "string|json",
             description: "The value of the entry to set",
+            alias: "v",
         },
         ttl: {
             type: "string",
             description: "Timeout in milliseconds for the cache entry to live",
             valueHint: 'ms',
             default: (1000 * 60 * 60 * 24).toString(),
+            alias: "t",
         },
     },
     async run({ args }) {
@@ -60,5 +62,6 @@ export default defineCommand({
             await cache.set(args.set, args.value, Number(args.ttl));
             console.log(`${args.set} set to ${args.value} for ${args.ttl}ms`);
         }
+        await cache.disconnect();
     },
 });

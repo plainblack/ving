@@ -1,5 +1,6 @@
-import Keyv from 'keyv'
-import { ouch } from '../utils/ouch.mjs'
+import Keyv from 'keyv';
+import 'dotenv/config';
+import { ouch } from '../utils/ouch.mjs';
 let cache = undefined;
 
 export const useCache = () => {
