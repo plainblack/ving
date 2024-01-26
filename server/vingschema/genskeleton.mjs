@@ -1,7 +1,7 @@
 import { generator, renderTemplate, toFile, after, inject } from '@feathershq/pinion';
 
 const schemaTemplate = ({ name }) =>
-    `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbTimestamp } from '../helpers';
+    `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbTimestamp } from '../helpers.mjs';
 
 export const ${name.toLowerCase()}Schema = {
     kind: '${name}',
