@@ -22,9 +22,11 @@ const props = defineProps({
     },
     parent: {
         type: String,
-        default: '',
-    }
-})
+        default: () => '',
+    },
+});
+
+
 function filteredLinks() {
     return props.links.filter((link) => link._path != props.parent);
 }

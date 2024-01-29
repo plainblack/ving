@@ -30,16 +30,47 @@
 <script setup>
 import _ from 'lodash';
 
-const props = withDefaults(
-    defineProps(),
-    {
-        type: 'text',
-        autocomplete: 'off',
-        required: false,
-        mustMatch: undefined,
-        step: 1,
-    }
-);
+
+const props = defineProps({
+    label: String,
+    type: {
+        type: String,
+        default: () => 'text',
+        validator(value, props) {
+            return ['textarea', 'text', 'password', 'number', 'email'].includes(value)
+        }
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    id: String,
+    append: String,
+    prepend: String,
+    autocomplete: {
+        type: String,
+        default: () => 'off',
+    },
+    modelValue: {
+        type: [String, Number, undefined, null],
+        required: true,
+    },
+    placeholder: String,
+    required: {
+        type: Boolean,
+        default: () => false,
+    },
+    step: {
+        type: Number,
+        default: () => 1,
+    },
+    mustMatch: {
+        type: [Object, undefined],
+        default: () => undefined,
+    },
+    class: String,
+});
+
 const computedId = props.id || props.name;
 
 const emit = defineEmits(['update:modelValue']);

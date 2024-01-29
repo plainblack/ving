@@ -3,9 +3,8 @@
 </template>
 
 <script setup>
-const props = withDefaults(
-    defineProps(),
-    {
-    }
-);
+const props = defineProps({
+    label: String,
+    id: String,
+});
 </script>

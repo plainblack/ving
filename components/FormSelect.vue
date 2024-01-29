@@ -8,11 +8,17 @@
 </template>
 
 <script setup>
-const props = withDefaults(
-    defineProps(),
-    {
-    }
-);
+const props = defineProps({
+    label: String,
+    name: {
+        type: String,
+        required: true,
+    },
+    id: String,
+    modelValue: [String, Boolean, Number, null, undefined],
+    options: [Array, undefined],
+});
+
 
 const computedId = props.id || props.name;
 const emit = defineEmits(['update:modelValue', 'change'])

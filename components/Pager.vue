@@ -10,12 +10,7 @@
 </template>
 
 <script setup>
-const props = withDefaults(
-    defineProps(),
-    {
-
-    }
-);
+const props = defineProps(['kind']);
 
 function changePage(page) {
     props.kind.query.page = page.page + 1

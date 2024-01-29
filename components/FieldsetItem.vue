@@ -6,12 +6,12 @@
 
 <script setup>
 
-const props = withDefaults(
-    defineProps(),
-    {
-
-    }
-);
+const props = defineProps({
+    name: {
+        type: String,
+        required: true,
+    },
+});
 
 const id = 'id' + props.name.replace(/[^A-Za-z0-9]/g, '');
 

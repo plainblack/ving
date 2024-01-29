@@ -24,12 +24,8 @@
 
 <script setup>
 
-
-const props = withDefaults(
-    defineProps(),
-    {
-
-    }
-);
+const props = defineProps({
+    crumbs: Object,
+});
 
 </script>

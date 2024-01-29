@@ -20,12 +20,13 @@ provide('invalidForm', function (newValue) {
     }
 });
 
-const props = withDefaults(
-    defineProps(),
-    {
-        async send() { },
-    }
-);
+const props = defineProps({
+    name: {
+        type: Function,
+        default: () => { async () => { } },
+    },
+});
+
 
 const notify = useNotifyStore();
 
