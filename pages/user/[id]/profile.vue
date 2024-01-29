@@ -25,11 +25,11 @@
     </div>
 </template>
   
-<script setup lang="ts">
+<script setup>
 const route = useRoute();
 const dt = useDateTime();
 
-const user = useVingRecord<'User'>({
+const user = useVingRecord({
     fetchApi: '/api/user/' + route.params.id,
     createApi: '/api/user',
     query: { includeMeta: true, includeOptions: true },

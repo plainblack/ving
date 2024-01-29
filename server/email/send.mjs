@@ -2,7 +2,6 @@ import Email from 'email-templates';
 import { createTransport } from 'nodemailer';
 import vingConfig from '../../ving.json';
 import * as dotenv from 'dotenv';
-import type { TransporterOptions, SendMailProps } from '../../types/email';
 dotenv.config();
 const emailConfig = new URL(process.env.EMAIL || '');
 
@@ -15,11 +14,11 @@ const defaultTransporter = createTransport({
         pass: decodeURIComponent(emailConfig.password),
     },
     attachments: null
-} as unknown as TransporterOptions);
+});
 
 
 
-export const customTransporter = (options: TransporterOptions) => {
+export const customTransporter = (options) => {
     return createTransport({
         service: options.service,
         host: options.host,
@@ -31,7 +30,7 @@ export const customTransporter = (options: TransporterOptions) => {
 }
 
 
-export const sendMail = async (template: string, props: SendMailProps) => {
+export const sendMail = async (template, props) => {
     const options = props.options;
     options.from = options.from ?? vingConfig.site.email;
     options.fromName = options.fromName ?? vingConfig.site.name;

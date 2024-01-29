@@ -4,12 +4,10 @@
     </Fieldset>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
 const props = withDefaults(
-    defineProps<{
-        name: string,
-    }>(),
+    defineProps(),
     {
 
     }
@@ -17,8 +15,8 @@ const props = withDefaults(
 
 const id = 'id' + props.name.replace(/[^A-Za-z0-9]/g, '');
 
-const register = inject('register', (name: string, id: string) => { });
-const unregister = inject('unregister', (name: string) => { });
+const register = inject('register', (name, id) => { });
+const unregister = inject('unregister', (name) => { });
 
 onMounted(() => {
     register(props.name, id);

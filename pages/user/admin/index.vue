@@ -70,7 +70,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
 const notify = useNotifyStore();
 
@@ -79,7 +79,7 @@ definePageMeta({
 });
 
 const dt = useDateTime();
-const users = useVingKind<'User'>({
+const users = useVingKind({
     listApi: '/api/user',
     createApi: '/api/user',
     query: { includeMeta: true, sortBy: 'username', sortOrder: 'asc' },

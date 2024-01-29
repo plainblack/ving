@@ -7,9 +7,6 @@ describe('UserTable', async () => {
     const db = useDB()
     await db.delete(UserTable).where(like(UserTable.email, '%@shawshank.prison'));
 
-    // TODO: There is an issue with this?
-    // beforeAll(async () => { })
-
     test("can insert", async () => {
         const result = await db.insert(UserTable).values({ id: 'a', username: 'warden', email: 'warden@shawshank.prison', realName: 'Warden' });
         expect(result[0].affectedRows).toBe(1);
@@ -63,8 +60,6 @@ describe('UserTable', async () => {
         expect(result.length).toBe(1);
     });
 
-
-    // can't figure out the types on this
 
     test("can pass order by with 2", async () => {
         const passOrderBy = async (orderBy) => await db.select().from(UserTable).where(like(UserTable.email, '%@shawshank.prison')).orderBy(...orderBy);

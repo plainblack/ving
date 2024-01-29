@@ -52,7 +52,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 let login = ref('');
 let password = ref('');
 const config = useRuntimeConfig();

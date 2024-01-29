@@ -1,16 +1,3 @@
-type Behavior = {
-    /** Defaults to `false`, but if `true` will hide ving error notifications in the UI. */
-    suppressErrorNotifications?: boolean,
-    /** HTTP method. Defaults to `get`. */
-    method?: 'get' | 'post' | 'put' | 'delete',
-    /** An object containing query paramters. */
-    query?: any,
-    /** An object containing body parameters. */
-    body?: Record<string, any>,
-    /** An object containing HTTP headers. */
-    headers?: Record<string, string>
-}
-
 /**
  * A wrapper around the Nuxt composable `$fetch()` that allows for streamlined fetches, but integrate's with ving's subsystems.
  * 
@@ -30,7 +17,7 @@ type Behavior = {
  *
  * The `error` is `null` unless there is an error, and the `data` contains an object response from the endpoint.
  */
-export default async function (url: string, behavior: Behavior = {}) {
+export default async function (url, behavior = {}) {
     const notify = useNotifyStore();
     const throbber = useThrobberStore();
     let error = null
@@ -39,19 +26,19 @@ export default async function (url: string, behavior: Behavior = {}) {
         query: behavior.query,
         body: behavior.body,
         headers: {
-            ...useRequestHeaders() as any,
+            ...useRequestHeaders(),
             ...behavior.headers
         },
-        async onRequest(context: any) {
+        async onRequest(context) {
             throbber.working();
         },
-        async onRequestError(context: any) {
+        async onRequestError(context) {
             throbber.done();
         },
-        async onResponse(context: any) {
+        async onResponse(context) {
             throbber.done();
         },
-        async onResponseError(context: any) {
+        async onResponseError(context) {
             throbber.done();
             console.dir(context)
             if (!behavior.suppressErrorNotifications)

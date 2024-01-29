@@ -1,23 +1,12 @@
 import { defineStore } from 'pinia';
-import type { Describe, ModelName, VingRecordParams, VRQueryParams, VRUpdateOptions, VRCreateOptions, VRDeleteOptions, DescribeParams, VRGenericOptions } from '~/types';
 import _ from 'lodash';
 import { v4 } from 'uuid';
 
-export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
+export default (behavior) => {
     const notify = useNotifyStore();
 
     const generate = defineStore(behavior.id || v4(), {
-        state: (): {
-            props?: Describe<T>['props'],
-            meta?: Describe<T>['meta'],
-            options?: Describe<T>['options'],
-            links?: Describe<T>['links'],
-            related?: Describe<T>['related'],
-            warnings?: Describe<T>['warnings'],
-            query?: VRQueryParams,
-            createApi?: string,
-            fetchApi?: string,
-        } => ({
+        state: () => ({
             props: behavior.props || {},
             meta: behavior.meta || {},
             options: behavior.options || {},
@@ -41,7 +30,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
              * @param options Modify the behavior of this call.
              * @returns A promise containing the response to the call.
              */
-            async call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeParams = {}, options: VRGenericOptions<T> = {}) {
+            async call(method, url, query = {}, options = {}) {
                 const response = await useRest(url, {
                     query: _.defaultsDeep({}, this.query, query),
                     method,
@@ -53,7 +42,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     }
                 }
                 else {
-                    const data: Describe<T> = response.data as Describe<T>;
+                    const data = response.data;
                     this.setState(data);
                     if (options?.onSuccess) {
                         options?.onSuccess(data);
@@ -72,7 +61,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
              * @returns A promise containing the response.
              */
 
-            async create(props?: Describe<T>['props'], options?: VRCreateOptions<T>) {
+            async create(props, options) {
                 const newProps = _.defaultsDeep({}, this.props, props);
                 const response = await useRest(this.getCreateApi(), {
                     query: this.query,
@@ -81,14 +70,14 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
                 if (response.error) {
-                    const data: Describe<T> = response.data as Describe<T>;
+                    const data = response.data;
                     if (options?.onError)
                         options.onError(response.error);
                     if (behavior?.onError)
                         behavior.onError(response.error);
                 }
                 else {
-                    const data: Describe<T> = response.data as Describe<T>;
+                    const data = response.data;
                     this.setState(data);
                     if (options?.onCreate)
                         options.onCreate(data);
@@ -106,7 +95,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
              * @param options An object to change the behavior of this method.
              * @returns A promise that contains the response.
              */
-            async delete(options: VRDeleteOptions<T> = {}) {
+            async delete(options = {}) {
                 let message = "Are you sure?";
                 if (this.props && typeof this.props == 'object' && "name" in this.props) {
                     message = "Are you sure you want to delete " + this.props.name + "?";
@@ -124,7 +113,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                             behavior.onError(response.error);
                     }
                     else {
-                        const data: Describe<T> = response.data as Describe<T>;
+                        const data = response.data;
                         if (options?.onDelete)
                             options.onDelete(data);
                         if (behavior?.onDelete)
@@ -144,7 +133,6 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                     for (const warning of this.warnings) {
                         document.dispatchEvent(
                             new CustomEvent("wing_warn", {
-                                // @ts-expect-error
                                 message: warning.message,
                             })
                         );
@@ -182,7 +170,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                         behavior.onError(response.error);
                 }
                 else {
-                    const data: Describe<T> = response.data as Describe<T>;
+                    const data = response.data;
                     this.setState(data);
                     if (behavior?.onFetch)
                         behavior.onFetch(data);
@@ -197,7 +185,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
              * 
              * @returns An endpoint url.
              */
-            getCreateApi(): string {
+            getCreateApi() {
                 if (this.createApi) {
                     return this.createApi;
                 }
@@ -250,7 +238,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
              * @param options An object that modifies the behavior of this method
              * @returns A promise that contains a response
              */
-            async partialUpdate(props?: Describe<T>['props'], options: VRUpdateOptions<T> = {}) {
+            async partialUpdate(props, options = {}) {
                 const response = await useRest(this.getSelfApi(), {
                     query: this.query,
                     method: 'put',
@@ -264,7 +252,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
                         behavior.onError(response.error);
                 }
                 else {
-                    const data: Describe<T> = response.data as Describe<T>;
+                    const data = response.data;
                     this.setState(data);
                     if (options?.onUpdate)
                         options.onUpdate(data);
@@ -283,14 +271,12 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
              * @param value Optionally specify a value to update in local memory before submitting to the server.
              * @returns A promise that contains a response
              */
-            save: function <K extends keyof Describe<T>['props']>(name: K, value?: Describe<T>['props'][K]) {
-                const update: Describe<T>['props'] = {};
+            save: function (name, value) {
+                const update = {};
                 if (this.props && value === undefined) {
-                    //@ts-expect-error
                     update[name] = this.props[name];
                 }
                 else if (value !== undefined) {
-                    // @ts-expect-error - not sure why this is a problem since it is properly typed in the interface
                     update[name] = value;
                 }
                 return this.partialUpdate(update);
@@ -303,12 +289,10 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
              * 
              * @param result The data resulting from a Rest request to a Ving Record endpoint
              */
-            setState(result: Describe<T>) {
-                // @ts-expect-error - https://github.com/vuejs/core/issues/7278
+            setState(result) {
                 this.props = result.props;
                 this.links = result.links;
                 this.meta = result.meta;
-                // @ts-expect-error - https://github.com/vuejs/core/issues/7278
                 this.options = result.options;
                 this.related = result.related;
                 this.warnings = result.warnings;
@@ -323,8 +307,7 @@ export default <T extends ModelName>(behavior: VingRecordParams<T>) => {
              * @param options An object that changes the behavior of this object
              * @returns 
              */
-            update(options?: VRUpdateOptions<T>) {
-                //@ts-expect-error - https://github.com/vuejs/core/issues/7278
+            update(options) {
                 return this.partialUpdate(this.props, options);
             },
 

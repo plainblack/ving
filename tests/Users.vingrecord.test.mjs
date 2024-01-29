@@ -1,12 +1,8 @@
-import { useUsers, UserRecord } from '../server/vingrecord/records/User.mjs';
+import { useUsers } from '../server/vingrecord/records/User.mjs';
 import { describe, test, expect } from "vitest";
-import { ModelSelect } from "../types";
 import { like, eq, asc, desc, and, inArray, SQL } from '../server/drizzle/orm.mjs';
 
 const Users = useUsers();
-
-console.log(Object.getOwnPropertyNames(Users));
-console.log('xxx');
 
 await Users.delete.where(inArray(Users.table.username, ['warden', 'captain', 'guard']));
 const warden = await Users.create({ username: 'warden', email: 'warden@shawshank.jail', realName: 'Samuel Norton' });

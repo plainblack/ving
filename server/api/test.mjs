@@ -1,8 +1,8 @@
-import { getBody } from '../utils/rest';
+import { getBody } from '../utils/rest.mjs';
 export default defineEventHandler(async (event) => {
     const query = getQuery(event);
     const httpMethod = getMethod(event)
-    const out: { success: boolean, serverTime: Date, query: object, httpMethod: string, body?: object } = {
+    const out = {
         success: true,
         serverTime: new Date(),
         httpMethod,

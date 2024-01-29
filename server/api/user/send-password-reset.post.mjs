@@ -1,9 +1,9 @@
-import { sendMail } from '../../email/send';
+import { sendMail } from '../../email/send.mjs';
 import { useUsers } from '../../vingrecord/records/User.mjs';
-import { useCache } from '../../cache';
+import { useCache } from '../../cache.mjs';
 import { eq } from '../../drizzle/orm.mjs';
 import { ouch } from '../../../utils/ouch.mjs';
-import { obtainSession, describeParams } from '../../utils/rest';
+import { describeParams } from '../../utils/rest.mjs';
 import crypto from 'crypto';
 
 export default defineEventHandler(async (event) => {

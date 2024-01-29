@@ -68,7 +68,7 @@
     </FieldsetNav>
 </template>
   
-<script setup lang="ts">
+<script setup>
 definePageMeta({
     middleware: ['auth', 'admin']
 });
@@ -77,7 +77,7 @@ const dt = useDateTime();
 const notify = useNotifyStore();
 
 const id = route.params.id.toString();
-const user = useVingRecord<'User'>({
+const user = useVingRecord({
     id,
     fetchApi: '/api/user/' + id,
     createApi: '/api/user',

@@ -1,5 +1,4 @@
-import { describeParams, obtainSession } from '../../utils/rest';
-import { ouch } from '../../../utils/ouch.mjs';
+import { describeParams, obtainSession } from '../../utils/rest.mjs';
 export default defineEventHandler(async (event) => {
     const session = obtainSession(event);
     if (session) {

@@ -55,7 +55,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 let newUser = ref({ username: '', email: '', realName: '', password: '', password2: '' });
 const config = useRuntimeConfig();
 const currentUser = useCurrentUserStore();

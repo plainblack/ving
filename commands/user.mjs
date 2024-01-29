@@ -93,7 +93,6 @@ export default defineCommand({
                 console.log(`Could not find user: ${args.modify}`);
             }
         }
-        //@ts-expect-error - session is a private method, but i don't want to pass around the connection pool
         Users.db.session.client.pool.end();
     },
 });

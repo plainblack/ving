@@ -1,7 +1,5 @@
 import { format, parseISO, parseJSON, parse, getUnixTime } from 'date-fns';
 
-type DTinput = string | string[] | Date | undefined;
-
 const dt = {
 
     /**
@@ -12,7 +10,7 @@ const dt = {
      * @param input Usually a Javascript Date object, or a JSON Date string. But it can also be an array containing a date string of any type along with a [parse pattern](https://date-fns.org/v2.30.0/docs/parse) as the second element of the array. Or even an ISO date string (MySQL date). 
      * @returns A javascript Date object
      */
-    determineDate(input: DTinput) {
+    determineDate(input) {
         if (Array.isArray(input) && typeof input[0] === "string") {
             // date + input pattern
             return parse(input[0], input[1], new Date());
@@ -40,7 +38,7 @@ const dt = {
      * @returns A formatted string. Example: `April 23, 2012 6:25pm`
      */
 
-    formatDateTime(input: DTinput, pattern: string = "LLLL d, y h:mm a") {
+    formatDateTime(input, pattern = "LLLL d, y h:mm a") {
         try {
             const date = this.determineDate(input);
             return format(date, pattern)
@@ -59,7 +57,7 @@ const dt = {
      * @param pattern Optional, defaults to `"LLLL d, y"`. A [format pattern](https://date-fns.org/v2.30.0/docs/format)
      * @returns A formatted string. Example: `April 23, 2012`
      */
-    formatDate(input: DTinput, pattern: string = "LLLL d, y") {
+    formatDate(input, pattern = "LLLL d, y") {
         return this.formatDateTime(input, pattern);
     },
 
@@ -71,7 +69,7 @@ const dt = {
      * @param input Anything that `determineDate()` understands. 
      * @returns An ago formatted string. Example: `13 years ago`
      */
-    formatTimeAgo(input: DTinput) {
+    formatTimeAgo(input) {
         const duration = getUnixTime(new Date()) - getUnixTime(this.determineDate(input));
         const abs_dur = Math.abs(duration);
         let message = '';

@@ -1,8 +1,10 @@
 import { useUsers } from '../../vingrecord/records/User.mjs';
-const Users = useUsers();
-import { describeParams } from '../../utils/rest';
+import { obtainSession, describeParams } from '../../utils/rest.mjs';
 export default defineEventHandler(async (event) => {
+    const Users = useUsers();
     const { id } = getRouterParams(event);
     const user = await Users.findOrDie(id);
+    user.canEdit(obtainSession(event));
+    await user.delete();
     return user.describe(describeParams(event));
 });

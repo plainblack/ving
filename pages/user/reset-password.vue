@@ -27,7 +27,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import ua from 'ua-parser-js';
 const config = useRuntimeConfig();
 const email = ref('')

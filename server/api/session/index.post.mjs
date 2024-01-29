@@ -1,10 +1,10 @@
 import { useUsers } from '../../vingrecord/records/User.mjs';
 const Users = useUsers();
-import { getBody, describeParams } from '../../utils/rest';
+import { getBody, describeParams } from '../../utils/rest.mjs';
 import { Session } from '../../session.mjs';
 import { eq } from 'drizzle-orm/mysql-core/expressions.js';
 import { ouch } from '../../../utils/ouch.mjs';
-import { testRequired } from '../../utils/rest';
+import { testRequired } from '../../utils/rest.mjs';
 
 export default defineEventHandler(async (event) => {
     const body = await getBody(event)

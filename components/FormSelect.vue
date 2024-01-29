@@ -7,15 +7,9 @@
     </select>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const props = withDefaults(
-    defineProps<{
-        label?: string,
-        name: string,
-        id?: string,
-        modelValue: string | number | undefined | null | boolean
-        options: { label: string, value: string | number | boolean }[] | undefined,
-    }>(),
+    defineProps(),
     {
     }
 );

@@ -8,12 +8,10 @@
     </Breadcrumb>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
 const props = withDefaults(
-    defineProps<{
-        crumbs: { label: string, to?: string }[],
-    }>(),
+    defineProps(),
     {
 
     }

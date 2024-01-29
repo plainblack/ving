@@ -1,17 +1,10 @@
-import type { VKQueryParams, VingRecord, VKSearchOptions, VKAllOptions, VRDeleteOptions, VRUpdateOptions, VingKindParams, VKCreateOptions, VKGenericOptions, Describe, DescribeListParams, DescribeList, ModelName } from '~/types';
 import _ from 'lodash';
 import { debounce } from 'perfect-debounce'
 
 const notify = useNotifyStore();
-class VingKind<T extends ModelName> {
+class VingKind {
 
-    private state: {
-        query: VKQueryParams,
-        records: any[],
-        paging: DescribeList<T>['paging'],
-        new: Partial<Describe<T>['props']>,
-        propsOptions: Describe<T>['options'],
-    } = reactive({
+    #state = reactive({
         query: { includeLinks: true },
         records: [],
         paging: {
@@ -30,57 +23,57 @@ class VingKind<T extends ModelName> {
      * The object where new properties are stored awaiting being sent to the server to create the record for real.
      */
 
-    public get new() {
-        return this.state.new;
+    get new() {
+        return this.#state.new;
     }
 
-    public set new(value) {
-        this.state.new = value;
+    set new(value) {
+        this.#state.new = value;
     }
 
     /**
      * The object containing paging data.
      */
-    public get paging() {
-        return this.state.paging;
+    get paging() {
+        return this.#state.paging;
     }
 
-    public set paging(value) {
-        this.state.paging = value;
+    set paging(value) {
+        this.#state.paging = value;
     }
 
     /**
      * The object containing enumerated props options once `fetchPropsOptions` is called.
      */
-    public get propsOptions() {
-        return this.state.propsOptions;
+    get propsOptions() {
+        return this.#state.propsOptions;
     }
 
-    public set propsOptions(value) {
-        this.state.propsOptions = value;
+    set propsOptions(value) {
+        this.#state.propsOptions = value;
     }
 
     /**
      * An object containing the query parameters to send when interacting with endpoints for this kind.
      */
 
-    public get query() {
-        return this.state.query;
+    get query() {
+        return this.#state.query;
     }
 
-    public set query(value) {
-        this.state.query = value;
+    set query(value) {
+        this.#state.query = value;
     }
 
     /**
      * An array containing the list of records that have been fetched from the server.
      */
-    public get records() {
-        return this.state.records;
+    get records() {
+        return this.#state.records;
     }
 
-    public set records(value) {
-        this.state.records = value;
+    set records(value) {
+        this.#state.records = value;
     }
 
     /**
@@ -88,7 +81,10 @@ class VingKind<T extends ModelName> {
      * @param behavior An object configuring the endpoints and other info about this kind.
      */
 
-    constructor(private behavior: VingKindParams<T> = {}) {
+    #behavior = {};
+
+    constructor(behavior = {}) {
+        this.#behavior = behavior;
         this.query = _.defaultsDeep(this.query, this.behavior.query);
         this.resetNew();
     }
@@ -103,7 +99,7 @@ class VingKind<T extends ModelName> {
      * @returns A promise that resolves when all the requests have been processed.
      */
 
-    public all(options: VKAllOptions<T> = {}, iterations = 1) {
+    all(options = {}, iterations = 1) {
         let self = this;
         return new Promise((resolve, reject) =>
             self
@@ -144,7 +140,7 @@ class VingKind<T extends ModelName> {
      * @param options Optional.
      * @returns 
      */
-    public append(record: Describe<T>, options: VKSearchOptions<T>) {
+    append(record, options) {
         const newRecord = this.mint(record);
         newRecord.setState(record); // need to override state with newly fetched data in case its already loaded
         this.records.push(newRecord);
@@ -168,7 +164,7 @@ class VingKind<T extends ModelName> {
      * @param options Modify the behavior of this call.
      * @returns A promise containing the response to the call.
      */
-    public async call(method: "post" | "put" | "delete" | "get", url: string, query: DescribeListParams = {}, options: VKGenericOptions<T> = {}) {
+    async call(method, url, query = {}, options = {}) {
         const response = await useRest(url, {
             query: _.defaultsDeep({}, this.query, query),
             method,
@@ -179,7 +175,7 @@ class VingKind<T extends ModelName> {
                 options?.onError(response.error);
         }
         else {
-            const data: DescribeList<T> = response.data as DescribeList<T>;
+            const data = response.data;
             if (options?.onSuccess)
                 options?.onSuccess(data);
         }
@@ -195,7 +191,7 @@ class VingKind<T extends ModelName> {
      * @param options An object that changes the behavior of this method.
      * @returns A promise containing the response.
      */
-    public create(props: Describe<T>['props'] = {}, options: VKCreateOptions<T> = {}) {
+    create(props = {}, options = {}) {
         const self = this;
         const newProps = _.defaultsDeep({}, self.new, props);
         const newRecord = self.mint({ props: newProps });
@@ -230,7 +226,7 @@ class VingKind<T extends ModelName> {
      * @returns A promise that contains the response.
      */
 
-    public delete(index: number, options: VRDeleteOptions<T>) {
+    delete(index, options) {
         return this.records[index].delete(options);
     }
 
@@ -254,7 +250,7 @@ class VingKind<T extends ModelName> {
      * @param options An object that changes the behavior of this method.
      * @returns A promise that contains the response.
      */
-    public async fetchPropsOptions(options: VKGenericOptions<T> = {}) {
+    async fetchPropsOptions(options = {}) {
         const response = await useRest(this.getPropsOptionsApi(), {
             suppressErrorNotifications: this.behavior.suppressErrorNotifications,
         });
@@ -263,9 +259,9 @@ class VingKind<T extends ModelName> {
                 options?.onError(response.error);
         }
         else {
-            const data: Describe<T>['options'] = response.data as Describe<T>['options'];
+            const data = response.data;
             if (options?.onSuccess)
-                options?.onSuccess(data as any);
+                options?.onSuccess(data);
         }
         return response;
     }
@@ -278,7 +274,7 @@ class VingKind<T extends ModelName> {
      * @param id The unique id of a record on the `records` list that you which to get a reference to.
      * @returns A record.
      */
-    public find(id: VingRecord<T>['props']['id']) {
+    find(id) {
         const index = this.findIndex(id);
         if (index >= 0) {
             return this.records[index];
@@ -297,7 +293,7 @@ class VingKind<T extends ModelName> {
      * @param id The unique id of the record.
      * @returns A record array index.
      */
-    public findIndex(id: VingRecord<T>['props']['id']): number {
+    findIndex(id) {
         return this.records.findIndex((obj) => obj.props.id == id);
     }
 
@@ -307,7 +303,7 @@ class VingKind<T extends ModelName> {
      * Usage: `const url = Users.getCreateApi()`
      * @returns An endpoint url
      */
-    public getCreateApi() {
+    getCreateApi() {
         if (this.behavior.createApi) {
             return this.behavior.createApi;
         }
@@ -322,7 +318,7 @@ class VingKind<T extends ModelName> {
      * 
      * @returns An endpoint url
      */
-    public getListApi() {
+    getListApi() {
         if (this.behavior.listApi) {
             return this.behavior.listApi;
         }
@@ -337,7 +333,7 @@ class VingKind<T extends ModelName> {
      * 
      * @returns An endpoint url
      */
-    public getPropsOptionsApi() {
+    getPropsOptionsApi() {
         if (this.behavior.optionsApi != null) {
             return this.behavior.optionsApi;
         }
@@ -352,14 +348,14 @@ class VingKind<T extends ModelName> {
      * @param params A describe object for the user that must at minimum have a list of props you want to use for the user
      * @returns A newly minted record.
      */
-    public mint(params: Describe<T>) {
+    mint(params) {
         const self = this;
-        return useVingRecord<T>({
+        return useVingRecord({
             ...params,
             createApi: self.getCreateApi(),
             onCreate: self.behavior.onCreate,
             onUpdate: self.behavior.onUpdate,
-            onDelete(params: Describe<T>) {
+            onDelete(params) {
                 self.paging.totalItems--;
                 if (self.behavior.onDelete)
                     self.behavior.onDelete(params);
@@ -378,7 +374,7 @@ class VingKind<T extends ModelName> {
      * @param options An object that modifies the behavior of this method
      * @returns A promise containing a response.
      */
-    public partialUpdate(index: number, props: Describe<T>['props'], options: VRUpdateOptions<T>) {
+    partialUpdate(index, props, options) {
         return this.records[index].partialUpdate(props, options);
     }
 
@@ -389,7 +385,7 @@ class VingKind<T extends ModelName> {
      * 
      * @param id The uniqiue id of a record you'd like to remove from `records`
      */
-    public remove(id: Describe<T>['props']['id']) {
+    remove(id) {
         const index = this.findIndex(id);
         if (index >= 0) {
             this.records.splice(index, 1);
@@ -403,7 +399,7 @@ class VingKind<T extends ModelName> {
      * 
      * @returns A reference to this object for chaining
      */
-    public reset() {
+    reset() {
         this.records.splice(0);
         return this;
     }
@@ -414,7 +410,7 @@ class VingKind<T extends ModelName> {
      * Usage: `Users.resetNew()`
      */
 
-    public resetNew() {
+    resetNew() {
         this.new = _.defaultsDeep({}, this.behavior.newDefaults || {});
     }
 
@@ -426,7 +422,7 @@ class VingKind<T extends ModelName> {
      * @param options An object that modifies the behavior of this method
      * @returns A promise containing the response
      */
-    public async search(options: VKSearchOptions<T> = {}) {
+    async search(options = {}) {
         let pagination = {
             page: options?.page || this.paging.page || 1,
             itemsPerPage: this.paging.itemsPerPage || 10,
@@ -438,12 +434,11 @@ class VingKind<T extends ModelName> {
             suppressErrorNotifications: this.behavior.suppressErrorNotifications,
         });
         if (!response.error) {
-            const data: DescribeList<T> = response.data as DescribeList<T>;
+            const data = response.data;
             if (options.accumulate != true) {
                 this.reset();
             }
             for (let index = 0; index < data.items.length; index++) {
-                // @ts-expect-error - id is guaranteed on all objects
                 this.append({ id: data.items[index].props.id, ...data.items[index] }, options);
             }
             this.paging = data.paging;
@@ -465,7 +460,7 @@ class VingKind<T extends ModelName> {
      * @param options An object that modifies the behavior of this method
      * @returns A promise containing the response
      */
-    public searchDebounced = debounce(async (options?: VKSearchOptions<T>) => {
+    searchDebounced = debounce(async (options) => {
         return this.search(options);
     }, 500, { leading: true })
 
@@ -476,7 +471,7 @@ class VingKind<T extends ModelName> {
      * 
      * @param event An event that was triggered by a sort request from the user
      */
-    public async sortDataTable(event: any) {
+    async sortDataTable(event) {
         this.query.sortOrder = event.sortOrder > 0 ? 'asc' : 'desc';
         this.query.sortBy = event.sortField.split('.')[1];
         await this.search();
@@ -491,7 +486,7 @@ class VingKind<T extends ModelName> {
      * @param prop The name of a prop you wish to ave
      * @returns A promise containing a response
      */
-    public save(index: number, prop: keyof Describe<T>['props']) {
+    save(index, prop) {
         return this.records[index].save(prop);
     }
 
@@ -504,7 +499,7 @@ class VingKind<T extends ModelName> {
      * @param options An object that changes the behavior of this method
      * @returns A promise containing a response
      */
-    public update(index: number, options: VRUpdateOptions<T>) {
+    update(index, options) {
         return this.records[index].update(options);
     }
 }
@@ -515,6 +510,6 @@ class VingKind<T extends ModelName> {
  * @param behavior An object that defines the behavior of the kind
  * @returns A VingKind instance
  */
-export const useVingKind = <T extends ModelName>(behavior: VingKindParams<T> = {}) => {
-    return new VingKind<T>(behavior);
+export const useVingKind = (behavior = {}) => {
+    return new VingKind(behavior);
 }

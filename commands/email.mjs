@@ -1,5 +1,5 @@
 import { defineCommand } from "citty";
-import { sendMail } from '../server/email/send';
+import { sendMail } from '../server/email/send.mjs';
 
 export default defineCommand({
     meta: {

@@ -1,5 +1,5 @@
 import { useUsers } from '../../../vingrecord/records/User.mjs';
-import { describeListParams } from '../../../utils/rest';
+import { describeListParams } from '../../../utils/rest.mjs';
 export default defineEventHandler(async (event) => {
     const Users = useUsers();
     const { id } = getRouterParams(event);

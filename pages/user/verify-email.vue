@@ -9,7 +9,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const config = useRuntimeConfig();
 const message = ref('Please wait while we verify your email address.');
 const currentUser = useCurrentUserStore();

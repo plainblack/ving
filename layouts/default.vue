@@ -132,7 +132,7 @@
     <Throbber />
 </template>
 
-<script setup lang="ts">
+<script setup>
 const config = useRuntimeConfig();
 const currentUser = useCurrentUserStore();
 await currentUser.isAuthenticated();

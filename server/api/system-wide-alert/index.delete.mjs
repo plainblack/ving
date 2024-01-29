@@ -1,4 +1,4 @@
-import { obtainSessionIfRole } from '../../utils/rest';
+import { obtainSessionIfRole } from '../../utils/rest.mjs';
 import { useCache } from '../../cache';
 export default defineEventHandler(async (event) => {
     obtainSessionIfRole(event, 'admin');

@@ -27,25 +27,11 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import _ from 'lodash';
 
 const props = withDefaults(
-    defineProps<{
-        label?: string,
-        type?: 'textarea' | 'text' | 'password' | 'number' | 'email',
-        name: string,
-        id?: string,
-        append?: string,
-        prepend?: string,
-        autocomplete?: string,
-        modelValue: string | number | undefined | null,
-        placeholder?: string,
-        required?: boolean,
-        step?: number,
-        mustMatch?: { field: string, value: string | number | undefined | null } | undefined,
-        class?: string,
-    }>(),
+    defineProps(),
     {
         type: 'text',
         autocomplete: 'off',
@@ -60,7 +46,7 @@ const emit = defineEmits(['update:modelValue']);
 
 let invalidReason = '';
 
-const invalidForm = inject('invalidForm', (a: ['', false]) => { }) as (a: [string, boolean, string?]) => void;
+const invalidForm = inject('invalidForm', (a) => { });
 
 const empty = computed(() => _.isNil(props.modelValue) || props.modelValue === '');
 

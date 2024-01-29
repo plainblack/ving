@@ -1,11 +1,9 @@
-import { like, eq, and, or, gt, lt, gte, lte, ne, SQL, AnyMySqlColumn } from '../drizzle/orm.mjs';
-import { H3Event, getQuery, readBody } from 'h3';
-import { QueryFilter } from '../../types';
+import { like, eq, and, or, gt, lt, gte, lte, ne } from '../drizzle/orm.mjs';
+import { getQuery, readBody } from 'h3';
 import { ouch } from '../../utils/ouch.mjs';
-import { DescribeListParams, DescribeParams, Roles } from '../../types';
 import _ from 'lodash';
 
-const fixColumnData = (column: AnyMySqlColumn, data: any) => {
+const fixColumnData = (column, data) => {
     if (column.getSQLType() == 'timestamp') {
         if (!data.match(/^"/)) // make it JSON compatible
             data = '"' + data + '"';
@@ -20,8 +18,8 @@ const fixColumnData = (column: AnyMySqlColumn, data: any) => {
     return data;
 }
 
-export const describeListWhere = (event: H3Event, filter: QueryFilter) => {
-    let where: SQL | undefined = undefined;
+export const describeListWhere = (event, filter) => {
+    let where = undefined;
     const query = getQuery(event);
     if (query.search) {
         for (const column of filter.queryable) {
@@ -94,7 +92,7 @@ export const describeListWhere = (event: H3Event, filter: QueryFilter) => {
     return where;
 }
 
-export const testRequired = (list: string[], params: Record<string, any>) => {
+export const testRequired = (list, params) => {
     if (params === undefined) {
         throw ouch(400, 'No params detected.');
     }
@@ -105,14 +103,14 @@ export const testRequired = (list: string[], params: Record<string, any>) => {
     }
 }
 
-export const obtainSession = (event: H3Event) => {
+export const obtainSession = (event) => {
     if (event && event.context && event.context.ving && event.context.ving.session) {
         return event.context.ving.session;
     }
     return undefined;
 }
 
-export const obtainSessionIfRole = (event: H3Event, role: keyof Roles) => {
+export const obtainSessionIfRole = (event, role) => {
     const session = obtainSession(event);
     if (session) {
         session.isRoleOrDie(role);
@@ -121,11 +119,11 @@ export const obtainSessionIfRole = (event: H3Event, role: keyof Roles) => {
     throw ouch(401, 'Login required.')
 }
 
-export const includeParams = (event: H3Event) => {
+export const includeParams = (event) => {
     const params = getQuery(event);
-    const include: DescribeParams['include'] = { options: false, links: false, related: [], extra: [], meta: false };
+    const include = { options: false, links: false, related: [], extra: [], meta: false };
     if ('includeOptions' in params && params.includeOptions !== undefined && params.includeOptions !== null && !Array.isArray(params.includeOptions)) {
-        include.options = /^true$/i.test(params.includeOptions as string);
+        include.options = /^true$/i.test(params.includeOptions);
     }
     if ('includeLinks' in params && params.includeLinks !== undefined && params.includeLinks !== null && !Array.isArray(params.includeLinks)) {
         include.links = true;
@@ -135,34 +133,34 @@ export const includeParams = (event: H3Event) => {
     }
     if ('includeRelated' in params && params.includeRelated !== undefined && params.includeRelated !== null) {
         if (Array.isArray(params.includeRelated)) {
-            include.related = params.includeRelated as string[];
+            include.related = params.includeRelated;
         }
         else if (include.related !== undefined) {
-            include.related.push(params.includeRelated as string);
+            include.related.push(params.includeRelated);
         }
     }
     if ('includeExtra' in params && params.includeExtra !== undefined && params.includeExtra !== null) {
         if (Array.isArray(params.includeExtra)) {
-            include.extra = params.includeExtra as string[];
+            include.extra = params.includeExtra;
         }
         else if (include.extra !== undefined) {
-            include.extra.push(params.includeExtra as string);
+            include.extra.push(params.includeExtra);
         }
     }
     return include;
 }
 
-export const describeParams = (event: H3Event) => {
+export const describeParams = (event) => {
     return { currentUser: obtainSession(event), include: includeParams(event) };
 }
 
-export const describeListParams = (event: H3Event) => {
+export const describeListParams = (event) => {
     return { ...pagingParams(event), objectParams: { currentUser: obtainSession(event), include: includeParams(event) } };
 }
 
-export const pagingParams = (event: H3Event) => {
+export const pagingParams = (event) => {
     const params = getQuery(event);
-    const paging: DescribeListParams = { itemsPerPage: 10, page: 1, sortBy: ['createdAt'], sortOrder: 'asc' };
+    const paging = { itemsPerPage: 10, page: 1, sortBy: ['createdAt'], sortOrder: 'asc' };
     if (params !== undefined) {
         if (params.itemsPerPage)
             paging.itemsPerPage = Number(params.itemsPerPage);
@@ -171,14 +169,14 @@ export const pagingParams = (event: H3Event) => {
         if (params.sortBy && _.isString(params.sortBy))
             paging.sortBy = [params.sortBy];
         if (params.sortBy && _.isArray(params.sortBy))
-            paging.sortBy = params.sortBy as string[];
+            paging.sortBy = params.sortBy;
         if (params.sortOrder && _.isString(params.sortOrder) && ['asc', 'desc'].includes(params.sortOrder))
-            paging.sortOrder = params.sortOrder as 'asc' | 'desc';
+            paging.sortOrder = params.sortOrder;
     }
     return paging;
 }
 
-export const getBody = async (event: H3Event) => {
+export const getBody = async (event) => {
     const body = await readBody(event);
     if (body === undefined || (body && _.isObjectLike(body)))
         return body;

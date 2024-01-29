@@ -1,5 +1,5 @@
 import { useUsers } from '../../vingrecord/records/User.mjs';
-import { describeParams, getBody } from '../../utils/rest';
+import { describeParams, getBody } from '../../utils/rest.mjs';
 export default defineEventHandler(async (event) => {
     const Users = useUsers();
     const user = await Users.createAndVerify(await getBody(event));

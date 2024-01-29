@@ -9,17 +9,15 @@
     </Paginator>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const props = withDefaults(
-    defineProps<{
-        kind: any,
-    }>(),
+    defineProps(),
     {
 
     }
 );
 
-function changePage(page: any) {
+function changePage(page) {
     props.kind.query.page = page.page + 1
     props.kind.search();
 }

@@ -22,7 +22,7 @@
 
 
                                 <DataTable :value="apikeys.records" stripedRows
-                                    @sort="(event: Event) => apikeys.sortDataTable(event)">
+                                    @sort="(event) => apikeys.sortDataTable(event)">
                                     <Column field="props.createdAt" header="Created" sortable>
                                         <template #body="slotProps">
                                             {{ dt.formatDate(slotProps.data.props.createdAt) }}
@@ -121,9 +121,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
-import { VingRecord } from '~/types';
-
+<script setup>
 const notify = useNotifyStore();
 
 definePageMeta({
@@ -132,7 +130,7 @@ definePageMeta({
 
 const dt = useDateTime();
 const currentUser = useCurrentUserStore();
-const apikeys = useVingKind<'APIKey'>({
+const apikeys = useVingKind < 'APIKey' > ({
     listApi: currentUser.links?.apikeys,
     createApi: '/api/apikey',
     query: { includeMeta: true },
@@ -141,10 +139,10 @@ const apikeys = useVingKind<'APIKey'>({
 await apikeys.search();
 onBeforeRouteLeave(() => apikeys.dispose());
 
-const d: { visible: boolean, current?: VingRecord<'APIKey'> } = { visible: false, current: undefined };
+const d = { visible: false, current: undefined };
 const dialog = ref(d);
 
-function copyToClipboard(text: string) {
+function copyToClipboard(text) {
     navigator.clipboard.writeText(text);
     notify.info('Copied key to Clipboard');
 }
