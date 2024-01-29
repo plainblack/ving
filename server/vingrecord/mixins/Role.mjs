@@ -5,7 +5,7 @@ export const RoleOptions = ["admin", "developer"];
 export function RoleMixin(Base) {
     class RoleMixin extends Base {
 
-        public isRole(role) {
+        isRole(role) {
             if (role == 'public') return true;
             if (role == 'owner') return false; // can't do owner check this way, use isOwner() instead
             let props = this.getAll();
@@ -15,7 +15,7 @@ export function RoleMixin(Base) {
             return false;
         }
 
-        public isaRole(roles) {
+        isaRole(roles) {
             for (const role of roles) {
                 const result = this.isRole(role);
                 if (result) {
@@ -25,14 +25,14 @@ export function RoleMixin(Base) {
             return false;
         }
 
-        public isRoleOrDie(role) {
+        isRoleOrDie(role) {
             if (this.isRole(role)) {
                 return true;
             }
             throw ouch(403, `Not a member of ${role}`, role);
         }
 
-        public getRoleProp(key) {
+        getRoleProp(key) {
             return this.get(key);
         }
     }

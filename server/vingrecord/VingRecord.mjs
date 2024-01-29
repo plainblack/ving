@@ -91,6 +91,8 @@ export class VingRecord {
     constructor(db, table, props, inserted = true) {
         this.#props = props;
         this.#inserted = inserted;
+        this.db = db;
+        this.table = table;
     }
 
     /**
@@ -409,7 +411,7 @@ export class VingRecord {
             }
             if (field.name !== undefined && param !== undefined) {
                 if (field.unique) {
-                    const query = this.db.select({ count: sql < number > `count(*)`.as('count') }).from(this.table);
+                    const query = this.db.select({ count: sql`count(*)`.as('count') }).from(this.table);
                     let where = eq(this.table[field.name], params[field.name]);
                     if (this.isInserted)
                         where = and(where, ne(this.table.id, this.get('id')));
@@ -518,7 +520,11 @@ export class VingKind {
      * @param table A drizzle table definition
      * @param recordClass a reference to the record class to instanciate upon fetching or creating records from this kind
      */
-    constructor(db, table, recordClass) { }
+    constructor(db, table, recordClass) {
+        this.db = db;
+        this.table = table;
+        this.recordClass = recordClass;
+    }
 
     /**
      * Adds `propDefaults` (if any) into a where clause to limit the scope of affected records. As long as you're using the built in queries you don't need to use this method. But you might want to use it if you're using `create`, `select`, `update`, or `delete` directly.

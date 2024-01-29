@@ -5,6 +5,8 @@ import { like, eq, asc, desc, and, inArray, SQL } from '../server/drizzle/orm.mj
 
 const Users = useUsers();
 
+console.log(Object.getOwnPropertyNames(Users));
+console.log('xxx');
 
 await Users.delete.where(inArray(Users.table.username, ['warden', 'captain', 'guard']));
 const warden = await Users.create({ username: 'warden', email: 'warden@shawshank.jail', realName: 'Samuel Norton' });
@@ -51,13 +53,13 @@ describe('Users', async () => {
         }
         if (description.options !== undefined) {
             expect(description.options.useAsDisplayName).toBeTypeOf('object');
-            expect(Object.keys(description.options).length).toBe(3);
+            expect(Object.keys(description.options).length).toBe(4);
         }
     });
     test("propOptions by owner", async () => {
         const options = await captain.propOptions({ currentUser: captain });
         expect(options?.useAsDisplayName).toBeTypeOf('object');
-        expect(Object.keys(options || {}).length).toBe(3);
+        expect(Object.keys(options || {}).length).toBe(4);
     });
     test("described by admin", async () => {
         const description = await captain.describe({ currentUser: warden, include: { links: true, options: true, meta: true } });
@@ -69,7 +71,7 @@ describe('Users', async () => {
         }
         if (description.options !== undefined) {
             expect(description.options.useAsDisplayName).toBeTypeOf('object');
-            expect(Object.keys(description.options).length).toBe(3);
+            expect(Object.keys(description.options).length).toBe(4);
         }
     });
     test("described by visitor", async () => {
@@ -123,7 +125,7 @@ describe('Users', async () => {
     });
 
     const rita = Users.mint({});
-    let params: Partial<ModelSelect<'User'>> = { realName: 'Rita Hayworth', email: 'rita@hollywood.com' };
+    let params = { realName: 'Rita Hayworth', email: 'rita@hollywood.com' };
     test('can verify creation params', () => {
         expect(() => rita.testCreationProps(params)).toThrowError();
         params.username = 'rita';

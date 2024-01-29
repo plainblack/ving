@@ -29,9 +29,9 @@ describe('APIKey', async () => {
 
 
     test('user can reference their keys', async () => {
-        //  const userKey = user.apikeys;
-        //console.log(userKey);
-        // expect(userKey?.get('id')).toBe(apikey.get('id'));
+        // const userKey = user.apikeys;
+        //  console.log(userKey);
+        //  expect(userKey?.get('id')).toBe(apikey.get('id'));
     })
     /*
         test('records can mint without referenceing the relationship key', () => {

@@ -8,52 +8,57 @@ import { v4 } from 'uuid';
 
 class ProtoSession {
 
-    constructor(private props, public id = v4()) { }
+    #props = {};
 
-
-    public get(key) {
-        return this.props[key];
+    constructor(props, id = v4()) {
+        this.#props = props;
+        this.id = id;
     }
 
-    public getAll() {
-        return this.props;
+
+    get(key) {
+        return this.#props[key];
     }
 
-    private _userObj = undefined;
+    getAll() {
+        return this.#props;
+    }
 
-    public async user(userObj) {
+    #userObj = undefined;
+
+    async user(userObj) {
         if (userObj !== undefined) {
-            return this._userObj = userObj;
+            return this.#userObj = userObj;
         }
-        if (this._userObj !== undefined) {
-            return this._userObj;
+        if (this.#userObj !== undefined) {
+            return this.#userObj;
         }
-        return this._userObj = await Users.find(this.props.id);
+        return this.#userObj = await Users.find(this.#props.id);
     }
 
-    public async end() {
+    async end() {
         await useCache().delete('session-' + this.id);
     }
 
-    public async extend() {
-        const userChanged = await useCache().get('user-changed-' + this.props.id);
+    async extend() {
+        const userChanged = await useCache().get('user-changed-' + this.#props.id);
         if (userChanged) {
             const user = await this.user();
-            if (this.props.password != user.get('password')) { // password changed since session created
+            if (this.#props.password != user.get('password')) { // password changed since session created
                 throw ouch(401, 'Session expired.');
             }
             else {
-                this.props.verifiedEmail = user.get('verifiedEmail');
+                this.#props.verifiedEmail = user.get('verifiedEmail');
                 for (const role of RoleOptions) {
-                    this.props[role] = user.get(role);
+                    this.#props[role] = user.get(role);
                 }
             }
         }
-        await useCache().set('session-' + this.id, this.props, 1000 * 60 * 60 * 24 * 7);
+        await useCache().set('session-' + this.id, this.#props, 1000 * 60 * 60 * 24 * 7);
     }
 
-    public async describe(params) {
-        const out: { props: { id, userId }, related, links, meta } = {
+    async describe(params) {
+        const out = {
             props: {
                 id: this.id,
                 userId: this.get('id'),

@@ -6,10 +6,6 @@ const data = [
 	{ name: "bar" },
 ];
 
-type TestObj = {
-	name: string,
-};
-
 test('findObject', () => {
 	let result = findObject('name', 'bar', data);
 	expect(result.name).toBe('bar');

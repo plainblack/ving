@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeAll } from "vitest";
-import { useDB } from '../server/drizzle/db';
-import { like, eq, asc, desc, and, sql, AnyMySqlColumn, SQL, AnyMySqlSelect } from '../server/drizzle/orm.mjs';
-import { UserTable } from '../server/drizzle/schema/User';
+import { useDB } from '../server/drizzle/db.mjs';
+import { like, eq, asc, desc, and, sql } from '../server/drizzle/orm.mjs';
+import { UserTable } from '../server/drizzle/schema/User.mjs';
 
 describe('UserTable', async () => {
     const db = useDB()
@@ -21,32 +21,32 @@ describe('UserTable', async () => {
     });
 
     test("can count", async () => {
-        const result = await db.select({ count: sql<number>`count(*)` }).from(UserTable).where(eq(UserTable.id, 'a'));
+        const result = await db.select({ count: sql`count(*)` }).from(UserTable).where(eq(UserTable.id, 'a'));
         expect(result[0].count).toBe(1);
     });
 
     test("can count with column", async () => {
-        const countWithColumn = (column: AnyMySqlColumn) => {
-            return sql<number>`count(${column})`
+        const countWithColumn = (column) => {
+            return sql`count(${column})`
         }
         const result = await db.select({ count: countWithColumn(UserTable.username) }).from(UserTable).where(eq(UserTable.id, 'a'));
         expect(result[0].count).toBe(1);
     });
 
     test("can pass where clause", async () => {
-        const passWhere = async (where: SQL) => await db.select().from(UserTable).where(where);
+        const passWhere = async (where) => await db.select().from(UserTable).where(where);
         const result = await passWhere(eq(UserTable.id, 'a'));
         expect(result[0].realName).toBe('Warden');
     });
 
     test("can pass where clause as sql", async () => {
-        const passWhere = async (where: SQL) => await db.select().from(UserTable).where(where);
+        const passWhere = async (where) => await db.select().from(UserTable).where(where);
         const result = await passWhere(sql`username = 'warden'`);
         expect(result[0].realName).toBe('Warden');
     });
 
     test("use a where callback to extend a query", async () => {
-        const startIt = (whereCallback: (condition: SQL) => SQL | undefined = (c) => c) => {
+        const startIt = (whereCallback) => {
             return db.select().from(UserTable).where(whereCallback(like(UserTable.email, '%@shawshank.prison')));
         }
         const result = await startIt((c) => and(c, eq(UserTable.admin, true)));
@@ -54,7 +54,7 @@ describe('UserTable', async () => {
     });
 
     test("use a where callback to extend a query but with nothing to pass in", async () => {
-        const startIt = (whereCallback: (condition: SQL) => SQL | undefined = (c) => c) => {
+        const startIt = (whereCallback = (a) => a) => {
             return db.select().from(UserTable).where(whereCallback(
                 like(UserTable.email, '%@shawshank.prison')
             ));
@@ -67,27 +67,27 @@ describe('UserTable', async () => {
     // can't figure out the types on this
 
     test("can pass order by with 2", async () => {
-        const passOrderBy = async (orderBy: (SQL | AnyMySqlColumn)[]) => await db.select().from(UserTable).where(like(UserTable.email, '%@shawshank.prison')).orderBy(...orderBy);
+        const passOrderBy = async (orderBy) => await db.select().from(UserTable).where(like(UserTable.email, '%@shawshank.prison')).orderBy(...orderBy);
         const result = await passOrderBy([asc(UserTable.username), desc(UserTable.realName)]);
         expect(result[0].realName).toBe('Warden');
     });
 
 
     test("can pass order by", async () => {
-        const passOrderBy = async (orderBy: SQL | AnyMySqlColumn) => await db.select().from(UserTable).where(like(UserTable.email, '%@shawshank.prison')).orderBy(orderBy);
+        const passOrderBy = async (orderBy) => await db.select().from(UserTable).where(like(UserTable.email, '%@shawshank.prison')).orderBy(orderBy);
         const result = await passOrderBy(asc(UserTable.username));
         expect(result[0].realName).toBe('Warden');
     });
 
 
     test("can pass group by", async () => {
-        const passGroupBy = async (groupBy: SQL | AnyMySqlColumn) => await db.select().from(UserTable).where(like(UserTable.email, '%@shawshank.prison')).groupBy(groupBy);
+        const passGroupBy = async (groupBy) => await db.select().from(UserTable).where(like(UserTable.email, '%@shawshank.prison')).groupBy(groupBy);
         const result = await passGroupBy(UserTable.username);
         expect(result[0].realName).toBe('Warden');
     });
 
     test("can pass select query", async () => {
-        const passSelect = async <T extends AnyMySqlSelect>(qb: T) => await qb.limit(1);
+        const passSelect = async (qb) => await qb.limit(1);
         const result = await passSelect(db.select().from(UserTable).where(eq(UserTable.id, 'a')));
         expect(result[0].realName).toBe('Warden');
     });

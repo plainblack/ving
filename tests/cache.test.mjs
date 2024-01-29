@@ -1,4 +1,4 @@
-import { useCache } from '../server/cache';
+import { useCache } from '../server/cache.mjs';
 import { sleep } from '../utils/sleep.mjs';
 import { test, expect } from "vitest";
 
@@ -8,10 +8,6 @@ const data = [
     { name: "foo" },
     { name: "bar" },
 ];
-
-type TestObj = {
-    name: string,
-};
 
 test('string to cache', async () => {
     expect(await cache.set('foo', 'bar', 200)).toBe(true);
