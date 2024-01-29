@@ -1,6 +1,6 @@
 import { vingSchemas } from '../vingschema/index.mjs';
-import { findObject } from '../../utils/findObject.mjs';
-import { ouch } from '../../utils/ouch.mjs';
+import { findObject } from './../utils/findObject.mjs';
+import { ouch } from './../utils/ouch.mjs';
 import _ from 'lodash';
 import { eq, asc, desc, and, ne, sql, Name } from '../drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers.mjs';

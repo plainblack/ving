@@ -1,5 +1,5 @@
 import { useUsers, UserRecord } from './vingrecord/records/User.mjs';
-import { ouch } from '../utils/ouch.mjs';
+import { ouch } from './utils/ouch.mjs';
 const Users = useUsers();
 
 import { RoleMixin, RoleOptions } from './vingrecord/mixins/Role.mjs';

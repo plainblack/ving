@@ -1,4 +1,6 @@
 import { describeParams, obtainSession } from '../../utils/rest.mjs';
+import { defineEventHandler } from 'h3';
+
 export default defineEventHandler(async (event) => {
     const session = obtainSession(event);
     if (session) {

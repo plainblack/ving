@@ -3,6 +3,7 @@ import { generator, renderTemplate, toFile } from '@feathershq/pinion';
 const optionsTemplate = ({ name }) =>
     `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
 import { describeParams } from '../../utils/rest.mjs';
+import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
     return ${name}s.mint().propOptions(describeParams(event), true);
@@ -11,6 +12,7 @@ export default defineEventHandler(async (event) => {
 const indexPostTemplate = ({ name }) =>
     `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
 import { describeParams, getBody, obtainSession } from '../../utils/rest.mjs';
+import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
     const ${name.toLowerCase()} = await ${name}s.createAndVerify(await getBody(event), obtainSession(event));
@@ -20,6 +22,7 @@ export default defineEventHandler(async (event) => {
 const indexGetTemplate = ({ name }) =>
     `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
 import { describeListParams, describeListWhere } from '../../utils/rest.mjs';
+import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
     return await ${name}s.describeList(describeListParams(event), describeListWhere(event, ${name}s.describeListFilter()));
@@ -28,6 +31,7 @@ export default defineEventHandler(async (event) => {
 const idPutTemplate = ({ name }) =>
     `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
 import { describeParams, obtainSession, getBody } from '../../utils/rest.mjs';
+import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
     const { id } = getRouterParams(event);
@@ -41,6 +45,7 @@ export default defineEventHandler(async (event) => {
 const idGetTemplate = ({ name }) =>
     `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
 import { describeParams } from '../../utils/rest.mjs';
+import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
     const { id } = getRouterParams(event);
@@ -51,6 +56,7 @@ export default defineEventHandler(async (event) => {
 const idDeleteTemplate = ({ name }) =>
     `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
 import { obtainSession, describeParams } from '../../utils/rest.mjs';
+import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
     const { id } = getRouterParams(event);
@@ -63,6 +69,7 @@ export default defineEventHandler(async (event) => {
 const childGetTemplate = ({ name, prop }) =>
     `import { use${name}s } from '../../../vingrecord/records/${name}.mjs';
 import { describeListParams } from '../../../utils/rest.mjs';
+import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
     const { id } = getRouterParams(event);
@@ -74,6 +81,7 @@ export default defineEventHandler(async (event) => {
 const parentGetTemplate = ({ name, prop }) =>
     `import { use${name}s } from '../../../vingrecord/records/${name}.mjs';
 import { describeParams } from '../../../utils/rest.mjs';
+import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
     const { id } = getRouterParams(event);

@@ -1,4 +1,4 @@
-import { ouch } from '../../../utils/ouch.mjs';
+import { ouch } from './../../utils/ouch.mjs';
 
 export const RoleOptions = ["admin", "developer"];
 

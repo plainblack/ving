@@ -1,8 +1,10 @@
 import { sendMail } from '../../../email/send.mjs';
 import { useUsers } from '../../../vingrecord/records/User.mjs';
-import { useCache } from '../../../cache';
+import { useCache } from '../../../cache.mjs';
 import { obtainSession, describeParams } from '../../../utils/rest.mjs';
 import crypto from 'crypto';
+import { defineEventHandler } from 'h3';
+
 
 export default defineEventHandler(async (event) => {
     const Users = useUsers();
