@@ -1,16 +1,10 @@
 import { defineStore } from 'pinia';
-import { Describe } from '../types';
 import ua from 'ua-parser-js';
 
 const query = { includeOptions: true, includeMeta: true, includeLinks: true };
 
 export const useCurrentUserStore = defineStore('currentUser', {
-    state: (): {
-        props?: Describe<'User'>['props']
-        meta?: Describe<'User'>['meta']
-        options?: Describe<'User'>['options']
-        links?: Describe<'User'>['links']
-    } => ({
+    state: () => ({
         props: {},
         meta: {},
         options: {},
@@ -26,13 +20,13 @@ export const useCurrentUserStore = defineStore('currentUser', {
             }
             return response;
         },
-        setState(data: Partial<Describe<'User'>>) {
+        setState(data) {
             this.props = data.props || {};
             this.meta = data.meta || {};
             this.options = data.options || {};
             this.links = data.links || {};
         },
-        async login(login: string, password: string) {
+        async login(login, password) {
             const response = await useRest('/api/session', {
                 method: 'post',
                 body: {
@@ -58,10 +52,10 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 body: this.props,
                 query,
             });
-            this.setState(response.data as Describe<'User'>)
+            this.setState(response.data)
             return response;
         },
-        async create(newUser: { username: string, email: string, password: string, realName: string }) {
+        async create(newUser) {
             const response = await useRest('/api/user', {
                 method: 'post',
                 body: newUser,
@@ -72,19 +66,19 @@ export const useCurrentUserStore = defineStore('currentUser', {
             }
             return response;
         },
-        async sendVerifyEmail(redirectAfter?: string) {
+        async sendVerifyEmail(redirectAfter) {
             const parser = new ua(navigator.userAgent);
-            const response = await useRest(this.links!.self + '/send-verify-email', {
+            const response = await useRest(this.links.self + '/send-verify-email', {
                 method: 'post',
                 query: { includeOptions: true, redirectAfter, browser: parser.getBrowser().name, os: parser.getOS().name },
             });
         },
-        async verifyEmail(verify?: string) {
-            const response = await useRest(this.links!.self + '/verify-email', {
+        async verifyEmail(verify) {
+            const response = await useRest(this.links.self + '/verify-email', {
                 method: 'post',
                 query: { includeOptions: true, verify },
             });
-            this.setState(response.data as Describe<'User'>)
+            this.setState(response.data)
             return response;
         },
         async isAuthenticated() {

@@ -1,10 +1,7 @@
 import { defineStore } from 'pinia';
 
 export const useThrobberStore = defineStore('throbber', {
-    state: (): {
-        counter: number,
-        workers: number,
-    } => ({
+    state: () => ({
         counter: 0,
         workers: 0,
     }),
