@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { debounce } from 'perfect-debounce'
 
-const notify = useNotifyStore();
 class VingKind {
+    #notify = useNotifyStore();
 
     #state = reactive({
         query: { includeLinks: true },
@@ -117,7 +117,7 @@ class VingKind {
                                 .catch(reject);
                         } else {
                             const message = "infinite loop detected in all() for " + self.getListApi()
-                            notify.error(message);
+                            this.#notify.error(message);
                             throw ouch(400, message);
                         }
                     } else {
@@ -307,7 +307,7 @@ class VingKind {
         if (this.#behavior.createApi) {
             return this.#behavior.createApi;
         }
-        notify.error('No createApi');
+        this.#notify.error('No createApi');
         throw ouch(401, 'No createApi');
     }
 
@@ -322,7 +322,7 @@ class VingKind {
         if (this.#behavior.listApi) {
             return this.#behavior.listApi;
         }
-        notify.error('No listApi');
+        this.#notify.error('No listApi');
         throw ouch(401, 'No listApi');
     }
 
