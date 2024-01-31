@@ -5,7 +5,7 @@ import { Session } from '../../session.mjs';
 import { eq } from 'drizzle-orm/mysql-core/expressions.js';
 import { ouch } from './../../utils/ouch.mjs';
 import { testRequired } from '../../utils/rest.mjs';
-import { defineEventHandler } from 'h3';
+import { defineEventHandler, setCookie } from 'h3';
 
 
 export default defineEventHandler(async (event) => {
