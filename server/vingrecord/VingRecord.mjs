@@ -413,7 +413,6 @@ export class VingRecord {
                 if (field.unique) {
                     const query = this.db.select({ count: sql`count(*)`.as('count') }).from(this.table);
                     let where = eq(this.table[field.name], params[field.name]);
-                    console.log("IS INSERTED", this.isInserted)
                     if (this.isInserted)
                         where = and(where, ne(this.table.id, this.get('id')));
 
