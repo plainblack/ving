@@ -70,7 +70,7 @@ export class VingRecord {
      * `true` if the record has been inserted into the database, or `false` if it has not
      */
     get isInserted() {
-        return this.inserted;
+        return this.#inserted;
     }
 
     /**
@@ -240,11 +240,11 @@ export class VingRecord {
      * Usage: `await user.insert()`
      */
     async insert() {
-        if (this.inserted) {
+        if (this.#inserted) {
             const schema = findVingSchema(this.table[Name]);
             throw ouch(409, `${schema.kind} already inserted`);
         }
-        this.inserted = true;
+        this.#inserted = true;
         await this.db.insert(this.table).values(this.#props);
     }
 
@@ -413,6 +413,7 @@ export class VingRecord {
                 if (field.unique) {
                     const query = this.db.select({ count: sql`count(*)`.as('count') }).from(this.table);
                     let where = eq(this.table[field.name], params[field.name]);
+                    console.log("IS INSERTED", this.isInserted)
                     if (this.isInserted)
                         where = and(where, ne(this.table.id, this.get('id')));
 
