@@ -1,5 +1,5 @@
 import { useUsers } from '../../../vingrecord/records/User.mjs';
-import { describeListParams } from '../../../utils/rest.mjs';
+import { describeListParams, describeListWhere } from '../../../utils/rest.mjs';
 import { defineEventHandler, getRouterParams } from 'h3';
 
 export default defineEventHandler(async (event) => {
