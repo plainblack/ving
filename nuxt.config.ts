@@ -9,7 +9,7 @@ export default defineNuxtConfig({
         'nuxt-primevue',
     ],
     primevue: {
-        /* Options */
+        cssLayerOrder: 'reset,primevue'
     },
     imports: {
         dirs: [
@@ -52,11 +52,6 @@ export default defineNuxtConfig({
                 },
             ]
         },
-    },
-    build: {
-        transpile: [
-            //       'primevue',
-        ],
     },
     css: [
         'primevue/resources/themes/tailwind-light/theme.css',
