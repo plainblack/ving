@@ -85,7 +85,7 @@ class VingKind {
 
     constructor(behavior = {}) {
         this.#behavior = behavior;
-        this.query = _.defaultsDeep(this.query, this.behavior.query);
+        this.query = _.defaultsDeep(this.query, this.#behavior.query);
         this.resetNew();
     }
 
@@ -123,8 +123,8 @@ class VingKind {
                     } else {
                         if (options.onAllDone)
                             options.onAllDone();
-                        if (self.behavior.onAllDone)
-                            self.behavior.onAllDone();
+                        if (self.#behavior.onAllDone)
+                            self.#behavior.onAllDone();
                         resolve(undefined);
                     }
                 })
@@ -147,8 +147,8 @@ class VingKind {
         if (options.onEach) {
             options.onEach(record);
         }
-        if (this.behavior.onEach) {
-            this.behavior.onEach(record);
+        if (this.#behavior.onEach) {
+            this.#behavior.onEach(record);
         }
         return newRecord;
     }
@@ -168,7 +168,7 @@ class VingKind {
         const response = await useRest(url, {
             query: _.defaultsDeep({}, this.query, query),
             method,
-            suppressErrorNotifications: this.behavior.suppressErrorNotifications,
+            suppressErrorNotifications: this.#behavior.suppressErrorNotifications,
         });
         if (response.error) {
             if (options?.onError)
@@ -196,7 +196,7 @@ class VingKind {
         const newProps = _.defaultsDeep({}, self.new, props);
         const newRecord = self.mint({ props: newProps });
         const addIt = function () {
-            if (options?.unshift || self.behavior?.unshift) {
+            if (options?.unshift || self.#behavior?.unshift) {
                 self.records.unshift(newRecord);
             } else {
                 self.records.push(newRecord);
@@ -252,7 +252,7 @@ class VingKind {
      */
     async fetchPropsOptions(options = {}) {
         const response = await useRest(this.getPropsOptionsApi(), {
-            suppressErrorNotifications: this.behavior.suppressErrorNotifications,
+            suppressErrorNotifications: this.#behavior.suppressErrorNotifications,
         });
         if (response.error) {
             if (options?.onError)
@@ -304,8 +304,8 @@ class VingKind {
      * @returns An endpoint url
      */
     getCreateApi() {
-        if (this.behavior.createApi) {
-            return this.behavior.createApi;
+        if (this.#behavior.createApi) {
+            return this.#behavior.createApi;
         }
         notify.error('No createApi');
         throw ouch(401, 'No createApi');
@@ -319,8 +319,8 @@ class VingKind {
      * @returns An endpoint url
      */
     getListApi() {
-        if (this.behavior.listApi) {
-            return this.behavior.listApi;
+        if (this.#behavior.listApi) {
+            return this.#behavior.listApi;
         }
         notify.error('No listApi');
         throw ouch(401, 'No listApi');
@@ -334,8 +334,8 @@ class VingKind {
      * @returns An endpoint url
      */
     getPropsOptionsApi() {
-        if (this.behavior.optionsApi != null) {
-            return this.behavior.optionsApi;
+        if (this.#behavior.optionsApi != null) {
+            return this.#behavior.optionsApi;
         }
         return this.getCreateApi() + "/options";
     }
@@ -353,12 +353,12 @@ class VingKind {
         return useVingRecord({
             ...params,
             createApi: self.getCreateApi(),
-            onCreate: self.behavior.onCreate,
-            onUpdate: self.behavior.onUpdate,
+            onCreate: self.#behavior.onCreate,
+            onUpdate: self.#behavior.onUpdate,
             onDelete(params) {
                 self.paging.totalItems--;
-                if (self.behavior.onDelete)
-                    self.behavior.onDelete(params);
+                if (self.#behavior.onDelete)
+                    self.#behavior.onDelete(params);
                 self.remove(params.props.id)
             },
         });
@@ -411,7 +411,7 @@ class VingKind {
      */
 
     resetNew() {
-        this.new = _.defaultsDeep({}, this.behavior.newDefaults || {});
+        this.new = _.defaultsDeep({}, this.#behavior.newDefaults || {});
     }
 
     /**
@@ -427,11 +427,11 @@ class VingKind {
             page: options?.page || this.paging.page || 1,
             itemsPerPage: this.paging.itemsPerPage || 10,
         };
-        const query = _.defaultsDeep({}, pagination, options.query, this.query);
+        const query = _.defaultsDeep({}, pagination, options?.query, this.query);
 
         const response = await useRest(this.getListApi(), {
             query: query,
-            suppressErrorNotifications: this.behavior.suppressErrorNotifications,
+            suppressErrorNotifications: this.#behavior.suppressErrorNotifications,
         });
         if (!response.error) {
             const data = response.data;
@@ -445,8 +445,8 @@ class VingKind {
             const items = data.items;
             if (options?.onSearch)
                 options?.onSearch(data);
-            if (this.behavior.onSearch)
-                this.behavior.onSearch(data);
+            if (this.#behavior.onSearch)
+                this.#behavior.onSearch(data);
             return items;
         }
         return response;
