@@ -6,7 +6,11 @@ export default defineNuxtConfig({
         '@pinia/nuxt',
         '@nuxt/content',
         'nuxt-icon',
+        'nuxt-primevue',
     ],
+    primevue: {
+        /* Options */
+    },
     imports: {
         dirs: [
             'stores',
@@ -51,7 +55,7 @@ export default defineNuxtConfig({
     },
     build: {
         transpile: [
-            'primevue',
+            //       'primevue',
         ],
     },
     css: [

@@ -11,7 +11,7 @@
             <Password v-else-if="type == 'password' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
                 v-model="val" toggleMask :placeholder="placeholder" :name="name" :id="computedId" :feedback="false"
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" class="w-full" />
-            <TextArea v-else-if="type == 'textarea' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
+            <Textarea v-else-if="type == 'textarea' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
                 :class="fieldClass + ' border-round'" :required="required" autoResize />
             <InputText
