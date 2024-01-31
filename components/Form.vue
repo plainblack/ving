@@ -21,7 +21,7 @@ provide('invalidForm', function (newValue) {
 });
 
 const props = defineProps({
-    name: {
+    send: {
         type: Function,
         default: () => { async () => { } },
     },
