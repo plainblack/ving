@@ -5,7 +5,7 @@ import { eq } from '../../drizzle/orm.mjs';
 import { ouch } from './../../utils/ouch.mjs';
 import { describeParams } from '../../utils/rest.mjs';
 import crypto from 'crypto';
-import { defineEventHandler } from 'h3';
+import { defineEventHandler, getQuery } from 'h3';
 
 export default defineEventHandler(async (event) => {
     const Users = useUsers();
