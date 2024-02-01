@@ -5,6 +5,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         return await navigateTo(`/user/login?redirectAfter=${to.fullPath}`);
     }
     else if (!currentUser.props?.verifiedEmail) {
-        return await navigateTo(`/user/must-verify-email?redirectAfter=${to.fullPath}`);
+        if (to.fullPath != '/user/logout') {
+            return await navigateTo(`/user/must-verify-email?redirectAfter=${to.fullPath}`);
+        }
     }
 });
