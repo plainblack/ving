@@ -3,8 +3,8 @@ import { useUsers } from '../../../vingrecord/records/User.mjs';
 import { useCache } from '../../../cache.mjs';
 import { obtainSession, describeParams } from '../../../utils/rest.mjs';
 import crypto from 'crypto';
-import { defineEventHandler, getRouterParams, getQuery, useRuntimeConfig } from 'h3';
-
+import { defineEventHandler, getRouterParams, getQuery } from 'h3';
+import { useRuntimeConfig } from '#imports';
 
 export default defineEventHandler(async (event) => {
     const Users = useUsers();

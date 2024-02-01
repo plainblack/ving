@@ -6,6 +6,7 @@ import { ouch } from './../../utils/ouch.mjs';
 import { describeParams } from '../../utils/rest.mjs';
 import crypto from 'crypto';
 import { defineEventHandler, getQuery } from 'h3';
+import { useRuntimeConfig } from '#imports';
 
 export default defineEventHandler(async (event) => {
     const Users = useUsers();
