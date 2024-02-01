@@ -22,16 +22,10 @@
         class="pt-2 pb-2 text-sm border-noround-top border-top-none bg-transparent" />
 </template>
 
-<script setup lang="ts">
+<script setup>
 
-
-const props = withDefaults(
-    defineProps<{
-        crumbs?: { label: string, to?: string }[],
-    }>(),
-    {
-
-    }
-);
+const props = defineProps({
+    crumbs: Object,
+});
 
 </script>

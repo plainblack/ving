@@ -17,22 +17,24 @@
         <div class="mb-4">
             <FormLabel label="Severity" />
             <div class="flex">
-                <Message severity="success" :closable="false" class="mr-3">
-                    <RadioButton v-model="swa.severity" inputId="success" name="severity" value="success" />
-                    <label for="success" class="ml-2">Success</label>
-                </Message>
-                <Message severity="info" :closable="false" class="mr-3">
-                    <RadioButton v-model="swa.severity" inputId="info" name="severity" value="info" />
-                    <label for="info" class="ml-2">Info</label>
-                </Message>
-                <Message severity="warn" :closable="false" class="mr-3">
-                    <RadioButton v-model="swa.severity" inputId="warn" name="severity" value="warn" />
-                    <label for="warn" class="ml-2">Warn</label>
-                </Message>
-                <Message severity="error" :closable="false" class="mr-3">
-                    <RadioButton v-model="swa.severity" inputId="error" name="severity" value="error" />
-                    <label for="error" class="ml-2">Error</label>
-                </Message>
+                <client-only>
+                    <Message severity="success" :closable="false" class="mr-3">
+                        <RadioButton v-model="swa.severity" inputId="success" name="severity" value="success" />
+                        <label for="success" class="ml-2">Success</label>
+                    </Message>
+                    <Message severity="info" :closable="false" class="mr-3">
+                        <RadioButton v-model="swa.severity" inputId="info" name="severity" value="info" />
+                        <label for="info" class="ml-2">Info</label>
+                    </Message>
+                    <Message severity="warn" :closable="false" class="mr-3">
+                        <RadioButton v-model="swa.severity" inputId="warn" name="severity" value="warn" />
+                        <label for="warn" class="ml-2">Warn</label>
+                    </Message>
+                    <Message severity="error" :closable="false" class="mr-3">
+                        <RadioButton v-model="swa.severity" inputId="error" name="severity" value="error" />
+                        <label for="error" class="ml-2">Error</label>
+                    </Message>
+                </client-only>
             </div>
         </div>
 
@@ -42,7 +44,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 definePageMeta({
     middleware: ['auth', 'admin']
 });

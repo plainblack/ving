@@ -3,7 +3,7 @@
     <Button @click="doit()">Doit</Button>
 </template>
 
-<script setup lang="ts">
+<script setup>
 async function doit() {
     console.log(await $fetch('/api/test?foo=bar'))
 }

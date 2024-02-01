@@ -10,7 +10,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const config = useRuntimeConfig();
 onMounted(async () => {
     const currentUser = useCurrentUserStore();

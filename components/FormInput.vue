@@ -11,7 +11,7 @@
             <Password v-else-if="type == 'password' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
                 v-model="val" toggleMask :placeholder="placeholder" :name="name" :id="computedId" :feedback="false"
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" class="w-full" />
-            <TextArea v-else-if="type == 'textarea' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
+            <Textarea v-else-if="type == 'textarea' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
                 :class="fieldClass + ' border-round'" :required="required" autoResize />
             <InputText
@@ -27,40 +27,57 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import _ from 'lodash';
 
-const props = withDefaults(
-    defineProps<{
-        label?: string,
-        type?: 'textarea' | 'text' | 'password' | 'number' | 'email',
-        name: string,
-        id?: string,
-        append?: string,
-        prepend?: string,
-        autocomplete?: string,
-        modelValue: string | number | undefined | null,
-        placeholder?: string,
-        required?: boolean,
-        step?: number,
-        mustMatch?: { field: string, value: string | number | undefined | null } | undefined,
-        class?: string,
-    }>(),
-    {
-        type: 'text',
-        autocomplete: 'off',
-        required: false,
-        mustMatch: undefined,
-        step: 1,
-    }
-);
+
+const props = defineProps({
+    label: String,
+    type: {
+        type: String,
+        default: () => 'text',
+        validator(value, props) {
+            return ['textarea', 'text', 'password', 'number', 'email'].includes(value)
+        }
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    id: String,
+    append: String,
+    prepend: String,
+    autocomplete: {
+        type: String,
+        default: () => 'off',
+    },
+    modelValue: {
+        type: [String, Number, undefined, null],
+        required: true,
+    },
+    placeholder: String,
+    required: {
+        type: Boolean,
+        default: () => false,
+    },
+    step: {
+        type: Number,
+        default: () => 1,
+    },
+    mustMatch: {
+        type: [Object, undefined],
+        default: () => undefined,
+    },
+    class: String,
+});
+
 const computedId = props.id || props.name;
 
 const emit = defineEmits(['update:modelValue']);
 
 let invalidReason = '';
 
-const invalidForm = inject('invalidForm', (a: ['', false]) => { }) as (a: [string, boolean, string?]) => void;
+const invalidForm = inject('invalidForm', (a) => { });
 
 const empty = computed(() => _.isNil(props.modelValue) || props.modelValue === '');
 

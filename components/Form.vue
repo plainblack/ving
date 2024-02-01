@@ -5,13 +5,13 @@
     </form>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
-const tracker: Record<string, { value: boolean, message?: string }> = {};
+const tracker = {};
 
 let invalid = false;
 
-provide('invalidForm', function (newValue: [string, boolean, string?]) {
+provide('invalidForm', function (newValue) {
     tracker[newValue[0]] = { value: newValue[1], message: newValue[2] };
     invalid = false;
     for (const key in tracker) {
@@ -20,18 +20,17 @@ provide('invalidForm', function (newValue: [string, boolean, string?]) {
     }
 });
 
-const props = withDefaults(
-    defineProps<{
-        send?: () => Promise<any>,
-    }>(),
-    {
-        async send() { },
-    }
-);
+const props = defineProps({
+    send: {
+        type: Function,
+        default: () => { async () => { } },
+    },
+});
+
 
 const notify = useNotifyStore();
 
-async function check(e: Event) {
+async function check(e) {
     if (invalid) {
         const problems = [];
         for (const key in tracker) {

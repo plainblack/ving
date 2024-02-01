@@ -20,38 +20,39 @@
                                     <Button label="Search" @click="apikeys.search()" />
                                 </div>
 
-
-                                <DataTable :value="apikeys.records" stripedRows
-                                    @sort="(event: Event) => apikeys.sortDataTable(event)">
-                                    <Column field="props.createdAt" header="Created" sortable>
-                                        <template #body="slotProps">
-                                            {{ dt.formatDate(slotProps.data.props.createdAt) }}
-                                        </template>
-                                    </Column>
-                                    <Column field="props.name" header="Name" sortable></Column>
-                                    <Column field="props.id" header="API Key">
-                                        <template #body="slotProps">
-                                            <Button icon="pi pi-copy" class="mr-2" alt="copy to clipboard"
-                                                title="Copy to Clipboard"
-                                                @click="copyToClipboard(slotProps.data.props.id)" />
-                                        </template>
-                                    </Column>
-                                    <Column field="props.privateKey" header="Private Key">
-                                        <template #body="slotProps">
-                                            <Button icon="pi pi-copy" class="mr-2" alt="copy to clipboard"
-                                                title="Copy to Clipboard"
-                                                @click="copyToClipboard(slotProps.data.props.privateKey)" />
-                                        </template>
-                                    </Column>
-                                    <Column header="Manage">
-                                        <template #body="slotProps">
-                                            <Button icon="pi pi-pencil" class="mr-2" severity="success"
-                                                @click="dialog.current = slotProps.data; dialog.visible = true" />
-                                            <Button icon="pi pi-trash" severity="danger"
-                                                @click=" slotProps.data.delete()" />
-                                        </template>
-                                    </Column>
-                                </DataTable>
+                                <client-only>
+                                    <DataTable :value="apikeys.records" stripedRows
+                                        @sort="(event) => apikeys.sortDataTable(event)">
+                                        <Column field="props.createdAt" header="Created" sortable>
+                                            <template #body="slotProps">
+                                                {{ dt.formatDate(slotProps.data.props.createdAt) }}
+                                            </template>
+                                        </Column>
+                                        <Column field="props.name" header="Name" sortable></Column>
+                                        <Column field="props.id" header="API Key">
+                                            <template #body="slotProps">
+                                                <Button icon="pi pi-copy" class="mr-2" alt="copy to clipboard"
+                                                    title="Copy to Clipboard"
+                                                    @click="copyToClipboard(slotProps.data.props.id)" />
+                                            </template>
+                                        </Column>
+                                        <Column field="props.privateKey" header="Private Key">
+                                            <template #body="slotProps">
+                                                <Button icon="pi pi-copy" class="mr-2" alt="copy to clipboard"
+                                                    title="Copy to Clipboard"
+                                                    @click="copyToClipboard(slotProps.data.props.privateKey)" />
+                                            </template>
+                                        </Column>
+                                        <Column header="Manage">
+                                            <template #body="slotProps">
+                                                <Button icon="pi pi-pencil" class="mr-2" severity="success"
+                                                    @click="dialog.current = slotProps.data; dialog.visible = true" />
+                                                <Button icon="pi pi-trash" severity="danger"
+                                                    @click=" slotProps.data.delete()" />
+                                            </template>
+                                        </Column>
+                                    </DataTable>
+                                </client-only>
 
                                 <Pager :kind="apikeys" />
 
@@ -121,9 +122,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
-import { VingRecord } from '~/types';
-
+<script setup>
 const notify = useNotifyStore();
 
 definePageMeta({
@@ -132,7 +131,7 @@ definePageMeta({
 
 const dt = useDateTime();
 const currentUser = useCurrentUserStore();
-const apikeys = useVingKind<'APIKey'>({
+const apikeys = useVingKind({
     listApi: currentUser.links?.apikeys,
     createApi: '/api/apikey',
     query: { includeMeta: true },
@@ -141,10 +140,10 @@ const apikeys = useVingKind<'APIKey'>({
 await apikeys.search();
 onBeforeRouteLeave(() => apikeys.dispose());
 
-const d: { visible: boolean, current?: VingRecord<'APIKey'> } = { visible: false, current: undefined };
+const d = { visible: false, current: undefined };
 const dialog = ref(d);
 
-function copyToClipboard(text: string) {
+function copyToClipboard(text) {
     navigator.clipboard.writeText(text);
     notify.info('Copied key to Clipboard');
 }

@@ -17,19 +17,11 @@
     </ul>
 </template>
 
-<script setup lang="ts">
-import type { ModelMap } from '~/types'
+<script setup>
 const route = useRoute();
 const currentUser = useCurrentUserStore();
 
-type nav = {
-    name: string,
-    href: string,
-    icon: string,
-    condition?: keyof ModelMap['User']['select'],
-}
-
-const navigation: nav[] = [
+const navigation = [
     { name: 'Profile', href: '/user/settings', icon: 'pi pi-user' },
     { name: 'Account', href: '/user/settings/account', icon: 'pi pi-key' },
     { name: 'Preferences', href: '/user/settings/preferences', icon: 'pi pi-sliders-h' },

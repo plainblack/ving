@@ -15,12 +15,12 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
-let children: Ref<Record<string, string>> = ref({});
+let children = ref({});
 
 const sortedChildren = () => {
-    let out: { id: string, name: string }[] = [];
+    let out = [];
     for (const name of Object.keys(children.value)) {
         out.push({
             id: children.value[name],
@@ -30,11 +30,11 @@ const sortedChildren = () => {
     return out;
 }
 
-provide('register', function (name: string, id: string) {
+provide('register', function (name, id) {
     children.value[name] = id;
 });
 
-provide('unregister', function (name: string) {
+provide('unregister', function (name) {
     delete children.value[name];
 });
 

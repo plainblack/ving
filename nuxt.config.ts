@@ -6,7 +6,11 @@ export default defineNuxtConfig({
         '@pinia/nuxt',
         '@nuxt/content',
         'nuxt-icon',
+        'nuxt-primevue',
     ],
+    primevue: {
+        cssLayerOrder: 'reset,primevue'
+    },
     imports: {
         dirs: [
             'stores',
@@ -48,11 +52,6 @@ export default defineNuxtConfig({
                 },
             ]
         },
-    },
-    build: {
-        transpile: [
-            'primevue',
-        ],
     },
     css: [
         'primevue/resources/themes/tailwind-light/theme.css',

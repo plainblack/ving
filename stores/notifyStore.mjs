@@ -1,0 +1,25 @@
+import { defineStore } from 'pinia';
+
+
+export const useNotifyStore = defineStore('notify', {
+    state: () => ({
+        errorMessage: '',
+        warnMessage: '',
+        infoMessage: '',
+        successMessage: '',
+    }),
+    actions: {
+        error(message) {
+            this.errorMessage = message;
+        },
+        warn(message) {
+            this.warnMessage = message;
+        },
+        info(message) {
+            this.infoMessage = message;
+        },
+        success(message) {
+            this.successMessage = message;
+        },
+    },
+});

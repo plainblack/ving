@@ -35,7 +35,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const route = useRoute();
 const query = route.query;
 const newPassword = reactive({ password: '', password2: '', code: query.code?.toString() || '' });

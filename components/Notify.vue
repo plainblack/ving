@@ -17,14 +17,13 @@
     </Toast>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useToast } from "primevue/usetoast";
 
 const notify = useNotifyStore();
 const toast = useToast();
 
 notify.$subscribe((mutation, state) => {
-    // @ts-expect-error - it thinks there's no key but there is
     const key = mutation.events.key;
     switch (key) {
         case 'successMessage': {

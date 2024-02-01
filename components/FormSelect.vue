@@ -7,18 +7,18 @@
     </select>
 </template>
 
-<script setup lang="ts">
-const props = withDefaults(
-    defineProps<{
-        label?: string,
-        name: string,
-        id?: string,
-        modelValue: string | number | undefined | null | boolean
-        options: { label: string, value: string | number | boolean }[] | undefined,
-    }>(),
-    {
-    }
-);
+<script setup>
+const props = defineProps({
+    label: String,
+    name: {
+        type: String,
+        required: true,
+    },
+    id: String,
+    modelValue: [String, Boolean, Number, null, undefined],
+    options: [Array, undefined],
+});
+
 
 const computedId = props.id || props.name;
 const emit = defineEmits(['update:modelValue', 'change'])
