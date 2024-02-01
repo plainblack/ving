@@ -30,7 +30,7 @@ export const makeTableFile = async (schema) => {
             references.push(`import {${prop.relation.kind}Table} from './${prop.relation.kind}.mjs';`);
         }
     }
-    const content = `import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from '../orm.mjs';
+    const content = `import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text } from '../orm.mjs';
 ${references.join("\n")}
 
 ${makeTable(schema)}

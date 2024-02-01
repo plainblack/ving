@@ -4,7 +4,7 @@ import { ouch } from './../utils/ouch.mjs';
 import _ from 'lodash';
 
 const fixColumnData = (column, data) => {
-    if (column.getSQLType() == 'timestamp') {
+    if (column.getSQLType() == 'datetime' || column.getSQLType() == 'timestamp') {
         if (!data.match(/^"/)) // make it JSON compatible
             data = '"' + data + '"';
         return JSON.parse(data);

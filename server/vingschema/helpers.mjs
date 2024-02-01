@@ -1,4 +1,3 @@
-import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from '../drizzle/orm.mjs';
 import { v4 } from 'uuid';
 import { z } from 'zod';
 export const uuid = v4;
@@ -59,6 +58,10 @@ export const zodText = (prop) => {
 
 export const dbTimestamp = (prop) => {
     return `timestamp('${prop.name}').defaultNow().notNull()` + (prop.autoUpdate ? '.onUpdateNow()' : '');
+}
+
+export const dbDateTime = (prop) => {
+    return `datetime('${prop.name}').default('1000-01-01 00:00:00').notNull()` + (prop.autoUpdate ? '.onUpdateNow()' : '');
 }
 
 export const dbString = (prop) => {

@@ -1,4 +1,4 @@
-import { boolean, mysqlEnum, mysqlTable, timestamp, uniqueIndex, varchar, text } from '../orm.mjs';
+import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text } from '../orm.mjs';
 
 
 

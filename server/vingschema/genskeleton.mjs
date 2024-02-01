@@ -1,7 +1,7 @@
 import { generator, renderTemplate, toFile, after, inject } from '@feathershq/pinion';
 
 const schemaTemplate = ({ name }) =>
-    `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbTimestamp } from '../helpers.mjs';
+    `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp } from '../helpers.mjs';
 
 export const ${name.toLowerCase()}Schema = {
     kind: '${name}',
@@ -128,13 +128,13 @@ export const ${name.toLowerCase()}Schema = {
             view: ['public'],
             edit: ['owner'],
         },
-        // timestamp/date field
+        // date field
         {
             type: "date",
             name: "startedAt",
             required: true,
             default: () => new Date(),
-            db: (prop) => dbTimestamp(prop),
+            db: (prop) => dbDateTime(prop),
             view: ['public'],
             edit: [],
         },
