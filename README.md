@@ -9,7 +9,7 @@ Ving is a RESTful web services framework with batteries included. It has a heavy
  - A useful set of custom made client components and composables
  - A full user interface for user management
 
-Ving is a modern reimplementation of [Wing](http://wingapi.com) written entirely in [Typescript](https://www.typescriptlang.org) using [Nuxt 3](http://nuxt.com), [Vue 3](http://vuejs.org), [PrimeVue](https://primevue.org),  [PrimeFlex](https://www.primefaces.org/primeflex/) and [Drizzle](https://github.com/drizzle-team/drizzle-orm).
+Ving is a modern reimplementation of [Wing](http://wingapi.com) written entirely in Javascript using [Nuxt 3](http://nuxt.com), [Vue 3](http://vuejs.org), [PrimeVue](https://primevue.org), [PrimeFlex](https://www.primefaces.org/primeflex/) and [Drizzle](https://github.com/drizzle-team/drizzle-orm).
 
 
 ## Documentation
