@@ -1,5 +1,5 @@
 <template>
-    <div class="surface-card p-4 border-1 surface-border border-round flex-auto">
+    <div v-if="user.props?.id" class="surface-card p-4 border-1 surface-border border-round flex-auto">
         <div class="text-900 font-semibold text-lg mt-3">User profile for {{ user.meta?.displayName }}</div>
 
         Created on {{ dt.formatDate(user.props?.createdAt) }}

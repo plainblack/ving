@@ -179,7 +179,7 @@ const viewTemplate = ({ name, schema }) =>
     `<template>
     <Crumbtrail :crumbs="breadcrumbs" />
     <h1>{{${name.toLowerCase()}.props?.${nameOrId(schema)}}}</h1>
-    <div class="surface-card p-4 border-1 surface-border border-round flex-auto">
+    <div v-if="${name.toLowerCase()}.props?.id" class="surface-card p-4 border-1 surface-border border-round flex-auto">
         ${viewProps(schema)}
     </div>
     <div class="mt-3" v-if="${name.toLowerCase()}.meta?.isOwner">
