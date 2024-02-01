@@ -2,7 +2,7 @@ import { vingSchemas } from '../vingschema/index.mjs';
 import { findObject } from './../utils/findObject.mjs';
 import { ouch } from './../utils/ouch.mjs';
 import _ from 'lodash';
-import { eq, asc, desc, and, ne, sql, Name } from '../drizzle/orm.mjs';
+import { eq, asc, desc, and, ne, sql, getTableName } from '../drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '../vingschema/helpers.mjs';
 
 /**
@@ -118,7 +118,7 @@ export class VingRecord {
         if (this.isOwner(currentUser)) {
             return true;
         }
-        const schema = findVingSchema(this.table[Name]);
+        const schema = findVingSchema(getTableName(this.table));
         throw ouch(403, `You do not have the privileges to access ${schema.kind}.`)
     }
 
@@ -144,7 +144,7 @@ export class VingRecord {
         const currentUser = params.currentUser;
         const include = params.include || {};
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
-        const schema = findVingSchema(this.table[Name]);
+        const schema = findVingSchema(getTableName(this.table));
         let out = { props: {} };
         out.props.id = this.get('id');
         if (include !== undefined && include.links) {
@@ -241,7 +241,7 @@ export class VingRecord {
      */
     async insert() {
         if (this.#inserted) {
-            const schema = findVingSchema(this.table[Name]);
+            const schema = findVingSchema(getTableName(this.table));
             throw ouch(409, `${schema.kind} already inserted`);
         }
         this.#inserted = true;
@@ -259,7 +259,7 @@ export class VingRecord {
     isOwner(currentUser) {
         if (currentUser === undefined)
             return false;
-        const schema = findVingSchema(this.table[Name]);
+        const schema = findVingSchema(getTableName(this.table));
         for (let owner of schema.owner) {
             let found = owner.match(/^\$(.*)$/);
             if (found) {
@@ -290,7 +290,7 @@ export class VingRecord {
             return this[name]
         }
         catch {
-            const schema = findVingSchema(this.table[Name])
+            const schema = findVingSchema(getTableName(this.table))
             throw ouch(404, `Couldn't find parent "${name}" on ${schema.kind}.`);
         }
     }
@@ -309,7 +309,7 @@ export class VingRecord {
         const currentUser = params.currentUser;
         const include = params.include || {};
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
-        for (const prop of findVingSchema(this.table[Name]).props) {
+        for (const prop of findVingSchema(getTableName(this.table)).props) {
             const roles = [...prop.view, ...prop.edit];
             const visible = roles.includes('public')
                 || (include !== undefined && include.private)
@@ -343,7 +343,7 @@ export class VingRecord {
      * @returns The value that was set
      */
     set(key, value) {
-        const schema = findVingSchema(this.table[Name]);
+        const schema = findVingSchema(getTableName(this.table));
         const prop = findPropInSchema(key, schema.props);
         if (prop) {
             if (prop.type != 'virtual' && prop.zod) {
@@ -372,7 +372,7 @@ export class VingRecord {
      * @returns The same as `getAll()`
      */
     setAll(props) {
-        const schema = findVingSchema(this.table[Name]);
+        const schema = findVingSchema(getTableName(this.table));
         for (const key in props) {
             const field = findPropInSchema(key, schema.props)
             if (!field?.noSetAll)
@@ -391,7 +391,7 @@ export class VingRecord {
      * @returns `true` if set, or an exception if it couldn't be
      */
     async setPostedProps(params, currentUser) {
-        const schema = findVingSchema(this.table[Name]);
+        const schema = findVingSchema(getTableName(this.table));
         const isOwner = currentUser !== undefined && this.isOwner(currentUser);
 
         for (const field of schema.props) {
@@ -443,7 +443,7 @@ export class VingRecord {
      * @returns `true` if all the required params exist and validate or an exception if not
      */
     testCreationProps(params) {
-        const schema = findVingSchema(this.table[Name]);
+        const schema = findVingSchema(getTableName(this.table));
         for (const prop of schema.props) {
             if (!prop.required || prop.type == 'virtual' || (prop.default !== undefined && prop.default !== '') || prop.relation)
                 continue;
@@ -461,7 +461,7 @@ export class VingRecord {
      * Usage: `await user.update()`
      */
     async update() {
-        const schema = findVingSchema(this.table[Name]);
+        const schema = findVingSchema(getTableName(this.table));
         // auto-update auto-updating date fields
         for (const field of schema.props) {
             if (field.type == 'date' && field.autoUpdate) {
@@ -704,7 +704,7 @@ export class VingKind {
             ranged: [],//[this.table.createdAt, this.table.updatedAt],
             qualifiers: [],
         };
-        const schema = findVingSchema(this.table[Name]);
+        const schema = findVingSchema(getTableName(this.table));
         for (const prop of schema.props) {
             if (prop.filterQuery)
                 filter.queryable.push(this.table[prop.name]);
@@ -783,7 +783,7 @@ export class VingKind {
         const props = (await this.select.where(eq(this.table.id, id)))[0];
         if (props)
             return new this.recordClass(this.db, this.table, props);
-        const schema = findVingSchema(this.table[Name]);
+        const schema = findVingSchema(getTableName(this.table));
         throw ouch(404, `${schema.kind} not found.`)
     }
 
@@ -800,7 +800,7 @@ export class VingKind {
         for (const item of this.propDefaults) {
             output[item.prop] = item.value;
         }
-        for (const prop of findVingSchema(this.table[Name]).props) {
+        for (const prop of findVingSchema(getTableName(this.table)).props) {
             if (props && props[prop.name] !== undefined)
                 output[prop.name] = props[prop.name]
             else if (prop.type == 'string' || prop.type == 'enum' || prop.type == 'id')
