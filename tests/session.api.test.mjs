@@ -7,7 +7,7 @@ const Users = useUsers();
 const base = 'http://localhost:3000/api/';
 
 describe('Session API', async () => {
-    await Users.delete.where(eq(Users.table.username, 'brooks'));
+    await Users.delete.where(eq(Users.table.username, 'rita'));
     const user = (await axios.post(
         base + 'user?includeMeta=true',
         { username: 'rita', realName: 'Rita Hayworth', email: 'rita@shawshank.jail', password: 'poster' },
