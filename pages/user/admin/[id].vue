@@ -3,7 +3,7 @@
     <h1>Edit User {{ user.props?.username }}</h1>
 
     <client-only>
-        <FieldsetNav v-if="user.props">
+        <FieldsetNav v-if="user.props?.id">
             <FieldsetItem name="Account">
                 <div class="mb-4">
                     <FormInput name="username" v-model="user.props.username" required label="Username"

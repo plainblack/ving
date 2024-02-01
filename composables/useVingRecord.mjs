@@ -142,7 +142,9 @@ export default (behavior) => {
             },
 
             /**
-             * Frees the memory associated with this record
+             * Frees the memory associated with this record. Be sure to also 
+             * add something like `v-if="user.props?.id"` to a wrapping div to
+             * avoid a Vue crash.
              * 
              * Usage: `onBeforeRouteLeave(() => user.dispose());`
              */
