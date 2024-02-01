@@ -1,5 +1,6 @@
 import { defineCommand } from "citty";
 import { useUsers } from '../server/vingrecord/records/User.mjs'
+import { useCache } from '../server/cache.mjs';
 import { like, or, eq } from '../server/drizzle/orm.mjs';
 
 export default defineCommand({
@@ -15,8 +16,7 @@ export default defineCommand({
         },
         admins: {
             type: "boolean",
-            description: "List all users that are admins",
-            alias: "a",
+            description: "List all users that are admins"
         },
         search: {
             type: "string",
@@ -93,7 +93,8 @@ export default defineCommand({
                 console.log(`Could not find user: ${args.modify}`);
             }
         }
-        Users.db.session.client.pool.end();
+        await Users.db.session.client.pool.end();
+        await useCache().disconnect();
     },
 });
 

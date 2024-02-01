@@ -1,6 +1,11 @@
 import Email from 'email-templates';
 import { createTransport } from 'nodemailer';
-import vingConfig from '../../ving.json';
+import { readFile } from 'fs/promises';
+const vingConfig = JSON.parse(
+    await readFile(
+        new URL('../../ving.json', import.meta.url)
+    )
+);
 import * as dotenv from 'dotenv';
 dotenv.config();
 const emailConfig = new URL(process.env.EMAIL || '');
