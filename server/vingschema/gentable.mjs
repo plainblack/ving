@@ -1,6 +1,6 @@
-import { writeFileSafely } from './helpers.mjs';
+import { renderTemplate, toFile, getContext } from '@featherscloud/pinion';
 
-export const makeTable = (schema) => {
+export const makeBaseTable = (schema) => {
     const columns = [];
     const uniqueIndexes = [];
     for (const prop of schema.props) {
@@ -23,20 +23,22 @@ export const ${schema.kind}Table = mysqlTable('${schema.tableName}',
 `;
 }
 
-export const makeTableFile = async (schema) => {
+export const makeTable = ({ schema }) => {
     const references = [];
     for (const prop of schema.props) {
         if (prop.relation && ['parent', 'sibling'].includes(prop.relation.type)) {
             references.push(`import {${prop.relation.kind}Table} from './${prop.relation.kind}.mjs';`);
         }
     }
-    const content = `import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text } from '../orm.mjs';
+    return `import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text } from '../orm.mjs';
 ${references.join("\n")}
 
-${makeTable(schema)}
-
+${makeBaseTable(schema)}
 `;
-    const path = `server/drizzle/schema/${schema.kind}.mjs`;
-    await writeFileSafely(path, content);
-    console.log('Generated ' + path)
+}
+
+export const makeTableFile = (params) => {
+    const context = { ...getContext({}), ...params };
+    return Promise.resolve(context)
+        .then(renderTemplate(makeTable, toFile(`server/drizzle/schema/${context.schema.kind}.mjs`), { force: true }))
 }

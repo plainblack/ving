@@ -1,7 +1,5 @@
-import { generator, renderTemplate, toFile, after, inject } from '@featherscloud/pinion';
+import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
 import { camelCase } from 'scule';
-
-
 
 function addImports({ schema }) {
     let out = '';
@@ -65,5 +63,8 @@ export const use${name}s = () => {
     return new ${name}Kind(useDB(), ${name}Table, ${name}Record);
 }`;
 
-export const generateRecord = (context) => generator(context)
-    .then(renderTemplate(recordTemplate(context), toFile(`server/vingrecord/records/${context.name}.mjs`)));
+export const generateRecord = (params) => {
+    const context = { ...getContext({}), ...params };
+    return Promise.resolve(context)
+        .then(renderTemplate(recordTemplate, toFile(`server/vingrecord/records/${context.name}.mjs`)));
+}

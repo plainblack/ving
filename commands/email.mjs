@@ -1,7 +1,6 @@
 import { defineCommand } from "citty";
 import { sendMail } from '../server/email/send.mjs';
 import { generateTemplates } from '../server/email/gentemplates.mjs';
-import { getContext } from '@featherscloud/pinion';
 
 export default defineCommand({
     meta: {
@@ -41,7 +40,7 @@ export default defineCommand({
             console.log('Email sent');
         }
         else if (args.create) {
-            await generateTemplates({ ...getContext({}), name: args.create });
+            await generateTemplates({ name: args.create });
         }
     },
 });

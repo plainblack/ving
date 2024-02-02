@@ -1,4 +1,4 @@
-import { generator, renderTemplate, toFile } from '@featherscloud/pinion';
+import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
 import { splitByCase, upperFirst } from 'scule';
 import { stringDefault, booleanDefault, numberDefault } from '../vingschema/helpers.mjs';
 
@@ -302,7 +302,11 @@ const breadcrumbs = [
 ];
 </script>`;
 
-export const generatePages = (context) => generator(context)
-    .then(renderTemplate(indexTemplate(context), toFile(`pages/${context.name.toLowerCase()}/index.vue`)))
-    .then(renderTemplate(viewTemplate(context), toFile(`pages/${context.name.toLowerCase()}/[id]/index.vue`)))
-    .then(renderTemplate(editTemplate(context), toFile(`pages/${context.name.toLowerCase()}/[id]/edit.vue`)));
+export const generatePages = (params) => {
+    const context = { ...getContext({}), ...params };
+    return Promise.resolve(context)
+        .then(renderTemplate(indexTemplate, toFile(`pages/${context.name.toLowerCase()}/index.vue`)))
+        .then(renderTemplate(viewTemplate, toFile(`pages/${context.name.toLowerCase()}/[id]/index.vue`)))
+        .then(renderTemplate(editTemplate, toFile(`pages/${context.name.toLowerCase()}/[id]/edit.vue`)))
+}
+

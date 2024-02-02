@@ -1,4 +1,4 @@
-import { generator, renderTemplate, toFile, after, inject } from '@featherscloud/pinion';
+import { getContext, renderTemplate, toFile, after, inject } from '@featherscloud/pinion';
 
 const schemaTemplate = ({ name }) =>
     `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp } from '../helpers.mjs';
@@ -141,7 +141,10 @@ export const ${name.toLowerCase()}Schema = {
     ],
 };`;
 
-export const generateSchema = (context) => generator(context)
-    .then(renderTemplate(schemaTemplate(context), toFile(`server/vingschema/schemas/${context.name}.mjs`)))
-    .then(inject(`import { ${context.name.toLowerCase()}Schema } from "./schemas/${context.name}.mjs";`, after('import { apikeySchema } from "./schemas/APIKey.mjs";'), toFile('server/vingschema/index.mjs')))
-    .then(inject(`    ${context.name.toLowerCase()}Schema,`, after('    apikeySchema,'), toFile('server/vingschema/index.mjs')));
+export const generateSchema = (params) => {
+    const context = { ...getContext({}), ...params };
+    return Promise.resolve(context)
+        .then(renderTemplate(schemaTemplate(context), toFile(`server/vingschema/schemas/${context.name}.mjs`)))
+        .then(inject(`import { ${context.name.toLowerCase()}Schema } from "./schemas/${context.name}.mjs";`, after('import { apikeySchema } from "./schemas/APIKey.mjs";'), toFile('server/vingschema/index.mjs')))
+        .then(inject(`    ${context.name.toLowerCase()}Schema,`, after('    apikeySchema,'), toFile('server/vingschema/index.mjs')));
+}

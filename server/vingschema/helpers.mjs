@@ -1,8 +1,6 @@
 import { v4 } from 'uuid';
 import { z } from 'zod';
 export const uuid = v4;
-import * as fs from 'fs';
-import * as path from 'path';
 
 export const stringDefault = (prop, skipFunc = false) => {
     if (typeof prop.default == 'string')
@@ -94,14 +92,6 @@ export const dbPk = (prop) => {
 
 export const dbRelation = (prop) => {
     return `${dbId(prop)}.references(() => ${prop.relation?.kind}Table.id)`;
-}
-
-export const writeFileSafely = async (writeLocation, content) => {
-    fs.mkdirSync(path.dirname(writeLocation), {
-        recursive: true,
-    })
-
-    fs.writeFileSync(writeLocation, content)
 }
 
 export const baseSchemaProps = [

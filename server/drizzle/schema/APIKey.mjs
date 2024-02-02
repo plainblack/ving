@@ -18,4 +18,3 @@ export const APIKeyTable = mysqlTable('apikeys',
     })
 );
 
-

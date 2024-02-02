@@ -1,4 +1,4 @@
-import { generator, renderTemplate, toFile } from '@featherscloud/pinion';
+import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
 
 const optionsTemplate = ({ name }) =>
     `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
@@ -90,20 +90,22 @@ export default defineEventHandler(async (event) => {
     return await ${prop.relation.name}.describe(describeParams(event));
 });`;
 
-export const generateApis = (context) => {
-    const gen = generator(context)
-        .then(renderTemplate(idDeleteTemplate(context), toFile(`server/api/${context.name.toLowerCase()}/[id].delete.mjs`)))
-        .then(renderTemplate(idGetTemplate(context), toFile(`server/api/${context.name.toLowerCase()}/[id].get.mjs`)))
-        .then(renderTemplate(idPutTemplate(context), toFile(`server/api/${context.name.toLowerCase()}/[id].put.mjs`)))
-        .then(renderTemplate(indexGetTemplate(context), toFile(`server/api/${context.name.toLowerCase()}/index.get.mjs`)))
-        .then(renderTemplate(indexPostTemplate(context), toFile(`server/api/${context.name.toLowerCase()}/index.post.mjs`)))
-        .then(renderTemplate(optionsTemplate(context), toFile(`server/api/${context.name.toLowerCase()}/options.get.mjs`)));
+export const generateApis = (params) => {
+    const context = { ...getContext({}), ...params };
+    const folderName = context.name.toLowerCase();
+    const gen = Promise.resolve(context)
+        .then(renderTemplate(idDeleteTemplate, toFile(`server/api/${folderName}/[id].delete.mjs`)))
+        .then(renderTemplate(idGetTemplate, toFile(`server/api/${folderName}/[id].get.mjs`)))
+        .then(renderTemplate(idPutTemplate, toFile(`server/api/${folderName}/[id].put.mjs`)))
+        .then(renderTemplate(indexGetTemplate, toFile(`server/api/${folderName}/index.get.mjs`)))
+        .then(renderTemplate(indexPostTemplate, toFile(`server/api/${folderName}/index.post.mjs`)))
+        .then(renderTemplate(optionsTemplate, toFile(`server/api/${folderName}/options.get.mjs`)));
     for (const prop of context.schema.props) {
         if (prop.relation && prop.relation.type == 'child') {
-            gen.then(renderTemplate(childGetTemplate({ name: context.name, prop }), toFile(`server/api/${context.name.toLowerCase()}/[id]/${prop.relation.name}.get.mjs`)));
+            gen.then(renderTemplate(childGetTemplate({ name: context.name, prop }), toFile(`server/api/${folderName}/[id]/${prop.relation.name}.get.mjs`)));
         }
         else if (prop.relation && prop.relation.type == 'parent') {
-            gen.then(renderTemplate(parentGetTemplate({ name: context.name, prop }), toFile(`server/api/${context.name.toLowerCase()}/[id]/${prop.relation.name}.get.mjs`)));
+            gen.then(renderTemplate(parentGetTemplate({ name: context.name, prop }), toFile(`server/api/${folderName}/[id]/${prop.relation.name}.get.mjs`)));
         }
     }
     return gen;

@@ -1,6 +1,5 @@
 import { defineCommand } from "citty";
 import { generateSchema } from '../server/vingschema/genskeleton.mjs';
-import { getContext } from '@featherscloud/pinion';
 
 export default defineCommand({
     meta: {
@@ -17,7 +16,7 @@ export default defineCommand({
     },
     async run({ args }) {
         if (args.new) {
-            await generateSchema({ ...getContext({}), name: args.new });
+            await generateSchema({ name: args.new });
         }
     },
 });

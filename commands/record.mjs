@@ -2,7 +2,6 @@ import { defineCommand } from "citty";
 import { generateRecord } from '../server/vingrecord/genskeleton.mjs';
 import { generateApis } from '../server/vingrecord/genrest.mjs';
 import { generatePages } from '../server/vingrecord/genpages.mjs';
-import { getContext } from '@featherscloud/pinion';
 import { findVingSchema } from '../server/vingrecord/VingRecord.mjs';
 
 export default defineCommand({
@@ -23,22 +22,22 @@ export default defineCommand({
             valueHint: "ClassName",
             alias: "r",
         },
-        pages: {
+        web: {
             type: "string",
             description: "Generate Web Pages for this record",
             valueHint: "ClassName",
-            alias: "p",
+            alias: "w",
         },
     },
     async run({ args }) {
         if (args.new) {
-            await generateRecord({ ...getContext({}), name: args.new, schema: findVingSchema(args.new, 'kind') });
+            await generateRecord({ name: args.new, schema: findVingSchema(args.new, 'kind') });
         }
         else if (args.rest) {
-            await generateApis({ ...getContext({}), name: args.rest, schema: findVingSchema(args.rest, 'kind') });
+            await generateApis({ name: args.rest, schema: findVingSchema(args.rest, 'kind') });
         }
-        else if (args.pages) {
-            await generatePages({ ...getContext({}), name: args.pages, schema: findVingSchema(args.pages, 'kind') });
+        else if (args.web) {
+            await generatePages({ name: args.web, schema: findVingSchema(args.web, 'kind') });
         }
     },
 });

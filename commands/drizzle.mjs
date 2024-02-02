@@ -29,7 +29,7 @@ export default defineCommand({
     async run({ args }) {
         if (args.tables) {
             for (const schema of vingSchemas) {
-                await makeTableFile(schema);
+                await makeTableFile({ schema });
             }
         }
         else if (args.up) {
