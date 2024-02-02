@@ -1,4 +1,4 @@
-import { generator, renderTemplate, toFile, after, inject } from '@feathershq/pinion';
+import { generator, renderTemplate, toFile, after, inject } from '@featherscloud/pinion';
 
 const schemaTemplate = ({ name }) =>
     `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp } from '../helpers.mjs';

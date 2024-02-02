@@ -1,4 +1,4 @@
-import { generator, renderTemplate, toFile } from '@feathershq/pinion';
+import { generator, renderTemplate, toFile } from '@featherscloud/pinion';
 import { splitByCase, upperFirst } from 'scule';
 import { stringDefault, booleanDefault, numberDefault } from '../vingschema/helpers.mjs';
 

@@ -1,4 +1,4 @@
-import { generator, renderTemplate, toFile, after, inject } from '@feathershq/pinion';
+import { generator, renderTemplate, toFile, after, inject } from '@featherscloud/pinion';
 import { camelCase } from 'scule';
 
 

@@ -1,6 +1,6 @@
 import { defineCommand } from "citty";
 import { generateSchema } from '../server/vingschema/genskeleton.mjs';
-import { getContext } from '@feathershq/pinion';
+import { getContext } from '@featherscloud/pinion';
 
 export default defineCommand({
     meta: {

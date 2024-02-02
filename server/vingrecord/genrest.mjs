@@ -1,4 +1,4 @@
-import { generator, renderTemplate, toFile } from '@feathershq/pinion';
+import { generator, renderTemplate, toFile } from '@featherscloud/pinion';
 
 const optionsTemplate = ({ name }) =>
     `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
@@ -106,4 +106,5 @@ export const generateApis = (context) => {
             gen.then(renderTemplate(parentGetTemplate({ name: context.name, prop }), toFile(`server/api/${context.name.toLowerCase()}/[id]/${prop.relation.name}.get.mjs`)));
         }
     }
+    return gen;
 }

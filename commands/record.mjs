@@ -2,7 +2,7 @@ import { defineCommand } from "citty";
 import { generateRecord } from '../server/vingrecord/genskeleton.mjs';
 import { generateApis } from '../server/vingrecord/genrest.mjs';
 import { generatePages } from '../server/vingrecord/genpages.mjs';
-import { getContext } from '@feathershq/pinion';
+import { getContext } from '@featherscloud/pinion';
 import { findVingSchema } from '../server/vingrecord/VingRecord.mjs';
 
 export default defineCommand({
