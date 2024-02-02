@@ -15,3 +15,5 @@ Ving is a modern reimplementation of [Wing](http://wingapi.com) written entirely
 ## Why Rest?
 
 You might be wondering why REST in a world with tRPC and GraphQL. It's because REST is language agnostic, and very simple to understand. It's still the best data presentation layer when you have an API you want the general public to consume. If you're a big company, build all three, but if you're not, best to stick with the one that's easiest to use and maintain.
+
+[Test](/docs/))
