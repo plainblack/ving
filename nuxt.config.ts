@@ -4,7 +4,6 @@ import ving from './ving.json';
 export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
-        '@nuxt/content',
         'nuxt-icon',
         'nuxt-primevue',
     ],
