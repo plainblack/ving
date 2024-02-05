@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>about.md</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
+        <style type="text/css">
+        html {
+            font-size: 1rem;
+            height: 100%;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-white);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        li a {
+            text-decoration: none;
+        }
+       ol,ul {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid">
+        <div class="col-3 lg:col-2 p-3 surface-300">
+            <div class="sticky top-0 left-0">
+                <div class="text-4xl">Ving Docs</div>
+                <p>Basics</p>
+<ul>
+<li><a href="about.html">About</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="error-codes.html">Error Codes</a></li>
+<li><a href="change-log.html">Change Log</a></li>
+</ul>
+<p>Subsystems</p>
+<ul>
+<li><a href="cache.html">Cache</a></li>
+<li><a href="cli.html">CLI</a></li>
+<li><a href="drizzle.html">Database</a></li>
+<li><a href="email.html">Email</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
+<li><a href="rest.html">Rest</a></li>
+<li><a href="ui.html">UI</a></li>
+</ul>
+<p>Rest APIs</p>
+<ul>
+<li><a href="apikey.html">API Key</a></li>
+<li><a href="session.html">Session</a></li>
+<li><a href="test.html">Test</a></li>
+<li><a href="user.html">User</a></li>
+</ul>
+
+            </div>
+        </div>
+            <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
+<nav class="table-of-contents"><ol><li><a href="#about-ving">About Ving </a><ol><li><a href="#how-ving-is-constructed">How Ving is Constructed </a></li><li><a href="#why-rest%3F">Why Rest? </a></li><li><a href="#get-the-code">Get the Code </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<h1 id="about-ving" tabindex="-1">About Ving <a class="header-anchor" href="#about-ving">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h1>
+<p>Ving is a Web and REST code generation tool and services framework. It has a heavy focus on a strong and predictable backend, while having a flexible front end. It’s feature’s include:</p>
+<ul>
+<li>Automatic code generation for all sub-systems</li>
+<li>Platform agnostic REST interface</li>
+<li>Per field privileges for view and edit</li>
+<li>Full session based auth system</li>
+<li>API key and privilege system with access to make requests on behalf of other users</li>
+<li>A useful set of custom made client components and composables</li>
+<li>A full user interface for user management</li>
+<li>Email subsystem</li>
+</ul>
+<p>Ving is written entirely in Javascript using <a href="http://nuxt.com">Nuxt 3</a>, <a href="http://vuejs.org">Vue 3</a>, <a href="https://primevue.org">PrimeVue</a>, <a href="https://www.primefaces.org/primeflex/">PrimeFlex</a> and <a href="https://github.com/drizzle-team/drizzle-orm">Drizzle</a>.</p>
+<h2 id="how-ving-is-constructed" tabindex="-1">How Ving is Constructed <a class="header-anchor" href="#how-ving-is-constructed">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>Everything starts with the <a href="ving-schema.html">Ving Schema</a>, which defines tables in a database, along with fields, privileges, and other properties. From there everything is automatically generated, but still modifyable by you. Ving will generate <a href="drizzle.html">database schemas and migrations</a>, <a href="ving-record.html">low level APIs</a>, <a href="rest.html">REST APIs</a>, <a href="ui.html">Web UIs</a>, <a href="email.html">email templates</a>, and more.</p>
+<h2 id="why-rest%3F" tabindex="-1">Why Rest? <a class="header-anchor" href="#why-rest%3F">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>You might be wondering why REST in a world with tRPC and GraphQL. It’s because REST is language agnostic, and very simple to understand. It’s still the best data presentation layer when you have an API you want the general public to consume. And Ving is all about being fast to implement and easy to maintain. When you want simplcity, you do not want GraphQL or Typescript as there’s nothing uncomplicated about either.</p>
+<h2 id="get-the-code" tabindex="-1">Get the Code <a class="header-anchor" href="#get-the-code">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>You can <a href="https://github.com/plainblack/ving">visit the GitHub repository</a> to get the source code and start using it.</p>
+</div>
+    </div>
+    
+</body>
+
+</html>

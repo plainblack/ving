@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>rest.md</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
+        <style type="text/css">
+        html {
+            font-size: 1rem;
+            height: 100%;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-white);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        li a {
+            text-decoration: none;
+        }
+       ol,ul {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid">
+        <div class="col-3 lg:col-2 p-3 surface-300">
+            <div class="sticky top-0 left-0">
+                <div class="text-4xl">Ving Docs</div>
+                <p>Basics</p>
+<ul>
+<li><a href="about.html">About</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="error-codes.html">Error Codes</a></li>
+<li><a href="change-log.html">Change Log</a></li>
+</ul>
+<p>Subsystems</p>
+<ul>
+<li><a href="cache.html">Cache</a></li>
+<li><a href="cli.html">CLI</a></li>
+<li><a href="drizzle.html">Database</a></li>
+<li><a href="email.html">Email</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
+<li><a href="rest.html">Rest</a></li>
+<li><a href="ui.html">UI</a></li>
+</ul>
+<p>Rest APIs</p>
+<ul>
+<li><a href="apikey.html">API Key</a></li>
+<li><a href="session.html">Session</a></li>
+<li><a href="test.html">Test</a></li>
+<li><a href="user.html">User</a></li>
+</ul>
+
+            </div>
+        </div>
+            <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
+<nav class="table-of-contents"><ol><li><a href="#rest-api">Rest API </a><ol><li><a href="#generation">Generation </a></li><li><a href="#conventions">Conventions </a><ol><li><a href="#ellipsis">Ellipsis </a></li><li><a href="#id%E2%80%99s">ID’s </a></li><li><a href="#prefix">Prefix </a></li></ol></li><li><a href="#requests-and-responses">Requests and Responses </a><ol><li><a href="#create-a-record">Create a record </a></li><li><a href="#read-a-record">Read a record </a></li><li><a href="#update-a-record">Update a record </a></li><li><a href="#delete-a-record">Delete a record </a></li><li><a href="#get-a-list-of-records">Get a list of records </a></li><li><a href="#authenticated-requests">Authenticated Requests </a></li></ol></li><li><a href="#consistency">Consistency </a><ol><li><a href="#records">Records </a><ol><li><a href="#props">props </a><ol><li><a href="#id">id </a></li><li><a href="#createdat">createdAt </a></li><li><a href="#updatedat">updatedAt </a></li></ol></li><li><a href="#links">links </a><ol><li><a href="#base">base </a></li><li><a href="#self">self </a></li></ol></li><li><a href="#meta">meta </a><ol><li><a href="#kind">kind </a></li></ol></li></ol></li><li><a href="#dates">Dates </a></li><li><a href="#response-format">Response Format </a><ol><li><a href="#success">Success </a></li><li><a href="#success-with-pagination">Success With Pagination </a><ol><li><a href="#pagination-query-params">Pagination Query Params </a></li></ol></li><li><a href="#exceptions">Exceptions </a></li><li><a href="#warnings">Warnings </a></li></ol></li><li><a href="#relationships">Relationships </a></li><li><a href="#related-records">Related Records </a></li><li><a href="#filters">Filters </a><ol><li><a href="#queryable">Queryable </a></li><li><a href="#qualifiers">Qualifiers </a></li><li><a href="#ranged">Ranged </a></li></ol></li><li><a href="#extra-includes">Extra Includes </a></li><li><a href="#options">Options </a></li></ol></li><li><a href="#client-examples">Client Examples </a><ol><li><a href="#usevingrecord-composable">useVingRecord Composable </a></li><li><a href="#usevingkind-composable">useVingKind Composable </a></li><li><a href="#curl">curl </a></li><li><a href="#vs-code-rest-client">VS Code Rest Client </a></li></ol></li><li><a href="#testing">Testing </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<h1 id="rest-api" tabindex="-1">Rest API <a class="header-anchor" href="#rest-api">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h1>
+<p>The restful web services that ving creates are not only used to drive the UI, but also are intended to be used by your fans, customers, and the general public to interact with your web site in an automated fashion. This is the core reason we generate REST endpoints rather than using something like tRPC.</p>
+<p>This document will tell you about the general premise of the Rest interface.</p>
+<h2 id="generation" tabindex="-1">Generation <a class="header-anchor" href="#generation">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>Your Rest endpoints will be generated from your <a href="ving-schema.html">Ving Schema</a> by using the <a href="cli.html">CLI</a>:</p>
+<pre><code class="language-bash">./ving.mjs record --rest Foo
+</code></pre>
+<p>These will be placed in the <code>server/api/foo</code> folder and can be modified by you after the fact.</p>
+<h2 id="conventions" tabindex="-1">Conventions <a class="header-anchor" href="#conventions">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>There are several conventions used in this documentation to keep things shorter. They are documented here.</p>
+<h3 id="ellipsis" tabindex="-1">Ellipsis <a class="header-anchor" href="#ellipsis">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>We often shorten pieces of return values with ellipsis (three dots: …) to show that there would be additional data there, but it is not directly relevent to the documentation at hand.</p>
+<h3 id="id%E2%80%99s" tabindex="-1">ID’s <a class="header-anchor" href="#id%E2%80%99s">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>ID’s are often represented as 3 x’s: <code>xxx</code>. If you see <code>xxx</code> anywhere that means that would be replaced by a legitimate ID and shouldn’t be interpreted literally. Also, ID’s are case-sensitive strings, so store them as such.</p>
+<h3 id="prefix" tabindex="-1">Prefix <a class="header-anchor" href="#prefix">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>When referencing any API herein we omit the domain for the site. So you should prefix it with whatever site you are trying to access like:</p>
+<pre><code>http://some.example.com/api/user/xxx
+</code></pre>
+<h2 id="requests-and-responses" tabindex="-1">Requests and Responses <a class="header-anchor" href="#requests-and-responses">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>To make a request to a Wing web service you need nothing more than a command line tool like <code>curl</code>, or better yet use the <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">VS Code Rest Client</a>. You can of course use any network aware programming language as well. Here’s an example request using the VS Code Rest Client:</p>
+<h3 id="create-a-record" tabindex="-1">Create a record <a class="header-anchor" href="#create-a-record">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<pre><code>POST http://ving.example.com/api/article
+Content-Type: application/json
+
+{ 
+    &quot;title&quot; : &quot;Ethics in Prisons&quot;, 
+    &quot;author&quot; : &quot;Andy Dufresne&quot; 
+}
+</code></pre>
+<p>Response:</p>
+<pre><code class="language-json">{
+   &quot;props&quot; : {
+     &quot;id&quot; : &quot;xxx&quot;,
+     &quot;author&quot; : &quot;Andy Dufresne&quot;,
+     &quot;title&quot; : &quot;Ethics in Prisons&quot;,
+     &quot;body&quot; : &quot;&quot;
+   }
+}
+</code></pre>
+<h3 id="read-a-record" tabindex="-1">Read a record <a class="header-anchor" href="#read-a-record">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<pre><code>GET http://wing.example.com/api/article/xxx
+</code></pre>
+<p>Response:</p>
+<pre><code class="language-json">{
+   &quot;props&quot; : {
+     &quot;id&quot; : &quot;xxx&quot;,
+     &quot;author&quot; : &quot;Andy Dufresne&quot;,
+     &quot;title&quot; : &quot;Ethics in Prisons&quot;,
+     &quot;body&quot; : &quot;&quot;
+   }
+}
+</code></pre>
+<h3 id="update-a-record" tabindex="-1">Update a record <a class="header-anchor" href="#update-a-record">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<pre><code>PUT http://ving.example.com/api/article/xxx
+Content-Type: application/json
+
+{
+    &quot;body&quot; : &quot;...&quot;
+}
+</code></pre>
+<p>Response:</p>
+<pre><code class="language-json"> {
+   &quot;props&quot; : {
+     &quot;id&quot; : &quot;xxx&quot;,
+     &quot;author&quot; : &quot;Andy Dufresne&quot;,
+     &quot;title&quot; : &quot;Ethics in Prisons&quot;,
+     &quot;body&quot; : &quot;...&quot;
+   }
+ }
+</code></pre>
+<h3 id="delete-a-record" tabindex="-1">Delete a record <a class="header-anchor" href="#delete-a-record">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<pre><code>DELETE http://ving.example.com/api/article/xxx?includeMeta=true
+</code></pre>
+<p>Response</p>
+<pre><code class="language-json">
+ {
+   &quot;props&quot; : { 
+     &quot;id&quot; : &quot;xxx&quot;,
+     &quot;author&quot; : &quot;Andy Dufresne&quot;,
+     &quot;title&quot; : &quot;Ethics in Prisons&quot;,
+     &quot;body&quot; : &quot;...&quot;
+   },
+   &quot;meta&quot; : {
+     &quot;deleted&quot; : true
+   }
+ }
+</code></pre>
+<h3 id="get-a-list-of-records" tabindex="-1">Get a list of records <a class="header-anchor" href="#get-a-list-of-records">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<pre><code>GET http://ving.example.com/api/article
+</code></pre>
+<p>Response:</p>
+<pre><code class="language-json">{
+    &quot;paging&quot;: {
+        &quot;page&quot;: 1,
+        &quot;nextPage&quot;: 2,
+        &quot;previousPage&quot;: 1,
+        &quot;itemsPerPage&quot;: 10,
+        &quot;totalItems&quot;: 43,
+        &quot;totalPages&quot;: 5
+    },
+    &quot;items&quot; : [
+        {
+            &quot;props&quot; : {
+                &quot;id&quot; : &quot;xxx&quot;,
+                &quot;author&quot; : &quot;Andy Dufresne&quot;,
+                &quot;title&quot; : &quot;Ethics in Prisons&quot;,
+                &quot;body&quot; : &quot;...&quot;
+            }
+        },
+        ...
+    ]
+}
+</code></pre>
+<h3 id="authenticated-requests" tabindex="-1">Authenticated Requests <a class="header-anchor" href="#authenticated-requests">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>With each request you can <code>vingSessionId</code> cookie header if you want to get an
+authenticated result. If you choose not to pass the <code>vingSessionId</code>, then
+the result you receive will be the public result set. If you do pass the
+<code>vingSessionId</code> then you’ll get the private result set (provided your session
+has the privileges to receive the private result set). For example, if you
+request information about your user account without specifying a <code>vingSessionId</code>
+then all you’d get back is an ID and some other basic information, like this:</p>
+<pre><code>GET http://wing.example.com/api/user/xxx?includeMeta=true
+</code></pre>
+<p>Response:</p>
+<pre><code class="language-json">{
+   &quot;props&quot; : {
+     &quot;id&quot; : &quot;xxx&quot;,
+     &quot;createdAt&quot; : &quot;2012-04-23T18:25:43.511Z&quot;,
+     &quot;createdAt&quot; : &quot;2023-04-25T08:13:10.001Z&quot;,
+     ...
+   },
+   &quot;meta&quot; : {
+     &quot;displayName&quot; : &quot;Andy Dufresne&quot;,
+     ...
+   },
+}
+</code></pre>
+<p>But if you request your account information with your <code>vingSessionId</code>, then you’d
+get a result set with everything we know about you:</p>
+<pre><code>GET http://wing.example.com/api/user/xxx?includeMeta=true
+Cookie: vingSessionId=&quot;yyy&quot;
+</code></pre>
+<p>Response:</p>
+<pre><code class="language-json">{
+   &quot;props&quot; : {
+     &quot;id&quot; : &quot;xxx&quot;,
+     &quot;createdAt&quot; : &quot;2012-04-23T18:25:43.511Z&quot;,
+     &quot;createdAt&quot; : &quot;2023-04-25T08:13:10.001Z&quot;,
+     &quot;realName&quot; : &quot;Andy Dufresne&quot;,
+     &quot;username&quot; : &quot;andy&quot;,
+     &quot;email&quot; : &quot;andy@shawshank.jail&quot;,
+     &quot;useAsDisplayName&quot; : &quot;realName&quot;,
+     ...
+   },
+   &quot;meta&quot; : {
+     &quot;displayName&quot; : &quot;Andy Dufresne&quot;,
+     ...
+   },
+}
+</code></pre>
+<p>However, if I requested information about your account, and specified my own
+<code>vingSessionId</code>, then I would only get the public data. Because I don’t have
+the privileges necessary to access your private information.</p>
+<p>See also <a href="User.html">Session</a> and <a href="User.html">User</a>.</p>
+<h2 id="consistency" tabindex="-1">Consistency <a class="header-anchor" href="#consistency">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>A big part of the ving specification is that you can reliably expect it to do the same thing in all circumstances. Here are a few key points of consistency.</p>
+<h3 id="records" tabindex="-1">Records <a class="header-anchor" href="#records">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>All record objects contain the following minimum shared set of attributes.</p>
+<h4 id="props" tabindex="-1">props <a class="header-anchor" href="#props">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>An object of database stored properties.</p>
+<h5 id="id" tabindex="-1">id <a class="header-anchor" href="#id">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h5>
+<p>A unique id that will never change. It is a 36 character GUID (global unique id).</p>
+<h5 id="createdat" tabindex="-1">createdAt <a class="header-anchor" href="#createdat">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h5>
+<p>The date this record came into existence.</p>
+<h5 id="updatedat" tabindex="-1">updatedAt <a class="header-anchor" href="#updatedat">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h5>
+<p>The last time this record was written to the database.</p>
+<h4 id="links" tabindex="-1">links <a class="header-anchor" href="#links">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>An object of links to API endpoints related to this record.</p>
+<h5 id="base" tabindex="-1">base <a class="header-anchor" href="#base">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h5>
+<p>A link to create records of this type or list all records in the system of this type.</p>
+<h5 id="self" tabindex="-1">self <a class="header-anchor" href="#self">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h5>
+<p>A link to get/delete this sepecfic record.</p>
+<h4 id="meta" tabindex="-1">meta <a class="header-anchor" href="#meta">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>An object of generated properties.</p>
+<h5 id="kind" tabindex="-1">kind <a class="header-anchor" href="#kind">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h5>
+<p>A string representing the type of object this is in case you need to identify it in the future.</p>
+<h3 id="dates" tabindex="-1">Dates <a class="header-anchor" href="#dates">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Dates are always returned in the format of C<a href="YYYY-MM-DDTHH:MM:SS.mmmZ">YYYY-MM-DDTHH:MM:SS.mmmZ</a> (the Javascript/JSON stringified date format) and are represented as the UTC time zone.</p>
+<h3 id="response-format" tabindex="-1">Response Format <a class="header-anchor" href="#response-format">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Ving will always return a JSON response in the form of an object.</p>
+<pre><code class="language-json">{
+   &quot;props&quot; : { &quot;success&quot; : 1 }
+}
+</code></pre>
+<h4 id="success" tabindex="-1">Success <a class="header-anchor" href="#success">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Results will always start with a top level object, and if its a <a href="ving-record.html">Ving Record</a> it will at minimum have a <code>prop</code> object nested within it.</p>
+<pre><code class="language-json">{
+    &quot;props&quot; : {
+      &quot;id&quot; : &quot;xxx&quot;,
+      ...
+    }
+}
+</code></pre>
+<h4 id="success-with-pagination" tabindex="-1">Success With Pagination <a class="header-anchor" href="#success-with-pagination">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Paginated lists are always handled exactly the same way, and always have the same minimum set of parameters for manipulation.</p>
+<pre><code>GET /api/article?itemsPerPage=25&amp;page=3
+</code></pre>
+<p>You can tell how many items per page to return and which page number to return. That will give you a result set like this:</p>
+<pre><code class="language-json">{
+    &quot;paging&quot;: {
+        &quot;page&quot;: 3,
+        &quot;nextPage&quot;: 4,
+        &quot;previousPage&quot;: 2,
+        &quot;itemsPerPage&quot;: 25,
+        &quot;totalItems&quot;: 937,
+        &quot;totalPages&quot;: 38
+    },
+    &quot;items&quot; : [
+        {
+            &quot;props&quot; : {
+                &quot;id&quot; : &quot;xxx&quot;,
+                &quot;author&quot; : &quot;Andy Dufresne&quot;,
+                &quot;title&quot; : &quot;Ethics in Prisons&quot;,
+                &quot;body&quot; : &quot;...&quot;
+            }
+        },
+        ...
+    ]
+}
+</code></pre>
+<h5 id="pagination-query-params" tabindex="-1">Pagination Query Params <a class="header-anchor" href="#pagination-query-params">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h5>
+<ul>
+<li><strong>itemsPerPage</strong> - An integer between <code>1</code> and <code>100</code> that defaults to <code>10</code> and represents how many items should be included per page.</li>
+<li><strong>page</strong> - An integer between <code>1</code> and <code>1000000</code> that defaults to <code>1</code> and represents the current page number of the result set.</li>
+<li><strong>sortBy</strong> - A string that represents a valid <code>prop</code> of the record and defaults to <code>createdAt</code>.</li>
+<li><strong>sortOrder</strong> - A string that defaults to <code>asc</code> but could also be <code>desc</code> if you want the order of the records to be sorted in descending order.</li>
+<li><strong>maxItems</strong> - An integer between <code>1</code> and <code>100000000000</code> that defaults to <code>100000000000</code> that limits the total number of items that can ever be paginated through.</li>
+</ul>
+<h4 id="exceptions" tabindex="-1">Exceptions <a class="header-anchor" href="#exceptions">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Exceptions will always start with a top level element called <code>error</code> and then will have an object of 3 properties: <code>code</code>, <code>message</code>, <code>data</code>.</p>
+<pre><code class="language-json"> {
+   &quot;error&quot; : {
+     &quot;code&quot; : 500,
+     &quot;message&quot; : &quot;An unknown error has occurred.&quot;,
+     &quot;data&quot; : null
+   }
+ }
+</code></pre>
+<p>The <code>code</code> is always an integer and conforms to the standard list of <a href="error-codes.html">Error Codes</a>. These numbers are used consistently so that app developers can trap and handle specific types of exceptions more gracefully.</p>
+<p>The <code>message</code> is a human readable message that you can display to a user.</p>
+<p>The <code>data</code> element many times will be null, but it can have important debug information. For example, if a required field was left empty, the field name could be put in the data element so that the app could highlight the field for the user.</p>
+<h4 id="warnings" tabindex="-1">Warnings <a class="header-anchor" href="#warnings">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>In addition to exceptions there can be less severe issues that come up. These are handled via warnings. Warnings are just like exceptions, but they don’t cause execution to halt. As such there can be any number of warnings. And warnings are returned with the result.</p>
+<pre><code class="language-json"> {
+    &quot;warnings&quot; : [
+        {
+            &quot;code&quot; : 445,
+            &quot;message&quot; : &quot;Logo image is too big.&quot;,
+            &quot;data&quot; : &quot;logo&quot;
+        }
+    ],
+    ...
+ }
+</code></pre>
+<h3 id="relationships" tabindex="-1">Relationships <a class="header-anchor" href="#relationships">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>All objects can have relationships to each other. When you fetch an object, you can pass <code>includeLinks=true</code> as a parameter if you want to get the relationship data as well.</p>
+<pre><code>GET /api/article/xxx?includeLinks=true
+</code></pre>
+<p>Response:</p>
+<pre><code class="language-json"> {
+   &quot;props&quot; : {
+     &quot;id&quot; : &quot;xxx&quot;,
+     ...
+    },
+    &quot;links&quot; : {
+        &quot;base&quot; : &quot;/api/user&quot;,
+        &quot;self&quot; : &quot;/api/user/xxx&quot;,
+        &quot;articles&quot; : &quot;/user/xxx/articles&quot;
+     }
+   }
+ }
+</code></pre>
+<p>You can then in-turn call the URI provided by each relationship to fetch the items in that list.</p>
+<h3 id="related-records" tabindex="-1">Related Records <a class="header-anchor" href="#related-records">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Likewise you can request related objects (those with relationship type of parent) be included directly in the result by adding the name of the related record relationship like `includeRelated=user as a parameter:</p>
+<pre><code>GET /article/xxx?includeRelated=user&amp;includeMeta=true
+</code></pre>
+<p>Response:</p>
+<pre><code class="language-json"> {
+   &quot;props&quot; : {
+     &quot;id&quot; : &quot;xxx&quot;,
+     &quot;author&quot; : &quot;Andy Dufresne&quot;,
+     &quot;title&quot; : &quot;Ethics in Prisons&quot;,
+     &quot;body&quot; : &quot;...&quot;,
+     &quot;userId&quot; : &quot;xxx&quot;,
+   },
+   &quot;related&quot; : {
+     &quot;user&quot; : {
+        &quot;props&quot; : {
+            &quot;id&quot; : &quot;xxx&quot;,
+            ...
+        },
+        &quot;meta&quot; : {
+            &quot;displayName&quot; : &quot;Andy Dufresne&quot;,
+            ...
+        }
+     }
+   }
+ }
+</code></pre>
+<p>All related objects are also inherently relationships of the object. Therefore the documentation will leave them out of the list of relationships in each object, but will include them in the list of related objects.</p>
+<blockquote>
+<p><strong>NOTE:</strong> The only related objects that can be returned in this manner are 1:1 relationships. If the relationship is 1:N as in the case of related articles above, then those cannot not be included in the result, and must be fetched separately.</p>
+</blockquote>
+<h3 id="filters" tabindex="-1">Filters <a class="header-anchor" href="#filters">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Filters allow you to modify the result set when querying a list of records.</p>
+<h4 id="queryable" tabindex="-1">Queryable <a class="header-anchor" href="#queryable">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Some relationships will allow you to use a <code>search</code> parameter on the URL that will allow you to search the result set. The documentation will tell you when this is the case and which fields will be searched to provide you with a result set.</p>
+<pre><code>GET /api/article/xxx/related-articles?search=prison
+</code></pre>
+<h4 id="qualifiers" tabindex="-1">Qualifiers <a class="header-anchor" href="#qualifiers">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>In search engines these are sometimes called facets. They are criteria that allow you to filter the result set by specific values of a specfic field. The documentation will tell you when a relationship has a qualifier. To use it you’d add a parameter of the name of the qualifier to the URL along with the value you want to search for.</p>
+<pre><code>GET /api/article/xxx/related-articles?userId=xxx
+</code></pre>
+<p>That will search for all related articles with a <code>userId</code> of <code>xxx</code>.</p>
+<p>You can also modify the qualifier by prepending operators such as <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, and <code>&lt;&gt;</code> (or <code>!=</code>) onto the value. For example:</p>
+<pre><code> GET /api/article/xxx/related-articles?wordCount=&gt;=100
+</code></pre>
+<p>Get all related articles with a word count greater than or equal to <code>100</code>.</p>
+<p>You can also request that a qualifier be limited to a <code>null</code> value.</p>
+<pre><code>GET /api/article/xxx/related-articles?userId=null
+</code></pre>
+<p>If you did this with an empty <code>''</code> or <code>undefined</code> value rather than specifically <code>null</code> then this qualifier will be skipped.</p>
+<h4 id="ranged" tabindex="-1">Ranged <a class="header-anchor" href="#ranged">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>You can also use ranged filters to limit data that must fall between 2 values by prepending <code>_start_</code> or <code>_end_</code> to the name of the prop you wish to filter on range.</p>
+<pre><code>GET /api/article/xxx/related-articles \
+  ?_start_createdAt=2012-04-23T18:25:43.511Z \
+  &amp;_end_createdAt=2023-04-25T08:13:10.001Z
+</code></pre>
+<h3 id="extra-includes" tabindex="-1">Extra Includes <a class="header-anchor" href="#extra-includes">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Some records will allow for extra includes, and will show this in the documenation. Extra includes are extra bits of data you can pull back when you request the record, that are unique to that record.</p>
+<pre><code>GET /api/article/xxx/related-articles?includeExtra=foo
+</code></pre>
+<p>The result will then have <code>foo</code> in an <code>extras</code> block like:</p>
+<pre><code class="language-json"> {
+    &quot;props&quot; : {
+        &quot;id&quot; : &quot;xxx&quot;,
+        ...
+    }
+    &quot;extras&quot; : {
+        &quot;foo&quot; : {...}
+    }
+ }
+</code></pre>
+<h3 id="options" tabindex="-1">Options <a class="header-anchor" href="#options">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Sometimes a record will have fields that require you to choose an option from an enumerated list. There are two ways to see what those options are:</p>
+<p>This way would be most often used when you need the list of options in order to create a record.</p>
+<pre><code>GET /api/article/options
+</code></pre>
+<p>Response:</p>
+<pre><code class="language-json">{
+    &quot;bookType&quot; : [
+        {&quot;label&quot; : &quot;Hardcover&quot;, &quot;value&quot; : &quot;hard&quot; },
+        {&quot;label&quot; : &quot;Paperback&quot;, &quot;value&quot; : &quot;soft&quot; }
+    ],
+    ...
+}
+</code></pre>
+<p>This way would be most often used when you need the list of options to update an object, because you can get the properties of the object and the options in one call.</p>
+<pre><code>GET http://wing.example.com/article/xxx?includeOptions=true
+</code></pre>
+<pre><code class="language-json"> {
+   &quot;props&quot; : {
+     &quot;id&quot; : &quot;xxx&quot;,
+     ...
+   },
+   &quot;options&quot; : {
+        &quot;bookType&quot; : [
+            {&quot;label&quot; : &quot;Hardcover&quot;, &quot;value&quot; : &quot;hard&quot; },
+            {&quot;label&quot; : &quot;Paperback&quot;, &quot;value&quot; : &quot;soft&quot; }
+        ],
+        ...
+    }
+ }
+</code></pre>
+<h2 id="client-examples" tabindex="-1">Client Examples <a class="header-anchor" href="#client-examples">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<h3 id="usevingrecord-composable" tabindex="-1">useVingRecord Composable <a class="header-anchor" href="#usevingrecord-composable">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>There is a composable built into ving called <a href="ui.html#usevingrecord()">useVingRecord</a> that will allow you to access the Rest API easily for individual records.</p>
+<h3 id="usevingkind-composable" tabindex="-1">useVingKind Composable <a class="header-anchor" href="#usevingkind-composable">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>There is a composable built into ving called <a href="ui.html#usevingkind()">useVingKind</a> that will allow you to access the Rest API easily for lists of records. It uses the useVingRecord composable underneath to give you access to the individual records within the list.</p>
+<h3 id="curl" tabindex="-1">curl <a class="header-anchor" href="#curl">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<pre><code>curl -X POST -d '{&quot;title&quot;:&quot;Ethics in Prisons&quot;,&quot;author&quot;:&quot;Andy Dufresne&quot;}' \
+  -H Content-Type: application/json \
+  -H Cookie: vingSessionId=yyy http://ving.example.com/api/article
+</code></pre>
+<h3 id="vs-code-rest-client" tabindex="-1">VS Code Rest Client <a class="header-anchor" href="#vs-code-rest-client">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p><a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">VS Code Rest Client</a></p>
+<pre><code>POST http://ving.example.com/api/article
+Content-Type: application/json
+Cookie: vingSessionId=yyy
+
+{ 
+    &quot;title&quot; : &quot;Ethics in Prisons&quot;, 
+    &quot;author&quot; : &quot;Andy Dufresne&quot; 
+}
+</code></pre>
+<h2 id="testing" tabindex="-1">Testing <a class="header-anchor" href="#testing">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>If you don’t want to use an available client, but instead write your own, there is a <a href="Test.html">Test API</a> that can help make sure your client is working before you start using the real web service.</p>
+</div>
+    </div>
+    
+</body>
+
+</html>

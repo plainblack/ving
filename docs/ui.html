@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ui.md</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
+        <style type="text/css">
+        html {
+            font-size: 1rem;
+            height: 100%;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-white);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        li a {
+            text-decoration: none;
+        }
+       ol,ul {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid">
+        <div class="col-3 lg:col-2 p-3 surface-300">
+            <div class="sticky top-0 left-0">
+                <div class="text-4xl">Ving Docs</div>
+                <p>Basics</p>
+<ul>
+<li><a href="about.html">About</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="error-codes.html">Error Codes</a></li>
+<li><a href="change-log.html">Change Log</a></li>
+</ul>
+<p>Subsystems</p>
+<ul>
+<li><a href="cache.html">Cache</a></li>
+<li><a href="cli.html">CLI</a></li>
+<li><a href="drizzle.html">Database</a></li>
+<li><a href="email.html">Email</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
+<li><a href="rest.html">Rest</a></li>
+<li><a href="ui.html">UI</a></li>
+</ul>
+<p>Rest APIs</p>
+<ul>
+<li><a href="apikey.html">API Key</a></li>
+<li><a href="session.html">Session</a></li>
+<li><a href="test.html">Test</a></li>
+<li><a href="user.html">User</a></li>
+</ul>
+
+            </div>
+        </div>
+            <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
+<nav class="table-of-contents"><ol><li><a href="#web-ui">Web UI </a><ol><li><a href="#pages">Pages </a></li><li><a href="#components">Components </a><ol><li><a href="#adminnav">AdminNav </a></li><li><a href="#crumbtrail">Crumbtrail </a></li><li><a href="#fieldsetitem">FieldsetItem </a></li><li><a href="#fieldsetnav">FieldsetNav </a></li><li><a href="#form">Form </a></li><li><a href="#forminput">FormInput </a></li><li><a href="#formlabel">FormLabel </a></li><li><a href="#formselect">FormSelect </a></li><li><a href="#pager">Pager </a></li></ol></li><li><a href="#composables">Composables </a><ol><li><a href="#usedatetime()">useDateTime() </a></li><li><a href="#userest()">useRest() </a></li><li><a href="#usevingkind()">useVingKind() </a></li><li><a href="#usevingrecord()">useVingRecord() </a></li></ol></li><li><a href="#stores">Stores </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<h1 id="web-ui" tabindex="-1">Web UI <a class="header-anchor" href="#web-ui">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h1>
+<p>The web user interface of ving allows you to build out complex applications using Vue 3. It starts with <a href="ui.html">automatically generating pages</a> for your ving records. We use a component library suite called <a href="https://primevue.org/">PrimeVue</a> that provides all kinds of amazing functionality and a styling library called <a href="https://www.primefaces.org/primeflex/">PrimeFlex</a> that gives you rich power over CSS. But we’ve also got a bunch of custom <a href="ui.html">components</a>, <a href="ui.html">composables</a>, and <a href="ui.html">stores</a> to help you build your app.</p>
+<h2 id="pages" tabindex="-1">Pages <a class="header-anchor" href="#pages">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>ving is ultimately built on <a href="https://nuxt.com/">Nuxt</a>, so ving pages can do anything <a href="https://nuxt.com/docs/guide/directory-structure/pages">Nuxt Pages</a> can do.</p>
+<p>You can automatically generate a set of pages for interacting with <a href="ving-record.html">ving records</a> through the <a href="/rest">Rest API</a> by using the <a href="cli.html">CLI</a> like this:</p>
+<pre><code>./ving.ts record --web Foo
+</code></pre>
+<p>That will give you a place to start, and then you can use the <a href="ui.html#composables">composables</a>, <a href="ui.html#components">components</a>, and <a href="ui.html#stores">stores</a> we provide to build out a complex app.</p>
+<h2 id="components" tabindex="-1">Components <a class="header-anchor" href="#components">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<h3 id="adminnav" tabindex="-1">AdminNav <a class="header-anchor" href="#adminnav">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Displays the site-wide administrative navigation.</p>
+<pre><code class="language-html">&lt;AdminNav :crumbs=&quot;breadcrumbs&quot; /&gt;
+</code></pre>
+<p>See <code>Crumbtrail</code> for more info about the <code>crumbs</code> prop.</p>
+<h3 id="crumbtrail" tabindex="-1">Crumbtrail <a class="header-anchor" href="#crumbtrail">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Displays a crumbtrail navigation.</p>
+<pre><code class="language-html">&lt;Crumbtrail :crumbs=&quot;breadcrumbs&quot; /&gt;
+</code></pre>
+<p>Props:</p>
+<ul>
+<li><strong>crumbs</strong> - An array of objects containing:
+<ul>
+<li><strong>label</strong> - A string for the page name.</li>
+<li><strong>to</strong> - A string of the page to navigate to.</li>
+</ul>
+</li>
+</ul>
+<h3 id="fieldsetitem" tabindex="-1">FieldsetItem <a class="header-anchor" href="#fieldsetitem">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>A fieldset element within a <code>FieldsetNav</code>.</p>
+<pre><code class="language-html">&lt;FieldsetItem name=&quot;Foo&quot;&gt;
+Forms go here...
+&lt;/FieldsetItem&gt;
+</code></pre>
+<p>Props:</p>
+<ul>
+<li><strong>name</strong> - The name of the field set.</li>
+</ul>
+<h3 id="fieldsetnav" tabindex="-1">FieldsetNav <a class="header-anchor" href="#fieldsetnav">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>An inline page nav for a large scrollable form to be divided up into sections using <code>FieldsetItem</code>.</p>
+<pre><code class="language-html">&lt;FieldsetNav&gt;
+    &lt;FieldsetItem name=&quot;Content&quot;&gt;...&lt;/FieldsetItem&gt;
+    &lt;FieldsetItem name=&quot;Taxonomy&quot;&gt;...&lt;/FieldsetItem&gt;
+    &lt;FieldsetItem name=&quot;Privileges&quot;&gt;...&lt;/FieldsetItem&gt;
+&lt;/FieldsetNav&gt;
+</code></pre>
+<h3 id="form" tabindex="-1">Form <a class="header-anchor" href="#form">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>A form element to allow coordination of validation of inputs.</p>
+<pre><code class="language-html">&lt;Form :send=&quot;someFunc()&quot;&gt;...&lt;/Form&gt;
+</code></pre>
+<p>Props:</p>
+<ul>
+<li><strong>send</strong> - A function that should be executed once the form is sumbmitted and fields have been validated.</li>
+</ul>
+<h3 id="forminput" tabindex="-1">FormInput <a class="header-anchor" href="#forminput">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Generate the appropritate form field based upon input types.</p>
+<pre><code class="language-html">&lt;FormInput name=&quot;username&quot; v-model=&quot;user.username&quot; /&gt;
+</code></pre>
+<p>Props:</p>
+<ul>
+<li><strong>label</strong> - A form label for proper ARIA compliance.</li>
+<li><strong>type</strong> - Defaults to <code>text</code> but can also be <code>textarea</code>, <code>password</code>, <code>number</code>, or <code>email</code>.</li>
+<li><strong>name</strong> - The field name for the form input. Required.</li>
+<li><strong>id</strong> - Defaults to whatever the <code>name</code> field is set to, but can be any string.</li>
+<li><strong>append</strong> - Appends an input group to the end of the field. Example: <code>.00</code></li>
+<li><strong>prepend</strong> - Prepends an input group to the front of the field. Example <code>$</code></li>
+<li><strong>autocomplete</strong> - Sets the browser’s autocomplete settings for password fillers and whatnot. Defaults to <code>off</code>.</li>
+<li><strong>v-model</strong> - What Vue reactive variable should this be connected to? Required.</li>
+<li><strong>placeholder</strong> - Text to be displayed if the input is empty.</li>
+<li><strong>required</strong> - A boolean that defaults to <code>false</code>, but if true will not allow the form to be sent if empty.</li>
+<li><strong>step</strong> - An amount to increment a <code>number</code> type field. Defaults to <code>1</code>.</li>
+<li><strong>mustMatch</strong> - An object containing:
+<ul>
+<li><strong>field</strong> - A label for a field or some other attribute such as <code>Password</code>.</li>
+<li><strong>value</strong> - The value that this field must match.</li>
+</ul>
+</li>
+<li><strong>class</strong> - A CSS class that should be applied to the field.</li>
+</ul>
+<h3 id="formlabel" tabindex="-1">FormLabel <a class="header-anchor" href="#formlabel">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>An ARIA compliant label for a form field.</p>
+<pre><code class="language-html">&lt;FormLabel id=&quot;foo&quot; label=&quot;Foo&quot; /&gt;
+</code></pre>
+<p>Props:</p>
+<ul>
+<li><strong>label</strong> - The text to display to the user.</li>
+<li><strong>id</strong> - The unique id of the form field this label refers to.</li>
+</ul>
+<h3 id="formselect" tabindex="-1">FormSelect <a class="header-anchor" href="#formselect">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>A form select list.</p>
+<pre><code class="language-html">&lt;FormSelect&gt;
+</code></pre>
+<p>Props:</p>
+<ul>
+<li><strong>label</strong> - The text label to display to the user.</li>
+<li><strong>id</strong> - The unique id of the form field. Defaults to whatever is in the <code>name</code> field.</li>
+<li><strong>v-model</strong> - What Vue reactive variable should this be connected to? Required.</li>
+<li><strong>name</strong> - The field name for the form input. Required.</li>
+<li><strong>options</strong> - An array of objects:
+<ul>
+<li><strong>label</strong> - The human readable label for the value.</li>
+<li><strong>value</strong> - The value to select. Can be string, number, or boolean.</li>
+</ul>
+</li>
+</ul>
+<h3 id="pager" tabindex="-1">Pager <a class="header-anchor" href="#pager">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Displays a pagination bar for a <a href="ui.html#usevingkind()">useVingKind() result set</a>.</p>
+<pre><code class="language-html">&lt;Pager :kind=&quot;users&quot; /&gt;
+</code></pre>
+<p>Props:</p>
+<ul>
+<li><strong>kind</strong> - A <a href="ui.html#usevingkind()">useVingKind() object</a>.</li>
+</ul>
+<h2 id="composables" tabindex="-1">Composables <a class="header-anchor" href="#composables">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<h3 id="usedatetime()" tabindex="-1">useDateTime() <a class="header-anchor" href="#usedatetime()">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Date formatting tools based upon <a href="https://date-fns.org/">date-fns</a>.</p>
+<pre><code class="language-ts">const dt = useDateTime()
+const formatted = dt.formateDateTime(new Date());
+</code></pre>
+<h3 id="userest()" tabindex="-1">useRest() <a class="header-anchor" href="#userest()">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>A wrapper around the Nuxt composable <code>$fetch()</code> that allows for streamlined fetches, but integrate’s with ving’s subsystems.</p>
+<pre><code class="language-ts">const response = useFetch('/api/user');
+</code></pre>
+<h3 id="usevingkind()" tabindex="-1">useVingKind() <a class="header-anchor" href="#usevingkind()">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>A client for interacting with <a href="ving-record.html#kind-api">server-side ving kinds</a> through the <a href="rest.html">Rest API</a>.</p>
+<pre><code class="language-ts">const users = useVingKind({
+    listApi : '/api/user',
+    createApi : '/api/user',
+    query: { includeMeta: true, sortBy: 'username', sortOrder: 'asc' },
+    newDefaults: { username: '', realName: '', email: '' },
+});
+await users.search();
+onBeforeRouteLeave(() =&gt; users.dispose());
+</code></pre>
+<h3 id="usevingrecord()" tabindex="-1">useVingRecord() <a class="header-anchor" href="#usevingrecord()">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>A client for interacting with <a href="ving-record.html#record-api">server-side ving records</a> through the <a href="rest.html">Rest API</a>.</p>
+<pre><code class="language-ts">const id = route.params.id.toString();
+const user = useVingRecord&lt;'User'&gt;({
+    id,
+    fetchApi: '/api/user/' + id,
+    createApi: '/api/user',
+    query: { includeMeta: true, includeOptions: true },
+    onUpdate() {
+        notify.success('Updated user.');
+    },
+    async onDelete() {
+        await navigateTo('/user/admin');
+    },
+});
+await user.fetch()
+onBeforeRouteLeave(() =&gt; user.dispose());
+</code></pre>
+<h2 id="stores" tabindex="-1">Stores <a class="header-anchor" href="#stores">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>TODO: write content</p>
+</div>
+    </div>
+    
+</body>
+
+</html>

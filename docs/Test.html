@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test.md</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
+        <style type="text/css">
+        html {
+            font-size: 1rem;
+            height: 100%;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-white);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        li a {
+            text-decoration: none;
+        }
+       ol,ul {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid">
+        <div class="col-3 lg:col-2 p-3 surface-300">
+            <div class="sticky top-0 left-0">
+                <div class="text-4xl">Ving Docs</div>
+                <p>Basics</p>
+<ul>
+<li><a href="about.html">About</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="error-codes.html">Error Codes</a></li>
+<li><a href="change-log.html">Change Log</a></li>
+</ul>
+<p>Subsystems</p>
+<ul>
+<li><a href="cache.html">Cache</a></li>
+<li><a href="cli.html">CLI</a></li>
+<li><a href="drizzle.html">Database</a></li>
+<li><a href="email.html">Email</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
+<li><a href="rest.html">Rest</a></li>
+<li><a href="ui.html">UI</a></li>
+</ul>
+<p>Rest APIs</p>
+<ul>
+<li><a href="apikey.html">API Key</a></li>
+<li><a href="session.html">Session</a></li>
+<li><a href="test.html">Test</a></li>
+<li><a href="user.html">User</a></li>
+</ul>
+
+            </div>
+        </div>
+            <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
+<nav class="table-of-contents"><ol><li><a href="#test">Test </a><ol><li><a href="#endpoints">Endpoints </a><ol><li><a href="#query-params">Query Params </a></li><li><a href="#body-params">Body Params </a></li><li><a href="#response-example">Response Example </a></li></ol></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<h1 id="test" tabindex="-1">Test <a class="header-anchor" href="#test">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h1>
+<p>Use this endpoint to test that you can post query params and body params to a ving service.</p>
+<h2 id="endpoints" tabindex="-1">Endpoints <a class="header-anchor" href="#endpoints">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<pre><code>GET /api/test
+</code></pre>
+<pre><code>POST /api/test
+</code></pre>
+<pre><code>PUT /api/test
+</code></pre>
+<pre><code>DELETE /api/test
+</code></pre>
+<h3 id="query-params" tabindex="-1">Query Params <a class="header-anchor" href="#query-params">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Any query params you post will be returned to you in the JSON response.</p>
+<h3 id="body-params" tabindex="-1">Body Params <a class="header-anchor" href="#body-params">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>On <code>POST</code> and <code>PUT</code> endpoints any body params will be returned to you in the JSON response.</p>
+<h3 id="response-example" tabindex="-1">Response Example <a class="header-anchor" href="#response-example">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<pre><code class="language-json">{
+  &quot;success&quot;: true,
+  &quot;serverTime&quot;: &quot;2023-05-09T00:19:35.151Z&quot;,
+  &quot;httpMethod&quot;: &quot;GET&quot;,
+  &quot;query&quot;: {
+    &quot;foo&quot;: &quot;bar&quot;
+  }
+}
+</code></pre>
+</div>
+    </div>
+    
+</body>
+
+</html>

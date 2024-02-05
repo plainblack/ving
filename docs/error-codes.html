@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>error-codes.md</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
+        <style type="text/css">
+        html {
+            font-size: 1rem;
+            height: 100%;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-white);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        li a {
+            text-decoration: none;
+        }
+       ol,ul {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid">
+        <div class="col-3 lg:col-2 p-3 surface-300">
+            <div class="sticky top-0 left-0">
+                <div class="text-4xl">Ving Docs</div>
+                <p>Basics</p>
+<ul>
+<li><a href="about.html">About</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="error-codes.html">Error Codes</a></li>
+<li><a href="change-log.html">Change Log</a></li>
+</ul>
+<p>Subsystems</p>
+<ul>
+<li><a href="cache.html">Cache</a></li>
+<li><a href="cli.html">CLI</a></li>
+<li><a href="drizzle.html">Database</a></li>
+<li><a href="email.html">Email</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
+<li><a href="rest.html">Rest</a></li>
+<li><a href="ui.html">UI</a></li>
+</ul>
+<p>Rest APIs</p>
+<ul>
+<li><a href="apikey.html">API Key</a></li>
+<li><a href="session.html">Session</a></li>
+<li><a href="test.html">Test</a></li>
+<li><a href="user.html">User</a></li>
+</ul>
+
+            </div>
+        </div>
+            <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
+<nav class="table-of-contents"><ol><li><a href="#error-codes">Error Codes </a><ol><li><a href="#400-bad-request">400 Bad Request </a></li><li><a href="#401-unauthorized">401 Unauthorized </a></li><li><a href="#402-payment-required">402 Payment Required </a></li><li><a href="#403-forbidden">403 Forbidden </a></li><li><a href="#404-not-found">404 Not Found </a></li><li><a href="#408-request-timeout">408 Request Timeout </a></li><li><a href="#409-conflict">409 Conflict </a></li><li><a href="#413-payload-too-large">413 Payload Too Large </a></li><li><a href="#415-unsupported-media-type">415 Unsupported Media Type </a></li><li><a href="#429-too-many-requests">429 Too Many Requests </a></li><li><a href="#441-missing-required-parameter">441 Missing Required Parameter </a></li><li><a href="#442-out-of-range">442 Out Of Range </a></li><li><a href="#454-password-incorrect">454 Password Incorrect </a></li><li><a href="#499-offline-processing">499 Offline Processing </a></li><li><a href="#500-undefined-error">500 Undefined Error </a></li><li><a href="#501-not-implemented">501 Not Implemented </a></li><li><a href="#502-bad-gateway">502 Bad Gateway </a></li><li><a href="#504-could-not-connect">504 Could Not Connect </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<h1 id="error-codes" tabindex="-1">Error Codes <a class="header-anchor" href="#error-codes">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h1>
+<p>This document describes the error codes thrown by Ving’s REST API. They map directly onto the <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">W3C’s standard HTTP status codes</a>. When functioning properly the web service will always return a 200 HTTP status code.</p>
+<p>NOTE: While the error codes documented here are returned as HTTP status codes, they are also returned in the JSON response of the body.</p>
+<h3 id="400-bad-request" tabindex="-1">400 Bad Request <a class="header-anchor" href="#400-bad-request">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>The server cannot process the request because the request was malformed
+or a prerequisite of performing the requested action has not been met.</p>
+<h3 id="401-unauthorized" tabindex="-1">401 Unauthorized <a class="header-anchor" href="#401-unauthorized">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>The session you are using has expired. Request a new one before continuing.</p>
+<h3 id="402-payment-required" tabindex="-1">402 Payment Required <a class="header-anchor" href="#402-payment-required">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>For one reason or another the payment requested was declined. Usually due to typos, but could also do with credit card holds, insufficient funds, etc.</p>
+<h3 id="403-forbidden" tabindex="-1">403 Forbidden <a class="header-anchor" href="#403-forbidden">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>You do not have the privileges necessary to complete that operation.</p>
+<h3 id="404-not-found" tabindex="-1">404 Not Found <a class="header-anchor" href="#404-not-found">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>The object you requested doesn’t exist. This refers to an object specified in the query string, not in the path.</p>
+<h3 id="408-request-timeout" tabindex="-1">408 Request Timeout <a class="header-anchor" href="#408-request-timeout">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Whatever you requested took too long and the server gave up.</p>
+<h3 id="409-conflict" tabindex="-1">409 Conflict <a class="header-anchor" href="#409-conflict">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>The name or resource requested is already in use by someone else, or has already moved on to a new stage of it’s life so the function you are trying to perform on it is no longer valid.</p>
+<h3 id="413-payload-too-large" tabindex="-1">413 Payload Too Large <a class="header-anchor" href="#413-payload-too-large">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>You tried to post something (perhaps upload a file) that is too large.</p>
+<h3 id="415-unsupported-media-type" tabindex="-1">415 Unsupported Media Type <a class="header-anchor" href="#415-unsupported-media-type">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>You tried to assign a file to a field that doesn’t match the field’s criteria or you tried to upload a file that the system doesn’t allow.
+For example you tried to assign a PDF to a field looking for images.</p>
+<h3 id="429-too-many-requests" tabindex="-1">429 Too Many Requests <a class="header-anchor" href="#429-too-many-requests">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>You have exceeded the maximum number of requests allowed per minute. This exception is telling you to slow down so you don’t denial of service the server with your requests.</p>
+<h3 id="441-missing-required-parameter" tabindex="-1">441 Missing Required Parameter <a class="header-anchor" href="#441-missing-required-parameter">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>You’re missing a required parameter.</p>
+<h3 id="442-out-of-range" tabindex="-1">442 Out Of Range <a class="header-anchor" href="#442-out-of-range">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>The value specified for a field was out of range. If it’s a numeric field make sure you’re above the minumum and below the maximum. If it’s an enumerated field make sure you’ve specfified an valid option.</p>
+<h3 id="454-password-incorrect" tabindex="-1">454 Password Incorrect <a class="header-anchor" href="#454-password-incorrect">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>The password you specified does not match our records.</p>
+<h3 id="499-offline-processing" tabindex="-1">499 Offline Processing <a class="header-anchor" href="#499-offline-processing">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>This request was going to take too long so it was handed off to be processed in the background.</p>
+<h3 id="500-undefined-error" tabindex="-1">500 Undefined Error <a class="header-anchor" href="#500-undefined-error">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>An unhandled exception has occurred in the server. Under normal operating procedures this should never happen, as all exceptions should be trapped within the code and returned as a defined exception. Therefore this is an untrapped exception, and is in all cases a bug.</p>
+<h3 id="501-not-implemented" tabindex="-1">501 Not Implemented <a class="header-anchor" href="#501-not-implemented">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>You have encountered a feature that is planned, but not yet implemented.</p>
+<h3 id="502-bad-gateway" tabindex="-1">502 Bad Gateway <a class="header-anchor" href="#502-bad-gateway">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>An external resource returned a garbage response that caused your request to fail.</p>
+<h3 id="504-could-not-connect" tabindex="-1">504 Could Not Connect <a class="header-anchor" href="#504-could-not-connect">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Could not connect to an external resource, such as a database or web service.</p>
+</div>
+    </div>
+    
+</body>
+
+</html>

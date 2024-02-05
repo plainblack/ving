@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>email.md</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
+        <style type="text/css">
+        html {
+            font-size: 1rem;
+            height: 100%;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-white);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        li a {
+            text-decoration: none;
+        }
+       ol,ul {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid">
+        <div class="col-3 lg:col-2 p-3 surface-300">
+            <div class="sticky top-0 left-0">
+                <div class="text-4xl">Ving Docs</div>
+                <p>Basics</p>
+<ul>
+<li><a href="about.html">About</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="error-codes.html">Error Codes</a></li>
+<li><a href="change-log.html">Change Log</a></li>
+</ul>
+<p>Subsystems</p>
+<ul>
+<li><a href="cache.html">Cache</a></li>
+<li><a href="cli.html">CLI</a></li>
+<li><a href="drizzle.html">Database</a></li>
+<li><a href="email.html">Email</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
+<li><a href="rest.html">Rest</a></li>
+<li><a href="ui.html">UI</a></li>
+</ul>
+<p>Rest APIs</p>
+<ul>
+<li><a href="apikey.html">API Key</a></li>
+<li><a href="session.html">Session</a></li>
+<li><a href="test.html">Test</a></li>
+<li><a href="user.html">User</a></li>
+</ul>
+
+            </div>
+        </div>
+            <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
+<nav class="table-of-contents"><ol><li><a href="#email">Email </a><ol><li><a href="#setup">Setup </a><ol><li><a href="#overriding-outbound-emails">Overriding Outbound Emails </a></li><li><a href="#testing">Testing </a></li></ol></li><li><a href="#creating-an-email-template">Creating an Email Template </a><ol><li><a href="#customizing-the-headers-and-footers">Customizing the Headers and Footers </a></li></ol></li><li><a href="#sending-an-email">Sending an Email </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<h1 id="email" tabindex="-1">Email <a class="header-anchor" href="#email">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h1>
+<p>Ving’s email system works over SMTP and is defined using templates created via <a href="https://mozilla.github.io/nunjucks/">Nunjucks</a>.</p>
+<h2 id="setup" tabindex="-1">Setup <a class="header-anchor" href="#setup">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>Add the following to your <code>.env</code> file to be able to send mail.</p>
+<pre><code class="language-bash">EMAIL=&quot;smtp://USER:PASS@SERVER:465/?tls=no&amp;log=no&quot;
+</code></pre>
+<p>Replace <code>USER</code> and <code>PASS</code> and <code>SERVER</code> with the SMTP username, password, and server name of your SMTP server. You can also change the port from 465 to whatever you like. If it uses TLS then set <code>tls</code> to <code>yes</code>, and if you want logging enabled you can set <code>log</code> to <code>yes</code>.</p>
+<h3 id="overriding-outbound-emails" tabindex="-1">Overriding Outbound Emails <a class="header-anchor" href="#overriding-outbound-emails">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Add an environment variable to override all outbound emails to an email address of your chosing.</p>
+<pre><code class="language-bash">EMAIL_TO_OVERRIDE=&quot;example@gmail.com&quot;
+</code></pre>
+<p>Normally you’d use this in your dev environment so that all your test users email you instead of whatever made up email addresses you might be using. You can add this to your <code>.env</code> file.</p>
+<h3 id="testing" tabindex="-1">Testing <a class="header-anchor" href="#testing">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>You can test an email template using the <a href="cli.html">CLI</a> by typing:</p>
+<pre><code class="language-bash">./ving.mjs email --to=you@gmail.com
+</code></pre>
+<p>Add <code>--preview</code> to the end if you’d like to display the template in a browser rather than getting the email sent to you.</p>
+<h2 id="creating-an-email-template" tabindex="-1">Creating an Email Template <a class="header-anchor" href="#creating-an-email-template">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>Define a template in <code>server/email/templates</code>. Each set of templates will go into its own subfolder in that directory, and needs 3 files: <code>html.njk</code>, <code>subject.njk</code>, and <code>text.njk</code>. These can be generated via the CLI:</p>
+<pre><code class="language-bash">./ving.mjs email --create NotifyAboutSweepstakes
+</code></pre>
+<p>That will generate a folder with the files you can edit: <code>server/email/templates/notify-about-sweepstakes</code></p>
+<h3 id="customizing-the-headers-and-footers" tabindex="-1">Customizing the Headers and Footers <a class="header-anchor" href="#customizing-the-headers-and-footers">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>In <code>server/email/templates/_wrappers</code> you will find the wrappers for HTML and Text variants of the emails. You can modify those to adjust the default headers and footers applied to all emails.</p>
+<h2 id="sending-an-email" tabindex="-1">Sending an Email <a class="header-anchor" href="#sending-an-email">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<pre><code class="language-js">import { sendMail } from '/server/email/send.mjs';
+await sendMail('notify-about-sweepstakes', { // template name matches the folder name
+    options: { to: user.get('email') }, 
+    vars: {
+        foo: 'bar', // put whatever you like here
+        color: 'red'
+    }
+})
+</code></pre>
+</div>
+    </div>
+    
+</body>
+
+</html>
