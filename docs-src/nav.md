@@ -1,5 +1,5 @@
 Basics
- - [About](about.html)
+ - [About](index.html)
  - [Installation](installation.html)
  - [Error Codes](error-codes.html)
  - [Change Log](change-log.html)
