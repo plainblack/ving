@@ -29,7 +29,7 @@ You'll find the schemas in `server/vingschema/schemas`. A schema looks like this
 Use the [CLI](cli.html) to generate a new schema skeleton to work from.
 
 ```bash
-./ving.mjs --new=Foo
+./ving.mjs schema --new=Foo
 ```
 
 ## Attributes
