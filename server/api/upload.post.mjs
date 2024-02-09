@@ -7,7 +7,6 @@ dotenv.config();
 
 export default defineEventHandler(async (event) => {
     const body = await getBody(event);
-    const dbConfig = new URL(process.env.DATABASE || '');
 
     const client = new S3Client({
         credentials: {
