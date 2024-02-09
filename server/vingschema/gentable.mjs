@@ -30,7 +30,7 @@ export const makeTable = ({ schema }) => {
             references.push(`import {${prop.relation.kind}Table} from './${prop.relation.kind}.mjs';`);
         }
     }
-    return `import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text } from '../orm.mjs';
+    return `import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text, int, json } from '../orm.mjs';
 ${references.join("\n")}
 
 ${makeBaseTable(schema)}

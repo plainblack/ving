@@ -1,7 +1,7 @@
 import { getContext, renderTemplate, toFile, after, inject } from '@featherscloud/pinion';
 
 const schemaTemplate = ({ name }) =>
-    `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp } from '../helpers.mjs';
+    `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject } from '../helpers.mjs';
 
 export const ${name.toLowerCase()}Schema = {
     kind: '${name}',
@@ -70,6 +70,28 @@ export const ${name.toLowerCase()}Schema = {
             enumLabels: ['Small', 'Medium', 'Large'],
             view: [],
             edit: ['owner'],
+        },
+        // integer field
+        {
+            type: "int",
+            name: "sizeInBytes",
+            required: false,
+            default: 0,
+            db: (prop) => dbInt(prop),
+            zod: (prop) => zodNumber(prop).positive(),
+            view: ['public'],
+            edit: [],
+        },
+        // json field
+        {
+            type: "json",
+            name: "metadata",
+            required: false,
+            default: '{}',
+            db: (prop) => dbJson(prop),
+            zod: (prop) => zodString(prop).startsWith('{').endsWith('}').or(z.object()),
+            view: ['public'],
+            edit: [],
         },
         // boolean field
         {

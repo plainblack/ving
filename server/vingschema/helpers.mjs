@@ -50,6 +50,14 @@ export const zodString = (prop) => {
     return z.string().min(1).max(prop.length);
 }
 
+export const zodNumber = (prop) => {
+    return z.number();
+}
+
+export const zodJsonObject = (prop) => {
+    return zodString(prop).startsWith('{').endsWith('}').or(z.object());
+}
+
 export const zodText = (prop) => {
     return z.string().min(1).max(prop.length);
 }
@@ -78,6 +86,14 @@ export const dbBoolean = (prop) => {
     return `boolean('${prop.name}').notNull().default(${booleanDefault(prop, true)})`;
 }
 
+export const dbInt = (prop) => {
+    return `int('${prop.name}').notNull().default(${numberDefault(prop, true)})`;
+}
+
+export const dbJson = (prop) => {
+    return `json('${prop.name}').notNull().default(${stringDefault(prop, true)})`;
+}
+
 export const dbId = (prop) => {
     let col = `varchar('${prop.name}', { length: 36 })`;
     if (prop.required) {
@@ -91,7 +107,7 @@ export const dbPk = (prop) => {
 }
 
 export const dbRelation = (prop) => {
-    return `${dbId(prop)}.references(() => ${prop.relation?.kind}Table.id)`;
+    return `${dbId(prop)}.references(() => ${prop.relation?.kind}Table.id, {onDelete: ${prop.required ? '"cascade"' : '"set null"'}, onUpdate: ${prop.required ? '"cascade"' : '"no action"'}})`;
 }
 
 export const baseSchemaProps = [
