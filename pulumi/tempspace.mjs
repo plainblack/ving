@@ -1,14 +1,16 @@
 import * as aws from "@pulumi/aws";
+import * as pulumi from "@pulumi/pulumi";
 
 export const createTempspace = () => {
+    const projectName = pulumi.getProject();
 
     // Create tempspace
-    const tempspaceBucket = new aws.s3.Bucket("ving-tempspace", {
+    const tempspaceBucket = new aws.s3.Bucket(`${projectName}-tempspace`, {
         acl: "private", // Access control list set to private – only owner can access
     });
 
 
-    const tempspaceBucketCorsConfig = new aws.s3.BucketCorsConfigurationV2("ving-tempspace-cors", {
+    const tempspaceBucketCorsConfig = new aws.s3.BucketCorsConfigurationV2(`${projectName}-tempspace-cors`, {
         bucket: tempspaceBucket.id,
         corsRules: [
             {
@@ -26,7 +28,7 @@ export const createTempspace = () => {
             }
         ],
     });
-    const tempspaceDeleteAfter1DayPolicy = new aws.s3.BucketLifecycleConfigurationV2("delete-tempspace-after-1-day", {
+    const tempspaceDeleteAfter1DayPolicy = new aws.s3.BucketLifecycleConfigurationV2(`${projectName}-delete-tempspace-after-1-day`, {
         bucket: tempspaceBucket.id,
         rules: [{
             id: "expireObjects",
@@ -37,8 +39,8 @@ export const createTempspace = () => {
         }],
     });
 
-    const tempspaceUploaderUser = new aws.iam.User("tempspaceUploaderUser", {});
-    const tempspaceUploaderAccessKey = new aws.iam.AccessKey("tempspaceUploaderAccessKey", { user: tempspaceUploaderUser.name });
+    const tempspaceUploaderUser = new aws.iam.User(`${projectName}-tempspaceUploaderUser`, {});
+    const tempspaceUploaderAccessKey = new aws.iam.AccessKey(`${projectName}-tempspaceUploaderAccessKey`, { user: tempspaceUploaderUser.name });
 
     const tempspaceIAMuploadPolicyDocument = aws.iam.getPolicyDocument({
         statements: [{
@@ -54,7 +56,7 @@ export const createTempspace = () => {
     }).then(document => document.json);
 
 
-    const tempspaceUploadUserPolicy = new aws.iam.UserPolicy("tempspaceUploadUserPolicy", {
+    const tempspaceUploadUserPolicy = new aws.iam.UserPolicy(`${projectName}-tempspaceUploadUserPolicy`, {
         user: tempspaceUploaderUser.name,
         policy: tempspaceIAMuploadPolicyDocument,
     });
