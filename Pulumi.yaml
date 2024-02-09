@@ -1,0 +1,11 @@
+name: ving-pulumi
+runtime:
+  name: nodejs
+  options:
+    typescript: false
+main: Pulumi.mjs
+description: Set up AWS services for Ving as a starting point
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: aws-javascript
