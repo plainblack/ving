@@ -3,6 +3,8 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { getBody } from '../utils/rest.mjs';
 import { defineEventHandler } from 'h3';
 import * as dotenv from 'dotenv';
+import { v4 } from 'uuid';
+import sanitize from 'sanitize-filename';
 dotenv.config();
 
 export default defineEventHandler(async (event) => {
@@ -15,7 +17,7 @@ export default defineEventHandler(async (event) => {
         },
         region: process.env.AWS_REGION,
     });
-    const key = body.filename;
+    const key = v4().replace(/-/g, '/').replace(/^(.{4})(.+)$/, '$1/$2/') + sanitize(body.filename);
     const putObjectParams = {
         "Bucket": process.env.AWS_TEMP_BUCKET,
         "Key": key,

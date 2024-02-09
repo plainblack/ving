@@ -52,6 +52,7 @@
         "primeflex": "^3.3.1",
         "primeicons": "^6.0.1",
         "primevue": "^3.47.2",
+        "sanitize-filename": "^1.6.3",
         "scule": "^1.2.0",
         "ua-parser-js": "^1.0.37",
         "uuid": "^9.0.1",
