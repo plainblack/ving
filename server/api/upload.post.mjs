@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
         },
         region: process.env.AWS_REGION,
     });
-    const key = v4().replace(/-/g, '/').replace(/^(.{4})(.+)$/, '$1/$2/') + sanitize(body.filename);
+    const key = v4().replace(/-/g, '/').replace(/^(.{4})(.+)$/, '$1/$2') + '/' + sanitize(body.filename);
     const putObjectParams = {
         "Bucket": process.env.AWS_TEMP_BUCKET,
         "Key": key,

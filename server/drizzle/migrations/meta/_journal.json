@@ -29,6 +29,27 @@
       "when": 1683134374686,
       "tag": "0003_cool_machine_man",
       "breakpoints": false
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1707503266647,
+      "tag": "0004_daily_gamora",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1707514527940,
+      "tag": "0005_free_supreme_intelligence",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1707516473210,
+      "tag": "0006_premium_spectrum",
+      "breakpoints": true
     }
   ]
 }

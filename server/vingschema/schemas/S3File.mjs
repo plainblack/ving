@@ -1,4 +1,4 @@
-import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp } from '../helpers.mjs';
+import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber } from '../helpers.mjs';
 
 export const s3fileSchema = {
     kind: 'S3File',
@@ -6,19 +6,6 @@ export const s3fileSchema = {
     owner: ['$userId', 'admin'],
     props: [
         ...baseSchemaProps,
-        // url field
-        {
-            type: "string",
-            name: 'url',
-            length: 65535,
-            required: true,
-            db: (prop) => dbText(prop),
-            zod: (prop) => zodText(prop).url(),
-            default: '',
-            view: ['owner'],
-            edit: [],
-        },
-        // varchar field
         {
             type: "string",
             name: "filename",
@@ -27,10 +14,41 @@ export const s3fileSchema = {
             default: '',
             db: (prop) => dbString(prop),
             zod: (prop) => zodString(prop),
+            view: ['public'],
+            edit: [],
+        },
+        {
+            type: "string",
+            name: "s3folder",
+            required: true,
+            length: 256,
+            default: '',
+            db: (prop) => dbString(prop),
+            zod: (prop) => zodString(prop),
             view: ['owner'],
             edit: [],
         },
-        // text blob field
+        {
+            type: "int",
+            name: "sizeInBytes",
+            required: false,
+            default: 0,
+            db: (prop) => dbInt(prop),
+            zod: (prop) => zodNumber(prop).positive(),
+            view: ['public'],
+            edit: [],
+        },
+        {
+            type: "json",
+            name: "metadata",
+            required: false,
+            default: '{}',
+            db: (prop) => dbJson(prop),
+            zod: (prop) => zodJsonObject(prop),
+            view: ['public'],
+            edit: [],
+        },
+        /* text blob field
         {
             type: "string",
             name: 'someLongText',
@@ -41,21 +59,20 @@ export const s3fileSchema = {
             zod: (prop) => zodText(prop),
             view: [],
             edit: ['owner'],
-        },
-        // enumeration field
+        },*/
         {
             type: "enum",
-            name: 'size',
+            name: 'icon',
             required: true,
             length: 20,
-            default: 'medium',
+            default: 'pending',
             db: (prop) => dbEnum(prop),
-            enums: ['small', 'medium', 'large'],
-            enumLabels: ['Small', 'Medium', 'Large'],
+            enums: ['pending', 'thumbnail', 'extension', 'self'],
+            enumLabels: ['Pending', 'Thumbnail', 'Extension', 'Self'],
             view: [],
-            edit: ['owner'],
+            edit: [],
         },
-        // boolean field
+        /* boolean field
         {
             type: "boolean",
             name: 'isCool',
@@ -67,6 +84,7 @@ export const s3fileSchema = {
             view: [],
             edit: ['owner'],
         },
+        */
         // 1:N relationship - aka a relationship to my children
         /* {
              type: "virtual",
