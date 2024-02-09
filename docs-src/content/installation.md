@@ -117,3 +117,6 @@ To use [Redis as your cache](cache.html), you'll need to configure it first.
 
 ## Email
 Ving offers [email sending and templating](email.html), but you need to configure an SMTP server first.
+
+## Configuring AWS
+If you want to make use of AWS for things like storing file uploads in S3, then you'll also want to check out our [Pulumi](pulumi.html) integration.
