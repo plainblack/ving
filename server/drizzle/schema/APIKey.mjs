@@ -1,4 +1,4 @@
-import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text } from '../orm.mjs';
+import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text, int, json } from '../orm.mjs';
 import {UserTable} from './User.mjs';
 
 
@@ -11,7 +11,7 @@ export const APIKeyTable = mysqlTable('apikeys',
 		url: text('url').notNull(),
 		reason: text('reason').notNull(),
 		privateKey: varchar('privateKey', { length: 39 }).notNull().default(''),
-		userId: varchar('userId', { length: 36 }).notNull().references(() => UserTable.id)
+		userId: varchar('userId', { length: 36 }).notNull().references(() => UserTable.id, {onDelete: "cascade", onUpdate: "cascade"})
     }, 
     (table) => ({
         

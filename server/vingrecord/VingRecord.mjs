@@ -422,11 +422,12 @@ export class VingRecord {
                         throw ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
                     }
                 }
-                if (param !== null)
+                if (param !== null) {
+                    if (field.relation && field.relation.type == 'parent') {
+                        const parent = await this.parent(field.relation.name);
+                        parent.canEdit(currentUser);
+                    }
                     this.set(field.name, param);
-                if (field.relation && field.relation.type == 'parent') {
-                    const parent = await this.parent(field.relation.name);
-                    parent.canEdit(currentUser);
                 }
 
             }
