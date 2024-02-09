@@ -14,6 +14,14 @@
                                 :options="currentUser.options?.useAsDisplayName" name="useAsDisplayName"
                                 label="Use As Display Name" />
                         </div>
+                        <div class="mb-4">
+                            <FormSelect @change="currentUser.update()" v-model="currentUser.props.avatarType"
+                                :options="currentUser.options?.avatarType" name="avatarType" label="Avatar Type" />
+                        </div>
+                        <div class="mb-4">
+                            <Button type="button"
+                                @click="upload('88d8/23e6/b289/40bf/9746/802818ed9b31/astormlooms.png')">test 1</Button>
+                        </div>
 
                     </div>
                     <div class="flex flex-column align-items-center flex-or">
@@ -37,4 +45,7 @@ definePageMeta({
     middleware: ['auth']
 });
 const currentUser = useCurrentUserStore();
+const upload = (key) => {
+    currentUser.call
+}
 </script>

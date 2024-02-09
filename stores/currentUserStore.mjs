@@ -46,8 +46,17 @@ export const useCurrentUserStore = defineStore('currentUser', {
             this.setState({});
             return response;
         },
+        async attachAvatar() {
+            const response = await useRest(this.links.self, {
+                method: 'put',
+                body: this.props,
+                query,
+            });
+            this.setState(response.data)
+            return response;
+        },
         async update() {
-            const response = await useRest('/api/user/' + this.props?.id, {
+            const response = await useRest(this.links.self, {
                 method: 'put',
                 body: this.props,
                 query,

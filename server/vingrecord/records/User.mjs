@@ -1,6 +1,7 @@
 import { VingRecord, VingKind } from "../VingRecord.mjs";
 import { RoleOptions, RoleMixin } from '../mixins/Role.mjs';
 import { useAPIKeys } from "./APIKey.mjs";
+import { useS3Files } from './S3File.mjs'
 import bcrypt from 'bcryptjs';
 import { useCache } from '../../cache.mjs';
 import { useDB } from '../../drizzle/db.mjs';
@@ -22,29 +23,42 @@ export class UserRecord extends RoleMixin(VingRecord) {
     }
 
     get avatarUrl() {
-        const id = this.get('id');
-        let url = `https://robohash.org/${id}/size_300x300`;
+        switch (this.get('avatarType')) {
+            case 'robot': {
+                const id = this.get('id');
+                let url = `https://robohash.org/${id}/size_300x300`;
 
-        // foreground
-        if (this.get('id')?.match(/^[A-M]/)) {
-            url += '/set_set2'
-        }
-        else if (this.get('id')?.match(/^[a-m]/)) {
-            url += '/set_set3'
-        }
-        else if (id.match(/^[N-Z]/)) {
-            url += '/set_set4'
-        }
+                // foreground
+                if (this.get('id')?.match(/^[A-M]/)) {
+                    url += '/set_set2'
+                }
+                else if (this.get('id')?.match(/^[a-m]/)) {
+                    url += '/set_set3'
+                }
+                else if (id.match(/^[N-Z]/)) {
+                    url += '/set_set4'
+                }
 
-        // background
-        if (id.match(/[A-Z]$/)) {
-            url += '/bgset_bg1'
-        }
-        else if (id.match(/[a-z]$/)) {
-            url += '/bgset_bg2'
-        }
+                // background
+                if (id.match(/[A-Z]$/)) {
+                    url += '/bgset_bg1'
+                }
+                else if (id.match(/[a-z]$/)) {
+                    url += '/bgset_bg2'
+                }
 
-        return url;
+                return url;
+            }
+            case 'upload': {
+                if (this.get('avatarId')) {
+                    return this.avatar.fileUrl;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+        return '/img/avatar.png';
     }
 
     async testPassword(password) {
@@ -107,6 +121,10 @@ export class UserRecord extends RoleMixin(VingRecord) {
             value: this.get('id')
         });
         return apikeys;
+    }
+
+    get avatar() {
+        return useS3Files().findOrDie(this.get('avatarId'));
     }
 
     async update() {

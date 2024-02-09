@@ -1,4 +1,4 @@
-import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean } from '../helpers.mjs';
+import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbRelation } from '../helpers.mjs';
 
 export const userSchema = {
     kind: 'User',
@@ -111,6 +111,33 @@ export const userSchema = {
             enums: [false, true],
             enumLabels: ['Not a Software Developer', 'Software Developer'],
             view: [],
+            edit: ['owner'],
+        },
+        {
+            type: "enum",
+            name: 'avatarType',
+            required: true,
+            length: 20,
+            default: 'robot',
+            db: (prop) => dbEnum(prop),
+            enums: ['robot', 'uploaded'],
+            enumLabels: ['Robot', 'Uploaded'],
+            view: [],
+            edit: ['owner'],
+        },
+        {
+            type: "id",
+            name: 'avatarId',
+            required: false,
+            length: 36,
+            db: (prop) => dbRelation(prop),
+            relation: {
+                type: 'parent',
+                name: 'avatar',
+                kind: 'S3File',
+            },
+            default: undefined,
+            view: ['public'],
             edit: ['owner'],
         },
         {

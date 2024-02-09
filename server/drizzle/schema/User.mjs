@@ -1,5 +1,5 @@
-import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text } from '../orm.mjs';
-
+import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text, int, json } from '../orm.mjs';
+import {S3FileTable} from './S3File.mjs';
 
 
 export const UserTable = mysqlTable('users',
@@ -15,7 +15,9 @@ export const UserTable = mysqlTable('users',
 		useAsDisplayName: mysqlEnum('useAsDisplayName', ['username','email','realName']).notNull().default('username'),
 		verifiedEmail: boolean('verifiedEmail').notNull().default(false),
 		admin: boolean('admin').notNull().default(false),
-		developer: boolean('developer').notNull().default(false)
+		developer: boolean('developer').notNull().default(false),
+		avatarType: mysqlEnum('avatarType', ['robot','uploaded']).notNull().default('robot'),
+		avatarId: varchar('avatarId', { length: 36 }).references(() => S3FileTable.id, {onDelete: "set null", onUpdate: "no action"})
     }, 
     (table) => ({
         usernameIndex: uniqueIndex('usernameIndex').on(table.username),
