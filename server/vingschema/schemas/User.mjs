@@ -125,6 +125,18 @@ export const userSchema = {
                 kind: 'APIKey',
             },
         },
+        {
+            type: "virtual",
+            name: 's3files',
+            required: false,
+            view: ['public'],
+            edit: [],
+            relation: {
+                type: 'child',
+                name: 's3files',
+                kind: 'S3File',
+            },
+        },
     ],
 };
 
