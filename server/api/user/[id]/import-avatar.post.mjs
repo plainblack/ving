@@ -17,10 +17,15 @@ export default defineEventHandler(async (event) => {
     const match = s3key.match(/^(.*)\/(.*)$/g);
     const s3folder = match[1];
     const filename = match[2];
+
     const s3file = useS3Files().mint({
         s3folder,
         filename,
     });
+
+    await s3file.importMetadata(s3key);
+    await s3file.importFromTemp();
+
 
     console.log('NOTICE: ' + s3file.get('id'));
 
