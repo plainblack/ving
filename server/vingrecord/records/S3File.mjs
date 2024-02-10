@@ -29,8 +29,63 @@ export class S3FileRecord extends VingRecord {
                 return this.fileUrl();
             case 'thumbnail':
                 return `https://${process.env.AWS_THUMBNAILS_BUCKET}.s3.amazonaws.com/${formatS3FolderName(this.get('id'))}.png`;
-            case 'extension':
-                return `url to ${this.extension} file`; // also need an unknown extension
+            case 'extension': {
+                const extmap = {
+                    mp3: 'audio',
+                    wav: 'audio',
+                    js: 'code',
+                    ts: 'code',
+                    pl: 'code',
+                    mjs: 'code',
+                    cjs: 'code',
+                    yaml: 'config',
+                    json: 'config',
+                    ini: 'config',
+                    config: 'config',
+                    css: 'config',
+                    rtf: 'document',
+                    pdf: 'document',
+                    doc: 'document',
+                    docx: 'document',
+                    pages: 'document',
+                    odt: 'document',
+                    ttf: 'font',
+                    otf: 'font',
+                    tif: 'image',
+                    tiff: 'image',
+                    psd: 'image',
+                    bmp: 'image',
+                    xml: 'markup',
+                    html: 'markup',
+                    php: 'markup',
+                    njk: 'markup',
+                    ppt: 'presentation',
+                    odp: 'presentation',
+                    keynote: 'presentation',
+                    xls: 'spreadsheet',
+                    csv: 'spreadsheet',
+                    xlsx: 'spreadsheet',
+                    ods: 'spreadsheet',
+                    md: 'text',
+                    txt: 'text',
+                    svg: 'vector',
+                    ai: 'vector',
+                    ps: 'vector',
+                    mp4: 'video',
+                    mov: 'video',
+                    avi: 'video',
+                    gif: 'video',
+                    zip: 'archive',
+                    rar: 'archive',
+                    gz: 'archive',
+                    tar: 'archive',
+                    exe: 'disc',
+                    dmg: 'disc',
+                    msi: 'disc',
+                };
+                const image = extmap[this.extension] || 'unknown';
+                return `/img/filetype/${image}.png`;
+            }
             default:
                 return '/img/pending.webp';
         }
