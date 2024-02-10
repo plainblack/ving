@@ -17,7 +17,7 @@ export const UserTable = mysqlTable('users',
 		admin: boolean('admin').notNull().default(false),
 		developer: boolean('developer').notNull().default(false),
 		avatarType: mysqlEnum('avatarType', ['robot','uploaded']).notNull().default('robot'),
-		avatarId: varchar('avatarId', { length: 36 }).references(() => S3FileTable.id, {onDelete: "set null", onUpdate: "no action"})
+		avatarId: varchar('avatarId', { length: 36 }).default(null).references(() => S3FileTable.id, {onDelete: "set null", onUpdate: "no action"})
     }, 
     (table) => ({
         usernameIndex: uniqueIndex('usernameIndex').on(table.username),

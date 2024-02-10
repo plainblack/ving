@@ -1,0 +1,1 @@
+ALTER TABLE `users` MODIFY COLUMN `avatarId` varchar(36) DEFAULT null;

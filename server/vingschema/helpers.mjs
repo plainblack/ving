@@ -99,6 +99,9 @@ export const dbId = (prop) => {
     if (prop.required) {
         col += `.notNull()`;
     }
+    else {
+        col += `.default(null)`;
+    }
     return col;
 }
 

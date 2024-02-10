@@ -4,6 +4,7 @@ import { defineEventHandler } from 'h3';
 
 export default defineEventHandler(async (event) => {
     const Users = useUsers();
-    const user = await Users.createAndVerify(await getBody(event));
+    const body = await getBody(event);
+    const user = await Users.createAndVerify(body);
     return user.describe(describeParams(event));
 });

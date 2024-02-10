@@ -136,7 +136,7 @@ export const userSchema = {
                 name: 'avatar',
                 kind: 'S3File',
             },
-            default: undefined,
+            default: null,
             view: ['public'],
             edit: ['owner'],
         },
