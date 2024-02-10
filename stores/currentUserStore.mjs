@@ -46,8 +46,8 @@ export const useCurrentUserStore = defineStore('currentUser', {
             this.setState({});
             return response;
         },
-        async attachAvatar() {
-            const response = await useRest(this.links.self, {
+        async importAvatar() {
+            const response = await useRest(this.links.self + '/import-avatar', {
                 method: 'put',
                 body: this.props,
                 query,
