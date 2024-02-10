@@ -32,7 +32,7 @@ export class S3FileRecord extends VingRecord {
             case 'extension':
                 return `url to ${this.extension} file`; // also need an unknown extension
             default:
-                return 'url to pending icon';
+                return '/img/pending.webp';
         }
     }
 
