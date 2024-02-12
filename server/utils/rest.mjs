@@ -150,12 +150,12 @@ export const includeParams = (event) => {
     return include;
 }
 
-export const describeParams = (event) => {
-    return { currentUser: obtainSession(event), include: includeParams(event) };
+export const describeParams = (event, session) => {
+    return { currentUser: session || obtainSession(event), include: includeParams(event) };
 }
 
-export const describeListParams = (event) => {
-    return { ...pagingParams(event), objectParams: { currentUser: obtainSession(event), include: includeParams(event) } };
+export const describeListParams = (event, session) => {
+    return { ...pagingParams(event), objectParams: { currentUser: session || obtainSession(event), include: includeParams(event) } };
 }
 
 export const pagingParams = (event) => {
