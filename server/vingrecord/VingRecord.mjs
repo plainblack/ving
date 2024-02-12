@@ -423,11 +423,11 @@ export class VingRecord {
                     }
                 }
                 if (param !== null) {
+                    this.set(field.name, param);
                     if (field.relation && field.relation.type == 'parent') {
                         const parent = await this.parent(field.relation.name);
                         parent.canEdit(currentUser);
                     }
-                    this.set(field.name, param);
                 }
 
             }
@@ -785,7 +785,7 @@ export class VingKind {
         if (props)
             return new this.recordClass(this.db, this.table, props);
         const schema = findVingSchema(getTableName(this.table));
-        throw ouch(404, `${schema.kind} not found.`)
+        throw ouch(404, `${schema.kind} not found.`, { id })
     }
 
     /**
