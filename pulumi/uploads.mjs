@@ -4,11 +4,35 @@ import * as pulumi from "@pulumi/pulumi";
 export const createUploads = () => {
     const projectName = pulumi.getProject();
 
-    // Create tempspace
-    const uploadsBucket = new aws.s3.Bucket(`${projectName}-uploads`, {
-        acl: "private",
+    const uploadsBucket = new aws.s3.BucketV2(`${projectName}-uploads`, {});
+
+    const blockPublicAccessToUploads = new aws.s3.BucketPublicAccessBlock(`${projectName}-blockPublicAccessToUploads`, {
+        bucket: uploadsBucket.id,
+        blockPublicAcls: false,
+        blockPublicPolicy: false,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: false,
     });
 
+    const publicReadPolicy = {
+        Version: "2012-10-17",
+        Statement: [{
+            Sid: "PublicReadGetObject",
+            Effect: "Allow",
+            Principal: "*",
+            Action: [
+                "s3:GetObject",
+            ],
+            Resource: [
+                uploadsBucket.arn.apply(arn => `${arn}/*`), // Policy applies to all objects
+            ]
+        }]
+    };
+
+    const uploadsPublicReadPolicy = new aws.s3.BucketPolicy(`${projectName}-uploadsPublicReadPolicy`, {
+        bucket: uploadsBucket.id,
+        policy: pulumi.output(publicReadPolicy).apply(JSON.stringify),
+    });
 
     const uploadsBucketCorsConfig = new aws.s3.BucketCorsConfigurationV2(`${projectName}-uploads-cors`, {
         bucket: uploadsBucket.id,
