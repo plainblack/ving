@@ -1,6 +1,5 @@
-import { ouch } from './../../utils/ouch.mjs';
-
-export const RoleOptions = ["admin", "developer"];
+import { ouch } from '../../utils/ouch.mjs';
+export { RoleOptions } from '../../vingschema/schemas/User.mjs';
 
 export function RoleMixin(Base) {
     class RoleMixin extends Base {

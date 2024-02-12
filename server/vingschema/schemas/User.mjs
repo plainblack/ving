@@ -167,4 +167,4 @@ export const userSchema = {
     ],
 };
 
-export const RoleOptions = ["admin", "developer"];
+export const RoleOptions = ["admin", "developer", "verifiedEmail"];

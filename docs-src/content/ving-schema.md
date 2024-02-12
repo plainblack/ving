@@ -41,7 +41,7 @@ A string that represents the unique name of the schema and everything generated 
 A string that is name of the MySQL database table it will be stored in.
 
 ### owner
-An array containing the method for determining who owns this object. Owners can be assigned special rights on `props`. The owner can be any field that contains a User ID, so in the case of the `User` schema, it can use its own id by specifying `$id`, but in another table it might be `$userId`. It can also contain any number of roles. By default there are two roles: `admin` and `developer`, but you could add more.
+An array containing the method for determining who owns this object. Owners can be assigned special rights on `props`. The owner can be any field that contains a User ID, so in the case of the `User` schema, it can use its own id by specifying `$id`, but in another table it might be `$userId`. It can also contain any number of roles. By default there are 3 roles: `admin`, `developer`, `verifiedEmail`, but you could add more.
 
 ### props
 All schemas should have the base props of `id`, `createdAt`, and `updatedAt` by using `...baseSchemaProps`. After that it's up to you to add your own props to the list. There are many different types of props for different field types.
@@ -59,7 +59,7 @@ The `view` and `edit` props are arrays that can:
 
 If a role can `edit` a prop it can automatically `view` a prop.
 
-> Roles can be defined inside the `User` schema. They have to be added as a [boolean prop type](boolean-props), and then also added to the `RoleOptions` at the bottom of the file.
+> Roles can be defined inside the `User` schema (`server/vingschema/User.mjs`). They have to be added as a [boolean prop type](boolean-props), and then also added to the `RoleOptions` at the bottom of the file.
 
 #### Prop Types
 

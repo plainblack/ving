@@ -139,7 +139,7 @@ export class UserRecord extends RoleMixin(VingRecord) {
     }
 
     set(key, value) {
-        if (key in ['password', 'verifiedEmail', ...RoleOptions])
+        if (key in ['password', ...RoleOptions])
             this.userChanged = true;
         return super.set(key, value);
     }
