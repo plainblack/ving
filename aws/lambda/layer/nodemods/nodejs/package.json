@@ -1,0 +1,13 @@
+{
+  "name": "nodemods",
+  "version": "1.0.0",
+  "description": "node modules needed for lambda functions",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.511.0",
+    "adm-zip": "^0.5.10",
+    "image-size": "^1.1.1",
+    "jimp": "^0.22.10",
+    "pdf-lib": "^1.17.1"
+  }
+}

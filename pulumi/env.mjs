@@ -10,4 +10,5 @@ export const updateEnv = (obj) => {
     obj.tempspaceUploaderAccessKey.secret.apply(secret => env.set("AWS_TEMP_UPLOAD_SECRET", secret));
     obj.tempspaceBucket.id.apply(id => env.set("AWS_TEMP_BUCKET", id));
     obj.filesBucket.id.apply(id => env.set("AWS_FILES_BUCKET", id));
+    obj.processUploadsFunctionUrl.functionUrl.apply(functionUrl => env.set("LAMBDA_PROCESS_UPLOADS_URL", functionUrl))
 }
