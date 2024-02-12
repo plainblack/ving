@@ -31,8 +31,7 @@ The name or resource requested is already in use by someone else, or has already
 You tried to post something (perhaps upload a file) that is too large.
 
 ### 415 Unsupported Media Type
-You tried to assign a file to a field that doesn't match the field's criteria or you tried to upload a file that the system doesn't allow.
-For example you tried to assign a PDF to a field looking for images. 
+You tried to assign a file to a field that doesn't match the field's criteria or you tried to upload a file that the system doesn't allow. For example you tried to assign a PDF to a field looking for images. 
 
 ### 429 Too Many Requests
 You have exceeded the maximum number of requests allowed per minute. This exception is telling you to slow down so you don't denial of service the server with your requests.
