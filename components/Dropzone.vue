@@ -73,7 +73,7 @@ export default {
         },
     },
     mounted() {
-        const vm = this
+        const vm = this;
 
         let options = {
             // The URL will be changed for each new file being processing
@@ -129,13 +129,13 @@ export default {
                     })
             },
 
-            success: file => {
+            success(file) {
                 vm.afterUpload(file.s3file, file);
             }
         }
 
         // Instantiate Dropzone
-        this.dropzone = new Dropzone(this.$el, options)
+        this.dropzone = new Dropzone(this.$el, options);
 
         // Set signed upload URL for each file
         vm.dropzone.on('processing', (file) => {
