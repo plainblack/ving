@@ -19,8 +19,11 @@
                                 :options="currentUser.options?.avatarType" name="avatarType" label="Avatar Type" />
                         </div>
                         <div class="mb-4">
-                            <Button type="button"
-                                @click="upload('88d8/23e6/b289/40bf/9746/802818ed9b31/astormlooms.png')">test 1</Button>
+
+                            <client-only>
+                                <Dropzone :acceptedFiles="['.png', '.jpg', '.gif']" :afterUpload="currentUser.importAvatar"
+                                    :resizeHeight="300" :resizeWidth="300" resizeMethod="crop"></Dropzone>
+                            </client-only>
                         </div>
 
                     </div>
@@ -45,7 +48,7 @@ definePageMeta({
     middleware: ['auth']
 });
 const currentUser = useCurrentUserStore();
-const upload = (key) => {
-    currentUser.call
+const attachImageToUser = (s3file) => {
+    currentUser.call('POST', currentUser.links.self)
 }
 </script>

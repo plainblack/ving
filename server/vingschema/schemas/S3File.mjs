@@ -19,13 +19,24 @@ export const s3fileSchema = {
         },
         {
             type: "string",
+            name: "contentType",
+            required: true,
+            length: 256,
+            default: '',
+            db: (prop) => dbString(prop),
+            zod: (prop) => zodString(prop),
+            view: ['public'],
+            edit: [],
+        },
+        {
+            type: "string",
             name: "s3folder",
             required: true,
             length: 256,
             default: '',
             db: (prop) => dbString(prop),
             zod: (prop) => zodString(prop),
-            view: ['owner'],
+            view: ['admin'],
             edit: [],
         },
         {
@@ -48,18 +59,18 @@ export const s3fileSchema = {
             view: ['public'],
             edit: [],
         },
-        /* text blob field
         {
-            type: "string",
-            name: 'someLongText',
-            required: false,
-            length: 65535,
-            default: '',
-            db: (prop) => dbText(prop),
-            zod: (prop) => zodText(prop),
-            view: [],
-            edit: ['owner'],
-        },*/
+            type: "enum",
+            name: 'status',
+            required: true,
+            length: 20,
+            default: 'pending',
+            db: (prop) => dbEnum(prop),
+            enums: ['pending', 'ready', 'postProcessingFailed'],
+            enumLabels: ['Pending', 'Ready for Use', 'Post Processing Failed'],
+            view: ['admin'],
+            edit: [],
+        },
         {
             type: "enum",
             name: 'icon',
@@ -69,52 +80,9 @@ export const s3fileSchema = {
             db: (prop) => dbEnum(prop),
             enums: ['pending', 'thumbnail', 'extension', 'self'],
             enumLabels: ['Pending', 'Thumbnail', 'Extension', 'Self'],
-            view: [],
+            view: ['admin'],
             edit: [],
         },
-        /* boolean field
-        {
-            type: "boolean",
-            name: 'isCool',
-            required: true,
-            default: false,
-            db: (prop) => dbBoolean(prop),
-            enums: [false, true],
-            enumLabels: ['Not Cool', 'Very Cool'],
-            view: [],
-            edit: ['owner'],
-        },
-        */
-        // 1:N relationship - aka a relationship to my children
-        /* {
-             type: "virtual",
-             name: 's3filecomments',
-             required: false,
-             view: ['public'],
-             edit: [],
-             relation: {
-                 type: 'child',
-                 name: 's3filecomments',
-                 kind: 'S3FileComment',
-             },
-         },*/
-        // N:1 relationship - aka a relationship to my parent
-        /*{
-            type: "id",
-            name: 's3fileGroupId',
-            required: true,
-            length: 36,
-            db: (prop) => dbRelation(prop),
-            relation: {
-                type: 'parent',
-                name: 's3filegroup',
-                kind: 'S3FileGroup',
-            },
-            default: undefined,
-            view: ['public'],
-            edit: ['owner'],
-        },*/
-        // a user relationship
         {
             type: "id",
             name: 'userId',

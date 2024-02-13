@@ -11,7 +11,7 @@ import { ouch } from './../../utils/ouch.mjs';
 export class UserRecord extends RoleMixin(VingRecord) {
     #userChanged = false;
 
-    get displayName() {
+    displayName() {
         switch (this.get('useAsDisplayName')) {
             case 'realName':
                 return this.get('realName') || '-unknown-';
@@ -22,7 +22,7 @@ export class UserRecord extends RoleMixin(VingRecord) {
         }
     }
 
-    get avatarUrl() {
+    async avatarUrl() {
         switch (this.get('avatarType')) {
             case 'robot': {
                 const id = this.get('id');
@@ -49,9 +49,10 @@ export class UserRecord extends RoleMixin(VingRecord) {
 
                 return url;
             }
-            case 'upload': {
+            case 'uploaded': {
                 if (this.get('avatarId')) {
-                    return this.avatar.fileUrl;
+                    const avatar = await this.avatar;
+                    return avatar.fileUrl();
                 }
                 else {
                     break;
@@ -90,8 +91,8 @@ export class UserRecord extends RoleMixin(VingRecord) {
     async describe(params = {}) {
         const out = await super.describe(params);
         if (params?.include?.meta && out.meta) {
-            out.meta.displayName = this.displayName;
-            out.meta.avatarUrl = this.avatarUrl;
+            out.meta.displayName = this.displayName();
+            out.meta.avatarUrl = await this.avatarUrl();
         }
         if (params && params.include && params.include.extra && params.include.extra.includes('foo')) {
             if (out.extra === undefined) {

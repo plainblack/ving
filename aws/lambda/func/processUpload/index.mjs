@@ -11,9 +11,10 @@ import { finished } from 'stream/promises';
 import Jimp from "jimp";
 
 export const handler = async (event) => {
-    const url = event.url;
-    const fileType = event.fileType;
-    const id = event.id;
+    const input = JSON.parse(event.body) || event;
+    const url = input.url;
+    const fileType = input.fileType;
+    const id = input.id;
     try {
         if (['bmp', 'png', 'tiff', 'webp', 'tif', 'psd', 'svg', 'jpeg', 'jpg', 'gif', 'heic', 'heif', 'avci', 'avif', 'icns', 'ico', 'j2c', 'jp2', 'ktx', 'pnm', 'pam', 'pbm', 'pfm', 'pgm', 'ppm', 'tga', 'cur', 'dds'].includes(fileType)) {
             return formatResponse(await getImageInfo(url));
@@ -54,7 +55,7 @@ async function getZipInfo(url) {
     const filePath = await downloadFile(url);
     const zip = new AdmZip(filePath);
     const zipEntries = zip.getEntries();
-    const out = { files: [] };
+    const out = { files: [], sizeInBytes: getFileSize(filePath) };
     zipEntries.forEach(function (zipEntry) {
         if (zipEntry.isDirectory || zipEntry.name.match(/^\./))
             return;
@@ -77,6 +78,7 @@ async function getImageInfo(url) {
         out.thumbnail = true;
     }
     delete out.type;
+    out.sizeInBytes = getFileSize(filePath);
     fs.unlinkSync(filePath);
     return out;
 }
@@ -102,6 +104,7 @@ async function getPdfInfo(url) {
         dateUpdated: pdfDoc.getModificationDate(),
         width: pages[0].getWidth(),
         height: pages[0].getHeight(),
+        sizeInBytes: bytes.byteLength,
     };
 }
 
@@ -115,3 +118,8 @@ async function uploadThumbnail(filePath, fileName, bucketName) {
         ContentType: 'image/png',
     }))
 };
+
+function getFileSize(filePath) {
+    const stats = fs.statSync(filePath);
+    return stats.size
+}

@@ -13,21 +13,11 @@ export default defineEventHandler(async (event) => {
     const session = obtainSession(event);
     user.canEdit(session);
     const body = await getBody(event);
-    const s3key = body.s3key;
-    const match = s3key.match(/^(.*)\/(.*)$/g);
-    const s3folder = match[1];
-    const filename = match[2];
-
-    const s3file = useS3Files().mint({
-        s3folder,
-        filename,
-    });
-
-    await s3file.importMetadata(s3key);
-    await s3file.importFromTemp();
-
-
-    console.log('NOTICE: ' + s3file.get('id'));
-
-    return await user.describe(describeParams(event));
+    const S3Files = useS3Files();
+    const s3file = await S3Files.findOrDie(body.s3FileId);
+    await s3file.postProcessFile();
+    // do some verification
+    user.set('avatarId', s3file.get('id'));
+    await user.update();
+    return await user.describe(describeParams(event, session));
 });

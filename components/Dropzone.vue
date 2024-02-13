@@ -2,8 +2,9 @@
     <form class="dropzone">
         <!-- Not displayed, just for Dropzone's `dictDefaultMessage` option -->
         <div id="dropzone-message" style="display: none">
-            <span class="dropzone-title">Drop files here or click to select</span>
-            <span class="dropzone-info">You can upload multiple files at once</span>
+            <div class="dropzone-title">Drop files here or click to select.</div>
+            <div class="dropzone-info">{{ info }}</div>
+            <div>Accepted file types are: <b>{{ acceptedFiles.join(', ') }}</b></div>
         </div>
     </form>
 </template>
@@ -15,17 +16,62 @@ import '../node_modules/dropzone/dist/dropzone.css'
 Dropzone.autoDiscover = false
 
 const getSignedURL = async (file) => {
-    const response = await $fetch('/api/upload', {
+    const response = await useRest('/api/s3file?includeMeta=true', {
         method: 'POST', body: {
             contentType: file.type,
             filename: file.name,
+            sizeInBytes: file.size,
         }
-    })
-    return response;
+    });
+    return response.data;
 };
 
 export default {
     name: 'dropzone',
+    props: {
+        afterUpload: {
+            type: Function,
+            required: true,
+        },
+        info: {
+            type: String,
+        },
+        resizeWidth: {
+            type: Number,
+            default: null,
+        },
+        resizeHeight: {
+            type: Number,
+            default: null,
+        },
+        resizeMethod: {
+            type: String,
+            default: "contain",
+        },
+        resizeQuality: {
+            type: Number,
+            default: 1,
+        },
+        maxFilesize: {
+            type: Number,
+            default: 100000000,
+        },
+        maxFiles: {
+            type: Number,
+            default: null,
+        },
+        acceptedFiles: {
+            type: Array,
+            default: () => ['.png', '.jpg'],
+            validator(value, props) {
+                for (const type of value) {
+                    if (!type.match(/^\./))
+                        return false;
+                }
+                return true;
+            },
+        },
+    },
     mounted() {
         const vm = this
 
@@ -45,6 +91,15 @@ export default {
                 }
             },
 
+            // apply props for some settings
+            acceptedFiles: vm.acceptedFiles.join(', '),
+            maxFiles: vm.maxFiles,
+            maxFilesize: vm.maxFilesize,
+            resizeWidth: vm.resizeWidth,
+            resizeHeight: vm.resizeHeight,
+            resizeMethod: vm.resizeMethod,
+            resizeQuality: vm.resizeQuality,
+
             // Upload one file at a time since we're using the S3 pre-signed URL scenario
             parallelUploads: 1,
             uploadMultiple: false,
@@ -62,9 +117,10 @@ export default {
             // Here we request a signed upload URL when a file being accepted
             accept(file, done) {
                 getSignedURL(file)
-                    .then((url) => {
-                        file.uploadURL = url
-                        done()
+                    .then((s3file) => {
+                        file.uploadURL = s3file?.meta?.presignedUrl;
+                        file.s3file = s3file;
+                        done();
                         // Manually process each file
                         setTimeout(() => vm.dropzone.processFile(file))
                     })
@@ -74,7 +130,7 @@ export default {
             },
 
             success: file => {
-                console.log('uploaded', file)
+                vm.afterUpload(file.s3file, file);
             }
         }
 
@@ -83,40 +139,15 @@ export default {
 
         // Set signed upload URL for each file
         vm.dropzone.on('processing', (file) => {
-            vm.dropzone.options.url = file.uploadURL
-        })
+            vm.dropzone.options.url = file.uploadURL;
+        });
+
+        vm.dropzone.on('complete', (file) => {
+            vm.dropzone.removeFile(file);
+        });
     }
 }
 
 </script>
   
-<style>
-/*
-  primaryBlue = #3498db
-  
-  form.dropzone
-    transition all 0.2s linear
-    border 2px dashed #ccc
-    background-color #fafafa
-    min-height initial
-    &:hover
-      border-color primaryBlue
-      background-color white
-      .dz-message
-        .dropzone-title
-          color primaryBlue
-    .dz-message
-      color #666
-      span
-        line-height 1.8
-        font-size 13px
-        letter-spacing 0.4px
-        span.dropzone-title
-          display block
-          color #888
-          font-size 1.25em
-        span.dropzone-info
-          display block
-          color #a8a8a8
-          */
-</style>
+<style></style>

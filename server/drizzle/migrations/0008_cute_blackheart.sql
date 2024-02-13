@@ -1,0 +1,2 @@
+ALTER TABLE `s3files` ADD `contentType` varchar(256) DEFAULT '' NOT NULL;--> statement-breakpoint
+ALTER TABLE `s3files` ADD `status` enum('pending','postProcessed','postProcessingFailed') DEFAULT 'pending' NOT NULL;

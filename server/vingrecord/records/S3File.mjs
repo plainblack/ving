@@ -2,15 +2,88 @@ import { VingRecord, VingKind } from "../VingRecord.mjs";
 import { useDB } from '../../drizzle/db.mjs';
 import { S3FileTable } from '../../drizzle/schema/S3File.mjs';
 import { useUsers } from './User.mjs';
+import { ouch } from '../../utils/ouch.mjs';
 import { v4 } from 'uuid';
 import sanitize from 'sanitize-filename';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-export const sanitizeFilename = sanitize;
+export const extensionMap = {
+    mp3: 'audio',
+    wav: 'audio',
+    js: 'code',
+    ts: 'code',
+    pl: 'code',
+    mjs: 'code',
+    cjs: 'code',
+    yaml: 'config',
+    json: 'config',
+    ini: 'config',
+    config: 'config',
+    css: 'config',
+    rtf: 'document',
+    pdf: 'document',
+    doc: 'document',
+    docx: 'document',
+    pages: 'document',
+    odt: 'document',
+    ttf: 'font',
+    otf: 'font',
+    tif: 'image',
+    jpg: 'image',
+    jpeg: 'image',
+    tiff: 'image',
+    gif: 'image',
+    png: 'image',
+    psd: 'image',
+    bmp: 'image',
+    xml: 'markup',
+    html: 'markup',
+    php: 'markup',
+    njk: 'markup',
+    ppt: 'presentation',
+    odp: 'presentation',
+    keynote: 'presentation',
+    xls: 'spreadsheet',
+    csv: 'spreadsheet',
+    xlsx: 'spreadsheet',
+    ods: 'spreadsheet',
+    md: 'text',
+    txt: 'text',
+    svg: 'vector',
+    ai: 'vector',
+    ps: 'vector',
+    mp4: 'video',
+    mov: 'video',
+    avi: 'video',
+    gif: 'video',
+    zip: 'archive',
+    rar: 'archive',
+    gz: 'archive',
+    tar: 'archive',
+    exe: 'disc',
+    dmg: 'disc',
+    msi: 'disc',
+};
+
+export const getExtension = (filename) => {
+    const match = filename.toLowerCase().match(/^.*\.(\w*)$/);
+    return match[1];
+}
+
+export const sanitizeFilename = (nameIn) => {
+    const nameOut = sanitize(nameIn);
+    const ext = getExtension(nameOut);
+    const allowedExtensions = Object.keys(extensionMap);
+    if (!ext)
+        throw ouch(415, 'The file does not appear to have a file extension.');
+    else if (!(allowedExtensions.includes(ext)))
+        throw ouch(415, `The extension ${ext} is not one of the allowed file extensions.`, allowedExtensions);
+    return nameOut;
+};
 
 export const formatS3FolderName = (input) => {
-    return input.replace(/-/g, '/').replace(/^(.{4})(.+)$/, '$1/$2')
+    return input.replace(/-/g, '/').replace(/^(.{4})(.+)$/, '$1/$2');
 }
 
 export const makeS3FolderName = () => {
@@ -19,71 +92,18 @@ export const makeS3FolderName = () => {
 
 export class S3FileRecord extends VingRecord {
 
-    get fileUrl() {
-        return `https://${process.env.AWS_FILES_BUCKET}.s3.amazonaws.com/${this.s3folder}/${this.filename}`;
+    fileUrl() {
+        return `https://${process.env.AWS_UPLOADS_BUCKET}.s3.amazonaws.com/${this.get('s3folder')}/${this.get('filename')}`;
     }
 
-    get thumbnailUrl() {
+    thumbnailUrl() {
         switch (this.get('icon')) {
             case 'self':
                 return this.fileUrl();
             case 'thumbnail':
                 return `https://${process.env.AWS_THUMBNAILS_BUCKET}.s3.amazonaws.com/${formatS3FolderName(this.get('id'))}.png`;
             case 'extension': {
-                const extmap = {
-                    mp3: 'audio',
-                    wav: 'audio',
-                    js: 'code',
-                    ts: 'code',
-                    pl: 'code',
-                    mjs: 'code',
-                    cjs: 'code',
-                    yaml: 'config',
-                    json: 'config',
-                    ini: 'config',
-                    config: 'config',
-                    css: 'config',
-                    rtf: 'document',
-                    pdf: 'document',
-                    doc: 'document',
-                    docx: 'document',
-                    pages: 'document',
-                    odt: 'document',
-                    ttf: 'font',
-                    otf: 'font',
-                    tif: 'image',
-                    tiff: 'image',
-                    psd: 'image',
-                    bmp: 'image',
-                    xml: 'markup',
-                    html: 'markup',
-                    php: 'markup',
-                    njk: 'markup',
-                    ppt: 'presentation',
-                    odp: 'presentation',
-                    keynote: 'presentation',
-                    xls: 'spreadsheet',
-                    csv: 'spreadsheet',
-                    xlsx: 'spreadsheet',
-                    ods: 'spreadsheet',
-                    md: 'text',
-                    txt: 'text',
-                    svg: 'vector',
-                    ai: 'vector',
-                    ps: 'vector',
-                    mp4: 'video',
-                    mov: 'video',
-                    avi: 'video',
-                    gif: 'video',
-                    zip: 'archive',
-                    rar: 'archive',
-                    gz: 'archive',
-                    tar: 'archive',
-                    exe: 'disc',
-                    dmg: 'disc',
-                    msi: 'disc',
-                };
-                const image = extmap[this.extension] || 'unknown';
+                const image = extensionMap[this.extension()] || 'unknown';
                 return `/img/filetype/${image}.png`;
             }
             default:
@@ -91,21 +111,55 @@ export class S3FileRecord extends VingRecord {
         }
     }
 
-    get extension() {
-        const match = this.get('filename').toLowerCase().match(/^.*\.(\w*)$/);
-        return match[1];
+    extension() {
+        return getExtension(this.get('filename'));
     }
 
     async describe(params = {}) {
         const out = await super.describe(params);
         if (params?.include?.meta && out.meta) {
             if (this.isOwner(params?.currentUser)) {
-                out.meta.fileUrl = this.fileUrl;
+                out.meta.fileUrl = this.fileUrl();
             }
-            out.meta.thumbnailUrl = this.thumbnailUrl;
-            out.meta.extension = this.extension;
+            out.meta.thumbnailUrl = this.thumbnailUrl();
+            out.meta.extension = this.extension();
         }
         return out;
+    }
+
+    async postProcessFile() {
+        const self = this;
+        let body = {};
+        try {
+            const response = await fetch(process.env.LAMBDA_PROCESS_UPLOADS_URL, {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    url: self.fileUrl(),
+                    id: self.get('id'),
+                    fileType: self.extension(),
+                }),
+            });
+            body = await response.json();
+        }
+        catch (e) {
+            self.status = 'postProcessingFailed';
+            await self.update();
+            console.error(`Could not post process ${self.get('id')}`, e);
+            throw ouch(504, `Could not post process ${self.get('filename')}.`);
+        }
+        if (body.thumbnail) {
+            self.set('icon', 'thumbnail');
+            delete body.thumbnail;
+        }
+        if (body.sizeInBytes) {
+            self.set('sizeInBytes', body.sizeInBytes);
+            delete body.sizeInBytes;
+        }
+        self.metadata = self.body;
+        self.status = 'ready';
+        await self.update();
+        return body;
     }
 
     // User - parent relationship

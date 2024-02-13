@@ -46,10 +46,10 @@ export const useCurrentUserStore = defineStore('currentUser', {
             this.setState({});
             return response;
         },
-        async importAvatar() {
+        async importAvatar(s3file) {
             const response = await useRest(this.links.self + '/import-avatar', {
                 method: 'put',
-                body: this.props,
+                body: { s3FileId: s3file.props.id },
                 query,
             });
             this.setState(response.data)
