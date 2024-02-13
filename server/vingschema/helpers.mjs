@@ -55,7 +55,7 @@ export const zodNumber = (prop) => {
 }
 
 export const zodJsonObject = (prop) => {
-    return zodString(prop).startsWith('{').endsWith('}').or(z.object());
+    return z.string().startsWith('{').endsWith('}').or(z.object({}));
 }
 
 export const zodText = (prop) => {
