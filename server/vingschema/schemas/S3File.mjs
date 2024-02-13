@@ -55,7 +55,7 @@ export const s3fileSchema = {
             required: false,
             default: '{}',
             db: (prop) => dbJson(prop),
-            zod: (prop) => zodJsonObject(prop),
+            zod: (prop) => zodJsonObject(prop).passthrough(),
             view: ['public'],
             edit: [],
         },

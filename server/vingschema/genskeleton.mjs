@@ -89,7 +89,7 @@ export const ${name.toLowerCase()}Schema = {
             required: false,
             default: '{}',
             db: (prop) => dbJson(prop),
-            zod: (prop) => zodString(prop).startsWith('{').endsWith('}').or(z.object()),
+            zod: (prop) => zodJsonObject(prop).passthrough(), // or replace .passthrough() with something like .extends({foo: z.string()})
             view: ['public'],
             edit: [],
         },
