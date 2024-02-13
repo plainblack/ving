@@ -33,7 +33,7 @@ export const handler = async (event) => {
 };
 
 function formatError(message, code = 500) {
-    return {
+    return context.succeed({
         statusCode: code,
         body: {
             error: {
@@ -41,7 +41,7 @@ function formatError(message, code = 500) {
                 message
             }
         }
-    }
+    })
 }
 
 function formatResponse(body) {
