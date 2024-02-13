@@ -12,7 +12,7 @@ export const S3FileTable = mysqlTable('s3files',
 		s3folder: varchar('s3folder', { length: 256 }).notNull().default(''),
 		sizeInBytes: int('sizeInBytes').notNull().default(0),
 		metadata: json('metadata').notNull().default({}),
-		status: mysqlEnum('status', ['pending','postProcessed','postProcessingFailed']).notNull().default('pending'),
+		status: mysqlEnum('status', ['pending','ready','postProcessingFailed']).notNull().default('pending'),
 		icon: mysqlEnum('icon', ['pending','thumbnail','extension','self']).notNull().default('pending'),
 		userId: varchar('userId', { length: 36 }).notNull().references(() => UserTable.id, {onDelete: "cascade", onUpdate: "cascade"})
     }, 

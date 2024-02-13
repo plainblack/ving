@@ -64,6 +64,13 @@
       "when": 1707762752993,
       "tag": "0008_cute_blackheart",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1707852363353,
+      "tag": "0009_solid_guardian",
+      "breakpoints": true
     }
   ]
 }
