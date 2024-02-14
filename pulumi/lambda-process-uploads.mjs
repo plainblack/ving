@@ -47,6 +47,7 @@ export const createLambdaProcessUploads = () => {
             "index.mjs": new pulumi.asset.FileAsset('./aws/lambda/func/processUpload/index.mjs'),
         }),
         timeout: 60,
+        memorySize: 512,
         layers: [nodeModsLayer.arn],
         role: iamForLambda.arn,
     });
