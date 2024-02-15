@@ -16,8 +16,8 @@ Subsystems
  - [Ving Schema](ving-schema.html)
 
 Rest APIs
- - [API Key](apikey.html)
- - [S3File](s3file.html)
- - [Session](session.html)
- - [Test](test.html)
- - [User](user.html)
+ - [API Key](APIKey.html)
+ - [S3File](S3file.html)
+ - [Session](Session.html)
+ - [Test](Test.html)
+ - [User](User.html)
