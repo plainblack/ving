@@ -129,9 +129,10 @@ export class S3FileRecord extends VingRecord {
 
     async postProcessFile() {
         const self = this;
-        let body = {};
+        let response = null;
+        let metadata = {};
         try {
-            const response = await fetch(process.env.LAMBDA_PROCESS_UPLOADS_URL, {
+            response = await fetch(process.env.LAMBDA_PROCESS_UPLOADS_URL, {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -140,26 +141,30 @@ export class S3FileRecord extends VingRecord {
                     fileType: self.extension(),
                 }),
             });
-            body = await response.json();
+            metadata = await response.json();
+            if (metadata.error) {
+                throw ouch(metadata.error.code, metadata.error.message);
+            }
         }
         catch (e) {
-            self.status = 'postProcessingFailed';
+            self.set('status', 'postProcessingFailed');
             await self.update();
-            console.error(`Could not post process ${self.get('id')}`, e);
+            console.error(`Could not post process ${self.get('id')} because ${response.statusText}`, { response, error: e });
+            //console.debug(response);
             throw ouch(504, `Could not post process ${self.get('filename')}.`);
         }
-        if (body.thumbnail) {
+        if (metadata.thumbnail) {
             self.set('icon', 'thumbnail');
-            delete body.thumbnail;
+            delete metadata.thumbnail;
         }
-        if (body.sizeInBytes) {
-            self.set('sizeInBytes', body.sizeInBytes);
-            delete body.sizeInBytes;
+        if (metadata.sizeInBytes) {
+            self.set('sizeInBytes', metadata.sizeInBytes);
+            delete metadata.sizeInBytes;
         }
-        self.metadata = self.body;
-        self.status = 'ready';
+        self.set('metadata', metadata);
+        self.set('status', 'ready');
         await self.update();
-        return body;
+        return metadata;
     }
 
     // User - parent relationship
