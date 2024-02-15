@@ -11,12 +11,13 @@ export default defineEventHandler(async (event) => {
 
 const indexPostTemplate = ({ name }) =>
     `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
-import { describeParams, getBody, obtainSession } from '../../utils/rest.mjs';
+import { describeParams, getBody, obtainSessionIfRole } from '../../utils/rest.mjs';
 import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name}s = use${name}s();
-    const ${name.toLowerCase()} = await ${name}s.createAndVerify(await getBody(event), obtainSession(event));
-    return ${name.toLowerCase()}.describe(describeParams(event));
+    const session = obtainSessionIfRole(event, 'verifiedEmail');
+    const ${name.toLowerCase()} = await ${name}s.createAndVerify(await getBody(event), session);
+    return ${name.toLowerCase()}.describe(describeParams(event, session));
 });`;
 
 const indexGetTemplate = ({ name }) =>
