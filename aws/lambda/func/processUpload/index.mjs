@@ -40,6 +40,7 @@ export const handler = async (event) => {
         }
     }
     catch (e) {
+        console.error(e);
         out = formatError(`Unable to process url ${url} of type ${fileType} for id ${id}, because ${JSON.stringify(e)}`);
     }
     return out;
@@ -91,8 +92,11 @@ async function getImageInfo(url, id) {
     const out = sizeOf(filePath);
     if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'tif', 'tiff'].includes(out.type)) {
         const image = await Jimp.read(filePath);
-        await image.resize(out.width > out.height ? 300 : Jimp.AUTO, out.width < out.height ? 300 : Jimp.AUTO).write('/tmp/thumbnail.png');
-        await uploadThumbnail('/tmp/thumbnail.png', `${id}.png`, process.env.AWS_THUMBNAILS_BUCKET);
+        await image.resize(out.width > out.height ? 300 : Jimp.AUTO, out.width < out.height ? 300 : Jimp.AUTO);
+        await image.writeAsync('/tmp/thumbnail.png');
+        if (!fs.existsSync('/tmp/thumbnail.png'))
+            return formatError(`Could not create thumbnail from ${url}`);
+        await uploadThumbnail('/tmp/thumbnail.png', `${id}.png`);
         out.thumbnail = true;
     }
     delete out.type;
@@ -126,11 +130,11 @@ async function getPdfInfo(url) {
     };
 }
 
-async function uploadThumbnail(filePath, fileName, bucketName) {
+async function uploadThumbnail(filePath, fileName) {
     const fileContent = fs.readFileSync(filePath);
-    const s3Client = new S3Client({});
+    const s3Client = new S3Client();
     await s3Client.send(new PutObjectCommand({
-        Bucket: bucketName,
+        Bucket: process.env.AWS_THUMBNAILS_BUCKET,
         Key: fileName,
         Body: fileContent,
         ContentType: 'image/png',
