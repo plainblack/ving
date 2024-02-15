@@ -168,11 +168,6 @@ export class S3FileRecord extends VingRecord {
         return metadata;
     }
 
-    // User - parent relationship
-    get user() {
-        return useUsers().findOrDie(this.get('userId'));
-    }
-
     async verifyExactDimensions(width, height) {
         const metadata = this.get('metadata');
         if (width != metadata.width || height != metadata.height)
@@ -192,6 +187,22 @@ export class S3FileRecord extends VingRecord {
         // future: kick off deletion process
         console.log(`S3File ${this.get('id')} unverified because ${error}.`);
         throw ouch('442', error)
+    }
+
+    // User - parent relationship
+    get user() {
+        return useUsers().findOrDie(this.get('userId'));
+    }
+
+    // Users that have S3Files attached as avatars.
+    get avatarUsers() {
+        const users = useUsers();
+        users.propDefaults.push({
+            prop: 'avatarId',
+            field: users.table.avatarId,
+            value: this.get('id')
+        });
+        return users;
     }
 
 }

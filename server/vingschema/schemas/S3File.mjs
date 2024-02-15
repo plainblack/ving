@@ -98,5 +98,17 @@ export const s3fileSchema = {
             view: ['public'],
             edit: ['owner'],
         },
+        {
+            type: "virtual",
+            name: 'avatarUsers',
+            required: false,
+            view: ['public'],
+            edit: [],
+            relation: {
+                type: 'child',
+                name: 'avatarUsers',
+                kind: 'User',
+            },
+        },
     ],
 };
