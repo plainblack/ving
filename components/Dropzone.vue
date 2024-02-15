@@ -82,13 +82,10 @@ export default {
             // Since we're going to do a `PUT` upload to S3 directly
             method: 'put',
 
-            // Hijack the xhr.send since Dropzone always upload file by using formData
-            // ref: https://github.com/danialfarid/ng-file-upload/issues/743
+            // https://github.com/kfei/vue-s3-dropzone/issues/4#issuecomment-388421301
             sending(file, xhr) {
-                let _send = xhr.send
-                xhr.send = () => {
-                    _send.call(xhr, file)
-                }
+                const _send = xhr.send;
+                xhr.send = formData => _send.call(xhr, formData.get('file'));
             },
 
             // apply props for some settings
