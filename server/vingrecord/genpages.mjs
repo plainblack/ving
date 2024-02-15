@@ -302,7 +302,7 @@ const breadcrumbs = [
 ];
 </script>`;
 
-export const generatePages = (params) => {
+export const generateWeb = (params) => {
     const context = { ...getContext({}), ...params };
     return Promise.resolve(context)
         .then(renderTemplate(indexTemplate, toFile(`pages/${context.name.toLowerCase()}/index.vue`)))

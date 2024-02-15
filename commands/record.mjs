@@ -1,7 +1,7 @@
 import { defineCommand } from "citty";
 import { generateRecord } from '../server/vingrecord/genskeleton.mjs';
-import { generateApis } from '../server/vingrecord/genrest.mjs';
-import { generatePages } from '../server/vingrecord/genpages.mjs';
+import { generateRest } from '../server/vingrecord/genrest.mjs';
+import { generateWeb } from '../server/vingrecord/genpages.mjs';
 import { findVingSchema } from '../server/vingrecord/VingRecord.mjs';
 
 export default defineCommand({
@@ -34,10 +34,10 @@ export default defineCommand({
             await generateRecord({ name: args.new, schema: findVingSchema(args.new, 'kind') });
         }
         else if (args.rest) {
-            await generateApis({ name: args.rest, schema: findVingSchema(args.rest, 'kind') });
+            await generateRest({ name: args.rest, schema: findVingSchema(args.rest, 'kind') });
         }
         else if (args.web) {
-            await generatePages({ name: args.web, schema: findVingSchema(args.web, 'kind') });
+            await generateWeb({ name: args.web, schema: findVingSchema(args.web, 'kind') });
         }
     },
 });

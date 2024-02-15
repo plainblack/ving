@@ -91,7 +91,7 @@ export default defineEventHandler(async (event) => {
     return await ${prop.relation.name}.describe(describeParams(event));
 });`;
 
-export const generateApis = (params) => {
+export const generateRest = (params) => {
     const context = { ...getContext({}), ...params };
     const folderName = context.name.toLowerCase();
     const gen = Promise.resolve(context)
