@@ -152,6 +152,12 @@
 <td>Child</td>
 <td>/api/user/:id/apikeys</td>
 </tr>
+<tr>
+<td>avatar</td>
+<td><a href="S3File.html">S3File</a></td>
+<td>Child</td>
+<td>/api/user/:id/avatar</td>
+</tr>
 </tbody>
 </table>
 <h2 id="endpoints" tabindex="-1">Endpoints <a class="header-anchor" href="#endpoints">
@@ -197,7 +203,7 @@ Cookie: vingSessionId=xxx
 <h3 id="import-avatar" tabindex="-1">Import Avatar <a class="header-anchor" href="#import-avatar">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
-<p>Attach an uploaded <code>S3File</code> to this user as an avatar.</p>
+<p>Attach an uploaded <a href="S3File.html">S3File</a> to this user as an avatar.</p>
 <pre><code>PUT /api/user/:id/import-avatar
 Cookie: vingSessionId=xxx
 

@@ -18,6 +18,7 @@ Users can own records in ving. Users have privileges to access various types of 
 | Name      | Record                        | Type      | Endpoint              |
 | ---       | ---                           | ---       | ---                   |
 | apikeys   | [APIKey](APIKey.html)   | Child     | /api/user/:id/apikeys |
+| avatar   | [S3File](S3File.html)   | Child     | /api/user/:id/avatar |
 
 ## Endpoints
 
@@ -60,7 +61,7 @@ Cookie: vingSessionId=xxx
 ```
 
 ### Import Avatar
-Attach an uploaded `S3File` to this user as an avatar.
+Attach an uploaded [S3File](S3File.html) to this user as an avatar.
 
 ```
 PUT /api/user/:id/import-avatar
