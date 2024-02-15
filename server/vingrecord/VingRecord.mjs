@@ -60,6 +60,9 @@ export const findPropInSchema = (name, props) => {
     return props.find(prop => prop.name == name);
 }
 
+/** The core of all functionality in ving where data, business logic, permissions meet to form web services and more. A good analagy is that Ving Kind is equivalent to a database table where a Ving Record is equivalent to a database row.
+ * @class
+ */
 export class VingRecord {
 
     #deleted = false;
@@ -486,6 +489,9 @@ export class VingRecord {
     }
 }
 
+/** The master class for Ving Records, that binds them all together and allows you to search for, update, and delete them. A good analagy is that Ving Kind is equivalent to a database table where a Ving Record is equivalent to a database row.
+ * @class
+ */
 export class VingKind {
 
     /**
