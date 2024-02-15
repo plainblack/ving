@@ -242,13 +242,17 @@ export class S3FileRecord extends VingRecord {
          * 
          * @param width The width in pixels this image should be.
          * @param height The height in pxiels this image should be.
+         * @param errorOnly A boolean that if true will skip marking the file as 
+         * failing verified and will also skip deletion. Useful when you are allowing
+         * reuse of files and don't wish to delete files just due to failing verification
+         * in one use case. Defaults to `false`.
          * @throws 442 if the dimensions do not match
          * @returns `true` if successful.
          */
-    async verifyExactDimensions(width, height) {
+    async verifyExactDimensions(width, height, errorOnly = false) {
         const metadata = this.get('metadata');
         if (width != metadata.width || height != metadata.height)
-            await this.markUnverified(`${this.get('filename')} should be ${width}x${height}, but was ${metadata.width}x${metadata.height}.`);
+            await this.markUnverified(`${this.get('filename')} should be ${width}x${height}, but was ${metadata.width}x${metadata.height}.`, errorOnly);
         return true;
     }
 
@@ -259,12 +263,16 @@ export class S3FileRecord extends VingRecord {
          * Usage: `await s3file.verifyExtension(['png','gif','jpeg','jpg'])`
          * 
          * @param whitelist An array of allowed file extensions
+         * @param errorOnly A boolean that if true will skip marking the file as 
+         * failing verified and will also skip deletion. Useful when you are allowing
+         * reuse of files and don't wish to delete files just due to failing verification
+         * in one use case. Defaults to `false`.
          * @throws 442 if the extension is not in the whitelist
          * @returns `true` if successful.
          */
-    async verifyExtension(whitelist) {
+    async verifyExtension(whitelist, errorOnly = false) {
         if (!whitelist.includes(this.get('extension')))
-            await this.markUnverified(`${this.get('filename')} needs to be one of ${whitelist.join(', ')}.`);
+            await this.markUnverified(`${this.get('filename')} needs to be one of ${whitelist.join(', ')}.`, errorOnly);
         return true;
     }
 
@@ -279,13 +287,19 @@ export class S3FileRecord extends VingRecord {
          * Usage: `await s3file.markUnverified('This file sucks!')`
          * 
          * @param error A message about why the file is being marked as a failure.
+         * @param errorOnly A boolean that if true will skip marking the file as 
+         * failing verified and will also skip deletion. Useful when you are allowing
+         * reuse of files and don't wish to delete files just due to failing verification
+         * in one use case. Defaults to `false`.
          * @throws 442
          * @returns `true` if successful.
          */
-    async markUnverified(error) {
-        this.set('status', 'verifyFailed');
-        await this.update();
-        // future: kick off deletion process
+    async markUnverified(error, errorOnly = false) {
+        if (!errorOnly) {
+            this.set('status', 'verifyFailed');
+            await this.update();
+            // future: kick off deletion process
+        }
         console.log(`S3File ${this.get('id')} unverified because ${error}.`);
         throw ouch('442', error)
     }
