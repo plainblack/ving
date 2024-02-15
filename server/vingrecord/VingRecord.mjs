@@ -82,7 +82,7 @@ export class VingRecord {
     warnings = [];
 
     /**
-     * Constructor. You'll almost never call this directly, but instead it will be called by a subclass of VingKind.
+     * You'll almost never call this directly, but instead it will be called by a subclass of VingKind.
      * 
      * Usage: `const user = new UserRecord(db, UsersTable)`
      * 
@@ -519,7 +519,7 @@ export class VingKind {
      */
     get update() { return this.db.update(this.table) }
 
-    /** Constructor
+    /**
      * 
      * Usage: `const users = UserKind(db, UsersTable, UserRecord)`
      * 
