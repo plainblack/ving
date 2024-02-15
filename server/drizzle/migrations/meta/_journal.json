@@ -71,6 +71,13 @@
       "when": 1707852363353,
       "tag": "0009_solid_guardian",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1707972541315,
+      "tag": "0010_stiff_gwen_stacy",
+      "breakpoints": true
     }
   ]
 }
