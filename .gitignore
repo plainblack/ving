@@ -9,3 +9,4 @@ node_modules
 dist
 **/node_modules
 *.zip
+server/drizzle/migrations

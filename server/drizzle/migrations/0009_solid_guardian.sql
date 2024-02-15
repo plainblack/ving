@@ -1,1 +1,0 @@
-ALTER TABLE `s3files` MODIFY COLUMN `status` enum('pending','ready','postProcessingFailed') NOT NULL DEFAULT 'pending';
