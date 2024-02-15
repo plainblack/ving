@@ -236,7 +236,7 @@ export class S3FileRecord extends VingRecord {
 
     /**
          * Checks the dimensions of the image from the metadata and returns 
-         * true if they do or calls `markUnverified()` if they don't.
+         * true if they do or calls `markVerifiyFailed()` if they don't.
          * 
          * Usage: `await s3file.verifyExactDimensions(width, height)`
          * 
@@ -252,13 +252,13 @@ export class S3FileRecord extends VingRecord {
     async verifyExactDimensions(width, height, errorOnly = false) {
         const metadata = this.get('metadata');
         if (width != metadata.width || height != metadata.height)
-            await this.markUnverified(`${this.get('filename')} should be ${width}x${height}, but was ${metadata.width}x${metadata.height}.`, errorOnly);
+            await this.markVerifiyFailed(`${this.get('filename')} should be ${width}x${height}, but was ${metadata.width}x${metadata.height}.`, errorOnly);
         return true;
     }
 
     /**
          * Checks the extension of the file against a whitelist and returns 
-         * true if they do or calls `markUnverified()` if they don't.
+         * true if they do or calls `markVerifiyFailed()` if they don't.
          * 
          * Usage: `await s3file.verifyExtension(['png','gif','jpeg','jpg'])`
          * 
@@ -272,7 +272,7 @@ export class S3FileRecord extends VingRecord {
          */
     async verifyExtension(whitelist, errorOnly = false) {
         if (!whitelist.includes(this.get('extension')))
-            await this.markUnverified(`${this.get('filename')} needs to be one of ${whitelist.join(', ')}.`, errorOnly);
+            await this.markVerifiyFailed(`${this.get('filename')} needs to be one of ${whitelist.join(', ')}.`, errorOnly);
         return true;
     }
 
@@ -284,7 +284,7 @@ export class S3FileRecord extends VingRecord {
          * logs the failure, kicks off a background process to delete
          * the file, then throws a `442`.
          * 
-         * Usage: `await s3file.markUnverified('This file sucks!')`
+         * Usage: `await s3file.markVerifiyFailed('This file sucks!')`
          * 
          * @param error A message about why the file is being marked as a failure.
          * @param errorOnly A boolean that if true will skip marking the file as 
@@ -294,7 +294,7 @@ export class S3FileRecord extends VingRecord {
          * @throws 442
          * @returns `true` if successful.
          */
-    async markUnverified(error, errorOnly = false) {
+    async markVerifiyFailed(error, errorOnly = false) {
         if (!errorOnly) {
             this.set('status', 'verifyFailed');
             await this.update();
