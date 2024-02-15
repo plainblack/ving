@@ -11,29 +11,43 @@ import { finished } from 'stream/promises';
 import Jimp from "jimp";
 
 export const handler = async (event) => {
-    const input = JSON.parse(event.body) || event;
-    const url = input.url;
-    const fileType = input.fileType;
-    const id = input.id;
+    let input = {};
+    let url = '';
+    let fileType = '';
+    let id = '';
+    let out = { "statusCode": 500, "body": { "error": { "code": 500, message: "Failed to start process" } } };
     try {
-        if (['bmp', 'png', 'tiff', 'webp', 'tif', 'psd', 'svg', 'jpeg', 'jpg', 'gif', 'heic', 'heif', 'avci', 'avif', 'icns', 'ico', 'j2c', 'jp2', 'ktx', 'pnm', 'pam', 'pbm', 'pfm', 'pgm', 'ppm', 'tga', 'cur', 'dds'].includes(fileType)) {
-            return formatResponse(await getImageInfo(url));
-        }
-        else if (['pdf'].includes(fileType)) {
-            return formatResponse(await getPdfInfo(url));
-        }
-        else if (['zip'].includes(fileType)) {
-            return formatResponse(await getZipInfo(url));
-        }
-        return formatError(`File type ${fileType} cannot be processed by this service.`);
+        input = 'body' in event ? JSON.parse(event.body) : event;
+        url = input.url;
+        fileType = input.fileType;
+        id = input.id;
     }
     catch {
-        return formatError(`Unable to process url ${url} of type ${fileType} for id ${id}.`);
+        out = formatError('Unable to initialize post processing, perhaps you did not send a valid json body.')
     }
+    try {
+        if (['bmp', 'png', 'tiff', 'webp', 'tif', 'psd', 'svg', 'jpeg', 'jpg', 'gif', 'heic', 'heif', 'avci', 'avif', 'icns', 'ico', 'j2c', 'jp2', 'ktx', 'pnm', 'pam', 'pbm', 'pfm', 'pgm', 'ppm', 'tga', 'cur', 'dds'].includes(fileType)) {
+            out = formatResponse(await getImageInfo(url, id));
+        }
+        else if (['pdf'].includes(fileType)) {
+            out = formatResponse(await getPdfInfo(url));
+        }
+        else if (['zip'].includes(fileType)) {
+            out = formatResponse(await getZipInfo(url));
+        }
+        else {
+            out = formatError(`File type ${fileType} cannot be processed by this service.`);
+        }
+    }
+    catch (e) {
+        out = formatError(`Unable to process url ${url} of type ${fileType} for id ${id}, because ${JSON.stringify(e)}`);
+    }
+    return out;
 };
 
+
 function formatError(message, code = 500) {
-    return context.succeed({
+    return {
         statusCode: code,
         body: {
             error: {
@@ -41,7 +55,7 @@ function formatError(message, code = 500) {
                 message
             }
         }
-    })
+    }
 }
 
 function formatResponse(body) {
@@ -53,6 +67,8 @@ function formatResponse(body) {
 
 async function getZipInfo(url) {
     const filePath = await downloadFile(url);
+    if (!fs.existsSync(filePath))
+        return formatError(`Could not download file from ${url}`);
     const zip = new AdmZip(filePath);
     const zipEntries = zip.getEntries();
     const out = { files: [], sizeInBytes: getFileSize(filePath) };
@@ -68,13 +84,15 @@ async function getZipInfo(url) {
     return out;
 }
 
-async function getImageInfo(url) {
+async function getImageInfo(url, id) {
     const filePath = await downloadFile(url);
+    if (!fs.existsSync(filePath))
+        return formatError(`Could not download file from ${url}`);
     const out = sizeOf(filePath);
     if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'tif', 'tiff'].includes(out.type)) {
-        Jimp.read(filePath).then(image => {
-            image.resize(out.width > out.height ? 300 : Jimp.AUTO, out.width < out.height ? 300 : Jimp.AUTO).write('/tmp/thumbnail.png');
-        });
+        const image = await Jimp.read(filePath);
+        await image.resize(out.width > out.height ? 300 : Jimp.AUTO, out.width < out.height ? 300 : Jimp.AUTO).write('/tmp/thumbnail.png');
+        await uploadThumbnail('/tmp/thumbnail.png', `${id}.png`, process.env.AWS_THUMBNAILS_BUCKET);
         out.thumbnail = true;
     }
     delete out.type;

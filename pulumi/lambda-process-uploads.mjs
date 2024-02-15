@@ -4,7 +4,7 @@ import { local } from "@pulumi/command";
 //import * as archive from "@pulumi/archive";
 
 
-export const createLambdaProcessUploads = () => {
+export const createLambdaProcessUploads = (thumbnailsBucket) => {
     const projectName = pulumi.getProject();
 
     const createNodeModsZip = new local.Command('createNodeModsZip', {
@@ -48,6 +48,11 @@ export const createLambdaProcessUploads = () => {
         }),
         timeout: 60,
         memorySize: 512,
+        environment: {
+            variables: {
+                AWS_THUMBNAILS_BUCKET: thumbnailsBucket.id.apply(id => `"${id}"`),
+            }
+        },
         layers: [nodeModsLayer.arn],
         role: iamForLambda.arn,
     });

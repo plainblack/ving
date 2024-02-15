@@ -5,7 +5,7 @@ import { updateEnv } from './pulumi/env.mjs';
 
 const { uploadsBucket, uploadsAccessKey } = createUploads();
 const thumbnailsBucket = createThumbnails();
-const processUploadsFunctionUrl = createLambdaProcessUploads();
+const processUploadsFunctionUrl = createLambdaProcessUploads(thumbnailsBucket);
 updateEnv({
     uploadsBucket,
     uploadsAccessKey,
