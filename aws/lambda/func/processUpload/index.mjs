@@ -92,7 +92,7 @@ async function getImageInfo(url, id) {
     const out = sizeOf(filePath);
     if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'tif', 'tiff'].includes(out.type)) {
         const image = await Jimp.read(filePath);
-        await image.resize(out.width > out.height ? 300 : Jimp.AUTO, out.width < out.height ? 300 : Jimp.AUTO);
+        await image.resize(out.width > out.height ? 300 : Jimp.AUTO, out.width > out.height ? Jimp.AUTO : 300);
         await image.writeAsync('/tmp/thumbnail.png');
         if (!fs.existsSync('/tmp/thumbnail.png'))
             return formatError(`Could not create thumbnail from ${url}`);
