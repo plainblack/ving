@@ -283,14 +283,14 @@ export class VingRecord {
     /**
      * Returns a record related to this record by relationship name
      * 
-     * Usage: `const user = apikey.parent('user')`
+     * Usage: `const user = await apikey.parent('user')`
      * 
      * @param name The relationship name
      * @returns A record related to the this record
      */
-    parent(name) {
+    async parent(name) {
         try {
-            return this[name]
+            return await this[name]()
         }
         catch {
             const schema = findVingSchema(getTableName(this.table))

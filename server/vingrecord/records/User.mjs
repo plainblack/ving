@@ -51,7 +51,7 @@ export class UserRecord extends RoleMixin(VingRecord) {
             }
             case 'uploaded': {
                 if (this.get('avatarId')) {
-                    const avatar = await this.avatar;
+                    const avatar = await this.avatar();
                     return avatar.fileUrl();
                 }
                 else {
@@ -114,20 +114,6 @@ export class UserRecord extends RoleMixin(VingRecord) {
         return true;
     }
 
-    get apikeys() {
-        const apikeys = useAPIKeys();
-        apikeys.propDefaults.push({
-            prop: 'userId',
-            field: apikeys.table.userId,
-            value: this.get('id')
-        });
-        return apikeys;
-    }
-
-    get avatar() {
-        return useS3Files().findOrDie(this.get('avatarId'));
-    }
-
     async update() {
         if (this.userChanged)
             await useCache().set('user-changed-' + this.get('id'), true, 1000 * 60 * 60 * 24 * 7);
@@ -143,6 +129,20 @@ export class UserRecord extends RoleMixin(VingRecord) {
         if (key in ['password', ...RoleOptions])
             this.userChanged = true;
         return super.set(key, value);
+    }
+
+    get apikeys() {
+        const apikeys = useAPIKeys();
+        apikeys.propDefaults.push({
+            prop: 'userId',
+            field: apikeys.table.userId,
+            value: this.get('id')
+        });
+        return apikeys;
+    }
+
+    async avatar() {
+        return await useS3Files().findOrDie(this.get('avatarId'));
     }
 }
 

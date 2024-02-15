@@ -26,8 +26,8 @@ const childTemplate = ({ name, prop }) => `
 
 const parentTemplate = ({ prop }) => `
     // ${prop.relation.kind} - parent relationship
-    get ${prop.relation.name}() {
-        return use${prop.relation.kind}s().findOrDie(this.get('${prop.name}'));
+    async ${prop.relation.name}() {
+        return await use${prop.relation.kind}s().findOrDie(this.get('${prop.name}'));
     }
 `;
 

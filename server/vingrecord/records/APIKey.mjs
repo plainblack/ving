@@ -6,8 +6,8 @@ import { useUsers } from './User.mjs'
 export class APIKeyRecord extends VingRecord {
     // add custom Record code here
 
-    get user() {
-        return useUsers().findOrDie(this.get('userId'));
+    async user() {
+        return await useUsers().findOrDie(this.get('userId'));
     }
 
 }

@@ -305,21 +305,21 @@ export class S3FileRecord extends VingRecord {
     }
 
     /**
-         * A relationship to a `UserRecord` that owns this file.
+         * A parent relationship to a `UserRecord` that owns this file.
          * 
-         * Usage: `const user = await s3file.user`
+         * Usage: `const user = await s3file.user()`
          * 
          * @throws 404 if the user cannot be found
          * @returns A `User` instance
          */
-    get user() {
-        return useUsers().findOrDie(this.get('userId'));
+    async user() {
+        return await useUsers().findOrDie(this.get('userId'));
     }
 
     /**
-         * A relationship to `UserKind` that use this file as an avatar
+         * A child relationship to `UserKind` that use this file as an avatar
          * 
-         * Usage: `const users = await s3file.avatarUsers`
+         * Usage: `const users = await s3file.avatarUsers.findMany()`
          * 
          * @returns UserKind
          */
