@@ -1,5 +1,5 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { useS3Files, sanitizeFilename, makeS3FolderName } from '../../vingrecord/records/S3File.mjs';
+import { useS3Files, sanitizeFilename, makeS3FolderName, getExtension } from '../../vingrecord/records/S3File.mjs';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { getBody, obtainSessionIfRole, describeParams } from '../../utils/rest.mjs';
 import { defineEventHandler } from 'h3';
@@ -20,6 +20,7 @@ export default defineEventHandler(async (event) => {
         userId: session.get('id'),
         filename: sanitizeFilename(body.filename),
         s3folder: makeS3FolderName(),
+        extension: getExtension(body.filename),
         contentType: body.contentType,
         sizeInBytes: body.sizeInBytes,
     };

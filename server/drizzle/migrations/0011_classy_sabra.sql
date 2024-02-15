@@ -1,0 +1,1 @@
+ALTER TABLE `s3files` ADD `extension` varchar(10) DEFAULT '' NOT NULL;

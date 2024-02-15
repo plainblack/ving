@@ -156,7 +156,7 @@ export class S3FileRecord extends VingRecord {
             case 'thumbnail':
                 return `https://${process.env.AWS_THUMBNAILS_BUCKET}.s3.amazonaws.com/${formatS3FolderName(this.get('id'))}.png`;
             case 'extension': {
-                const image = extensionMap[this.extension()] || 'unknown';
+                const image = extensionMap[this.get('extension')] || 'unknown';
                 return `/img/filetype/${image}.png`;
             }
             default:
@@ -165,20 +165,8 @@ export class S3FileRecord extends VingRecord {
     }
 
     /**
-         * Gets the extension for this this S3File.
-         * 
-         * Usage: `const extension = s3file.extension()`
-         * 
-         * @returns A string containing the file extension.
-         */
-    extension() {
-        return getExtension(this.get('filename'));
-    }
-
-    /**
      * Generates a description of this S3File beyond the normal VingRecord
-     * description. This includes the `meta` fields `fileUrl`, `thumbnailUrl`,
-     * and `extension`.
+     * description. This includes the `meta` fields `fileUrl` and `thumbnailUrl`.
      * 
      * Usage: `const description = await s3file.describe()`
      * 
@@ -193,7 +181,6 @@ export class S3FileRecord extends VingRecord {
                 out.meta.fileUrl = this.fileUrl();
             }
             out.meta.thumbnailUrl = this.thumbnailUrl();
-            out.meta.extension = this.extension();
         }
         return out;
     }
@@ -217,7 +204,7 @@ export class S3FileRecord extends VingRecord {
                 body: JSON.stringify({
                     url: self.fileUrl(),
                     thumbnailKey: formatS3FolderName(self.get('id')) + '.png',
-                    fileType: self.extension(),
+                    fileType: self.get('extension'),
                 }),
             });
             metadata = await response.json();
@@ -276,7 +263,7 @@ export class S3FileRecord extends VingRecord {
          * @returns `true` if successful.
          */
     async verifyExtension(whitelist) {
-        if (!whitelist.includes(this.extension()))
+        if (!whitelist.includes(this.get('extension')))
             await this.markUnverified(`${this.get('filename')} needs to be one of ${whitelist.join(', ')}.`);
         return true;
     }
