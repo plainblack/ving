@@ -53,14 +53,16 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
-<li><a href="ving-record.html">Ving Record</a></li>
-<li><a href="ving-schema.html">Ving Schema</a></li>
+<li><a href="pulumi.html">IaC</a></li>
 <li><a href="rest.html">Rest</a></li>
 <li><a href="ui.html">UI</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
 </ul>
 <p>Rest APIs</p>
 <ul>
 <li><a href="apikey.html">API Key</a></li>
+<li><a href="s3file.html">S3File</a></li>
 <li><a href="session.html">Session</a></li>
 <li><a href="test.html">Test</a></li>
 <li><a href="user.html">User</a></li>
@@ -69,7 +71,7 @@
             </div>
         </div>
             <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
-<nav class="table-of-contents"><ol><li><a href="#installation">Installation </a><ol><li><a href="#requirements">Requirements </a></li><li><a href="#installation-variants">Installation Variants </a><ol><li><a href="#if-you-want-updates%3A-fork">If you want updates: FORK </a></li><li><a href="#if-you-don%E2%80%99t-want-updates%3A-download">If you don’t want updates: DOWNLOAD </a></li><li><a href="#either-way%3A-rename">Either way: RENAME </a></li></ol></li><li><a href="#node-modules">Node Modules </a></li><li><a href="#vs-code">VS code </a></li><li><a href="#mysql">MySQL </a><ol><li><a href="#create-the-database">Create the database </a></li><li><a href="#create-a-.env-file">Create a .env file </a></li><li><a href="#create-the-initial-tables">Create the initial tables </a></li><li><a href="#create-first-user">Create First User </a></li></ol></li><li><a href="#startup">Startup </a></li><li><a href="#cache">Cache </a></li><li><a href="#email">Email </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<nav class="table-of-contents"><ol><li><a href="#installation">Installation </a><ol><li><a href="#requirements">Requirements </a></li><li><a href="#installation-variants">Installation Variants </a><ol><li><a href="#if-you-want-updates%3A-fork">If you want updates: FORK </a></li><li><a href="#if-you-don%E2%80%99t-want-updates%3A-download">If you don’t want updates: DOWNLOAD </a></li><li><a href="#either-way%3A-rename">Either way: RENAME </a></li></ol></li><li><a href="#node-modules">Node Modules </a></li><li><a href="#vs-code">VS code </a></li><li><a href="#mysql">MySQL </a><ol><li><a href="#create-the-database">Create the database </a></li><li><a href="#create-a-.env-file">Create a .env file </a></li><li><a href="#create-the-initial-tables">Create the initial tables </a></li><li><a href="#create-first-user">Create First User </a></li></ol></li><li><a href="#startup">Startup </a></li><li><a href="#cache">Cache </a></li><li><a href="#email">Email </a></li><li><a href="#configuring-aws">Configuring AWS </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
 <h1 id="installation" tabindex="-1">Installation <a class="header-anchor" href="#installation">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h1>
@@ -176,6 +178,10 @@ flush privileges;
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
 <p>Ving offers <a href="email.html">email sending and templating</a>, but you need to configure an SMTP server first.</p>
+<h2 id="configuring-aws" tabindex="-1">Configuring AWS <a class="header-anchor" href="#configuring-aws">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>If you want to make use of AWS for things like storing file uploads in S3, then you’ll also want to check out our <a href="pulumi.html">Pulumi</a> integration.</p>
 </div>
     </div>
     

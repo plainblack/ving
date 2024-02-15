@@ -53,14 +53,16 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
-<li><a href="ving-record.html">Ving Record</a></li>
-<li><a href="ving-schema.html">Ving Schema</a></li>
+<li><a href="pulumi.html">IaC</a></li>
 <li><a href="rest.html">Rest</a></li>
 <li><a href="ui.html">UI</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
 </ul>
 <p>Rest APIs</p>
 <ul>
 <li><a href="apikey.html">API Key</a></li>
+<li><a href="s3file.html">S3File</a></li>
 <li><a href="session.html">Session</a></li>
 <li><a href="test.html">Test</a></li>
 <li><a href="user.html">User</a></li>
@@ -69,7 +71,7 @@
             </div>
         </div>
             <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
-<nav class="table-of-contents"><ol><li><a href="#web-ui">Web UI </a><ol><li><a href="#pages">Pages </a></li><li><a href="#components">Components </a><ol><li><a href="#adminnav">AdminNav </a></li><li><a href="#crumbtrail">Crumbtrail </a></li><li><a href="#fieldsetitem">FieldsetItem </a></li><li><a href="#fieldsetnav">FieldsetNav </a></li><li><a href="#form">Form </a></li><li><a href="#forminput">FormInput </a></li><li><a href="#formlabel">FormLabel </a></li><li><a href="#formselect">FormSelect </a></li><li><a href="#pager">Pager </a></li></ol></li><li><a href="#composables">Composables </a><ol><li><a href="#usedatetime()">useDateTime() </a></li><li><a href="#userest()">useRest() </a></li><li><a href="#usevingkind()">useVingKind() </a></li><li><a href="#usevingrecord()">useVingRecord() </a></li></ol></li><li><a href="#stores">Stores </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<nav class="table-of-contents"><ol><li><a href="#web-ui">Web UI </a><ol><li><a href="#pages">Pages </a></li><li><a href="#components">Components </a><ol><li><a href="#adminnav">AdminNav </a></li><li><a href="#crumbtrail">Crumbtrail </a></li><li><a href="#dropzone">Dropzone </a></li><li><a href="#fieldsetitem">FieldsetItem </a></li><li><a href="#fieldsetnav">FieldsetNav </a></li><li><a href="#form">Form </a></li><li><a href="#forminput">FormInput </a></li><li><a href="#formlabel">FormLabel </a></li><li><a href="#formselect">FormSelect </a></li><li><a href="#pager">Pager </a></li></ol></li><li><a href="#composables">Composables </a><ol><li><a href="#usedatetime()">useDateTime() </a></li><li><a href="#userest()">useRest() </a></li><li><a href="#usevingkind()">useVingKind() </a></li><li><a href="#usevingrecord()">useVingRecord() </a></li></ol></li><li><a href="#stores">Stores </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
 <h1 id="web-ui" tabindex="-1">Web UI <a class="header-anchor" href="#web-ui">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h1>
@@ -79,7 +81,7 @@
         </a></h2>
 <p>ving is ultimately built on <a href="https://nuxt.com/">Nuxt</a>, so ving pages can do anything <a href="https://nuxt.com/docs/guide/directory-structure/pages">Nuxt Pages</a> can do.</p>
 <p>You can automatically generate a set of pages for interacting with <a href="ving-record.html">ving records</a> through the <a href="/rest">Rest API</a> by using the <a href="cli.html">CLI</a> like this:</p>
-<pre><code>./ving.ts record --web Foo
+<pre><code class="language-bash">./ving.ts record --web Foo
 </code></pre>
 <p>That will give you a place to start, and then you can use the <a href="ui.html#composables">composables</a>, <a href="ui.html#components">components</a>, and <a href="ui.html#stores">stores</a> we provide to build out a complex app.</p>
 <h2 id="components" tabindex="-1">Components <a class="header-anchor" href="#components">
@@ -106,6 +108,27 @@
 <li><strong>to</strong> - A string of the page to navigate to.</li>
 </ul>
 </li>
+</ul>
+<h3 id="dropzone" tabindex="-1">Dropzone <a class="header-anchor" href="#dropzone">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Creates a user interface for uploading <a href="S3File.html">S3Files</a>. It handles the resizing of images on the client side, restriction of file types on the client side, requesting the presigned upload URL, uploading the file to S3. The only thing you need to do is specify via <code>afterUpload</code> what happens to the file after the user uploads it.</p>
+<p>Note that you should always wrap this in a <code>&lt;client-only&gt;</code> tag.</p>
+<pre><code class="language-html">&lt;client-only&gt;
+    &lt;Dropzone :acceptedFiles=&quot;['.pdf','.zip']&quot; :afterUpload=&quot;doThisFunc&quot;&gt;&lt;/Dropzone&gt;
+&lt;/client-only&gt;
+</code></pre>
+<p>Props:</p>
+<ul>
+<li><strong>acceptedFiles</strong> - An array of file extensions that S3File should accept. Note that these should be prepended with a <code>.</code> like <code>.jpg</code> not <code>jpg</code>. Defaults to <code>['.png','.jpg']</code>.</li>
+<li><strong>afterUpload</strong> - Required. A function that will be executed after upload. This function should then call the appropriate import endpoint to post process and verify the file.</li>
+<li><strong>info</strong> - A string that will be displayed inside the dropzone box. Useful to give the user some insights about the nature of the files you will allow such as size or dimension contstraints.</li>
+<li><strong>maxFiles</strong> - An integer of the maximum number of files the user is allowed to select for upload. Defaults to unlimited.</li>
+<li><strong>maxFilesize</strong> - An integer of the maximum file size in bytes that the user is allowed to upload. Defaults to <code>100000000</code>.</li>
+<li><strong>resizeHeight</strong> - The height in pixels to resize the uploaded image to. Defaults to leaving the size as it is.</li>
+<li><strong>resizeMethod</strong> - How should a resize of an uploaded image happen? The first option is <code>contain</code>, which is the default, and that means that the image will retain its aspect ratio, but will not exceed the bounds of <code>resizeWidth</code> and <code>resizeHeight</code>. The second option is <code>crop</code> which will crop the middle portion of the image to the bounds of <code>resizeWidth</code> and <code>resizeHeight</code> and discard anything outside those bounds.</li>
+<li><strong>resizeQuality</strong> - A float representing a percentage of quality that should be applied when resizing <code>jpg</code> and <code>webp</code> images during upload. <code>0.6</code> would represent 60% quality. Defaults to <code>1</code>.</li>
+<li><strong>resizeWidth</strong> - The width in pixels to resize the uploaded image to. Defaults to leaving the size as it is.</li>
 </ul>
 <h3 id="fieldsetitem" tabindex="-1">FieldsetItem <a class="header-anchor" href="#fieldsetitem">
           <span aria-hidden="true" class="hidden">#</span>
@@ -213,20 +236,20 @@ Forms go here...
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
 <p>Date formatting tools based upon <a href="https://date-fns.org/">date-fns</a>.</p>
-<pre><code class="language-ts">const dt = useDateTime()
+<pre><code class="language-js">const dt = useDateTime()
 const formatted = dt.formateDateTime(new Date());
 </code></pre>
 <h3 id="userest()" tabindex="-1">useRest() <a class="header-anchor" href="#userest()">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
 <p>A wrapper around the Nuxt composable <code>$fetch()</code> that allows for streamlined fetches, but integrate’s with ving’s subsystems.</p>
-<pre><code class="language-ts">const response = useFetch('/api/user');
+<pre><code class="language-js">const response = useFetch('/api/user');
 </code></pre>
 <h3 id="usevingkind()" tabindex="-1">useVingKind() <a class="header-anchor" href="#usevingkind()">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
 <p>A client for interacting with <a href="ving-record.html#kind-api">server-side ving kinds</a> through the <a href="rest.html">Rest API</a>.</p>
-<pre><code class="language-ts">const users = useVingKind({
+<pre><code class="language-js">const users = useVingKind({
     listApi : '/api/user',
     createApi : '/api/user',
     query: { includeMeta: true, sortBy: 'username', sortOrder: 'asc' },
@@ -239,7 +262,7 @@ onBeforeRouteLeave(() =&gt; users.dispose());
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
 <p>A client for interacting with <a href="ving-record.html#record-api">server-side ving records</a> through the <a href="rest.html">Rest API</a>.</p>
-<pre><code class="language-ts">const id = route.params.id.toString();
+<pre><code class="language-js">const id = route.params.id.toString();
 const user = useVingRecord&lt;'User'&gt;({
     id,
     fetchApi: '/api/user/' + id,

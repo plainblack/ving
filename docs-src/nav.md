@@ -17,6 +17,7 @@ Subsystems
 
 Rest APIs
  - [API Key](apikey.html)
+ - [S3File](s3file.html)
  - [Session](session.html)
  - [Test](test.html)
  - [User](user.html)

@@ -53,14 +53,16 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
-<li><a href="ving-record.html">Ving Record</a></li>
-<li><a href="ving-schema.html">Ving Schema</a></li>
+<li><a href="pulumi.html">IaC</a></li>
 <li><a href="rest.html">Rest</a></li>
 <li><a href="ui.html">UI</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
 </ul>
 <p>Rest APIs</p>
 <ul>
 <li><a href="apikey.html">API Key</a></li>
+<li><a href="s3file.html">S3File</a></li>
 <li><a href="session.html">Session</a></li>
 <li><a href="test.html">Test</a></li>
 <li><a href="user.html">User</a></li>
@@ -115,7 +117,7 @@
 <h3 id="owner" tabindex="-1">owner <a class="header-anchor" href="#owner">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
-<p>An array containing the method for determining who owns this object. Owners can be assigned special rights on <code>props</code>. The owner can be any field that contains a User ID, so in the case of the <code>User</code> schema, it can use its own id by specifying <code>$id</code>, but in another table it might be <code>$userId</code>. It can also contain any number of roles. By default there are two roles: <code>admin</code> and <code>developer</code>, but you could add more.</p>
+<p>An array containing the method for determining who owns this object. Owners can be assigned special rights on <code>props</code>. The owner can be any field that contains a User ID, so in the case of the <code>User</code> schema, it can use its own id by specifying <code>$id</code>, but in another table it might be <code>$userId</code>. It can also contain any number of roles. By default there are 3 roles: <code>admin</code>, <code>developer</code>, <code>verifiedEmail</code>, but you could add more.</p>
 <h3 id="props" tabindex="-1">props <a class="header-anchor" href="#props">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
@@ -133,7 +135,7 @@
 </ul>
 <p>If a role can <code>edit</code> a prop it can automatically <code>view</code> a prop.</p>
 <blockquote>
-<p>Roles can be defined inside the <code>User</code> schema. They have to be added as a <a href="boolean-props">boolean prop type</a>, and then also added to the <code>RoleOptions</code> at the bottom of the file.</p>
+<p>Roles can be defined inside the <code>User</code> schema (<code>server/vingschema/User.mjs</code>). They have to be added as a <a href="boolean-props">boolean prop type</a>, and then also added to the <code>RoleOptions</code> at the bottom of the file.</p>
 </blockquote>
 <h4 id="prop-types" tabindex="-1">Prop Types <a class="header-anchor" href="#prop-types">
           <span aria-hidden="true" class="hidden">#</span>

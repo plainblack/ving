@@ -7,7 +7,7 @@ ving is ultimately built on [Nuxt](https://nuxt.com/), so ving pages can do anyt
 
 You can automatically generate a set of pages for interacting with [ving records](ving-record.html) through the [Rest API](/rest) by using the [CLI](cli.html) like this:
 
-```
+```bash
 ./ving.ts record --web Foo
 ```
 
@@ -36,6 +36,32 @@ Props:
 - **crumbs** - An array of objects containing:
     - **label** - A string for the page name.
     - **to** - A string of the page to navigate to.
+
+
+### Dropzone
+Creates a user interface for uploading [S3Files](S3File.html). It handles the resizing of images on the client side, restriction of file types on the client side, requesting the presigned upload URL, uploading the file to S3. The only thing you need to do is specify via `afterUpload` what happens to the file after the user uploads it.
+
+Note that you should always wrap this in a `<client-only>` tag.
+
+```html
+<client-only>
+    <Dropzone :acceptedFiles="['.pdf','.zip']" :afterUpload="doThisFunc"></Dropzone>
+</client-only>
+```
+      
+Props:
+
+- **acceptedFiles** - An array of file extensions that S3File should accept. Note that these should be prepended with a `.` like `.jpg` not `jpg`. Defaults to `['.png','.jpg']`.
+- **afterUpload** - Required. A function that will be executed after upload. This function should then call the appropriate import endpoint to post process and verify the file.
+- **info** - A string that will be displayed inside the dropzone box. Useful to give the user some insights about the nature of the files you will allow such as size or dimension contstraints. 
+- **maxFiles** - An integer of the maximum number of files the user is allowed to select for upload. Defaults to unlimited.
+- **maxFilesize** - An integer of the maximum file size in bytes that the user is allowed to upload. Defaults to `100000000`.
+- **resizeHeight** - The height in pixels to resize the uploaded image to. Defaults to leaving the size as it is.
+- **resizeMethod** - How should a resize of an uploaded image happen? The first option is `contain`, which is the default, and that means that the image will retain its aspect ratio, but will not exceed the bounds of `resizeWidth` and `resizeHeight`. The second option is `crop` which will crop the middle portion of the image to the bounds of `resizeWidth` and `resizeHeight` and discard anything outside those bounds.
+- **resizeQuality** - A float representing a percentage of quality that should be applied when resizing `jpg` and `webp` images during upload. `0.6` would represent 60% quality. Defaults to `1`.
+- **resizeWidth** - The width in pixels to resize the uploaded image to. Defaults to leaving the size as it is.
+
+
 
 
 ### FieldsetItem
@@ -144,7 +170,7 @@ Props:
 
 ### useDateTime()
 Date formatting tools based upon [date-fns](https://date-fns.org/).
-```ts
+```js
 const dt = useDateTime()
 const formatted = dt.formateDateTime(new Date());
 ```
@@ -152,14 +178,14 @@ const formatted = dt.formateDateTime(new Date());
 ### useRest()
 A wrapper around the Nuxt composable `$fetch()` that allows for streamlined fetches, but integrate's with ving's subsystems.
 
-```ts
+```js
 const response = useFetch('/api/user');
 ```
 
 ### useVingKind()
 A client for interacting with [server-side ving kinds](ving-record.html#kind-api) through the [Rest API](rest.html).
 
-```ts
+```js
 const users = useVingKind({
     listApi : '/api/user',
     createApi : '/api/user',
@@ -173,7 +199,7 @@ onBeforeRouteLeave(() => users.dispose());
 ### useVingRecord()
 A client for interacting with [server-side ving records](ving-record.html#record-api) through the [Rest API](rest.html).
 
-```ts
+```js
 const id = route.params.id.toString();
 const user = useVingRecord<'User'>({
     id,

@@ -102,6 +102,7 @@ export const s3fileSchema = {
             type: "id",
             name: 'userId',
             required: true,
+            filterQualifier: true,
             length: 36,
             db: (prop) => dbRelation(prop),
             relation: {

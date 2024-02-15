@@ -58,3 +58,15 @@ Returns a user record for the currently logged in user based upon the session pa
 GET /api/user/whoami
 Cookie: vingSessionId=xxx
 ```
+
+### Import Avatar
+Attach an uploaded `S3File` to this user as an avatar.
+
+```
+PUT /api/user/:id/import-avatar
+Cookie: vingSessionId=xxx
+
+{
+    "s3FileId" : "xxx",
+}
+```
