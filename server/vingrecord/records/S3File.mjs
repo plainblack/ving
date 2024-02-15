@@ -149,6 +149,7 @@ export class S3FileRecord extends VingRecord {
         catch (e) {
             self.set('status', 'postProcessingFailed');
             await self.update();
+            // future: kick off deletion process
             console.error(`Could not post process ${self.get('id')} because ${response.statusText}`, { response, error: e });
             //console.debug(response);
             throw ouch(504, `Could not post process ${self.get('filename')}.`);
@@ -170,6 +171,27 @@ export class S3FileRecord extends VingRecord {
     // User - parent relationship
     get user() {
         return useUsers().findOrDie(this.get('userId'));
+    }
+
+    async verifyExactDimensions(width, height) {
+        const metadata = this.get('metadata');
+        if (width != metadata.width || height != metadata.height)
+            await this.markUnverified(`${this.get('filename')} should be ${width}x${height}, but was ${metadata.width}x${metadata.height}.`);
+        return true;
+    }
+
+    async verifyExtension(allowedTypes) {
+        if (!allowedTypes.includes(this.extension()))
+            await this.markUnverified(`${this.get('filename')} needs to be one of ${allowedTypes.join(', ')}.`);
+        return true;
+    }
+
+    async markUnverified(error) {
+        this.set('status', 'verifyFailed');
+        await this.update();
+        // future: kick off deletion process
+        console.log(`S3File ${this.get('id')} unverified because ${error}.`);
+        throw ouch('442', error)
     }
 
 }

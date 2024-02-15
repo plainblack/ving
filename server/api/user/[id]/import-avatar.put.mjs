@@ -16,7 +16,8 @@ export default defineEventHandler(async (event) => {
     const S3Files = useS3Files();
     const s3file = await S3Files.findOrDie(body.s3FileId);
     await s3file.postProcessFile();
-    // do some verification
+    await s3file.verifyExtension(['png', 'jpeg', 'jpg', 'gif']);
+    await s3file.verifyExactDimensions(300, 300);
     user.set('avatarId', s3file.get('id'));
     await user.update();
     return await user.describe(describeParams(event, session));
