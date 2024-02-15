@@ -14,20 +14,20 @@ export const handler = async (event) => {
     let input = {};
     let url = '';
     let fileType = '';
-    let id = '';
+    let thumbnailKey = '';
     let out = { "statusCode": 500, "body": { "error": { "code": 500, message: "Failed to start process" } } };
     try {
         input = 'body' in event ? JSON.parse(event.body) : event;
         url = input.url;
         fileType = input.fileType;
-        id = input.id;
+        thumbnailKey = input.thumbnailKey;
     }
     catch {
         out = formatError('Unable to initialize post processing, perhaps you did not send a valid json body.')
     }
     try {
         if (['bmp', 'png', 'tiff', 'webp', 'tif', 'psd', 'svg', 'jpeg', 'jpg', 'gif', 'heic', 'heif', 'avci', 'avif', 'icns', 'ico', 'j2c', 'jp2', 'ktx', 'pnm', 'pam', 'pbm', 'pfm', 'pgm', 'ppm', 'tga', 'cur', 'dds'].includes(fileType)) {
-            out = formatResponse(await getImageInfo(url, id));
+            out = formatResponse(await getImageInfo(url, thumbnailKey));
         }
         else if (['pdf'].includes(fileType)) {
             out = formatResponse(await getPdfInfo(url));
@@ -41,7 +41,7 @@ export const handler = async (event) => {
     }
     catch (e) {
         console.error(e);
-        out = formatError(`Unable to process url ${url} of type ${fileType} for id ${id}, because ${JSON.stringify(e)}`);
+        out = formatError(`Unable to process url ${url} of type ${fileType} for thumbnailKey ${thumbnailKey}, because ${JSON.stringify(e)}`);
     }
     return out;
 };
@@ -85,7 +85,7 @@ async function getZipInfo(url) {
     return out;
 }
 
-async function getImageInfo(url, id) {
+async function getImageInfo(url, thumbnailKey) {
     const filePath = await downloadFile(url);
     if (!fs.existsSync(filePath))
         return formatError(`Could not download file from ${url}`);
@@ -96,7 +96,7 @@ async function getImageInfo(url, id) {
         await image.writeAsync('/tmp/thumbnail.png');
         if (!fs.existsSync('/tmp/thumbnail.png'))
             return formatError(`Could not create thumbnail from ${url}`);
-        await uploadThumbnail('/tmp/thumbnail.png', `${id}.png`);
+        await uploadThumbnail('/tmp/thumbnail.png', thumbnailKey);
         out.thumbnail = true;
     }
     delete out.type;

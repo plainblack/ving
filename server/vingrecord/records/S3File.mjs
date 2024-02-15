@@ -137,7 +137,7 @@ export class S3FileRecord extends VingRecord {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     url: self.fileUrl(),
-                    id: self.get('id'),
+                    thumbnailKey: formatS3FolderName(self.get('id')) + '.png',
                     fileType: self.extension(),
                 }),
             });
