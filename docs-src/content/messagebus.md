@@ -21,6 +21,8 @@ export const publishSomeProgressBar = async (userId, percentageComplete = 0, ful
 }
 ```
 
+Note that you can skip this step and use use the generic `publish` function, but that doesn't give you the opportunity to add defaults, an API, or error handling so we recommend creating a publish function.
+
 ### Use The Publisher Function
 Wherever in your code that you can get your event data to publish to the browser, use your newly created publisher function.
 

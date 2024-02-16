@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import markdownit from 'markdown-it';
 import markdownitanchor from 'markdown-it-anchor';
 import markdownittocdoneright from 'markdown-it-toc-done-right';

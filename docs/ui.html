@@ -53,7 +53,8 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
-<li><a href="pulumi.html">IaC</a></li>
+<li><a href="messagebus.html">Message Bus</a></li>
+<li><a href="pulumi.html">Pulumi</a></li>
 <li><a href="rest.html">Rest</a></li>
 <li><a href="ui.html">UI</a></li>
 <li><a href="ving-record.html">Ving Record</a></li>
@@ -71,7 +72,7 @@
             </div>
         </div>
             <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
-<nav class="table-of-contents"><ol><li><a href="#web-ui">Web UI </a><ol><li><a href="#pages">Pages </a></li><li><a href="#components">Components </a><ol><li><a href="#adminnav">AdminNav </a></li><li><a href="#crumbtrail">Crumbtrail </a></li><li><a href="#dropzone">Dropzone </a></li><li><a href="#fieldsetitem">FieldsetItem </a></li><li><a href="#fieldsetnav">FieldsetNav </a></li><li><a href="#form">Form </a></li><li><a href="#forminput">FormInput </a></li><li><a href="#formlabel">FormLabel </a></li><li><a href="#formselect">FormSelect </a></li><li><a href="#pager">Pager </a></li></ol></li><li><a href="#composables">Composables </a><ol><li><a href="#usedatetime()">useDateTime() </a></li><li><a href="#userest()">useRest() </a></li><li><a href="#usevingkind()">useVingKind() </a></li><li><a href="#usevingrecord()">useVingRecord() </a></li></ol></li><li><a href="#stores">Stores </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<nav class="table-of-contents"><ol><li><a href="#web-ui">Web UI </a><ol><li><a href="#pages">Pages </a></li><li><a href="#components">Components </a><ol><li><a href="#adminnav">AdminNav </a></li><li><a href="#crumbtrail">Crumbtrail </a></li><li><a href="#dropzone">Dropzone </a></li><li><a href="#fieldsetitem">FieldsetItem </a></li><li><a href="#fieldsetnav">FieldsetNav </a></li><li><a href="#form">Form </a></li><li><a href="#forminput">FormInput </a></li><li><a href="#formlabel">FormLabel </a></li><li><a href="#formselect">FormSelect </a></li><li><a href="#pager">Pager </a></li></ol></li><li><a href="#composables">Composables </a><ol><li><a href="#usedatetime()">useDateTime() </a></li><li><a href="#usemessagebus()">useMessageBus() </a></li><li><a href="#userest()">useRest() </a></li><li><a href="#usevingkind()">useVingKind() </a></li><li><a href="#usevingrecord()">useVingRecord() </a></li></ol></li><li><a href="#stores">Stores </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
 <h1 id="web-ui" tabindex="-1">Web UI <a class="header-anchor" href="#web-ui">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h1>
@@ -232,12 +233,22 @@ Forms go here...
 <h2 id="composables" tabindex="-1">Composables <a class="header-anchor" href="#composables">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
+<p>Each of these also has documentation of how to use them in the form of JSDocs in the source code.</p>
 <h3 id="usedatetime()" tabindex="-1">useDateTime() <a class="header-anchor" href="#usedatetime()">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
 <p>Date formatting tools based upon <a href="https://date-fns.org/">date-fns</a>.</p>
 <pre><code class="language-js">const dt = useDateTime()
-const formatted = dt.formateDateTime(new Date());
+const date = dt.determineDate(&quot;2012-04-23T18:25:43.511Z&quot;);
+const formattedDateTime = dt.formateDateTime(new Date());
+const formattedDate = dt.formateDate(new Date());
+const timeago = dt.formatTimeAgo(&quot;2012-04-23T18:25:43.511Z&quot;);
+</code></pre>
+<h3 id="usemessagebus()" tabindex="-1">useMessageBus() <a class="header-anchor" href="#usemessagebus()">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Connects the browser to the server’s <a href="messagebus.html">message bus</a>. This should be installed in an <code>onMounted()</code> handler inside each of your layouts.</p>
+<pre><code class="language-js">useMessageBus();
 </code></pre>
 <h3 id="userest()" tabindex="-1">useRest() <a class="header-anchor" href="#userest()">
           <span aria-hidden="true" class="hidden">#</span>

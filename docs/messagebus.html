@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>messagebus.md</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
+        <style type="text/css">
+        html {
+            font-size: 1rem;
+            height: 100%;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-white);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        li a {
+            text-decoration: none;
+        }
+       ol,ul {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid">
+        <div class="col-3 lg:col-2 p-3 surface-300">
+            <div class="sticky top-0 left-0">
+                <div class="text-4xl">Ving Docs</div>
+                <p>Basics</p>
+<ul>
+<li><a href="index.html">About</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="error-codes.html">Error Codes</a></li>
+<li><a href="change-log.html">Change Log</a></li>
+</ul>
+<p>Subsystems</p>
+<ul>
+<li><a href="cache.html">Cache</a></li>
+<li><a href="cli.html">CLI</a></li>
+<li><a href="drizzle.html">Database</a></li>
+<li><a href="email.html">Email</a></li>
+<li><a href="messagebus.html">Message Bus</a></li>
+<li><a href="pulumi.html">Pulumi</a></li>
+<li><a href="rest.html">Rest</a></li>
+<li><a href="ui.html">UI</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
+</ul>
+<p>Rest APIs</p>
+<ul>
+<li><a href="APIKey.html">API Key</a></li>
+<li><a href="S3File.html">S3File</a></li>
+<li><a href="Session.html">Session</a></li>
+<li><a href="Test.html">Test</a></li>
+<li><a href="User.html">User</a></li>
+</ul>
+
+            </div>
+        </div>
+            <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
+<nav class="table-of-contents"><ol><li><a href="#message-bus">Message Bus </a><ol><li><a href="#extending-functionality">Extending Functionality </a><ol><li><a href="#configure-a-publisher-function">Configure a Publisher Function </a></li><li><a href="#use-the-publisher-function">Use The Publisher Function </a></li><li><a href="#make-the-browser-handle-it">Make The Browser Handle It </a></li></ol></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<h1 id="message-bus" tabindex="-1">Message Bus <a class="header-anchor" href="#message-bus">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h1>
+<p>Ving’s Message Bus push messages from the server to a logged in user via <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events">Server Sent Events (SSE)</a>. This can be useful for displaying a toast via the <a href="ui.html">notification system</a>, or for triggering some functionality when a background job finishes.</p>
+<p>If you’d like to test it, log in to your ving site and then from the CLI type:</p>
+<pre><code class="language-bash">./ving.mjs messagebus -u Admin -m &quot;Hello Admin!&quot;
+</code></pre>
+<p>Note that this functionality requires that you’ve set up the <a href="cache.html">Redis cache</a>.</p>
+<h2 id="extending-functionality" tabindex="-1">Extending Functionality <a class="header-anchor" href="#extending-functionality">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>If you want to extend this functionality to send your own message types from the server to the browser, you’ll need to do the following 3 steps.</p>
+<h3 id="configure-a-publisher-function" tabindex="-1">Configure a Publisher Function <a class="header-anchor" href="#configure-a-publisher-function">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>In <code>server/messagebus.mjs</code> add and export a function that will publish the message. Let’s say we’re going to update a progress bar somewhere for some background process. We’d create a publisher function for that like:</p>
+<pre><code class="language-js">export const publishSomeProgressBar = async (userId, percentageComplete = 0, fullyComplete = 100) =&gt; {
+    publish(userId, 'someProgressBar', { percentageComplete, fullyComplete });
+}
+</code></pre>
+<p>Note that you can skip this step and use use the generic <code>publish</code> function, but that doesn’t give you the opportunity to add defaults, an API, or error handling so we recommend creating a publish function.</p>
+<h3 id="use-the-publisher-function" tabindex="-1">Use The Publisher Function <a class="header-anchor" href="#use-the-publisher-function">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Wherever in your code that you can get your event data to publish to the browser, use your newly created publisher function.</p>
+<pre><code class="language-js">import {publishSomeProgressBar} from '../server/messagebus.mjs'
+
+await publishSomeProgressBar(userId, 35);
+</code></pre>
+<h3 id="make-the-browser-handle-it" tabindex="-1">Make The Browser Handle It <a class="header-anchor" href="#make-the-browser-handle-it">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>You’ll need to update <code>composables/useMessageBus.mjs</code> to handle your <code>someProgressBar</code> message type. Add your new <code>case</code> to the <code>switch</code> statement there.</p>
+</div>
+    </div>
+    
+</body>
+
+</html>
