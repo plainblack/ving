@@ -116,7 +116,7 @@ export const generateRest = (params) => {
         gen = gen.then(renderTemplate(optionsTemplate, toFile(filePath)));
     for (const prop of context.schema.props) {
         if (prop?.relation?.name)
-            filePath = `${folderName}/[id]/${prop.relation.name}.get.mjs`;
+            filePath = `${folderName}/[id]/${prop.relation.name.toLowerCase()}.get.mjs`;
         if (prop?.relation?.type == 'child' && !(params.skipExisting && fs.existsSync(filePath)))
             gen = gen.then(renderTemplate(childGetTemplate({ name: context.name, prop }), toFile(filePath)));
         else if (prop?.relation?.type == 'parent' && !(params.skipExisting && fs.existsSync(filePath)))
