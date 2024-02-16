@@ -1,4 +1,5 @@
 import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
+import fs from 'fs';
 
 const optionsTemplate = ({ name }) =>
     `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
@@ -93,21 +94,33 @@ export default defineEventHandler(async (event) => {
 
 export const generateRest = (params) => {
     const context = { ...getContext({}), ...params };
-    const folderName = context.name.toLowerCase();
-    const gen = Promise.resolve(context)
-        .then(renderTemplate(idDeleteTemplate, toFile(`server/api/${folderName}/[id].delete.mjs`)))
-        .then(renderTemplate(idGetTemplate, toFile(`server/api/${folderName}/[id].get.mjs`)))
-        .then(renderTemplate(idPutTemplate, toFile(`server/api/${folderName}/[id].put.mjs`)))
-        .then(renderTemplate(indexGetTemplate, toFile(`server/api/${folderName}/index.get.mjs`)))
-        .then(renderTemplate(indexPostTemplate, toFile(`server/api/${folderName}/index.post.mjs`)))
-        .then(renderTemplate(optionsTemplate, toFile(`server/api/${folderName}/options.get.mjs`)));
+    const folderName = `server/api/${context.name.toLowerCase()}`;
+    let gen = Promise.resolve(context);
+    let filePath = `${folderName}/[id].delete.mjs`;
+    if (!(params.skipExisting && fs.existsSync(filePath)))
+        gen = gen.then(renderTemplate(idDeleteTemplate, toFile(filePath)));
+    filePath = `${folderName}/[id].get.mjs`;
+    if (!(params.skipExisting && fs.existsSync(filePath)))
+        gen = gen.then(renderTemplate(idGetTemplate, toFile(filePath)));
+    filePath = `${folderName}/[id].put.mjs`;
+    if (!(params.skipExisting && fs.existsSync(filePath)))
+        gen = gen.then(renderTemplate(idPutTemplate, toFile(filePath)));
+    filePath = `${folderName}/index.get.mjs`;
+    if (!(params.skipExisting && fs.existsSync(filePath)))
+        gen = gen.then(renderTemplate(indexGetTemplate, toFile(filePath)));
+    filePath = `${folderName}/index.post.mjs`;
+    if (!(params.skipExisting && fs.existsSync(filePath)))
+        gen = gen.then(renderTemplate(indexPostTemplate, toFile(filePath)));
+    filePath = `${folderName}/options.get.mjs`;
+    if (!(params.skipExisting && fs.existsSync(filePath)))
+        gen = gen.then(renderTemplate(optionsTemplate, toFile(filePath)));
     for (const prop of context.schema.props) {
-        if (prop.relation && prop.relation.type == 'child') {
-            gen.then(renderTemplate(childGetTemplate({ name: context.name, prop }), toFile(`server/api/${folderName}/[id]/${prop.relation.name}.get.mjs`)));
-        }
-        else if (prop.relation && prop.relation.type == 'parent') {
-            gen.then(renderTemplate(parentGetTemplate({ name: context.name, prop }), toFile(`server/api/${folderName}/[id]/${prop.relation.name}.get.mjs`)));
-        }
+        if (prop?.relation?.name)
+            filePath = `${folderName}/[id]/${prop.relation.name}.get.mjs`;
+        if (prop?.relation?.type == 'child' && !(params.skipExisting && fs.existsSync(filePath)))
+            gen = gen.then(renderTemplate(childGetTemplate({ name: context.name, prop }), toFile(filePath)));
+        else if (prop?.relation?.type == 'parent' && !(params.skipExisting && fs.existsSync(filePath)))
+            gen = gen.then(renderTemplate(parentGetTemplate({ name: context.name, prop }), toFile(filePath)));
     }
     return gen;
 }

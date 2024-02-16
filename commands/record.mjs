@@ -3,6 +3,7 @@ import { generateRecord } from '../server/vingrecord/genskeleton.mjs';
 import { generateRest } from '../server/vingrecord/genrest.mjs';
 import { generateWeb } from '../server/vingrecord/genpages.mjs';
 import { findVingSchema } from '../server/vingrecord/VingRecord.mjs';
+import { vingSchemas } from '../server/vingschema/index.mjs';
 
 export default defineCommand({
     meta: {
@@ -15,6 +16,11 @@ export default defineCommand({
             description: "Generate a new Ving Record file",
             valueHint: "ClassName",
             alias: "n",
+        },
+        missingRest: {
+            type: "boolean",
+            description: "Generate missing REST APIs for all records",
+            alias: "R",
         },
         rest: {
             type: "string",
@@ -38,6 +44,13 @@ export default defineCommand({
         }
         else if (args.web) {
             await generateWeb({ name: args.web, schema: findVingSchema(args.web, 'kind') });
+        }
+        else if (args.missingRest) {
+            console.log('got here')
+            for (const schema of vingSchemas) {
+                console.log(schema.kind)
+                await generateRest({ name: schema.kind, schema, skipExisting: true });
+            }
         }
     },
 });
