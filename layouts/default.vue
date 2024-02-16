@@ -19,7 +19,7 @@
                     </li>
 
                     <li>
-                        <NuxtLink to="https://github.io/plainblack/ving-docs" v-ripple
+                        <NuxtLink to="https://plainblack.github.io/ving/" v-ripple
                             class="flex px-6 p-3 lg:px-3 lg:py-2 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 font-medium border-round cursor-pointer transition-colors transition-duration-150 p-ripple">
                             <Icon name="prime:book" class="mr-2" />
                             <span>Ving Documentation</span>
@@ -137,11 +137,16 @@
 </template>
 
 <script setup>
+import { bs } from 'date-fns/locale';
+
 const config = useRuntimeConfig();
 const currentUser = useCurrentUserStore();
 await currentUser.isAuthenticated();
 const swa = useSystemWideAlertStore();
 onMounted(async () => {
+    // do system wide announcement check
     await swa.check();
+    // subscribe to message bus
+    useMessageBus();
 })
 </script>

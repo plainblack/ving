@@ -21,5 +21,8 @@ export const useNotifyStore = defineStore('notify', {
         success(message) {
             this.successMessage = message;
         },
+        notify(type, message) {
+            this[type + 'Message'] = message;
+        },
     },
 });

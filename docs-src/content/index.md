@@ -6,7 +6,8 @@ Ving is a Web and REST code generation tool and services framework. It has a hea
  - Platform agnostic REST interface
  - Per field privileges for view and edit
  - Full session based auth system
- - An AWS S3 based secure upload system
+ - AWS S3 based secure upload system
+ - Per user message bus streamed via Server Sent Events
  - API key and privilege system with access to make requests on behalf of other users
  - A useful set of custom made client components and composables
  - A full user interface for user management

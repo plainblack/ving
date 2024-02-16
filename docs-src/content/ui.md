@@ -167,12 +167,22 @@ Props:
 
 
 ## Composables
+Each of these also has documentation of how to use them in the form of JSDocs in the source code.
 
 ### useDateTime()
 Date formatting tools based upon [date-fns](https://date-fns.org/).
 ```js
 const dt = useDateTime()
-const formatted = dt.formateDateTime(new Date());
+const date = dt.determineDate("2012-04-23T18:25:43.511Z");
+const formattedDateTime = dt.formateDateTime(new Date());
+const formattedDate = dt.formateDate(new Date());
+const timeago = dt.formatTimeAgo("2012-04-23T18:25:43.511Z");
+```
+
+### useMessageBus()
+Connects the browser to the server's [message bus](messagebus.html). This should be installed in an `onMounted()` handler inside each of your layouts. 
+```js
+useMessageBus();
 ```
 
 ### useRest()

@@ -37,6 +37,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
             if (!response.error) {
                 await this.fetch();
             }
+            window.dispatchEvent(new Event('ving-login'));
             return response;
         },
         async logout() {
@@ -44,6 +45,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 method: 'delete',
             });
             this.setState({});
+            window.dispatchEvent(new Event('ving-logout'));
             return response;
         },
         async importAvatar(s3file) {
