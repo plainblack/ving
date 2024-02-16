@@ -16,8 +16,16 @@ If you want to extend this functionality to send your own message types from the
 In `server/messagebus.mjs` add and export a function that will publish the message. Let's say we're going to update a progress bar somewhere for some background process. We'd create a publisher function for that like:
 
 ```js
-export const publishSomeProgressBar = async (userId, percentageComplete = 0, fullyComplete = 100) => {
-    publish(userId, 'someProgressBar', { percentageComplete, fullyComplete });
+export const publishSomeProgressBar = async (
+    userId, 
+    percentageComplete = 0, 
+    fullyComplete = 100
+) => {
+    return publish(
+        userId, 
+        'someProgressBar', 
+        { percentageComplete, fullyComplete }
+    );
 }
 ```
 
