@@ -1,5 +1,5 @@
 import { obtainSessionIfRole } from '../../utils/rest.mjs';
-import { useCache } from '../../cache';
+import { useCache } from '#ving/cache.mjs';
 import { defineEventHandler } from 'h3';
 
 export default defineEventHandler(async (event) => {
