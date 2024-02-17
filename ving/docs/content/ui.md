@@ -231,9 +231,11 @@ const timeago = dt.formatTimeAgo("2012-04-23T18:25:43.511Z");
 ```
 
 ### useMessageBus()
-Connects the browser to the server's [message bus](messagebus.html). This should be installed in an `onMounted()` handler inside each of your layouts. 
+Connects the browser to the server's [message bus](messagebus.html). It establishes a connection between your browser and the server, so it needs to be installed in an `onMounted()` handler in your layouts.
 ```js
-useMessageBus();
+onMounted(() => {
+    useMessageBus();
+})
 ```
 
 ### useNotifyStore()
