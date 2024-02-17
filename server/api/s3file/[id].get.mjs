@@ -1,4 +1,4 @@
-import { useS3Files } from '../../vingrecord/records/S3File.mjs';
+import { useS3Files } from '#ving/record/records/S3File.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
 import { defineEventHandler, getRouterParams } from 'h3';
 export default defineEventHandler(async (event) => {

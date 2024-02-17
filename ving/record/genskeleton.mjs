@@ -5,7 +5,7 @@ function addImports({ schema }) {
     let out = '';
     for (const prop of schema.props) {
         if (prop.relation) {
-            out += `import { use${prop.relation.kind}s } from './${prop.relation.kind}.mjs';` + "\n";
+            out += `import { use${prop.relation.kind}s } from '#ving/record/records/${prop.relation.kind}.mjs';` + "\n";
         }
     }
     return out;
@@ -45,7 +45,7 @@ function addRelationships({ name, schema }) {
 }
 
 const recordTemplate = ({ name, schema }) =>
-    `import { VingRecord, VingKind } from "../VingRecord.mjs";
+    `import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
 import { useDB } from '#ving/drizzle/db.mjs';
 import { ${name}Table } from '#ving/drizzle/schema/${name}.mjs';
 ${addImports({ schema })}
@@ -66,5 +66,5 @@ export const use${name}s = () => {
 export const generateRecord = (params) => {
     const context = { ...getContext({}), ...params };
     return Promise.resolve(context)
-        .then(renderTemplate(recordTemplate, toFile(`server/vingrecord/records/${context.name}.mjs`)));
+        .then(renderTemplate(recordTemplate, toFile(`ving/record/records/${context.name}.mjs`)));
 }

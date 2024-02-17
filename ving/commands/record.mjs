@@ -1,8 +1,8 @@
 import { defineCommand } from "citty";
-import { generateRecord } from '../../server/vingrecord/genskeleton.mjs';
-import { generateRest } from '../../server/vingrecord/genrest.mjs';
-import { generateWeb } from '../../server/vingrecord/genpages.mjs';
-import { findVingSchema } from '../../server/vingrecord/VingRecord.mjs';
+import { generateRecord } from '#ving/record/genskeleton.mjs';
+import { generateRest } from '#ving/record/genrest.mjs';
+import { generateWeb } from '#ving/record/genpages.mjs';
+import { findVingSchema } from '#ving/record/VingRecord.mjs';
 import { vingSchemas } from '../../server/vingschema/index.mjs';
 
 export default defineCommand({

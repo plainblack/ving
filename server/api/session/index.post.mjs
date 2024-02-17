@@ -1,4 +1,4 @@
-import { useUsers } from '../../vingrecord/records/User.mjs';
+import { useUsers } from '#ving/record/records/User.mjs';
 const Users = useUsers();
 import { getBody, describeParams, testRequired } from '#ving/utils/rest.mjs';
 import { Session } from '#ving/session.mjs';

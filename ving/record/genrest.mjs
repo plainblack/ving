@@ -2,7 +2,7 @@ import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
 import fs from 'fs';
 
 const optionsTemplate = ({ name }) =>
-    `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
+    `import { use${name}s } from '#ving/record/records/${name}.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
 import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
 });`;
 
 const indexPostTemplate = ({ name }) =>
-    `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
+    `import { use${name}s } from '#ving/record/records/${name}.mjs';
 import { describeParams, getBody, obtainSessionIfRole } from '#ving/utils/rest.mjs';
 import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 });`;
 
 const indexGetTemplate = ({ name }) =>
-    `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
+    `import { use${name}s } from '#ving/record/records/${name}.mjs';
 import { describeListParams, describeListWhere } from '#ving/utils/rest.mjs';
 import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
 });`;
 
 const idPutTemplate = ({ name }) =>
-    `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
+    `import { use${name}s } from '#ving/record/records/${name}.mjs';
 import { describeParams, obtainSession, getBody } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {
@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
 });`;
 
 const idGetTemplate = ({ name }) =>
-    `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
+    `import { use${name}s } from '#ving/record/records/${name}.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {
@@ -56,7 +56,7 @@ export default defineEventHandler(async (event) => {
 });`;
 
 const idDeleteTemplate = ({ name }) =>
-    `import { use${name}s } from '../../vingrecord/records/${name}.mjs';
+    `import { use${name}s } from '#ving/record/records/${name}.mjs';
 import { obtainSession, describeParams } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {
@@ -69,7 +69,7 @@ export default defineEventHandler(async (event) => {
 });`;
 
 const childGetTemplate = ({ name, prop }) =>
-    `import { use${name}s } from '../../../vingrecord/records/${name}.mjs';
+    `import { use${name}s } from '#ving/record/records/${name}.mjs';
 import { describeListParams } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {
@@ -81,7 +81,7 @@ export default defineEventHandler(async (event) => {
 });`;
 
 const parentGetTemplate = ({ name, prop }) =>
-    `import { use${name}s } from '../../../vingrecord/records/${name}.mjs';
+    `import { use${name}s } from '#ving/record/records/${name}.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {

@@ -1,4 +1,4 @@
-import { useUsers } from '../server/vingrecord/records/User.mjs';
+import { useUsers } from '#ving/record/records/User.mjs';
 import { describe, test, expect } from "vitest";
 import { like, eq, asc, desc, and, inArray, SQL } from '#ving/drizzle/orm.mjs';
 

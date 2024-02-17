@@ -1,5 +1,5 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { useS3Files, sanitizeFilename, makeS3FolderName, getExtension } from '../../vingrecord/records/S3File.mjs';
+import { useS3Files, sanitizeFilename, makeS3FolderName, getExtension } from '#ving/record/records/S3File.mjs';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { getBody, obtainSessionIfRole, describeParams } from '#ving/utils/rest.mjs';
 import { defineEventHandler } from 'h3';

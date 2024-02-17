@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useUsers } from '../server/vingrecord/records/User.mjs';
+import { useUsers } from '#ving/record/records/User.mjs';
 import { describe, test, expect, afterAll } from "vitest";
 import { like, eq, asc, desc, and } from '#ving/drizzle/orm.mjs';
 

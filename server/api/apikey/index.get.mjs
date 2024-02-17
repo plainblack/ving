@@ -1,4 +1,4 @@
-import { useAPIKeys } from '../../vingrecord/records/APIKey.mjs';
+import { useAPIKeys } from '#ving/record/records/APIKey.mjs';
 import { describeListParams, describeListWhere } from '#ving/utils/rest.mjs';
 import { defineEventHandler } from 'h3';
 

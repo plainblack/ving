@@ -2,7 +2,7 @@
 Records are the functional implementation of a [ving schema](ving-schema.html). They automatically generate a ton of functionality from making queries easier, to building web services, to setting up privileges and more.
 
 ## Records vs Kinds
-A ving record is technically 2 separate classes. The first is called a "Kind", which is technically a group or list of records. In relational database terms, think of a kind as a table. The second type is the record, which is an instance of a kind, which in relational database terms is a row within a table. Both classes exist inside the record file. See `server/vingrecord/records/User.mjs` as an example implementation of a record, or `server/vingrecord/VingRecord.mjs` to see the base class that all ving records inherit from.
+A ving record is technically 2 separate classes. The first is called a "Kind", which is technically a group or list of records. In relational database terms, think of a kind as a table. The second type is the record, which is an instance of a kind, which in relational database terms is a row within a table. Both classes exist inside the record file. See `#ving/record/records/User.mjs` as an example implementation of a record, or `#ving/record/VingRecord.mjs` to see the base class that all ving records inherit from.
 
 ## Creating Records
 You can use the [CLI](cli.html) to automatically generate a new record file for you from a [Drizzle table](drizzle.html). So if you've created a table called `Foo` then you could create a new record file like this:
@@ -11,7 +11,7 @@ You can use the [CLI](cli.html) to automatically generate a new record file for 
 ./ving.mjs record --new Foo
 ```
 
-That will generate the file `server/vingrecord/records/Foo.mjs`. And in there you could add any custom functionality you may need. Or if you don't need any custom functionality, then it may work just as it is.
+That will generate the file `#ving/record/records/Foo.mjs`. And in there you could add any custom functionality you may need. Or if you don't need any custom functionality, then it may work just as it is.
 
 Once you're done adding functionality you can then generate a Rest API for it by invoing the CLI again like this:
 
@@ -34,7 +34,7 @@ Those files will be placed in `pages/foo` and you can modify them as needed as w
 The Kind is akin to a relational database table. To start with you need to get a reference to it:
 
 ```js
-import {useUsers} from './server/vingrecord/records/User.mjs';
+import {useUsers} from '#ving/record/records/User.mjs';
 const Users = useUsers();
 ```
 
@@ -228,7 +228,7 @@ It is then used with `calcWhere()` to limit the scope of a where clause to relat
 The Record is akin to a relational database table row. You'll get a record via the [Kind API](#kind-api), perhaps like this:
 
 ```js
-import {Users} from './server/vingrecord/records/User.mjs';
+import {Users} from '#ving/record/records/User.mjs';
 const Users = useUsers();
 const record = Users.findOrDie('xxx');
 ```

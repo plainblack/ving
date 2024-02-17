@@ -1,5 +1,5 @@
 import { defineCommand } from "citty";
-import { useUsers } from '../../server/vingrecord/records/User.mjs'
+import { useUsers } from '#ving/record/records/User.mjs'
 import { useCache } from '#ving/cache.mjs';
 import { like, or, eq } from '#ving/drizzle/orm.mjs';
 

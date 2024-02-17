@@ -1,7 +1,7 @@
-import { VingRecord, VingKind } from "../VingRecord.mjs";
-import { RoleOptions, RoleMixin } from '../mixins/Role.mjs';
-import { useAPIKeys } from "./APIKey.mjs";
-import { useS3Files } from './S3File.mjs'
+import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
+import { RoleOptions, RoleMixin } from '#ving/record/mixins/Role.mjs';
+import { useAPIKeys } from "#ving/record/records/APIKey.mjs";
+import { useS3Files } from '#ving/record/records/S3File.mjs'
 import bcrypt from 'bcryptjs';
 import { useCache } from '#ving/cache.mjs';
 import { useDB } from '#ving/drizzle/db.mjs';

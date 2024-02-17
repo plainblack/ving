@@ -1,5 +1,5 @@
-import { useUsers } from '../../../vingrecord/records/User.mjs';
-import { useS3Files } from '../../../vingrecord/records/S3File.mjs';
+import { useUsers } from '#ving/record/records/User.mjs';
+import { useS3Files } from '#ving/record/records/S3File.mjs';
 import { describeParams, obtainSession, getBody } from '#ving/utils/rest.mjs';
 import { defineEventHandler, getRouterParams } from 'h3';
 

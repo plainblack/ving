@@ -1,8 +1,8 @@
-import { useUsers, UserRecord } from '../server/vingrecord/records/User.mjs';
+import { useUsers, UserRecord } from '#ving/record/records/User.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 const Users = useUsers();
 
-import { RoleMixin, RoleOptions } from '../server/vingrecord/mixins/Role.mjs';
+import { RoleMixin, RoleOptions } from '#ving/record/mixins/Role.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { v4 } from 'uuid';
 

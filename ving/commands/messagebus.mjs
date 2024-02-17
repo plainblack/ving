@@ -1,7 +1,7 @@
 import { defineCommand } from "citty";
 import { publishUserToast } from '#ving/messagebus.mjs';
 import { useCache } from '#ving/cache.mjs';
-import { useUsers } from '../../server/vingrecord/records/User.mjs'
+import { useUsers } from '#ving/record/records/User.mjs'
 import { eq } from '#ving/drizzle/orm.mjs';
 
 export default defineCommand({

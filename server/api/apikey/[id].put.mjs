@@ -1,4 +1,4 @@
-import { useAPIKeys } from '../../vingrecord/records/APIKey.mjs';
+import { useAPIKeys } from '#ving/record/records/APIKey.mjs';
 import { describeParams, obtainSession, getBody } from '#ving/utils/rest.mjs';
 import { defineEventHandler, getRouterParams } from 'h3';
 
