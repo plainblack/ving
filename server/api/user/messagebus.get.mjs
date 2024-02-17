@@ -1,5 +1,5 @@
 import { setHeader, setResponseStatus, defineEventHandler, sendNoContent } from 'h3';
-import { useMessageBusSub } from '../../messagebus.mjs';
+import { useMessageBusSub } from '#ving/messagebus.mjs';
 import { obtainSession } from '../../utils/rest.mjs';
 export default defineEventHandler(async (event) => {
     const user = obtainSession(event);
