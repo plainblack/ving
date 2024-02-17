@@ -8,15 +8,15 @@ export const createLambdaProcessUploads = (thumbnailsBucket) => {
 
     const createNodeModsZip = new local.Command('createNodeModsZip', {
         create: './create.nodemods.layer.sh',
-        dir: './aws/lambda/layer/nodemods',
-        assetPaths: ['./aws/lambda/layer/nodemods/nodemods.zip'],
+        dir: './pulumi/aws/lambda/layer/nodemods',
+        assetPaths: ['./pulumi/aws/lambda/layer/nodemods/nodemods.zip'],
     });
 
     const nodeModsLayer = new aws.lambda.LayerVersion("nodeModsLayer", {
         layerName: `${projectName}-nodemods`,
         compatibleRuntimes: ["nodejs20.x"],
         code: new pulumi.asset.AssetArchive({
-            "nodejs": new pulumi.asset.FileArchive("./aws/lambda/layer/nodemods/nodemods.zip"),
+            "nodejs": new pulumi.asset.FileArchive("./pulumi/aws/lambda/layer/nodemods/nodemods.zip"),
         }),
     });
 
@@ -69,7 +69,7 @@ export const createLambdaProcessUploads = (thumbnailsBucket) => {
         runtime: "nodejs20.x",
         handler: "index.handler",
         code: new pulumi.asset.AssetArchive({
-            "index.mjs": new pulumi.asset.FileAsset('./aws/lambda/func/processUpload/index.mjs'),
+            "index.mjs": new pulumi.asset.FileAsset('./pulumi/aws/lambda/func/processUpload/index.mjs'),
         }),
         timeout: 60,
         memorySize: 512,
