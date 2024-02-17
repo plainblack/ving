@@ -1,4 +1,4 @@
-import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
+import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
 import { RoleOptions, RoleMixin } from '#ving/record/mixins/Role.mjs';
 import { useAPIKeys } from "#ving/record/records/APIKey.mjs";
 import { useS3Files } from '#ving/record/records/S3File.mjs'
@@ -216,7 +216,8 @@ export class UserRecord extends RoleMixin(VingRecord) {
          * @returns A `S3FileRecord` instance
          */
     async avatar() {
-        return await useS3Files().findOrDie(this.get('avatarId'));
+        return await (await useKind('S3File')).findOrDie(this.get('avatarId'));
+        // return await useS3Files().findOrDie(this.get('avatarId'));
     }
 }
 

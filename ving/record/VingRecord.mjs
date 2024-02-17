@@ -4,7 +4,18 @@ import { ouch } from '#ving/utils/ouch.mjs';
 import _ from 'lodash';
 import { eq, asc, desc, and, ne, sql, getTableName } from '#ving/drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving/schema/helpers.mjs';
+import { useDB } from '#ving/drizzle/db.mjs';
 
+const kindCache = {};
+export const useKind = async (kind) => {
+    if (kind in kindCache)
+        return kindCache[kind];
+    const kindTable = await import(`#ving/drizzle/schema/${kind}.mjs`);
+    const kindModule = await import(`#ving/record/records/${kind}.mjs`);
+    const instance = new kindModule[`${kind}Kind`](useDB(), kindTable[`${kind}Table`], kindModule[`${kind}Record`]);
+    kindCache[kind] = instance;
+    return instance;
+}
 
 /**
  * Get the schema for a specific kind within the ving schema list.
