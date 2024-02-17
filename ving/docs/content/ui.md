@@ -153,6 +153,14 @@ Props:
     - **label** - The human readable label for the value.
     - **value** - The value to select. Can be string, number, or boolean.
 
+### Notify
+Place this in your layouts so that users can receive toasts that will be triggered via the `useNotifyStore()` composable.
+```html
+<client-only>
+    <Notify/>
+</client-only>
+```
+
 ### Pager
 Displays a pagination bar for a [useVingKind() result set](ui.html#usevingkind()).
 
@@ -164,10 +172,53 @@ Props:
 
 - **kind** - A [useVingKind() object](ui.html#usevingkind()).
 
+### SystemWideAlert
+Place this in your layouts where you would like the system wide alert to be displayed when an admin has configured one. It is triggered by the `useSystemWideAlertStore()` composable.
+```html
+<client-only>
+    <SystemWideAlert/>
+</client-only>
+```
 
+### Throbber
+Place this in your layouts so the user has an indication that there are some background activites such as rest calls happening. It is triggered by the `useThrobberStore()` composable.
+```html
+<client-only>
+    <Throbber />
+</client-only>
+```
+
+### UserSettingsNav
+Navigation for user settings.
+
+```html
+<UserSettingsNav />
+```
 
 ## Composables
 Each of these also has documentation of how to use them in the form of JSDocs in the source code.
+
+### useCurrentUserStore()
+Gets you the currently logged in user. 
+
+```js
+const user = useCurrentUserStore();
+if (await user.isAuthenticated()) {
+    // do logged in user stuff
+}
+```
+
+It also triggers 2 window events for when the user logs in or out.
+
+```js
+    window.addEventListener('ving-login', (event) => {
+        // do something after login
+    });
+    window.addEventListener('ving-logout', (event) => {
+        // do something after logout
+    });
+```
+
 
 ### useDateTime()
 Date formatting tools based upon [date-fns](https://date-fns.org/).
@@ -185,12 +236,53 @@ Connects the browser to the server's [message bus](messagebus.html). This should
 useMessageBus();
 ```
 
+### useNotifyStore()
+Allows you to notify the user via toasts. 
+
+```js
+    const notify = useNotifyStore();
+    notify.info('Just wanted to let you know');
+    notify.warn('You might want to get concerned');
+    notify.error('Be afraid');
+    notify.success('Totally did it');
+    notify.notify('info', 'Hello');
+```
+You would then use the Notify Component in your layout.
+```html
+<client-only>
+    <Notify />
+</client-only>
+```
+
 ### useRest()
 A wrapper around the Nuxt composable `$fetch()` that allows for streamlined fetches, but integrate's with ving's subsystems.
 
 ```js
 const response = useFetch('/api/user');
 ```
+
+### useSystemWideAlertStore()
+Generally not something you'd need to use, but you will interact with it through the admin UI for the system wide alert, but it is used by the `SystemWideAlert` component.
+
+```js
+const swa = useSystemWideAlertStore();
+onMounted(async () => {
+    swa.check();
+}
+```
+
+
+### useThrobberStore()
+Whenever there is an interaction with the API via the `useRest()` composable it will update the throbber store. It is then used by the `Throbber` component.
+
+You may also wish to trigger it for other background actions that are happening so that your user knows something is going on at the moment. Maybe if you're processing a file for export, or if you have some heavy calculations going on, or if you're waiting on a web worker.
+
+```js
+    const throbber = useThrobberStore();
+    throbber.working();
+    throbber.done();
+```
+
 
 ### useVingKind()
 A client for interacting with [server-side ving kinds](ving-record.html#kind-api) through the [Rest API](rest.html).
@@ -226,7 +318,3 @@ const user = useVingRecord<'User'>({
 await user.fetch()
 onBeforeRouteLeave(() => user.dispose());
 ```
-
-## Stores
-
-TODO: write content
