@@ -1,5 +1,5 @@
 import { useUsers } from '../../../vingrecord/records/User.mjs';
-import { obtainSession, describeParams } from '../../../utils/rest.mjs';
+import { obtainSession, describeParams } from '#ving/utils/rest.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { defineEventHandler, getRouterParams, getQuery } from 'h3';
 

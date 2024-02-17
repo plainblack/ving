@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { debounce } from 'perfect-debounce'
-
+import { debounce } from 'perfect-debounce';
+import { ouch } from '#ving/utils/ouch.mjs';
 class VingKind {
     #notify = useNotifyStore();
 

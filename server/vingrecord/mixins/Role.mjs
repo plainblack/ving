@@ -1,4 +1,4 @@
-import { ouch } from '../../utils/ouch.mjs';
+import { ouch } from '#ving/utils/ouch.mjs';
 export { RoleOptions } from '../../vingschema/schemas/User.mjs';
 
 export function RoleMixin(Base) {

@@ -1,6 +1,6 @@
 import { useS3Files } from '../../vingrecord/records/S3File.mjs';
-import { describeParams, obtainSession, getBody } from '../../utils/rest.mjs';
-import {defineEventHandler, getRouterParams} from 'h3';
+import { describeParams, obtainSession, getBody } from '#ving/utils/rest.mjs';
+import { defineEventHandler, getRouterParams } from 'h3';
 export default defineEventHandler(async (event) => {
     const S3Files = useS3Files();
     const { id } = getRouterParams(event);

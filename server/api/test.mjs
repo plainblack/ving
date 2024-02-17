@@ -1,4 +1,4 @@
-import { getBody } from '../utils/rest.mjs';
+import { getBody } from '#ving/utils/rest.mjs';
 import { defineEventHandler, getQuery } from 'h3';
 
 export default defineEventHandler(async (event) => {

@@ -1,7 +1,7 @@
 import { sendMail } from '#ving/email/send.mjs';
 import { useUsers } from '../../../vingrecord/records/User.mjs';
 import { useCache } from '#ving/cache.mjs';
-import { obtainSession, describeParams } from '../../../utils/rest.mjs';
+import { obtainSession, describeParams } from '#ving/utils/rest.mjs';
 import crypto from 'crypto';
 import { defineEventHandler, getRouterParams, getQuery } from 'h3';
 import { useRuntimeConfig } from '#imports';

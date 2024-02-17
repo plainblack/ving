@@ -1,4 +1,4 @@
-import { obtainSessionIfRole, getBody } from '../../utils/rest.mjs';
+import { obtainSessionIfRole, getBody } from '#ving/utils/rest.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { defineEventHandler } from 'h3';
 

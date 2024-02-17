@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { findObject } from '../utils/findObject.mjs';
+import { findObject } from '#ving/utils/findObject.mjs';
 
 const data = [
 	{ name: "foo" },

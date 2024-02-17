@@ -1,6 +1,6 @@
-import { like, eq, and, or, gt, lt, gte, lte, ne } from '../drizzle/orm.mjs';
+import { like, eq, and, or, gt, lt, gte, lte, ne } from '../../server/drizzle/orm.mjs';
 import { getQuery, readBody } from 'h3';
-import { ouch } from './../utils/ouch.mjs';
+import { ouch } from '#ving/utils/ouch.mjs';
 import _ from 'lodash';
 
 const fixColumnData = (column, data) => {

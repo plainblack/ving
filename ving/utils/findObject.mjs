@@ -1,4 +1,4 @@
-import { ouch } from './ouch.mjs';
+import { ouch } from '#ving/utils/ouch.mjs';
 
 export const findObjectIndex = (field, value, list) => {
     return list.findIndex((obj) => obj[field] == value);

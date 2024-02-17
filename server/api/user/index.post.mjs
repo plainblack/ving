@@ -1,5 +1,5 @@
 import { useUsers } from '../../vingrecord/records/User.mjs';
-import { describeParams, getBody } from '../../utils/rest.mjs';
+import { describeParams, getBody } from '#ving/utils/rest.mjs';
 import { defineEventHandler } from 'h3';
 
 export default defineEventHandler(async (event) => {

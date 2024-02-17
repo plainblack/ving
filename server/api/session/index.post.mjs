@@ -1,10 +1,9 @@
 import { useUsers } from '../../vingrecord/records/User.mjs';
 const Users = useUsers();
-import { getBody, describeParams } from '../../utils/rest.mjs';
+import { getBody, describeParams, testRequired } from '#ving/utils/rest.mjs';
 import { Session } from '#ving/session.mjs';
 import { eq } from '../../drizzle/orm.mjs';
-import { ouch } from './../../utils/ouch.mjs';
-import { testRequired } from '../../utils/rest.mjs';
+import { ouch } from '#ving/utils/ouch.mjs';
 import { defineEventHandler, setCookie } from 'h3';
 
 

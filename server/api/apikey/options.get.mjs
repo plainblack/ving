@@ -1,5 +1,5 @@
 import { useAPIKeys } from '../../vingrecord/records/APIKey.mjs';
-import { describeParams } from '../../utils/rest.mjs';
+import { describeParams } from '#ving/utils/rest.mjs';
 import { defineEventHandler } from 'h3';
 
 export default defineEventHandler(async (event) => {

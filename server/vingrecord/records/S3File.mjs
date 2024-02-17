@@ -2,7 +2,7 @@ import { VingRecord, VingKind } from "../VingRecord.mjs";
 import { useDB } from '../../drizzle/db.mjs';
 import { S3FileTable } from '../../drizzle/schema/S3File.mjs';
 import { useUsers } from './User.mjs';
-import { ouch } from '../../utils/ouch.mjs';
+import { ouch } from '#ving/utils/ouch.mjs';
 import { v4 } from 'uuid';
 import sanitize from 'sanitize-filename';
 import * as dotenv from 'dotenv';

@@ -1,6 +1,6 @@
 import Keyv from 'keyv';
 import 'dotenv/config';
-import { ouch } from '../server/utils/ouch.mjs';
+import { ouch } from '#ving/utils/ouch.mjs';
 let cache = undefined;
 
 export const useCache = () => {

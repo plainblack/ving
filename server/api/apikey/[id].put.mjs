@@ -1,5 +1,5 @@
 import { useAPIKeys } from '../../vingrecord/records/APIKey.mjs';
-import { describeParams, obtainSession, getBody } from '../../utils/rest.mjs';
+import { describeParams, obtainSession, getBody } from '#ving/utils/rest.mjs';
 import { defineEventHandler, getRouterParams } from 'h3';
 
 export default defineEventHandler(async (event) => {
