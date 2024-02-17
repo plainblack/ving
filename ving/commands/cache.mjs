@@ -1,5 +1,5 @@
 import { defineCommand } from "citty";
-import { useCache } from '../server/cache.mjs'
+import { useCache } from '../../server/cache.mjs'
 
 export default defineCommand({
     meta: {

@@ -1,8 +1,8 @@
 import { defineCommand } from "citty";
-import { publishUserToast } from '../server/messagebus.mjs';
-import { useCache } from '../server/cache.mjs';
-import { useUsers } from '../server/vingrecord/records/User.mjs'
-import { eq } from '../server/drizzle/orm.mjs';
+import { publishUserToast } from '../../server/messagebus.mjs';
+import { useCache } from '../../server/cache.mjs';
+import { useUsers } from '../../server/vingrecord/records/User.mjs'
+import { eq } from '../../server/drizzle/orm.mjs';
 
 export default defineCommand({
     meta: {
