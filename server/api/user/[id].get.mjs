@@ -1,10 +1,10 @@
-import { useUsers } from '#ving/record/records/User.mjs';
-const Users = useUsers();
+import { useKind } from '#ving/record/VingRecord.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
 import { defineEventHandler, getRouterParams } from 'h3';
 
 export default defineEventHandler(async (event) => {
+    const users = await useKind('User');
     const { id } = getRouterParams(event);
-    const user = await Users.findOrDie(id);
+    const user = await users.findOrDie(id);
     return user.describe(describeParams(event));
 });

@@ -1,16 +1,16 @@
 import { useAPIKeys } from '#ving/record/records/APIKey.mjs';
-import { useUsers } from '#ving/record/records/User.mjs';
+import { useKind } from '#ving/record/VingRecord.mjs';
 import { describe, test, expect } from "vitest";
 import { like, eq, asc, desc, and, inArray } from '#ving/drizzle/orm.mjs';
 
 const APIKeys = useAPIKeys();
-const Users = useUsers();
+const users = await useKind('User');
 await APIKeys.delete.where(eq(APIKeys.table.name, 'Test'));
-await Users.delete.where(eq(Users.table.username, 'guardMert'));
+await users.delete.where(eq(users.table.username, 'guardMert'));
 
 describe('APIKey', async () => {
 
-    const user = await Users.create({ username: 'guardMert', email: 'Mert@shawshank.jail', realName: 'Mert' });
+    const user = await users.create({ username: 'guardMert', email: 'Mert@shawshank.jail', realName: 'Mert' });
 
     const apikey = APIKeys.mint({ name: 'Test', userId: user.get('id') });
 

@@ -1,4 +1,4 @@
-import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
+import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
 import { useDB } from '#ving/drizzle/db.mjs';
 import { S3FileTable } from '#ving/drizzle/schema/S3File.mjs';
 import { useUsers } from '#ving/record/records/User.mjs';
@@ -313,7 +313,8 @@ export class S3FileRecord extends VingRecord {
          * @returns A `UserRecord` instance
          */
     async user() {
-        return await useUsers().findOrDie(this.get('userId'));
+        const users = await useKind('User');
+        return await users.findOrDie(this.get('userId'));
     }
 
     /**

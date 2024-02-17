@@ -1,13 +1,13 @@
-import { useUsers } from '#ving/record/records/User.mjs';
+import { useKind } from '#ving/record/VingRecord.mjs';
 import { useS3Files } from '#ving/record/records/S3File.mjs';
 import { describeParams, obtainSession, getBody } from '#ving/utils/rest.mjs';
 import { defineEventHandler, getRouterParams } from 'h3';
 
 
 export default defineEventHandler(async (event) => {
-    const Users = useUsers();
+    const users = await useKind('User');
     const { id } = getRouterParams(event);
-    const user = await Users.findOrDie(id);
+    const user = await users.findOrDie(id);
     const session = obtainSession(event);
     user.canEdit(session);
     const body = await getBody(event);

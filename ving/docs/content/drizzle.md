@@ -39,8 +39,9 @@ const result = await db.select().from(UsersTable).where(eq(UsersTable.email, 'jo
 Or if you are using [ving records](ving-record.html) then its even easier:
 
 ```js
-import {useUsers} from '#ving/record/records/User.mjs';
+import {useKind} from '#ving/record/VingRecord.mjs';
 import {eq} from '#ving/drizzle/orm.mjs';
 
-const result = await useUsers().select.where(eq(Users.table.email, 'joe@example.com'));
+const users = await useKind('User');
+const result = await users.select.where(eq(Users.table.email, 'joe@example.com'));
 ```

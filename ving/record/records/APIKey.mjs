@@ -1,7 +1,6 @@
-import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
+import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
 import { useDB } from '#ving/drizzle/db.mjs';
 import { APIKeyTable } from '#ving/drizzle/schema/APIKey.mjs';
-import { useUsers } from '#ving/record/records/User.mjs'
 
 /** Management of individual API Keys for developer access to the API.
  * @class
@@ -11,7 +10,8 @@ export class APIKeyRecord extends VingRecord {
 
     /** A parent relationship to `UserKind`. */
     async user() {
-        return await useUsers().findOrDie(this.get('userId'));
+        const users = await useKind('User');
+        return await users.findOrDie(this.get('userId'));
     }
 
 }

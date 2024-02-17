@@ -1,7 +1,5 @@
-import { useUsers, UserRecord } from '#ving/record/records/User.mjs';
+import { useKind } from '#ving/record/VingRecord.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
-const Users = useUsers();
-
 import { RoleMixin, RoleOptions } from '#ving/record/mixins/Role.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { v4 } from 'uuid';
@@ -33,7 +31,8 @@ class ProtoSession {
         if (this.#userObj !== undefined) {
             return this.#userObj;
         }
-        return this.#userObj = await Users.find(this.#props.id);
+        const users = await useKind('User');
+        return this.#userObj = await users.find(this.#props.id);
     }
 
     async end() {

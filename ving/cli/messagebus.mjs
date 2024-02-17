@@ -1,7 +1,7 @@
 import { defineCommand } from "citty";
 import { publishUserToast } from '#ving/messagebus.mjs';
 import { useCache } from '#ving/cache.mjs';
-import { useUsers } from '#ving/record/records/User.mjs'
+import { useKind } from '#ving/record/VingRecord.mjs'
 import { eq } from '#ving/drizzle/orm.mjs';
 
 export default defineCommand({
@@ -31,8 +31,8 @@ export default defineCommand({
     },
     async run({ args }) {
         if (args.user) {
-            const Users = useUsers();
-            const user = await Users.findOne(eq(Users.table.username, args.user));
+            const users = await useKind('User');
+            const user = await users.findOne(eq(users.table.username, args.user));
             if (user) {
                 const severity = args.severity == 'info' || 'danger' || 'success' || 'warning' ? args.type : 'info';
                 const pub = await publishUserToast(user.get('id'), args.message, severity);
@@ -41,7 +41,7 @@ export default defineCommand({
             else {
                 console.log('user not found');
             }
-            await Users.db.session.client.pool.end();
+            await users.db.session.client.pool.end();
             await useCache().disconnect();
         }
         else {

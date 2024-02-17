@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { useUsers } from '#ving/record/records/User.mjs';
+import { useKind } from '#ving/record/VingRecord.mjs';
 import { describe, test, expect, afterAll } from "vitest";
 import { like, eq, asc, desc, and } from '#ving/drizzle/orm.mjs';
 
-const Users = useUsers();
+const Users = await useKind('User');
 const base = 'http://localhost:3000/api/';
 
 describe('Session API', async () => {

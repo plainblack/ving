@@ -1,8 +1,8 @@
-import { useUsers } from '#ving/record/records/User.mjs';
+import { useKind } from '#ving/record/VingRecord.mjs';
 import { describe, test, expect } from "vitest";
 import { like, eq, asc, desc, and, inArray, SQL } from '#ving/drizzle/orm.mjs';
 
-const Users = useUsers();
+const Users = await useKind('User');
 
 await Users.delete.where(inArray(Users.table.username, ['warden', 'captain', 'guard']));
 const warden = await Users.create({ username: 'warden', email: 'warden@shawshank.jail', realName: 'Samuel Norton' });

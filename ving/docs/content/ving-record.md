@@ -34,8 +34,8 @@ Those files will be placed in `pages/foo` and you can modify them as needed as w
 The Kind is akin to a relational database table. To start with you need to get a reference to it:
 
 ```js
-import {useUsers} from '#ving/record/records/User.mjs';
-const Users = useUsers();
+import {useKind} from '#ving/record/VingKind.mjs';
+const users = await useKind('User');
 ```
 
 ### Creating Records
@@ -228,9 +228,9 @@ It is then used with `calcWhere()` to limit the scope of a where clause to relat
 The Record is akin to a relational database table row. You'll get a record via the [Kind API](#kind-api), perhaps like this:
 
 ```js
-import {Users} from '#ving/record/records/User.mjs';
-const Users = useUsers();
-const record = Users.findOrDie('xxx');
+import {useKind} from '#ving/record/VingRecord.mjs';
+const users = await useKind('User');
+const record = users.findOrDie('xxx');
 ```
 
 Once you have a record you can use the following methods to manipulate it.

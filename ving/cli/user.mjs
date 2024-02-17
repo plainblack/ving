@@ -1,5 +1,5 @@
 import { defineCommand } from "citty";
-import { useUsers } from '#ving/record/records/User.mjs'
+import { useKind } from '#ving/record/VingRecord.mjs'
 import { useCache } from '#ving/cache.mjs';
 import { like, or, eq } from '#ving/drizzle/orm.mjs';
 
@@ -54,18 +54,18 @@ export default defineCommand({
         },
     },
     async run({ args }) {
-        const Users = useUsers();
+        const users = await useKind('User');
         if (args.list) {
-            formatList(await Users.findMany());
+            formatList(await users.findMany());
         }
         else if (args.admins) {
-            formatList(await Users.findMany(eq(Users.table.admin, true)));
+            formatList(await users.findMany(eq(users.table.admin, true)));
         }
         else if (args.search) {
-            formatList(await Users.findMany(or(like(Users.table.username, `%${args.search}%`), like(Users.table.realName, `%${args.search}%`), like(Users.table.email, `%${args.search}%`))));
+            formatList(await users.findMany(or(like(users.table.username, `%${args.search}%`), like(users.table.realName, `%${args.search}%`), like(users.table.email, `%${args.search}%`))));
         }
         else if (args.add) {
-            const user = Users.mint({
+            const user = users.mint({
                 username: args.add,
                 realName: args.add,
                 email: args.email,
@@ -76,7 +76,7 @@ export default defineCommand({
             formatList([user]);
         }
         else if (args.modify) {
-            const user = await Users.findOne(eq(Users.table.username, args.modify));
+            const user = await users.findOne(eq(users.table.username, args.modify));
             if (user) {
                 if (args.email)
                     user.set('email', args.email);
@@ -93,7 +93,7 @@ export default defineCommand({
                 console.log(`Could not find user: ${args.modify}`);
             }
         }
-        await Users.db.session.client.pool.end();
+        await users.db.session.client.pool.end();
         await useCache().disconnect();
     },
 });

@@ -1,5 +1,5 @@
 import { sendMail } from '#ving/email/send.mjs';
-import { useUsers } from '#ving/record/records/User.mjs';
+import { useKind } from '#ving/record/VingRecord.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { eq } from '#ving/drizzle/orm.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
@@ -9,9 +9,9 @@ import { defineEventHandler, getQuery } from 'h3';
 import { useRuntimeConfig } from '#imports';
 
 export default defineEventHandler(async (event) => {
-    const Users = useUsers();
+    const users = await useKind('User');
     const body = await getBody(event);;
-    const user = await Users.findOne(eq(Users.table.email, body.email));
+    const user = await user.findOne(eq(users.table.email, body.email));
     if (!user)
         throw ouch(404, 'User not found.');
     const config = useRuntimeConfig();

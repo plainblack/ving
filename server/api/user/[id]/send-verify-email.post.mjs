@@ -1,5 +1,5 @@
 import { sendMail } from '#ving/email/send.mjs';
-import { useUsers } from '#ving/record/records/User.mjs';
+import { useKind } from '#ving/record/VingRecord.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { obtainSession, describeParams } from '#ving/utils/rest.mjs';
 import crypto from 'crypto';
@@ -7,9 +7,9 @@ import { defineEventHandler, getRouterParams, getQuery } from 'h3';
 import { useRuntimeConfig } from '#imports';
 
 export default defineEventHandler(async (event) => {
-    const Users = useUsers();
+    const users = await useKind('User');
     const { id } = getRouterParams(event);
-    const user = await Users.findOrDie(id);
+    const user = await users.findOrDie(id);
     user.canEdit(obtainSession(event));
     if (!user.get('verifiedEmail')) {
         const query = getQuery(event);

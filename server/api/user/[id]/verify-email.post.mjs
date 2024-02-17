@@ -1,13 +1,13 @@
-import { useUsers } from '#ving/record/records/User.mjs';
+import { useKind } from '#ving/record/VingRecord.mjs';
 import { obtainSession, describeParams } from '#ving/utils/rest.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { defineEventHandler, getRouterParams, getQuery } from 'h3';
 
 
 export default defineEventHandler(async (event) => {
-    const Users = useUsers();
+    const users = await useKind('User');
     const { id } = getRouterParams(event);
-    const user = await Users.findOrDie(id);
+    const user = await users.findOrDie(id);
     user.canEdit(obtainSession(event));
     const query = getQuery(event);
     const result = await useCache().get('verifyEmail-' + query.verify);
