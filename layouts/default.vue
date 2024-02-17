@@ -140,10 +140,7 @@
 const config = useRuntimeConfig();
 const currentUser = useCurrentUserStore();
 await currentUser.isAuthenticated();
-const swa = useSystemWideAlertStore();
 onMounted(async () => {
-    // do system wide announcement check
-    await swa.check();
     // subscribe to message bus
     useMessageBus();
 })
