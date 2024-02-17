@@ -1,6 +1,6 @@
 import { defineCommand } from "citty";
 import { exec } from "child_process";
-import { runMigrations } from '../../server/drizzle/migrate.mjs';
+import { runMigrations } from '#ving/drizzle/migrate.mjs';
 import { makeTableFile } from '../../server/vingschema/gentable.mjs';
 import { vingSchemas } from '../../server/vingschema/index.mjs';
 
@@ -36,7 +36,7 @@ export default defineCommand({
             runMigrations();
         }
         else if (args.prepare) {
-            exec("npx drizzle-kit generate:mysql --out ./server/drizzle/migrations --schema server/drizzle/schema", (error, stdout, stderr) => {
+            exec("npx drizzle-kit generate:mysql --out ./ving/drizzle/migrations --schema ving/drizzle/schema", (error, stdout, stderr) => {
                 if (error) {
                     console.log(`error: ${error.message}`);
                     return;

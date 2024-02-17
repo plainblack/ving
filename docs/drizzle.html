@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
-        <style type="text/css">
+    <style type="text/css">
         html {
             font-size: 1rem;
             height: 100%;
         }
-        
+
         body {
             font-family: var(--font-family);
             background-color: var(--bg-white);
@@ -23,11 +23,13 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        
+
         li a {
             text-decoration: none;
         }
-       ol,ul {
+
+        ol,
+        ul {
             list-style: none;
             margin-left: 0;
             padding-left: 10px;
@@ -41,80 +43,113 @@
             <div class="sticky top-0 left-0">
                 <div class="text-4xl">Ving Docs</div>
                 <p>Basics</p>
-<ul>
-<li><a href="index.html">About</a></li>
-<li><a href="installation.html">Installation</a></li>
-<li><a href="error-codes.html">Error Codes</a></li>
-<li><a href="change-log.html">Change Log</a></li>
-</ul>
-<p>Subsystems</p>
-<ul>
-<li><a href="cache.html">Cache</a></li>
-<li><a href="cli.html">CLI</a></li>
-<li><a href="drizzle.html">Database</a></li>
-<li><a href="email.html">Email</a></li>
-<li><a href="messagebus.html">Message Bus</a></li>
-<li><a href="pulumi.html">Pulumi</a></li>
-<li><a href="rest.html">Rest</a></li>
-<li><a href="ui.html">UI</a></li>
-<li><a href="ving-record.html">Ving Record</a></li>
-<li><a href="ving-schema.html">Ving Schema</a></li>
-</ul>
-<p>Rest APIs</p>
-<ul>
-<li><a href="APIKey.html">API Key</a></li>
-<li><a href="S3File.html">S3File</a></li>
-<li><a href="Session.html">Session</a></li>
-<li><a href="Test.html">Test</a></li>
-<li><a href="User.html">User</a></li>
-</ul>
+                <ul>
+                    <li><a href="index.html">About</a></li>
+                    <li><a href="installation.html">Installation</a></li>
+                    <li><a href="error-codes.html">Error Codes</a></li>
+                    <li><a href="change-log.html">Change Log</a></li>
+                </ul>
+                <p>Subsystems</p>
+                <ul>
+                    <li><a href="cache.html">Cache</a></li>
+                    <li><a href="cli.html">CLI</a></li>
+                    <li><a href="drizzle.html">Database</a></li>
+                    <li><a href="email.html">Email</a></li>
+                    <li><a href="messagebus.html">Message Bus</a></li>
+                    <li><a href="pulumi.html">Pulumi</a></li>
+                    <li><a href="rest.html">Rest</a></li>
+                    <li><a href="ui.html">UI</a></li>
+                    <li><a href="ving-record.html">Ving Record</a></li>
+                    <li><a href="ving-schema.html">Ving Schema</a></li>
+                </ul>
+                <p>Rest APIs</p>
+                <ul>
+                    <li><a href="APIKey.html">API Key</a></li>
+                    <li><a href="S3File.html">S3File</a></li>
+                    <li><a href="Session.html">Session</a></li>
+                    <li><a href="Test.html">Test</a></li>
+                    <li><a href="User.html">User</a></li>
+                </ul>
 
             </div>
         </div>
-            <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
-<nav class="table-of-contents"><ol><li><a href="#drizzle">Drizzle </a><ol><li><a href="#migrations">Migrations </a><ol><li><a href="#generate-database-migrations">Generate Database Migrations </a></li><li><a href="#apply-database-migrations">Apply Database Migrations </a></li></ol></li><li><a href="#writing-queries">Writing Queries </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
-<h1 id="drizzle" tabindex="-1">Drizzle <a class="header-anchor" href="#drizzle">
-          <span aria-hidden="true" class="hidden">#</span>
-        </a></h1>
-<p>The database layer is controlled by <a href="https://github.com/drizzle-team/drizzle-orm">Drizzle</a>. Drizzle table definitions should be generated from your <a href="ving-schema.html">ving schema</a>. Drizzle provides a convenient way to write SQL queries in Javascript. Drizzle’s table definitions keep track of changes to your database schema over time allowing it to automatically generate database change migrations.</p>
-<h2 id="migrations" tabindex="-1">Migrations <a class="header-anchor" href="#migrations">
-          <span aria-hidden="true" class="hidden">#</span>
-        </a></h2>
-<p>Migrations are files created to help you migrate changes from one version of your database to another. In some systems you have to manually write migrations. But in ving you don’t, thanks to our use of Drizzle.</p>
-<h3 id="generate-database-migrations" tabindex="-1">Generate Database Migrations <a class="header-anchor" href="#generate-database-migrations">
-          <span aria-hidden="true" class="hidden">#</span>
-        </a></h3>
-<p>Drizzle can automatically generate database migrations based upon changes in the Drizzle table definitions. You run that command like this:</p>
-<pre><code class="language-bash">./ving.mjs drizzle --prepare
+        <div class="col lg:col-3 p-3 surface-200">
+            <div class="sticky top-0 right-0">
+                <nav class="table-of-contents">
+                    <ol>
+                        <li><a href="#drizzle">Drizzle </a>
+                            <ol>
+                                <li><a href="#migrations">Migrations </a>
+                                    <ol>
+                                        <li><a href="#generate-database-migrations">Generate Database Migrations </a>
+                                        </li>
+                                        <li><a href="#apply-database-migrations">Apply Database Migrations </a></li>
+                                    </ol>
+                                </li>
+                                <li><a href="#writing-queries">Writing Queries </a></li>
+                            </ol>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col min-h-screen">
+            <h1 id="drizzle" tabindex="-1">Drizzle <a class="header-anchor" href="#drizzle">
+                    <span aria-hidden="true" class="hidden">#</span>
+                </a></h1>
+            <p>The database layer is controlled by <a href="https://github.com/drizzle-team/drizzle-orm">Drizzle</a>.
+                Drizzle table definitions should be generated from your <a href="ving-schema.html">ving schema</a>.
+                Drizzle provides a convenient way to write SQL queries in Javascript. Drizzle’s table definitions keep
+                track of changes to your database schema over time allowing it to automatically generate database change
+                migrations.</p>
+            <h2 id="migrations" tabindex="-1">Migrations <a class="header-anchor" href="#migrations">
+                    <span aria-hidden="true" class="hidden">#</span>
+                </a></h2>
+            <p>Migrations are files created to help you migrate changes from one version of your database to another. In
+                some systems you have to manually write migrations. But in ving you don’t, thanks to our use of Drizzle.
+            </p>
+            <h3 id="generate-database-migrations" tabindex="-1">Generate Database Migrations <a class="header-anchor"
+                    href="#generate-database-migrations">
+                    <span aria-hidden="true" class="hidden">#</span>
+                </a></h3>
+            <p>Drizzle can automatically generate database migrations based upon changes in the Drizzle table
+                definitions. You run that command like this:</p>
+            <pre><code class="language-bash">./ving.mjs drizzle --prepare
 </code></pre>
-<h3 id="apply-database-migrations" tabindex="-1">Apply Database Migrations <a class="header-anchor" href="#apply-database-migrations">
-          <span aria-hidden="true" class="hidden">#</span>
-        </a></h3>
-<p>Drizzle can automatically apply migrations to your database by running this command:</p>
-<pre><code class="language-bash">./ving.mjs drizzle --up
+            <h3 id="apply-database-migrations" tabindex="-1">Apply Database Migrations <a class="header-anchor"
+                    href="#apply-database-migrations">
+                    <span aria-hidden="true" class="hidden">#</span>
+                </a></h3>
+            <p>Drizzle can automatically apply migrations to your database by running this command:</p>
+            <pre><code class="language-bash">./ving.mjs drizzle --up
 </code></pre>
-<h2 id="writing-queries" tabindex="-1">Writing Queries <a class="header-anchor" href="#writing-queries">
-          <span aria-hidden="true" class="hidden">#</span>
-        </a></h2>
-<p>Normally you shouldn’t have to write many queries as <a href="ving-record.html">ving records</a> should handle a lot of that for you. But if you write complex backends like we do then inevitably you’ll need to write some.</p>
-<p>Writing Drizzle queries looks a lot like how you would write them with SQL, only in Javascript. You probably want to check out the <a href="https://orm.drizzle.team/docs/overview">official Drizzle documentation</a>.</p>
-<p>We’ve exported a list of the useful drizzle utilities into a single file called <code>/server/drizzle/orm.mjs</code>. Below is an example of how you might use this:</p>
-<pre><code class="language-js">import {eq} from './server/drizzle/orm.mjs';
-import {UsersTable} from './server/drizzle/schema/User.mjs';
-import {useDB} from './server/drizzle/db.mjs';
+            <h2 id="writing-queries" tabindex="-1">Writing Queries <a class="header-anchor" href="#writing-queries">
+                    <span aria-hidden="true" class="hidden">#</span>
+                </a></h2>
+            <p>Normally you shouldn’t have to write many queries as <a href="ving-record.html">ving records</a> should
+                handle a lot of that for you. But if you write complex backends like we do then inevitably you’ll need
+                to write some.</p>
+            <p>Writing Drizzle queries looks a lot like how you would write them with SQL, only in Javascript. You
+                probably want to check out the <a href="https://orm.drizzle.team/docs/overview">official Drizzle
+                    documentation</a>.</p>
+            <p>We’ve exported a list of the useful drizzle utilities into a single file called
+                <code>#ving/drizzle/orm.mjs</code>. Below is an example of how you might use this:</p>
+            <pre><code class="language-js">import {eq} from '#ving/drizzle/orm.mjs';
+import {UsersTable} from '#ving/drizzle/schema/User.mjs';
+import {useDB} from '#ving/drizzle/db.mjs';
 
 const db = useDB()
 const result = await db.select().from(UsersTable).where(eq(UsersTable.email, 'joe@example.com'));
 </code></pre>
-<p>Or if you are using <a href="ving-record.html">ving records</a> then its even easier:</p>
-<pre><code class="language-js">import {Users} from './server/vingrecord/records/User.mjs';
+            <p>Or if you are using <a href="ving-record.html">ving records</a> then its even easier:</p>
+            <pre><code class="language-js">import {Users} from './server/vingrecord/records/User.mjs';
 import {eq} from './server/drizzle/orm.mjs';
 
 const result = await Users.select.where(eq(Users.table.email, 'joe@example.com'));
 </code></pre>
-</div>
+        </div>
     </div>
-    
+
 </body>
 
 </html>

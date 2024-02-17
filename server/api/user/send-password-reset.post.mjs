@@ -1,7 +1,7 @@
 import { sendMail } from '#ving/email/send.mjs';
 import { useUsers } from '../../vingrecord/records/User.mjs';
 import { useCache } from '#ving/cache.mjs';
-import { eq } from '../../drizzle/orm.mjs';
+import { eq } from '#ving/drizzle/orm.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
 import crypto from 'crypto';

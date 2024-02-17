@@ -10,4 +10,4 @@ logs
 dist
 **/node_modules
 *.zip
-server/drizzle/migrations
+ving/drizzle/migrations

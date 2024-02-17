@@ -25,12 +25,12 @@ Normally you shouldn't have to write many queries as [ving records](ving-record.
 
 Writing Drizzle queries looks a lot like how you would write them with SQL, only in Javascript. You probably want to check out the [official Drizzle documentation](https://orm.drizzle.team/docs/overview).
 
-We've exported a list of the useful drizzle utilities into a single file called `/server/drizzle/orm.mjs`. Below is an example of how you might use this:
+We've exported a list of the useful drizzle utilities into a single file called `#ving/drizzle/orm.mjs`. Below is an example of how you might use this:
 
 ```js
-import {eq} from './server/drizzle/orm.mjs';
-import {UsersTable} from './server/drizzle/schema/User.mjs';
-import {useDB} from './server/drizzle/db.mjs';
+import {eq} from '#ving/drizzle/orm.mjs';
+import {UsersTable} from '#ving/drizzle/schema/User.mjs';
+import {useDB} from '#ving/drizzle/db.mjs';
 
 const db = useDB()
 const result = await db.select().from(UsersTable).where(eq(UsersTable.email, 'joe@example.com'));
@@ -40,7 +40,7 @@ Or if you are using [ving records](ving-record.html) then its even easier:
 
 ```js
 import {Users} from './server/vingrecord/records/User.mjs';
-import {eq} from './server/drizzle/orm.mjs';
+import {eq} from '#ving/drizzle/orm.mjs';
 
 const result = await Users.select.where(eq(Users.table.email, 'joe@example.com'));
 ```

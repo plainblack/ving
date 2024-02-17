@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeAll } from "vitest";
-import { useDB } from '../server/drizzle/db.mjs';
-import { like, eq, asc, desc, and, sql } from '../server/drizzle/orm.mjs';
-import { UserTable } from '../server/drizzle/schema/User.mjs';
+import { useDB } from '#ving/drizzle/db.mjs';
+import { like, eq, asc, desc, and, sql } from '#ving/drizzle/orm.mjs';
+import { UserTable } from '#ving/drizzle/schema/User.mjs';
 
 describe('UserTable', async () => {
     const db = useDB()

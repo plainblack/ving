@@ -17,7 +17,7 @@ export async function runMigrations() {
     });
 
     const db = drizzle(con);
-    await migrate(db, { migrationsFolder: 'server/drizzle/migrations' });
+    await migrate(db, { migrationsFolder: 'ving/drizzle/migrations' });
     await con.end();
     console.log('Migration complete!');
 }

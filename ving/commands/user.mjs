@@ -1,7 +1,7 @@
 import { defineCommand } from "citty";
 import { useUsers } from '../../server/vingrecord/records/User.mjs'
 import { useCache } from '#ving/cache.mjs';
-import { like, or, eq } from '../../server/drizzle/orm.mjs';
+import { like, or, eq } from '#ving/drizzle/orm.mjs';
 
 export default defineCommand({
     meta: {

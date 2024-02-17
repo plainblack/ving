@@ -1,5 +1,5 @@
 import { useCache } from '#ving/cache.mjs';
-import { sleep } from '../utils/sleep.mjs';
+import { sleep } from '#ving/utils/sleep.mjs';
 import { test, expect } from "vitest";
 
 const cache = useCache();

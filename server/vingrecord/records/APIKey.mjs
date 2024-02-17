@@ -1,6 +1,6 @@
 import { VingRecord, VingKind } from "../VingRecord.mjs";
-import { useDB } from '../../drizzle/db.mjs';
-import { APIKeyTable } from '../../drizzle/schema/APIKey.mjs';
+import { useDB } from '#ving/drizzle/db.mjs';
+import { APIKeyTable } from '#ving/drizzle/schema/APIKey.mjs';
 import { useUsers } from './User.mjs'
 
 export class APIKeyRecord extends VingRecord {

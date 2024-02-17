@@ -46,8 +46,8 @@ function addRelationships({ name, schema }) {
 
 const recordTemplate = ({ name, schema }) =>
     `import { VingRecord, VingKind } from "../VingRecord.mjs";
-import { useDB } from '../../drizzle/db.mjs';
-import { ${name}Table } from '../../drizzle/schema/${name}.mjs';
+import { useDB } from '#ving/drizzle/db.mjs';
+import { ${name}Table } from '#ving/drizzle/schema/${name}.mjs';
 ${addImports({ schema })}
 
 export class ${name}Record extends VingRecord {

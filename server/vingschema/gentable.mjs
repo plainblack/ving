@@ -27,10 +27,10 @@ export const makeTable = ({ schema }) => {
     const references = [];
     for (const prop of schema.props) {
         if (prop.relation && ['parent', 'sibling'].includes(prop.relation.type)) {
-            references.push(`import {${prop.relation.kind}Table} from './${prop.relation.kind}.mjs';`);
+            references.push(`import {${prop.relation.kind}Table} from '#ving/drizzle/schema/${prop.relation.kind}.mjs';`);
         }
     }
-    return `import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text, int, json } from '../orm.mjs';
+    return `import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text, int, json } from '#ving/drizzle/orm.mjs';
 ${references.join("\n")}
 
 ${makeBaseTable(schema)}
@@ -40,5 +40,5 @@ ${makeBaseTable(schema)}
 export const makeTableFile = (params) => {
     const context = { ...getContext({}), ...params };
     return Promise.resolve(context)
-        .then(renderTemplate(makeTable, toFile(`server/drizzle/schema/${context.schema.kind}.mjs`), { force: true }))
+        .then(renderTemplate(makeTable, toFile(`ving/drizzle/schema/${context.schema.kind}.mjs`), { force: true }))
 }

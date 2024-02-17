@@ -1,6 +1,6 @@
 import { useUsers } from '../server/vingrecord/records/User.mjs';
 import { describe, test, expect } from "vitest";
-import { like, eq, asc, desc, and, inArray, SQL } from '../server/drizzle/orm.mjs';
+import { like, eq, asc, desc, and, inArray, SQL } from '#ving/drizzle/orm.mjs';
 
 const Users = useUsers();
 

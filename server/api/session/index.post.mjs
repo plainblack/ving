@@ -2,7 +2,7 @@ import { useUsers } from '../../vingrecord/records/User.mjs';
 const Users = useUsers();
 import { getBody, describeParams, testRequired } from '#ving/utils/rest.mjs';
 import { Session } from '#ving/session.mjs';
-import { eq } from '../../drizzle/orm.mjs';
+import { eq } from '#ving/drizzle/orm.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { defineEventHandler, setCookie } from 'h3';
 
