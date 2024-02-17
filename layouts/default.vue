@@ -122,7 +122,7 @@
             </div>
         </div>
         <client-only>
-            <Message v-if="swa.message" :closable="false" :severity="swa.severity">{{ swa.message }}</Message>
+            <SystemWideAlert />
         </client-only>
         <div class="px-0 py-4 md:px-4">
             <div style="min-height: 20rem">
@@ -137,8 +137,6 @@
 </template>
 
 <script setup>
-import { bs } from 'date-fns/locale';
-
 const config = useRuntimeConfig();
 const currentUser = useCurrentUserStore();
 await currentUser.isAuthenticated();
