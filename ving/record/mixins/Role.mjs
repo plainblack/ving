@@ -1,5 +1,5 @@
 import { ouch } from '#ving/utils/ouch.mjs';
-export { RoleOptions } from '../../../server/vingschema/schemas/User.mjs';
+export { RoleOptions } from '#ving/schema/schemas/User.mjs';
 
 export function RoleMixin(Base) {
     class RoleMixin extends Base {

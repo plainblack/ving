@@ -1,5 +1,5 @@
 # Ving Schema
-You'll find the schemas in `server/vingschema/schemas`. A schema looks like this:
+You'll find the schemas in `#ving/schema/schemas`. A schema looks like this:
 
 ```js
 {
@@ -59,7 +59,7 @@ The `view` and `edit` props are arrays that can:
 
 If a role can `edit` a prop it can automatically `view` a prop.
 
-> Roles can be defined inside the `User` schema (`server/vingschema/User.mjs`). They have to be added as a [boolean prop type](boolean-props), and then also added to the `RoleOptions` at the bottom of the file.
+> Roles can be defined inside the `User` schema (`#ving/schema/schemas/User.mjs`). They have to be added as a [boolean prop type](boolean-props), and then also added to the `RoleOptions` at the bottom of the file.
 
 #### Prop Types
 

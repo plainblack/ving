@@ -1,6 +1,6 @@
 import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
 import { splitByCase, upperFirst } from 'scule';
-import { stringDefault, booleanDefault, numberDefault } from '../vingschema/helpers.mjs';
+import { stringDefault, booleanDefault, numberDefault } from '#ving/schema/helpers.mjs';
 
 const makeWords = (value) => splitByCase(value).join(' ');
 const makeLabel = (value) => upperFirst(splitByCase(value).join(' '));

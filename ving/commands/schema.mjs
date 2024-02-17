@@ -1,5 +1,5 @@
 import { defineCommand } from "citty";
-import { generateSchema } from '../../server/vingschema/genskeleton.mjs';
+import { generateSchema } from '#ving/schema/genskeleton.mjs';
 
 export default defineCommand({
     meta: {

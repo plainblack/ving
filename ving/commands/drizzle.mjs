@@ -1,8 +1,8 @@
 import { defineCommand } from "citty";
 import { exec } from "child_process";
 import { runMigrations } from '#ving/drizzle/migrate.mjs';
-import { makeTableFile } from '../../server/vingschema/gentable.mjs';
-import { vingSchemas } from '../../server/vingschema/index.mjs';
+import { makeTableFile } from '#ving/schema/gentable.mjs';
+import { vingSchemas } from '#ving/schema/index.mjs';
 
 export default defineCommand({
     meta: {
