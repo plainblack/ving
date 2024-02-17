@@ -10,11 +10,6 @@ export default defineNuxtConfig({
     primevue: {
         cssLayerOrder: 'reset,primevue'
     },
-    imports: {
-        dirs: [
-            'stores',
-        ],
-    },
     app: {
         head: {
             link: [
