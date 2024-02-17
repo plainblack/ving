@@ -310,7 +310,7 @@ export class S3FileRecord extends VingRecord {
          * Usage: `const user = await s3file.user()`
          * 
          * @throws 404 if the user cannot be found
-         * @returns A `User` instance
+         * @returns A `UserRecord` instance
          */
     async user() {
         return await useUsers().findOrDie(this.get('userId'));
@@ -342,7 +342,7 @@ export class S3FileKind extends VingKind {
     // add custom Kind code here
 }
 
-/** A composable that initializes `S3FileKind`. */
+/** Syntactic sugar that initializes `S3FileKind`. */
 export const useS3Files = () => {
     return new S3FileKind(useDB(), S3FileTable, S3FileRecord);
 }
