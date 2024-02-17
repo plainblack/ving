@@ -167,6 +167,6 @@ export const generateSchema = (params) => {
     const context = { ...getContext({}), ...params };
     return Promise.resolve(context)
         .then(renderTemplate(schemaTemplate(context), toFile(`ving/schema/schemas/${context.name}.mjs`)))
-        .then(inject(`import { ${context.name.toLowerCase()}Schema } from "./schemas/${context.name}.mjs";`, after('import { apikeySchema } from "#ving/schema/schemas/APIKey.mjs";'), toFile('ving/schema/index.mjs')))
-        .then(inject(`    ${context.name.toLowerCase()}Schema,`, after('    apikeySchema,'), toFile('ving/schema/index.mjs')));
+        .then(inject(`import { ${context.name.toLowerCase()}Schema } from "#ving/schema/schemas/${context.name}.mjs";`, after('import { apikeySchema } from "#ving/schema/schemas/APIKey.mjs";'), toFile('ving/schema/map.mjs')))
+        .then(inject(`    ${context.name.toLowerCase()}Schema,`, after('    apikeySchema,'), toFile('ving/schema/map.mjs')));
 }

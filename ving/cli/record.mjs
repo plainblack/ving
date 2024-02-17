@@ -3,7 +3,7 @@ import { generateRecord } from '#ving/record/genskeleton.mjs';
 import { generateRest } from '#ving/record/genrest.mjs';
 import { generateWeb } from '#ving/record/genpages.mjs';
 import { findVingSchema } from '#ving/record/VingRecord.mjs';
-import { vingSchemas } from '#ving/schema/index.mjs';
+import { vingSchemas } from '#ving/schema/map.mjs';
 
 export default defineCommand({
     meta: {

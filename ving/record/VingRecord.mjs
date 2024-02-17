@@ -1,9 +1,10 @@
-import { vingSchemas } from '#ving/schema/index.mjs';
+import { vingSchemas } from '#ving/schema/map.mjs';
 import { findObject } from '#ving/utils/findObject.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import _ from 'lodash';
 import { eq, asc, desc, and, ne, sql, getTableName } from '#ving/drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving/schema/helpers.mjs';
+
 
 /**
  * Get the schema for a specific kind within the ving schema list.
