@@ -1,4 +1,4 @@
-import { useCache } from '../server/cache.mjs';
+import { useCache } from '#ving/cache.mjs';
 import { sleep } from '../utils/sleep.mjs';
 import { test, expect } from "vitest";
 

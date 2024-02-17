@@ -1,6 +1,6 @@
 import { sendMail } from '#ving/email/send.mjs';
 import { useUsers } from '../../vingrecord/records/User.mjs';
-import { useCache } from '../../cache.mjs';
+import { useCache } from '#ving/cache.mjs';
 import { eq } from '../../drizzle/orm.mjs';
 import { ouch } from './../../utils/ouch.mjs';
 import { describeParams } from '../../utils/rest.mjs';

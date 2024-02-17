@@ -19,7 +19,7 @@ KEYV_PROVIDER_URL="redis://user:pass@localhost:6379"
 You can access the cache via to [CLI](cli.html), but for the most of your work you'll want to programatically access the cache. Here's a quick code example to show you how it works:
 
 ```js
-import {useCache} from 'server/cache.mjs';
+import {useCache} from '#ving/cache.mjs';
 const cache = useCache();
 await cache.set('foo', 'bar', 60 * 60 * 1000); // set `foo` in key `foo` for 1 hour
 const foo = await cache.get('foo'); // `bar` 

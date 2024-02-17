@@ -3,7 +3,7 @@ import { RoleOptions, RoleMixin } from '../mixins/Role.mjs';
 import { useAPIKeys } from "./APIKey.mjs";
 import { useS3Files } from './S3File.mjs'
 import bcrypt from 'bcryptjs';
-import { useCache } from '../../cache.mjs';
+import { useCache } from '#ving/cache.mjs';
 import { useDB } from '../../drizzle/db.mjs';
 import { UserTable } from '../../drizzle/schema/User.mjs';
 import { ouch } from './../../utils/ouch.mjs';
