@@ -1,4 +1,4 @@
-import { testSession } from '../../session.mjs';
+import { testSession } from '#ving/session.mjs';
 import { obtainSession, describeParams } from '../../utils/rest.mjs';
 import { defineEventHandler } from 'h3';
 

@@ -1,9 +1,9 @@
-import { useUsers, UserRecord } from './vingrecord/records/User.mjs';
-import { ouch } from './utils/ouch.mjs';
+import { useUsers, UserRecord } from '../server/vingrecord/records/User.mjs';
+import { ouch } from '../server/utils/ouch.mjs';
 const Users = useUsers();
 
-import { RoleMixin, RoleOptions } from './vingrecord/mixins/Role.mjs';
-import { useCache } from './cache';
+import { RoleMixin, RoleOptions } from '../server/vingrecord/mixins/Role.mjs';
+import { useCache } from '#ving/cache.mjs';
 import { v4 } from 'uuid';
 
 class ProtoSession {

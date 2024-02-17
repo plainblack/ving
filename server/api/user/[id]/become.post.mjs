@@ -1,6 +1,6 @@
 import { useUsers } from '../../../vingrecord/records/User.mjs';
 import { describeParams, obtainSessionIfRole } from '../../../utils/rest.mjs';
-import { Session } from '../../../session.mjs';
+import { Session } from '#ving/session.mjs';
 import { defineEventHandler, getRouterParams, setCookie } from 'h3';
 
 export default defineEventHandler(async (event) => {
