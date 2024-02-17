@@ -4,7 +4,6 @@ import { defineCommand, runMain } from "citty";
 const main = defineCommand({
   meta: {
     name: "ving",
-    version: "1.0.0",
     description: "ving CLI",
   },
   subCommands: {

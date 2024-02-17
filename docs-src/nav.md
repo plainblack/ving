@@ -9,6 +9,7 @@ Subsystems
  - [CLI](cli.html)
  - [Database](drizzle.html)
  - [Email](email.html)
+ - [Logging](logging.html)
  - [Message Bus](messagebus.html)
  - [Pulumi](pulumi.html)
  - [Rest](rest.html)
