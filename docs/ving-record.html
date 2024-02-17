@@ -2,359 +2,156 @@
 <html lang="en">
 
 <head>
-        <meta charset="UTF-8">
-        <title>ving-record.md</title>
-        <meta name="viewport" content="width=device-width,initial-scale=1">
-        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
-        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
+    <meta charset="UTF-8">
+    <title>ving-record.md</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
         <style type="text/css">
-                html {
-                        font-size: 1rem;
-                        height: 100%;
-                }
-
-                body {
-                        font-family: var(--font-family);
-                        background-color: var(--bg-white);
-                        color: var(--text-color);
-                        padding: 0;
-                        margin: 0;
-                        min-height: 100%;
-                        -webkit-font-smoothing: antialiased;
-                        -moz-osx-font-smoothing: grayscale;
-                }
-
-                li a {
-                        text-decoration: none;
-                }
-
-                ol,
-                ul {
-                        list-style: none;
-                        margin-left: 0;
-                        padding-left: 10px;
-                }
-        </style>
+        html {
+            font-size: 1rem;
+            height: 100%;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-white);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        li a {
+            text-decoration: none;
+        }
+       ol,ul {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 10px;
+        }
+    </style>
 </head>
 
 <body>
-        <div class="grid">
-                <div class="col-3 lg:col-2 p-3 surface-300">
-                        <div class="sticky top-0 left-0">
-                                <div class="text-4xl">Ving Docs</div>
-                                <p>Basics</p>
-                                <ul>
-                                        <li><a href="index.html">About</a></li>
-                                        <li><a href="installation.html">Installation</a></li>
-                                        <li><a href="error-codes.html">Error Codes</a></li>
-                                        <li><a href="change-log.html">Change Log</a></li>
-                                </ul>
-                                <p>Subsystems</p>
-                                <ul>
-                                        <li><a href="cache.html">Cache</a></li>
-                                        <li><a href="cli.html">CLI</a></li>
-                                        <li><a href="drizzle.html">Database</a></li>
-                                        <li><a href="email.html">Email</a></li>
-                                        <li><a href="messagebus.html">Message Bus</a></li>
-                                        <li><a href="pulumi.html">Pulumi</a></li>
-                                        <li><a href="rest.html">Rest</a></li>
-                                        <li><a href="ui.html">UI</a></li>
-                                        <li><a href="ving-record.html">Ving Record</a></li>
-                                        <li><a href="ving-schema.html">Ving Schema</a></li>
-                                </ul>
-                                <p>Rest APIs</p>
-                                <ul>
-                                        <li><a href="APIKey.html">API Key</a></li>
-                                        <li><a href="S3File.html">S3File</a></li>
-                                        <li><a href="Session.html">Session</a></li>
-                                        <li><a href="Test.html">Test</a></li>
-                                        <li><a href="User.html">User</a></li>
-                                </ul>
+    <div class="grid">
+        <div class="col-3 lg:col-2 p-3 surface-300">
+            <div class="sticky top-0 left-0">
+                <div class="text-4xl">Ving Docs</div>
+                <p>Basics</p>
+<ul>
+<li><a href="index.html">About</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="error-codes.html">Error Codes</a></li>
+<li><a href="change-log.html">Change Log</a></li>
+</ul>
+<p>Subsystems</p>
+<ul>
+<li><a href="cache.html">Cache</a></li>
+<li><a href="cli.html">CLI</a></li>
+<li><a href="drizzle.html">Database</a></li>
+<li><a href="email.html">Email</a></li>
+<li><a href="logging.html">Logging</a></li>
+<li><a href="messagebus.html">Message Bus</a></li>
+<li><a href="pulumi.html">Pulumi</a></li>
+<li><a href="rest.html">Rest</a></li>
+<li><a href="ui.html">UI</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
+</ul>
+<p>Rest APIs</p>
+<ul>
+<li><a href="APIKey.html">API Key</a></li>
+<li><a href="S3File.html">S3File</a></li>
+<li><a href="Session.html">Session</a></li>
+<li><a href="Test.html">Test</a></li>
+<li><a href="User.html">User</a></li>
+</ul>
 
-                        </div>
-                </div>
-                <div class="col lg:col-3 p-3 surface-200">
-                        <div class="sticky top-0 right-0">
-                                <nav class="table-of-contents">
-                                        <ol>
-                                                <li><a href="#ving-record">Ving Record </a>
-                                                        <ol>
-                                                                <li><a href="#records-vs-kinds">Records vs Kinds </a>
-                                                                </li>
-                                                                <li><a href="#creating-records">Creating Records </a>
-                                                                </li>
-                                                                <li><a href="#kind-api">Kind API </a>
-                                                                        <ol>
-                                                                                <li><a href="#creating-records-1">Creating
-                                                                                                Records </a>
-                                                                                        <ol>
-                                                                                                <li><a href="#copy">copy
-                                                                                                        </a></li>
-                                                                                                <li><a href="#create">create
-                                                                                                        </a></li>
-                                                                                                <li><a href="#createandverify">createAndVerify
-                                                                                                        </a></li>
-                                                                                                <li><a href="#insert">insert
-                                                                                                        </a></li>
-                                                                                                <li><a href="#mint">mint
-                                                                                                        </a></li>
-                                                                                        </ol>
-                                                                                </li>
-                                                                                <li><a href="#reading-records">Reading
-                                                                                                Records </a>
-                                                                                        <ol>
-                                                                                                <li><a href="#describelist">describeList
-                                                                                                        </a></li>
-                                                                                                <li><a href="#result">Result
-                                                                                                        </a></li>
-                                                                                                <li><a href="#parameters">Parameters
-                                                                                                        </a></li>
-                                                                                                <li><a href="#find">find
-                                                                                                        </a></li>
-                                                                                                <li><a href="#findmany">findMany
-                                                                                                        </a></li>
-                                                                                                <li><a href="#findone">findOne
-                                                                                                        </a></li>
-                                                                                                <li><a href="#findordie">findOrDie
-                                                                                                        </a></li>
-                                                                                                <li><a href="#select">select
-                                                                                                        </a></li>
-                                                                                        </ol>
-                                                                                </li>
-                                                                                <li><a href="#updating-records">Updating
-                                                                                                Records </a>
-                                                                                        <ol>
-                                                                                                <li><a href="#update">update
-                                                                                                        </a></li>
-                                                                                        </ol>
-                                                                                </li>
-                                                                                <li><a href="#deleting-records">Deleting
-                                                                                                Records </a>
-                                                                                        <ol>
-                                                                                                <li><a href="#delete">delete
-                                                                                                        </a></li>
-                                                                                                <li><a href="#deletemany">deleteMany
-                                                                                                        </a></li>
-                                                                                        </ol>
-                                                                                </li>
-                                                                                <li><a href="#utility-methods">Utility
-                                                                                                Methods </a>
-                                                                                        <ol>
-                                                                                                <li><a href="#calcwhere">calcWhere
-                                                                                                        </a></li>
-                                                                                                <li><a href="#count">count
-                                                                                                        </a></li>
-                                                                                        </ol>
-                                                                                </li>
-                                                                                <li><a href="#properties">Properties
-                                                                                        </a>
-                                                                                        <ol>
-                                                                                                <li><a href="#propdefaults">propDefaults
-                                                                                                        </a></li>
-                                                                                        </ol>
-                                                                                </li>
-                                                                        </ol>
-                                                                </li>
-                                                                <li><a href="#record-api">Record API </a>
-                                                                        <ol>
-                                                                                <li><a href="#reading-data">Reading Data
-                                                                                        </a>
-                                                                                        <ol>
-                                                                                                <li><a href="#describe">describe
-                                                                                                        </a></li>
-                                                                                                <li><a href="#result-1">Result
-                                                                                                        </a></li>
-                                                                                                <li><a href="#parameters-1">Parameters
-                                                                                                        </a></li>
-                                                                                                <li><a href="#get">get
-                                                                                                        </a></li>
-                                                                                                <li><a href="#getall">getAll
-                                                                                                        </a></li>
-                                                                                                <li><a href="#refresh">refresh
-                                                                                                        </a></li>
-                                                                                        </ol>
-                                                                                </li>
-                                                                                <li><a href="#writing-data">Writing Data
-                                                                                        </a>
-                                                                                        <ol>
-                                                                                                <li><a href="#createandverify-1">createAndVerify
-                                                                                                        </a></li>
-                                                                                                <li><a href="#delete-1">delete
-                                                                                                        </a></li>
-                                                                                                <li><a href="#insert-1">insert
-                                                                                                        </a></li>
-                                                                                                <li><a href="#set">set
-                                                                                                        </a></li>
-                                                                                                <li><a href="#setall">setAll
-                                                                                                        </a></li>
-                                                                                                <li><a href="#setpostedprops">setPostedProps
-                                                                                                        </a></li>
-                                                                                                <li><a href="#update-1">update
-                                                                                                        </a></li>
-                                                                                                <li><a href="#updateandverify">updateAndVerify
-                                                                                                        </a></li>
-                                                                                        </ol>
-                                                                                </li>
-                                                                                <li><a href="#privileges">Privileges
-                                                                                        </a>
-                                                                                        <ol>
-                                                                                                <li><a href="#canedit">canEdit
-                                                                                                        </a></li>
-                                                                                                <li><a href="#isowner">isOwner
-                                                                                                        </a></li>
-                                                                                        </ol>
-                                                                                </li>
-                                                                                <li><a href="#utility-methods-1">Utility
-                                                                                                Methods </a>
-                                                                                        <ol>
-                                                                                                <li><a href="#addwarning">addWarning
-                                                                                                        </a></li>
-                                                                                                <li><a href="#isinserted">isInserted
-                                                                                                        </a></li>
-                                                                                                <li><a href="#parent">parent
-                                                                                                        </a></li>
-                                                                                                <li><a href="#propoptions">propOptions
-                                                                                                        </a></li>
-                                                                                                <li><a href="#result-2">Result
-                                                                                                        </a></li>
-                                                                                                <li><a href="#parameters-2">Parameters
-                                                                                                        </a></li>
-                                                                                                <li><a href="#testcreationprops">testCreationProps
-                                                                                                        </a></li>
-                                                                                        </ol>
-                                                                                </li>
-                                                                                <li><a href="#properties-1">Properties
-                                                                                        </a>
-                                                                                        <ol>
-                                                                                                <li><a href="#warnings">warnings
-                                                                                                        </a></li>
-                                                                                        </ol>
-                                                                                </li>
-                                                                        </ol>
-                                                                </li>
-                                                        </ol>
-                                                </li>
-                                        </ol>
-                                </nav>
-                        </div>
-                </div>
-                <div class="col min-h-screen">
-                        <h1 id="ving-record" tabindex="-1">Ving Record <a class="header-anchor" href="#ving-record">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h1>
-                        <p>Records are the functional implementation of a <a href="ving-schema.html">ving schema</a>.
-                                They automatically generate a ton of functionality from making queries easier, to
-                                building web services, to setting up privileges and more.</p>
-                        <h2 id="records-vs-kinds" tabindex="-1">Records vs Kinds <a class="header-anchor"
-                                        href="#records-vs-kinds">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h2>
-                        <p>A ving record is technically 2 separate classes. The first is called a “Kind”, which is
-                                technically a group or list of records. In relational database terms, think of a kind as
-                                a table. The second type is the record, which is an instance of a kind, which in
-                                relational database terms is a row within a table. Both classes exist inside the record
-                                file. See <code>server/vingrecord/records/User.mjs</code> as an example implementation
-                                of a record, or <code>server/vingrecord/VingRecord.mjs</code> to see the base class that
-                                all ving records inherit from.</p>
-                        <h2 id="creating-records" tabindex="-1">Creating Records <a class="header-anchor"
-                                        href="#creating-records">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h2>
-                        <p>You can use the <a href="cli.html">CLI</a> to automatically generate a new record file for
-                                you from a <a href="drizzle.html">Drizzle table</a>. So if you’ve created a table called
-                                <code>Foo</code> then you could create a new record file like this:</p>
-                        <pre><code class="language-bash">./ving.mjs record --new Foo
+            </div>
+        </div>
+            <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
+<nav class="table-of-contents"><ol><li><a href="#ving-record">Ving Record </a><ol><li><a href="#records-vs-kinds">Records vs Kinds </a></li><li><a href="#creating-records">Creating Records </a></li><li><a href="#kind-api">Kind API </a><ol><li><a href="#creating-records-1">Creating Records </a><ol><li><a href="#copy">copy </a></li><li><a href="#create">create </a></li><li><a href="#createandverify">createAndVerify </a></li><li><a href="#insert">insert </a></li><li><a href="#mint">mint </a></li></ol></li><li><a href="#reading-records">Reading Records </a><ol><li><a href="#describelist">describeList </a></li><li><a href="#result">Result </a></li><li><a href="#parameters">Parameters </a></li><li><a href="#find">find </a></li><li><a href="#findmany">findMany </a></li><li><a href="#findone">findOne </a></li><li><a href="#findordie">findOrDie </a></li><li><a href="#select">select </a></li></ol></li><li><a href="#updating-records">Updating Records </a><ol><li><a href="#update">update </a></li></ol></li><li><a href="#deleting-records">Deleting Records </a><ol><li><a href="#delete">delete </a></li><li><a href="#deletemany">deleteMany </a></li></ol></li><li><a href="#utility-methods">Utility Methods </a><ol><li><a href="#calcwhere">calcWhere </a></li><li><a href="#count">count </a></li></ol></li><li><a href="#properties">Properties </a><ol><li><a href="#propdefaults">propDefaults </a></li></ol></li></ol></li><li><a href="#record-api">Record API </a><ol><li><a href="#reading-data">Reading Data </a><ol><li><a href="#describe">describe </a></li><li><a href="#result-1">Result </a></li><li><a href="#parameters-1">Parameters </a></li><li><a href="#get">get </a></li><li><a href="#getall">getAll </a></li><li><a href="#refresh">refresh </a></li></ol></li><li><a href="#writing-data">Writing Data </a><ol><li><a href="#createandverify-1">createAndVerify </a></li><li><a href="#delete-1">delete </a></li><li><a href="#insert-1">insert </a></li><li><a href="#set">set </a></li><li><a href="#setall">setAll </a></li><li><a href="#setpostedprops">setPostedProps </a></li><li><a href="#update-1">update </a></li><li><a href="#updateandverify">updateAndVerify </a></li></ol></li><li><a href="#privileges">Privileges </a><ol><li><a href="#canedit">canEdit </a></li><li><a href="#isowner">isOwner </a></li></ol></li><li><a href="#utility-methods-1">Utility Methods </a><ol><li><a href="#addwarning">addWarning </a></li><li><a href="#isinserted">isInserted </a></li><li><a href="#parent">parent </a></li><li><a href="#propoptions">propOptions </a></li><li><a href="#result-2">Result </a></li><li><a href="#parameters-2">Parameters </a></li><li><a href="#testcreationprops">testCreationProps </a></li></ol></li><li><a href="#properties-1">Properties </a><ol><li><a href="#warnings">warnings </a></li></ol></li></ol></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<h1 id="ving-record" tabindex="-1">Ving Record <a class="header-anchor" href="#ving-record">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h1>
+<p>Records are the functional implementation of a <a href="ving-schema.html">ving schema</a>. They automatically generate a ton of functionality from making queries easier, to building web services, to setting up privileges and more.</p>
+<h2 id="records-vs-kinds" tabindex="-1">Records vs Kinds <a class="header-anchor" href="#records-vs-kinds">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>A ving record is technically 2 separate classes. The first is called a “Kind”, which is technically a group or list of records. In relational database terms, think of a kind as a table. The second type is the record, which is an instance of a kind, which in relational database terms is a row within a table. Both classes exist inside the record file. See <code>#ving/record/records/User.mjs</code> as an example implementation of a record, or <code>#ving/record/VingRecord.mjs</code> to see the base class that all ving records inherit from.</p>
+<h2 id="creating-records" tabindex="-1">Creating Records <a class="header-anchor" href="#creating-records">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>You can use the <a href="cli.html">CLI</a> to automatically generate a new record file for you from a <a href="drizzle.html">Drizzle table</a>. So if you’ve created a table called <code>Foo</code> then you could create a new record file like this:</p>
+<pre><code class="language-bash">./ving.mjs record --new Foo
 </code></pre>
-                        <p>That will generate the file <code>server/vingrecord/records/Foo.mjs</code>. And in there you
-                                could add any custom functionality you may need. Or if you don’t need any custom
-                                functionality, then it may work just as it is.</p>
-                        <p>Once you’re done adding functionality you can then generate a Rest API for it by invoing the
-                                CLI again like this:</p>
-                        <pre><code class="language-bash">./ving.mjs record --rest Foo
+<p>That will generate the file <code>#ving/record/records/Foo.mjs</code>. And in there you could add any custom functionality you may need. Or if you don’t need any custom functionality, then it may work just as it is.</p>
+<p>Once you’re done adding functionality you can then generate a Rest API for it by invoing the CLI again like this:</p>
+<pre><code class="language-bash">./ving.mjs record --rest Foo
 </code></pre>
-                        <p>Those files will be placed in <code>server/api/foo</code> and you can modify them as needed,
-                                but they should work without modification. And you can access them at
-                                <code>http://localhost:3000/api/foo</code>.</p>
-                        <p>And if you want to build a user interface for your services, you can generate that too by
-                                invoking the CLI once more.</p>
-                        <pre><code class="language-bash">./ving.mjs record --web Foo
+<p>Those files will be placed in <code>server/api/foo</code> and you can modify them as needed, but they should work without modification. And you can access them at <code>http://localhost:3000/api/foo</code>.</p>
+<p>And if you want to build a user interface for your services, you can generate that too by invoking the CLI once more.</p>
+<pre><code class="language-bash">./ving.mjs record --web Foo
 </code></pre>
-                        <p>Those files will be placed in <code>pages/foo</code> and you can modify them as needed as
-                                well. And you can access them at <code>http://localhost:3000/foo</code>.</p>
-                        <h2 id="kind-api" tabindex="-1">Kind API <a class="header-anchor" href="#kind-api">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h2>
-                        <p>The Kind is akin to a relational database table. To start with you need to get a reference to
-                                it:</p>
-                        <pre><code class="language-js">import {useUsers} from './server/vingrecord/records/User.mjs';
+<p>Those files will be placed in <code>pages/foo</code> and you can modify them as needed as well. And you can access them at <code>http://localhost:3000/foo</code>.</p>
+<h2 id="kind-api" tabindex="-1">Kind API <a class="header-anchor" href="#kind-api">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>The Kind is akin to a relational database table. To start with you need to get a reference to it:</p>
+<pre><code class="language-js">import {useUsers} from '#ving/record/records/User.mjs';
 const Users = useUsers();
 </code></pre>
-                        <h3 id="creating-records-1" tabindex="-1">Creating Records <a class="header-anchor"
-                                        href="#creating-records-1">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h3>
-                        <p>You can create records many different ways. In all three methods you’ll pass in a list of
-                                <code>props</code> which is an object containing the values (or columns) to set on the
-                                record.</p>
-                        <h4 id="copy" tabindex="-1">copy <a class="header-anchor" href="#copy">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Creates an in-memory copy of an existing record, but with a new <code>id</code>. You’d later
-                                have to call <code>insert()</code> (from the <a href="#record-api">Record API</a>) on
-                                the record to insert it into the database. This is essentially the same as passing the
-                                properties of an exsiting record to the <code>mint()</code> method.</p>
-                        <pre><code class="language-js">const copyOfRecord = Users.copy(existingRecord);
+<h3 id="creating-records-1" tabindex="-1">Creating Records <a class="header-anchor" href="#creating-records-1">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>You can create records many different ways. In all three methods you’ll pass in a list of <code>props</code> which is an object containing the values (or columns) to set on the record.</p>
+<h4 id="copy" tabindex="-1">copy <a class="header-anchor" href="#copy">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Creates an in-memory copy of an existing record, but with a new <code>id</code>. You’d later have to call <code>insert()</code> (from the <a href="#record-api">Record API</a>) on the record to insert it into the database. This is essentially the same as passing the properties of an exsiting record to the <code>mint()</code> method.</p>
+<pre><code class="language-js">const copyOfRecord = Users.copy(existingRecord);
 </code></pre>
-                        <h4 id="create" tabindex="-1">create <a class="header-anchor" href="#create">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Creates a new record in the database, but doesn’t validate the inputs according to the ving
-                                schema. That doesn’t mean it will get inserted. If you haven’t given enough information
-                                to pass the database table’s own schema, then it will fail. You are just bypassing the
-                                extra validation provided by ving’s schema. In general, you shouldn’t use this unless
-                                you know what you are doing.</p>
-                        <pre><code class="language-js">const record = await Users.create({username: 'Fred'});
+<h4 id="create" tabindex="-1">create <a class="header-anchor" href="#create">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Creates a new record in the database, but doesn’t validate the inputs according to the ving schema. That doesn’t mean it will get inserted. If you haven’t given enough information to pass the database table’s own schema, then it will fail. You are just bypassing the extra validation provided by ving’s schema. In general, you shouldn’t use this unless you know what you are doing.</p>
+<pre><code class="language-js">const record = await Users.create({username: 'Fred'});
 </code></pre>
-                        <h4 id="createandverify" tabindex="-1">createAndVerify <a class="header-anchor"
-                                        href="#createandverify">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Creates a new record in memory, validates it against ving’s schema, and then inserts it into
-                                the database. This is almost always what you want.</p>
-                        <pre><code class="language-js">const record = await Users.createAndVerify({username: 'Fred'});
+<h4 id="createandverify" tabindex="-1">createAndVerify <a class="header-anchor" href="#createandverify">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Creates a new record in memory, validates it against ving’s schema, and then inserts it into the database. This is almost always what you want.</p>
+<pre><code class="language-js">const record = await Users.createAndVerify({username: 'Fred'});
 </code></pre>
-                        <h4 id="insert" tabindex="-1">insert <a class="header-anchor" href="#insert">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Use this to write your own custom insert statement. Also see the <code>insert()</code> method
-                                on the <a href="#record-api">Record API</a>.</p>
-                        <pre><code class="language-js">const result = await Users.insert.values({username:'Fred'});
+<h4 id="insert" tabindex="-1">insert <a class="header-anchor" href="#insert">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Use this to write your own custom insert statement. Also see the <code>insert()</code> method on the <a href="#record-api">Record API</a>.</p>
+<pre><code class="language-js">const result = await Users.insert.values({username:'Fred'});
 </code></pre>
-                        <h4 id="mint" tabindex="-1">mint <a class="header-anchor" href="#mint">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Creates a record in memory. You’d later have to call <code>insert()</code> (from the <a
-                                        href="#record-api">Record API</a>) on the record to insert it into the database.
-                        </p>
-                        <pre><code class="language-js">const record = Users.mint({username: 'Fred'});
+<h4 id="mint" tabindex="-1">mint <a class="header-anchor" href="#mint">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Creates a record in memory. You’d later have to call <code>insert()</code> (from the <a href="#record-api">Record API</a>) on the record to insert it into the database.</p>
+<pre><code class="language-js">const record = Users.mint({username: 'Fred'});
 </code></pre>
-                        <h3 id="reading-records" tabindex="-1">Reading Records <a class="header-anchor"
-                                        href="#reading-records">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h3>
-                        <p>There are many different ways to find a record or list of records in ving.</p>
-                        <h4 id="describelist" tabindex="-1">describeList <a class="header-anchor" href="#describelist">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Instead of returning records like the rest of this list, <code>describeList()</code> returns
-                                an array of objects that is suitable for using in web services. You can use it like
-                                this:</p>
-                        <pre><code class="language-js">const list = await Users.describeList(params, where)
+<h3 id="reading-records" tabindex="-1">Reading Records <a class="header-anchor" href="#reading-records">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>There are many different ways to find a record or list of records in ving.</p>
+<h4 id="describelist" tabindex="-1">describeList <a class="header-anchor" href="#describelist">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Instead of returning records like the rest of this list, <code>describeList()</code> returns an array of objects that is suitable for using in web services. You can use it like this:</p>
+<pre><code class="language-js">const list = await Users.describeList(params, where)
 </code></pre>
-                        <h4 id="result" tabindex="-1">Result <a class="header-anchor" href="#result">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <pre><code class="language-js">{
+<h4 id="result" tabindex="-1">Result <a class="header-anchor" href="#result">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<pre><code class="language-js">{
     paging: {
         page: 1,
         nextPage: 2,
@@ -378,175 +175,136 @@ const Users = useUsers();
     ]
 }
 </code></pre>
-                        <h4 id="parameters" tabindex="-1">Parameters <a class="header-anchor" href="#parameters">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <ul>
-                                <li><strong>params</strong> - An object to modify the output.
-                                        <ul>
-                                                <li><strong>itemsPerPage</strong> - An integer between <code>1</code>
-                                                        and <code>100</code> that defaults to <code>10</code> and
-                                                        represents how many items should be included per page.</li>
-                                                <li><strong>page</strong> - An integer between <code>1</code> and
-                                                        <code>1000000</code> that defaults to <code>1</code> and
-                                                        represents the current page number of the result set.</li>
-                                                <li><strong>sortBy</strong> - A string that represents a valid
-                                                        <code>prop</code> of the record and defaults to
-                                                        <code>createdAt</code>.</li>
-                                                <li><strong>sortOrder</strong> - A string that defaults to
-                                                        <code>asc</code> but could also be <code>desc</code> if you want
-                                                        the order of the records to be sorted in descending order.</li>
-                                                <li><strong>maxItems</strong> - An integer between <code>1</code> and
-                                                        <code>100000000000</code> that defaults to
-                                                        <code>100000000000</code> that limits the total number of items
-                                                        that can ever be paginated through.</li>
-                                                <li><strong>objectParams</strong> - See the params of the
-                                                        <code>describe()</code> method in the <a
-                                                                href="#record-api">Record API</a>.</li>
-                                        </ul>
-                                </li>
-                                <li><strong>where</strong> - A drizzle where clause like you would use with the
-                                        <code>findMany()</code> method below.</li>
-                        </ul>
-                        <h4 id="find" tabindex="-1">find <a class="header-anchor" href="#find">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Locates and returns a single <a href="#record-api">record</a> by it’s <code>id</code> or
-                                <code>undefined</code> if no record is found.</p>
-                        <pre><code class="language-js">const record = await Users.find('xxx');
+<h4 id="parameters" tabindex="-1">Parameters <a class="header-anchor" href="#parameters">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<ul>
+<li><strong>params</strong> - An object to modify the output.
+<ul>
+<li><strong>itemsPerPage</strong> - An integer between <code>1</code> and <code>100</code> that defaults to <code>10</code> and represents how many items should be included per page.</li>
+<li><strong>page</strong> - An integer between <code>1</code> and <code>1000000</code> that defaults to <code>1</code> and represents the current page number of the result set.</li>
+<li><strong>sortBy</strong> - A string that represents a valid <code>prop</code> of the record and defaults to <code>createdAt</code>.</li>
+<li><strong>sortOrder</strong> - A string that defaults to <code>asc</code> but could also be <code>desc</code> if you want the order of the records to be sorted in descending order.</li>
+<li><strong>maxItems</strong> - An integer between <code>1</code> and <code>100000000000</code> that defaults to <code>100000000000</code> that limits the total number of items that can ever be paginated through.</li>
+<li><strong>objectParams</strong> - See the params of the <code>describe()</code> method in the <a href="#record-api">Record API</a>.</li>
+</ul>
+</li>
+<li><strong>where</strong> - A drizzle where clause like you would use with the <code>findMany()</code> method below.</li>
+</ul>
+<h4 id="find" tabindex="-1">find <a class="header-anchor" href="#find">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Locates and returns a single <a href="#record-api">record</a> by it’s <code>id</code> or <code>undefined</code> if no record is found.</p>
+<pre><code class="language-js">const record = await Users.find('xxx');
 </code></pre>
-                        <h4 id="findmany" tabindex="-1">findMany <a class="header-anchor" href="#findmany">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Locates and returns a list of <a href="#record-api">record</a>s by a drizzle where clause or
-                                an empty array if no records are found.</p>
-                        <pre><code class="language-js">const listOfFredRecords = await Users.findMany(like(Users.realName, 'Fred%'));
+<h4 id="findmany" tabindex="-1">findMany <a class="header-anchor" href="#findmany">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Locates and returns a list of <a href="#record-api">record</a>s by a drizzle where clause or an empty array if no records are found.</p>
+<pre><code class="language-js">const listOfFredRecords = await Users.findMany(like(Users.realName, 'Fred%'));
 </code></pre>
-                        <h4 id="findone" tabindex="-1">findOne <a class="header-anchor" href="#findone">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Locates and returns a single <a href="#record-api">record</a> by a drizzle where clause or
-                                <code>undefined</code> if no record is found.</p>
-                        <pre><code class="language-js">const fredRecord = await Users.findOne(eq(Users.username, 'Fred'));
+<h4 id="findone" tabindex="-1">findOne <a class="header-anchor" href="#findone">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Locates and returns a single <a href="#record-api">record</a> by a drizzle where clause or <code>undefined</code> if no record is found.</p>
+<pre><code class="language-js">const fredRecord = await Users.findOne(eq(Users.username, 'Fred'));
 </code></pre>
-                        <h4 id="findordie" tabindex="-1">findOrDie <a class="header-anchor" href="#findordie">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Locates and returns a single <a href="#record-api">record</a> by it’s <code>id</code> or
-                                throws a <code>404</code> error if no record is found.</p>
-                        <pre><code class="language-js">const record = await Users.findOrDie('xxx');
+<h4 id="findordie" tabindex="-1">findOrDie <a class="header-anchor" href="#findordie">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Locates and returns a single <a href="#record-api">record</a> by it’s <code>id</code> or throws a <code>404</code> error if no record is found.</p>
+<pre><code class="language-js">const record = await Users.findOrDie('xxx');
 </code></pre>
-                        <h4 id="select" tabindex="-1">select <a class="header-anchor" href="#select">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Write your own custom select function. Returns a drizzle result set, not a list of records.
-                        </p>
-                        <pre><code class="language-js">const results = await Users.select.where(like(Users.realName, 'Fred%'));
+<h4 id="select" tabindex="-1">select <a class="header-anchor" href="#select">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Write your own custom select function. Returns a drizzle result set, not a list of records.</p>
+<pre><code class="language-js">const results = await Users.select.where(like(Users.realName, 'Fred%'));
 </code></pre>
-                        <h3 id="updating-records" tabindex="-1">Updating Records <a class="header-anchor"
-                                        href="#updating-records">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h3>
-                        <p>Updating existing records.</p>
-                        <h4 id="update" tabindex="-1">update <a class="header-anchor" href="#update">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Update records already in the database without first selecting them by writing your own
-                                custom query.</p>
-                        <pre><code class="language-js">const results = await Users.update.set({admin: false}).where(like(Users.realName, 'Fred%'))
+<h3 id="updating-records" tabindex="-1">Updating Records <a class="header-anchor" href="#updating-records">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Updating existing records.</p>
+<h4 id="update" tabindex="-1">update <a class="header-anchor" href="#update">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Update records already in the database without first selecting them by writing your own custom query.</p>
+<pre><code class="language-js">const results = await Users.update.set({admin: false}).where(like(Users.realName, 'Fred%'))
 </code></pre>
-                        <blockquote>
-                                <p>Note that this where clause is raw. To use it safeley you should wrap the
-                                        <code>like(Users.realName, 'Fred%')</code> portion in the
-                                        <code>calcWhere()</code> method below.</p>
-                        </blockquote>
-                        <p>See also the <code>update()</code> method in the <a href="#record-api">Record API</a> for
-                                updating a record you’ve already fetched.</p>
-                        <h3 id="deleting-records" tabindex="-1">Deleting Records <a class="header-anchor"
-                                        href="#deleting-records">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h3>
-                        <h4 id="delete" tabindex="-1">delete <a class="header-anchor" href="#delete">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Delete records by writing your own custom query.</p>
-                        <pre><code class="language-js">const results = await Users.delete.where(like(Users.realName, 'Fred%'));
+<blockquote>
+<p>Note that this where clause is raw. To use it safeley you should wrap the <code>like(Users.realName, 'Fred%')</code> portion in the <code>calcWhere()</code> method below.</p>
+</blockquote>
+<p>See also the <code>update()</code> method in the <a href="#record-api">Record API</a> for updating a record you’ve already fetched.</p>
+<h3 id="deleting-records" tabindex="-1">Deleting Records <a class="header-anchor" href="#deleting-records">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<h4 id="delete" tabindex="-1">delete <a class="header-anchor" href="#delete">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Delete records by writing your own custom query.</p>
+<pre><code class="language-js">const results = await Users.delete.where(like(Users.realName, 'Fred%'));
 </code></pre>
-                        <blockquote>
-                                <p>Note that this where clause is raw. To use it safeley you should wrap the
-                                        <code>like(Users.realName, 'Fred%')</code> portion in the
-                                        <code>calcWhere()</code> method below.</p>
-                        </blockquote>
-                        <p>See also the <code>delete()</code> method in the <a href="#record-api">Record API</a> for
-                                deleting a record you’ve already fetched.</p>
-                        <h4 id="deletemany" tabindex="-1">deleteMany <a class="header-anchor" href="#deletemany">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>A safer version of <code>delete</code> above as it uses <code>calcWhere()</code>.</p>
-                        <pre><code class="language-js">await Users.deleteMany(like(Users.realName, 'Fred%'));
+<blockquote>
+<p>Note that this where clause is raw. To use it safeley you should wrap the <code>like(Users.realName, 'Fred%')</code> portion in the <code>calcWhere()</code> method below.</p>
+</blockquote>
+<p>See also the <code>delete()</code> method in the <a href="#record-api">Record API</a> for deleting a record you’ve already fetched.</p>
+<h4 id="deletemany" tabindex="-1">deleteMany <a class="header-anchor" href="#deletemany">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>A safer version of <code>delete</code> above as it uses <code>calcWhere()</code>.</p>
+<pre><code class="language-js">await Users.deleteMany(like(Users.realName, 'Fred%'));
 </code></pre>
-                        <h3 id="utility-methods" tabindex="-1">Utility Methods <a class="header-anchor"
-                                        href="#utility-methods">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h3>
-                        <h4 id="calcwhere" tabindex="-1">calcWhere <a class="header-anchor" href="#calcwhere">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Adds <code>propDefaults</code> (if any) into a where clause to limit the scope of affected
-                                records. As long as you’re using the built in queries you don’t need to use this method.
-                                But you might want to use it if you’re using <code>create</code>, <code>select</code>,
-                                <code>update</code>, or <code>delete</code> directly.</p>
-                        <pre><code class="language-js">const results = await Users.delete.where(Users.calcWhere(like(Users.realName, 'Fred%')));
+<h3 id="utility-methods" tabindex="-1">Utility Methods <a class="header-anchor" href="#utility-methods">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<h4 id="calcwhere" tabindex="-1">calcWhere <a class="header-anchor" href="#calcwhere">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Adds <code>propDefaults</code> (if any) into a where clause to limit the scope of affected records. As long as you’re using the built in queries you don’t need to use this method. But you might want to use it if you’re using <code>create</code>, <code>select</code>, <code>update</code>, or <code>delete</code> directly.</p>
+<pre><code class="language-js">const results = await Users.delete.where(Users.calcWhere(like(Users.realName, 'Fred%')));
 </code></pre>
-                        <h4 id="count" tabindex="-1">count <a class="header-anchor" href="#count">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Returns an integer representing how many records match a given where clause.</p>
-                        <pre><code class="language-ts">const usersNamedFred = await Users.count(like(Users.realName, 'Fred%'));
+<h4 id="count" tabindex="-1">count <a class="header-anchor" href="#count">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Returns an integer representing how many records match a given where clause.</p>
+<pre><code class="language-ts">const usersNamedFred = await Users.count(like(Users.realName, 'Fred%'));
 </code></pre>
-                        <h3 id="properties" tabindex="-1">Properties <a class="header-anchor" href="#properties">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h3>
-                        <h4 id="propdefaults" tabindex="-1">propDefaults <a class="header-anchor" href="#propdefaults">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>An array of objects containing a list of properties used in building relationships between
-                                this record and another. For example the <code>User</code> record uses it like this to
-                                establish related <code>APIKey</code> records:</p>
-                        <pre><code class="language-js">apikeys.propDefaults.push({
+<h3 id="properties" tabindex="-1">Properties <a class="header-anchor" href="#properties">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<h4 id="propdefaults" tabindex="-1">propDefaults <a class="header-anchor" href="#propdefaults">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>An array of objects containing a list of properties used in building relationships between this record and another. For example the <code>User</code> record uses it like this to establish related <code>APIKey</code> records:</p>
+<pre><code class="language-js">apikeys.propDefaults.push({
     prop: 'userId',
     field: apikeys.table.userId,
     value: this.get('id')
 });
 </code></pre>
-                        <p>It is then used with <code>calcWhere()</code> to limit the scope of a where clause to related
-                                records. So for this example it would limite the list of <code>APIKey</code>s to the
-                                ones related to the current <code>User</code>.</p>
-                        <h2 id="record-api" tabindex="-1">Record API <a class="header-anchor" href="#record-api">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h2>
-                        <p>The Record is akin to a relational database table row. You’ll get a record via the <a
-                                        href="#kind-api">Kind API</a>, perhaps like this:</p>
-                        <pre><code class="language-js">import {Users} from '#ving/record/records/User.mjs';
+<p>It is then used with <code>calcWhere()</code> to limit the scope of a where clause to related records. So for this example it would limite the list of <code>APIKey</code>s to the ones related to the current <code>User</code>.</p>
+<h2 id="record-api" tabindex="-1">Record API <a class="header-anchor" href="#record-api">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>The Record is akin to a relational database table row. You’ll get a record via the <a href="#kind-api">Kind API</a>, perhaps like this:</p>
+<pre><code class="language-js">import {Users} from '#ving/record/records/User.mjs';
 const Users = useUsers();
 const record = Users.findOrDie('xxx');
 </code></pre>
-                        <p>Once you have a record you can use the following methods to manipulate it.</p>
-                        <h3 id="reading-data" tabindex="-1">Reading Data <a class="header-anchor" href="#reading-data">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h3>
-                        <h4 id="describe" tabindex="-1">describe <a class="header-anchor" href="#describe">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Formats everything known about a record into an object that is easily serializable and
-                                sanitized for privileges. This is used by the <a href="/rest">Rest API</a> to format a
-                                record for public consumption.</p>
-                        <pre><code class="language-js">const description = await record.describe(params)
+<p>Once you have a record you can use the following methods to manipulate it.</p>
+<h3 id="reading-data" tabindex="-1">Reading Data <a class="header-anchor" href="#reading-data">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<h4 id="describe" tabindex="-1">describe <a class="header-anchor" href="#describe">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Formats everything known about a record into an object that is easily serializable and sanitized for privileges. This is used by the <a href="/rest">Rest API</a> to format a record for public consumption.</p>
+<pre><code class="language-js">const description = await record.describe(params)
 </code></pre>
-                        <h4 id="result-1" tabindex="-1">Result <a class="header-anchor" href="#result-1">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <pre><code class="language-js">{
+<h4 id="result-1" tabindex="-1">Result <a class="header-anchor" href="#result-1">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<pre><code class="language-js">{
     props : { id: 'xxx', ... }, // database properties
     meta : { displayName : 'Freddy', ... }, // calculated properties
     links: { self : '/api/user/xxx', ... }, // urls for various web services 
@@ -558,172 +316,141 @@ const record = Users.findOrDie('xxx');
     extra : {}, // an object that include literally anything special defined by the object
 }
 </code></pre>
-                        <h4 id="parameters-1" tabindex="-1">Parameters <a class="header-anchor" href="#parameters-1">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <ul>
-                                <li><strong>currentUser</strong> - Either a <code>User</code> record or a
-                                        <code>Session</code> object can be used to determine what data should be
-                                        included in the description based upon user privileges.</li>
-                                <li><strong>include</strong> - An object to modify the output.
-                                        <ul>
-                                                <li><strong>options</strong> - A boolean that if <code>true</code> will
-                                                        add list of enumerated options for props on this record.</li>
-                                                <li><strong>related</strong> - An array that can contain the names of
-                                                        parent relationships to this object that should be included in
-                                                        the description.</li>
-                                                <li><strong>extra</strong> - An array that include the names of special
-                                                        extras that will be included the description.</li>
-                                                <li><strong>meta</strong> - A boolean that if <code>true</code> will
-                                                        include calculated properties.</li>
-                                                <li><strong>links</strong> - A boolean that if <code>true</code> will
-                                                        include a list of API links.</li>
-                                                <li><strong>private</strong> - A boolean that if <code>true</code> will
-                                                        ignore the privileges of the <code>currentUser</code> passed in
-                                                        and include all private information.</li>
-                                        </ul>
-                                </li>
-                        </ul>
-                        <h4 id="get" tabindex="-1">get <a class="header-anchor" href="#get">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Returns the value of a single prop on this record using the name of the prop.</p>
-                        <pre><code class="language-js">const value = record.get('id');
+<h4 id="parameters-1" tabindex="-1">Parameters <a class="header-anchor" href="#parameters-1">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<ul>
+<li><strong>currentUser</strong> - Either a <code>User</code> record or a <code>Session</code> object can be used to determine what data should be included in the description based upon user privileges.</li>
+<li><strong>include</strong> - An object to modify the output.
+<ul>
+<li><strong>options</strong> - A boolean that if <code>true</code> will add list of enumerated options for props on this record.</li>
+<li><strong>related</strong> - An array that can contain the names of parent relationships to this object that should be included in the description.</li>
+<li><strong>extra</strong> - An array that include the names of special extras that will be included the description.</li>
+<li><strong>meta</strong> - A boolean that if <code>true</code> will include calculated properties.</li>
+<li><strong>links</strong> - A boolean that if <code>true</code> will include a list of API links.</li>
+<li><strong>private</strong> - A boolean that if <code>true</code> will ignore the privileges of the <code>currentUser</code> passed in and include all private information.</li>
+</ul>
+</li>
+</ul>
+<h4 id="get" tabindex="-1">get <a class="header-anchor" href="#get">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Returns the value of a single prop on this record using the name of the prop.</p>
+<pre><code class="language-js">const value = record.get('id');
 </code></pre>
-                        <h4 id="getall" tabindex="-1">getAll <a class="header-anchor" href="#getall">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Returns an object containing key value pairs of all the props stored in the database for this
-                                record.</p>
-                        <pre><code class="language-js">const props = record.getAll();
+<h4 id="getall" tabindex="-1">getAll <a class="header-anchor" href="#getall">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Returns an object containing key value pairs of all the props stored in the database for this record.</p>
+<pre><code class="language-js">const props = record.getAll();
 </code></pre>
-                        <h4 id="refresh" tabindex="-1">refresh <a class="header-anchor" href="#refresh">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Refetches the data from the database for this record.</p>
-                        <pre><code class="language-js">await record.refresh();
+<h4 id="refresh" tabindex="-1">refresh <a class="header-anchor" href="#refresh">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Refetches the data from the database for this record.</p>
+<pre><code class="language-js">await record.refresh();
 </code></pre>
-                        <h3 id="writing-data" tabindex="-1">Writing Data <a class="header-anchor" href="#writing-data">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h3>
-                        <h4 id="createandverify-1" tabindex="-1">createAndVerify <a class="header-anchor"
-                                        href="#createandverify-1">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Calls <code>testCreationProps()</code>, <code>setPostedProps()</code> and
-                                <code>insert()</code> in a single method call.</p>
-                        <pre><code class="language-js">await record.createAndVerify({foo: 'bar', one: 1}, currentUserOrSession);
+<h3 id="writing-data" tabindex="-1">Writing Data <a class="header-anchor" href="#writing-data">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<h4 id="createandverify-1" tabindex="-1">createAndVerify <a class="header-anchor" href="#createandverify-1">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Calls <code>testCreationProps()</code>, <code>setPostedProps()</code> and <code>insert()</code> in a single method call.</p>
+<pre><code class="language-js">await record.createAndVerify({foo: 'bar', one: 1}, currentUserOrSession);
 </code></pre>
-                        <h4 id="delete-1" tabindex="-1">delete <a class="header-anchor" href="#delete-1">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Delete the current record from the database.</p>
-                        <pre><code class="language-js">await record.delete();
+<h4 id="delete-1" tabindex="-1">delete <a class="header-anchor" href="#delete-1">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Delete the current record from the database.</p>
+<pre><code class="language-js">await record.delete();
 </code></pre>
-                        <h4 id="insert-1" tabindex="-1">insert <a class="header-anchor" href="#insert-1">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Insert the current record into the database. Can only be called if it hasn’t already been
-                                inserted.</p>
-                        <pre><code class="language-js">await record.insert();
+<h4 id="insert-1" tabindex="-1">insert <a class="header-anchor" href="#insert-1">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Insert the current record into the database. Can only be called if it hasn’t already been inserted.</p>
+<pre><code class="language-js">await record.insert();
 </code></pre>
-                        <h4 id="set" tabindex="-1">set <a class="header-anchor" href="#set">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Set the value of a prop on this record. Returns the value set or throws an error if there is
-                                a validation problem, which then throws an error. Updates the in memory prop, but
-                                doesn’t write it to the database; call <code>update()</code> or <code>insert()</code>
-                                for that.</p>
-                        <pre><code class="language-js">user.set('admin', true);
+<h4 id="set" tabindex="-1">set <a class="header-anchor" href="#set">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Set the value of a prop on this record. Returns the value set or throws an error if there is a validation problem, which then throws an error. Updates the in memory prop, but doesn’t write it to the database; call <code>update()</code> or <code>insert()</code> for that.</p>
+<pre><code class="language-js">user.set('admin', true);
 </code></pre>
-                        <h4 id="setall" tabindex="-1">setAll <a class="header-anchor" href="#setall">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Set the values of multiple props on this record at the same time. Returns an object
-                                containing all the props unless there is a validation problem, which then throws an
-                                error. Updates the in memory props, but doesn’t write it to the database; call
-                                <code>update()</code> or <code>insert()</code> for that.</p>
-                        <pre><code class="language-js">record.set({foo: 'bar', one: 1});
+<h4 id="setall" tabindex="-1">setAll <a class="header-anchor" href="#setall">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Set the values of multiple props on this record at the same time. Returns an object containing all the props unless there is a validation problem, which then throws an error. Updates the in memory props, but doesn’t write it to the database; call <code>update()</code> or <code>insert()</code> for that.</p>
+<pre><code class="language-js">record.set({foo: 'bar', one: 1});
 </code></pre>
-                        <h4 id="setpostedprops" tabindex="-1">setPostedProps <a class="header-anchor"
-                                        href="#setpostedprops">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Sets props on the current record from an untrusted source, and thus checks whether a specific
-                                user has the privileges to set the prop. Returns <code>true</code> if everything sets
-                                properly, or throws an error if there are privilege problems. Updates the in memory
-                                props, but doesn’t write it to the database; call <code>update()</code> or
-                                <code>insert()</code> for that.</p>
-                        <pre><code class="language-js">await record.setPostedProps({foo: 'bar', one: 1}, currentUserOrSession);
+<h4 id="setpostedprops" tabindex="-1">setPostedProps <a class="header-anchor" href="#setpostedprops">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Sets props on the current record from an untrusted source, and thus checks whether a specific user has the privileges to set the prop. Returns <code>true</code> if everything sets properly, or throws an error if there are privilege problems. Updates the in memory props, but doesn’t write it to the database; call <code>update()</code> or <code>insert()</code> for that.</p>
+<pre><code class="language-js">await record.setPostedProps({foo: 'bar', one: 1}, currentUserOrSession);
 </code></pre>
-                        <h4 id="update-1" tabindex="-1">update <a class="header-anchor" href="#update-1">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Updates the current record in the database.</p>
-                        <h4 id="updateandverify" tabindex="-1">updateAndVerify <a class="header-anchor"
-                                        href="#updateandverify">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Calls <code>setPostedProps()</code> and <code>update()</code> in a single method call.</p>
-                        <pre><code class="language-js">await record.updateAndVerify({foo: 'bar', one: 1}, currentUserOrSession);
+<h4 id="update-1" tabindex="-1">update <a class="header-anchor" href="#update-1">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Updates the current record in the database.</p>
+<h4 id="updateandverify" tabindex="-1">updateAndVerify <a class="header-anchor" href="#updateandverify">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Calls <code>setPostedProps()</code> and <code>update()</code> in a single method call.</p>
+<pre><code class="language-js">await record.updateAndVerify({foo: 'bar', one: 1}, currentUserOrSession);
 </code></pre>
-                        <h3 id="privileges" tabindex="-1">Privileges <a class="header-anchor" href="#privileges">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h3>
-                        <h4 id="canedit" tabindex="-1">canEdit <a class="header-anchor" href="#canedit">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Returns <code>true</code> if the current user has edit rights on this record or throws a
-                                <code>403</code> error if not.</p>
-                        <pre><code class="language-js">record.canEdit(currentUserOrSession);
+<h3 id="privileges" tabindex="-1">Privileges <a class="header-anchor" href="#privileges">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<h4 id="canedit" tabindex="-1">canEdit <a class="header-anchor" href="#canedit">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Returns <code>true</code> if the current user has edit rights on this record or throws a <code>403</code> error if not.</p>
+<pre><code class="language-js">record.canEdit(currentUserOrSession);
 </code></pre>
-                        <h4 id="isowner" tabindex="-1">isOwner <a class="header-anchor" href="#isowner">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Returns <code>true</code> if the current user or session is defined as the owner of this
-                                record, or returns <code>false</code> if not.</p>
-                        <pre><code class="language-js">if (record.isOwner(currentUserOrSession) {
+<h4 id="isowner" tabindex="-1">isOwner <a class="header-anchor" href="#isowner">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Returns <code>true</code> if the current user or session is defined as the owner of this record, or returns <code>false</code> if not.</p>
+<pre><code class="language-js">if (record.isOwner(currentUserOrSession) {
     console.log('they own it!')
 }
 else {
     console.log('they do NOT own it!')
 }
 </code></pre>
-                        <h3 id="utility-methods-1" tabindex="-1">Utility Methods <a class="header-anchor"
-                                        href="#utility-methods-1">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h3>
-                        <h4 id="addwarning" tabindex="-1">addWarning <a class="header-anchor" href="#addwarning">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Add a warning to the list of <code>warnings</code> so that the user can be notified in the <a
-                                        href="ui.html">UI</a>.</p>
-                        <pre><code class="language-js">record.addWarning({
+<h3 id="utility-methods-1" tabindex="-1">Utility Methods <a class="header-anchor" href="#utility-methods-1">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<h4 id="addwarning" tabindex="-1">addWarning <a class="header-anchor" href="#addwarning">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Add a warning to the list of <code>warnings</code> so that the user can be notified in the <a href="ui.html">UI</a>.</p>
+<pre><code class="language-js">record.addWarning({
         code : 418,
         message : &quot;I'm a little teapot.&quot;
     });
 </code></pre>
-                        <h4 id="isinserted" tabindex="-1">isInserted <a class="header-anchor" href="#isinserted">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Returns <code>true</code> if this record has been inserted into the database, or
-                                <code>false</code> if not.</p>
-                        <h4 id="parent" tabindex="-1">parent <a class="header-anchor" href="#parent">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Returns a parent relationship record by name.</p>
-                        <pre><code class="language-js">const user = apikey.parent('user');
+<h4 id="isinserted" tabindex="-1">isInserted <a class="header-anchor" href="#isinserted">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Returns <code>true</code> if this record has been inserted into the database, or <code>false</code> if not.</p>
+<h4 id="parent" tabindex="-1">parent <a class="header-anchor" href="#parent">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Returns a parent relationship record by name.</p>
+<pre><code class="language-js">const user = apikey.parent('user');
 </code></pre>
-                        <h4 id="propoptions" tabindex="-1">propOptions <a class="header-anchor" href="#propoptions">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Returns a list of enumeration options for this record.</p>
-                        <pre><code class="language-js">const options = await user.propOptions(params, false);
+<h4 id="propoptions" tabindex="-1">propOptions <a class="header-anchor" href="#propoptions">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Returns a list of enumeration options for this record.</p>
+<pre><code class="language-js">const options = await user.propOptions(params, false);
 </code></pre>
-                        <h4 id="result-2" tabindex="-1">Result <a class="header-anchor" href="#result-2">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <pre><code class="language-js">{ 
+<h4 id="result-2" tabindex="-1">Result <a class="header-anchor" href="#result-2">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<pre><code class="language-js">{ 
     useAsDisplayName : [
         { label : 'Username', value : 'username' },
         ...
@@ -731,33 +458,27 @@ else {
     ...
 }
 </code></pre>
-                        <h4 id="parameters-2" tabindex="-1">Parameters <a class="header-anchor" href="#parameters-2">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <ul>
-                                <li><strong>params</strong> - an object of all the same paramters as the
-                                        <code>describe()</code> method.</li>
-                                <li><strong>includeAll</strong> - A boolean, that if true, will return all the options
-                                        regardless of privileges.</li>
-                        </ul>
-                        <h4 id="testcreationprops" tabindex="-1">testCreationProps <a class="header-anchor"
-                                        href="#testcreationprops">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>Tests the properties trying to be set on a new object, and if all the required values are
-                                present and valid then it returns <code>true</code>, otherwise it throws a
-                                <code>441</code> error.</p>
-                        <pre><code class="language-js">await record.testCreationProps({foo:'bar'});
+<h4 id="parameters-2" tabindex="-1">Parameters <a class="header-anchor" href="#parameters-2">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<ul>
+<li><strong>params</strong> - an object of all the same paramters as the <code>describe()</code> method.</li>
+<li><strong>includeAll</strong> - A boolean, that if true, will return all the options regardless of privileges.</li>
+</ul>
+<h4 id="testcreationprops" tabindex="-1">testCreationProps <a class="header-anchor" href="#testcreationprops">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>Tests the properties trying to be set on a new object, and if all the required values are present and valid then it returns <code>true</code>, otherwise it throws a <code>441</code> error.</p>
+<pre><code class="language-js">await record.testCreationProps({foo:'bar'});
 </code></pre>
-                        <h3 id="properties-1" tabindex="-1">Properties <a class="header-anchor" href="#properties-1">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h3>
-                        <h4 id="warnings" tabindex="-1">warnings <a class="header-anchor" href="#warnings">
-                                        <span aria-hidden="true" class="hidden">#</span>
-                                </a></h4>
-                        <p>An array of warnings for this record that have been added by <code>addWarnings()</code> since
-                                this record was instanciated.</p>
-                        <pre><code class="language-js">[
+<h3 id="properties-1" tabindex="-1">Properties <a class="header-anchor" href="#properties-1">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<h4 id="warnings" tabindex="-1">warnings <a class="header-anchor" href="#warnings">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h4>
+<p>An array of warnings for this record that have been added by <code>addWarnings()</code> since this record was instanciated.</p>
+<pre><code class="language-js">[
     {
         code : 418,
         message : &quot;I'm a little teapot.&quot;
@@ -765,9 +486,9 @@ else {
     ...
 ]
 </code></pre>
-                </div>
-        </div>
-
+</div>
+    </div>
+    
 </body>
 
 </html>

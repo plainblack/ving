@@ -5,7 +5,7 @@ import markdownittocdoneright from 'markdown-it-toc-done-right';
 import fs from 'fs';
 
 const sourcePath = "content/";
-const destinationPath = "../docs/";
+const destinationPath = "../../docs/";
 
 const md = markdownit({
     html: true,

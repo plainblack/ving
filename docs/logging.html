@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Session.md</title>
+    <title>logging.md</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
     <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
@@ -73,56 +73,12 @@
             </div>
         </div>
             <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
-<nav class="table-of-contents"><ol><li><a href="#session">Session </a><ol><li><a href="#relationships">Relationships </a></li><li><a href="#endpoints">Endpoints </a><ol><li><a href="#login-%2F-create">Login / Create </a></li><li><a href="#read">Read </a></li><li><a href="#logout-%2F-delete">Logout / Delete </a></li></ol></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
-<h1 id="session" tabindex="-1">Session <a class="header-anchor" href="#session">
+<nav class="table-of-contents"><ol><li><a href="#logging">Logging </a></li></ol></nav></div></div><div class="col min-h-screen"> 
+<h1 id="logging" tabindex="-1">Logging <a class="header-anchor" href="#logging">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h1>
-<p>In order to access privileged data you’ll on any ving endpoint you’ll need to pass a session id via an HTTP header cookie.</p>
-<h2 id="relationships" tabindex="-1">Relationships <a class="header-anchor" href="#relationships">
-          <span aria-hidden="true" class="hidden">#</span>
-        </a></h2>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Record</th>
-<th>Type</th>
-<th>Endpoint</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>user</td>
-<td><a href="User.html">User</a></td>
-<td>Parent</td>
-<td>/api/apikey/:id/user</td>
-</tr>
-</tbody>
-</table>
-<h2 id="endpoints" tabindex="-1">Endpoints <a class="header-anchor" href="#endpoints">
-          <span aria-hidden="true" class="hidden">#</span>
-        </a></h2>
-<h3 id="login-%2F-create" tabindex="-1">Login / Create <a class="header-anchor" href="#login-%2F-create">
-          <span aria-hidden="true" class="hidden">#</span>
-        </a></h3>
-<pre><code>POST /api/session
-</code></pre>
-<h3 id="read" tabindex="-1">Read <a class="header-anchor" href="#read">
-          <span aria-hidden="true" class="hidden">#</span>
-        </a></h3>
-<pre><code>GET /api/session/:id
-Cookie: vingSessionId=xxx
-</code></pre>
-<h3 id="logout-%2F-delete" tabindex="-1">Logout / Delete <a class="header-anchor" href="#logout-%2F-delete">
-          <span aria-hidden="true" class="hidden">#</span>
-        </a></h3>
-<pre><code>DELETE /api/session/:id
-Cookie: vingSessionId=xxx
-</code></pre>
-<p>Or</p>
-<pre><code>DELETE /api/session
-Cookie: vingSessionId=xxx
-</code></pre>
+<p>By default Ving logs to the <code>logs</code> folder. It automatically rotates its own logs.</p>
+<p>Ving uses <a href="https://github.com/winstonjs/winston">Winston</a> for logging. Winston has a lot of amazing configurability, so instead of creating a config file that cannot possibly encapsulate all of that, we leave it to you to modify <code>server/log.mjs</code>.</p>
 </div>
     </div>
     

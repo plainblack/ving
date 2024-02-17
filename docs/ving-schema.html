@@ -53,6 +53,7 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
+<li><a href="logging.html">Logging</a></li>
 <li><a href="messagebus.html">Message Bus</a></li>
 <li><a href="pulumi.html">Pulumi</a></li>
 <li><a href="rest.html">Rest</a></li>
@@ -76,7 +77,7 @@
 <h1 id="ving-schema" tabindex="-1">Ving Schema <a class="header-anchor" href="#ving-schema">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h1>
-<p>You’ll find the schemas in <code>server/vingschema/schemas</code>. A schema looks like this:</p>
+<p>You’ll find the schemas in <code>#ving/schema/schemas</code>. A schema looks like this:</p>
 <pre><code class="language-js">{
     kind: 'User',
     tableName: 'users',
@@ -136,7 +137,7 @@
 </ul>
 <p>If a role can <code>edit</code> a prop it can automatically <code>view</code> a prop.</p>
 <blockquote>
-<p>Roles can be defined inside the <code>User</code> schema (<code>server/vingschema/User.mjs</code>). They have to be added as a <a href="boolean-props">boolean prop type</a>, and then also added to the <code>RoleOptions</code> at the bottom of the file.</p>
+<p>Roles can be defined inside the <code>User</code> schema (<code>#ving/schema/schemas/User.mjs</code>). They have to be added as a <a href="boolean-props">boolean prop type</a>, and then also added to the <code>RoleOptions</code> at the bottom of the file.</p>
 </blockquote>
 <h4 id="prop-types" tabindex="-1">Prop Types <a class="header-anchor" href="#prop-types">
           <span aria-hidden="true" class="hidden">#</span>

@@ -53,6 +53,7 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
+<li><a href="logging.html">Logging</a></li>
 <li><a href="messagebus.html">Message Bus</a></li>
 <li><a href="pulumi.html">Pulumi</a></li>
 <li><a href="rest.html">Rest</a></li>
@@ -89,8 +90,16 @@
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
 <p>In <code>server/messagebus.mjs</code> add and export a function that will publish the message. Let’s say we’re going to update a progress bar somewhere for some background process. We’d create a publisher function for that like:</p>
-<pre><code class="language-js">export const publishSomeProgressBar = async (userId, percentageComplete = 0, fullyComplete = 100) =&gt; {
-    publish(userId, 'someProgressBar', { percentageComplete, fullyComplete });
+<pre><code class="language-js">export const publishSomeProgressBar = async (
+    userId, 
+    percentageComplete = 0, 
+    fullyComplete = 100
+) =&gt; {
+    return publish(
+        userId, 
+        'someProgressBar', 
+        { percentageComplete, fullyComplete }
+    );
 }
 </code></pre>
 <p>Note that you can skip this step and use use the generic <code>publish</code> function, but that doesn’t give you the opportunity to add defaults, an API, or error handling so we recommend creating a publish function.</p>
