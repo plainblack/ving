@@ -1,6 +1,6 @@
 import { defineCommand } from "citty";
-import { sendMail } from '../../server/email/send.mjs';
-import { generateTemplates } from '../../server/email/gentemplates.mjs';
+import { sendMail } from '../email/send.mjs';
+import { generateTemplates } from '../email/gentemplates.mjs';
 
 export default defineCommand({
     meta: {

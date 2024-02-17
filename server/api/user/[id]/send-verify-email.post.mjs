@@ -1,4 +1,4 @@
-import { sendMail } from '../../../email/send.mjs';
+import { sendMail } from '../../../../ving/email/send.mjs';
 import { useUsers } from '../../../vingrecord/records/User.mjs';
 import { useCache } from '../../../cache.mjs';
 import { obtainSession, describeParams } from '../../../utils/rest.mjs';

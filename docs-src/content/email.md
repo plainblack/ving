@@ -49,7 +49,7 @@ In `server/email/templates/_wrappers` you will find the wrappers for HTML and Te
 ## Sending an Email
 
 ```js
-import { sendMail } from '/server/email/send.mjs';
+import { sendMail } from '/ving/email/send.mjs';
 await sendMail('notify-about-sweepstakes', { // template name matches the folder name
     options: { to: user.get('email') }, 
     vars: {

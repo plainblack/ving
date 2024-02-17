@@ -51,7 +51,7 @@ export const sendMail = async (template, props) => {
             attachments: options.attachments
         },
         views: {
-            root: './server/email/templates',
+            root: './ving/email/templates',
             options: {
                 extension: 'njk',
             },
@@ -64,7 +64,7 @@ export const sendMail = async (template, props) => {
             template,
             locals: {
                 ...props.vars,
-                settings: { views: './server/email/templates/_wrappers' },
+                settings: { views: './ving/email/templates/_wrappers' },
                 site: vingConfig.site,
             }
         })
