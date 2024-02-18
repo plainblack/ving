@@ -152,7 +152,7 @@ These are used to add a child relationship.
 ```js
 {
     type: "virtual",
-    name: 'apikeys',
+    name: 'userId',
     required: false,
     view: ['public'],
     edit: [],

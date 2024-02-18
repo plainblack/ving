@@ -69,26 +69,26 @@ export default defineEventHandler(async (event) => {
 });`;
 
 const childGetTemplate = ({ name, prop }) =>
-    `import { use${name}s } from '#ving/record/records/${name}.mjs';
+    `import { useKind } from '#ving/record/VingRecord.mjs';
 import { describeListParams } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {
-    const ${name}s = use${name}s();
+    const ${name.toLowerCase()}s = await useKind('${name}');
     const { id } = getRouterParams(event);
-    const ${name.toLowerCase()} = await ${name}s.findOrDie(id);
-    const ${prop.relation.kind}s = ${name.toLowerCase()}.${prop.relation.name};
+    const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
+    const ${prop.relation.kind}s = await ${name.toLowerCase()}.children('${prop.relation.name}');
     return await ${prop.relation.kind}s.describeList(describeListParams(event), describeListWhere(event, ${prop.relation.kind}s.describeListFilter()));
 });`;
 
 const parentGetTemplate = ({ name, prop }) =>
-    `import { use${name}s } from '#ving/record/records/${name}.mjs';
+    `import { useKind } from '#ving/record/VingRecord.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {
-    const ${name}s = use${name}s();
+    const ${name.toLowerCase()}s = await useKind('${name}');
     const { id } = getRouterParams(event);
-    const ${name.toLowerCase()} = await ${name}s.findOrDie(id);
-    const ${prop.relation.name} = await ${name.toLowerCase()}.${prop.relation.name};
+    const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
+    const ${prop.relation.name} = await ${name.toLowerCase()}.parent('${prop.relation.name}');
     return await ${prop.relation.name}.describe(describeParams(event));
 });`;
 

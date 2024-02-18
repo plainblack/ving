@@ -1,7 +1,5 @@
 import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
 import { RoleOptions, RoleMixin } from '#ving/record/mixins/Role.mjs';
-import { useAPIKeys } from "#ving/record/records/APIKey.mjs";
-import { useS3Files } from '#ving/record/records/S3File.mjs'
 import bcrypt from 'bcryptjs';
 import { useCache } from '#ving/cache.mjs';
 import { useDB } from '#ving/drizzle/db.mjs';
@@ -68,7 +66,7 @@ export class UserRecord extends RoleMixin(VingRecord) {
             }
             case 'uploaded': {
                 if (this.get('avatarId')) {
-                    const avatar = await this.avatar();
+                    const avatar = await this.parent('avatar');
                     return avatar.fileUrl();
                 }
                 else {
@@ -171,9 +169,9 @@ export class UserRecord extends RoleMixin(VingRecord) {
          * @see VingRecord.delete()
          */
     async delete() {
-        await this.apikeys.deleteMany();
+        await (await this.chilren('apikeys')).deleteMany();
         if (this.get('avatarId')) {
-            const avatar = await this.avatar();
+            const avatar = await this.parent('avatar');
             await avatar.delete();
         }
         await super.delete();
@@ -189,36 +187,6 @@ export class UserRecord extends RoleMixin(VingRecord) {
             this.#userChanged = true;
         return super.set(key, value);
     }
-
-    /**
-         * A child relationship to `APIKeyKind` that this user has generated
-         * 
-         * Usage: `const apikeys = await user.apikeys.findMany()`
-         * 
-         * @returns `APIKeyKind`
-         */
-    get apikeys() {
-        const apikeys = useAPIKeys();
-        apikeys.propDefaults.push({
-            prop: 'userId',
-            field: apikeys.table.userId,
-            value: this.get('id')
-        });
-        return apikeys;
-    }
-
-    /**
-         * A parent relationship to a `S3FileRecord` that will act as an avatar for this user.
-         * 
-         * Usage: `const avatar = await user.avatar()`
-         * 
-         * @throws 404 if the avatar cannot be found
-         * @returns A `S3FileRecord` instance
-         */
-    async avatar() {
-        return await (await useKind('S3File')).findOrDie(this.get('avatarId'));
-        // return await useS3Files().findOrDie(this.get('avatarId'));
-    }
 }
 
 /** Management of all Users.
@@ -226,9 +194,4 @@ export class UserRecord extends RoleMixin(VingRecord) {
  */
 export class UserKind extends VingKind {
     // add custom Kind code here
-}
-
-/** Syntactic sugar that initializes `UserKind`. */
-export const useUsers = () => {
-    return new UserKind(useDB(), UserTable, UserRecord);
 }

@@ -5,6 +5,6 @@ export default defineEventHandler(async (event) => {
     const users = await useKind('User');
     const { id } = getRouterParams(event);
     const user = await users.findOrDie(id);
-    const avatar = await user.avatar();
+    const avatar = await user.parent('avatar');
     return await avatar.describe(describeParams(event));
 });

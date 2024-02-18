@@ -1,9 +1,9 @@
-import { useAPIKeys } from '#ving/record/records/APIKey.mjs';
+import { useKind } from '#ving/record/VingRecord.mjs';
 import { describeParams, obtainSession, getBody } from '#ving/utils/rest.mjs';
 import { defineEventHandler, getRouterParams } from 'h3';
 
 export default defineEventHandler(async (event) => {
-    const APIKeys = useAPIKeys();
+    const APIKeys = await useKind('APIKey');
     const { id } = getRouterParams(event);
     const apikey = await APIKeys.findOrDie(id);
     const session = obtainSession(event);

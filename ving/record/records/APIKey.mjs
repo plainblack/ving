@@ -22,8 +22,3 @@ export class APIKeyRecord extends VingRecord {
 export class APIKeyKind extends VingKind {
     // add custom Kind code here
 }
-
-/** Syntactic sugar that initializes `APIKeyKind`. */
-export const useAPIKeys = () => {
-    return new APIKeyKind(useDB(), APIKeyTable, APIKeyRecord);
-}

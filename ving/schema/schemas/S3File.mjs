@@ -116,7 +116,7 @@ export const s3fileSchema = {
         },
         {
             type: "virtual",
-            name: 'avatarUsers',
+            name: 'avatarId',
             required: false,
             view: ['public'],
             edit: [],

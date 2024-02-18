@@ -1,9 +1,8 @@
-import { useAPIKeys } from '#ving/record/records/APIKey.mjs';
 import { useKind } from '#ving/record/VingRecord.mjs';
 import { describe, test, expect } from "vitest";
 import { like, eq, asc, desc, and, inArray } from '#ving/drizzle/orm.mjs';
 
-const APIKeys = useAPIKeys();
+const APIKeys = await useKind('APIKey');
 const users = await useKind('User');
 await APIKeys.delete.where(eq(APIKeys.table.name, 'Test'));
 await users.delete.where(eq(users.table.username, 'guardMert'));

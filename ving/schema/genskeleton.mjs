@@ -108,7 +108,7 @@ export const ${name.toLowerCase()}Schema = {
         // 1:N relationship - aka a relationship to my children
        /* {
             type: "virtual",
-            name: '${name.toLowerCase()}comments',
+            name: '${name.toLowerCase()}Id', // the name of this object's id in the remote table
             required: false,
             view: ['public'],
             edit: [],

@@ -11,53 +11,6 @@ function addImports({ schema }) {
     return out;
 }
 
-const childTemplate = ({ name, prop }) => `
-    /**
-     * A child relationship to \`${prop.relation.kind}Kind\` that use this file as an avatar
-     * 
-     * Usage: \`const ${prop.relation.name} = await ${name.toLowerCase()}.${prop.relation.name}.findMany()\`
-     * 
-     * @returns A \`${prop.relation.kind}Kind\`
-     */
-    /** A child relationship to \`${prop.relation.kind}\` */
-    get ${prop.relation.name}() {
-        const ${prop.relation.kind}s = use${prop.relation.kind}s();
-        ${prop.relation.kind}s.propDefaults.push({
-            prop: '${camelCase(name)}Id',
-            field: ${prop.relation.kind}s.table.${camelCase(name)}Id,
-            value: this.get('id')
-        });
-        return ${prop.relation.kind}s;
-    }
-`;
-
-const parentTemplate = ({ name, prop }) => `
-    /**
-     * A parent relationship to a \`${prop.relation.kind}Record\`.
-     * 
-     * Usage: \`const ${prop.relation.name} = await ${name.toLowerCase()}.${prop.relation.name}()\`
-     * 
-     * @throws 404 if the ${prop.relation.name} cannot be found
-     * @returns A \`${prop.relation.kind}\` instance
-     */
-    async ${prop.relation.name}() {
-        return await use${prop.relation.kind}s().findOrDie(this.get('${prop.name}'));
-    }
-`;
-
-function addRelationships({ name, schema }) {
-    let out = '';
-    for (const prop of schema.props) {
-        if (prop.relation && prop.relation.type == 'parent') {
-            out += parentTemplate({ name, prop });
-        }
-        else if (prop.relation && prop.relation.type == 'child') {
-            out += childTemplate({ name, prop });
-        }
-    }
-    return out;
-}
-
 function addRelationshipNames({ schema }) {
     const names = [];
     for (const prop of schema.props) {
@@ -104,12 +57,6 @@ function addRelationshipDelete({ schema }) {
              */
         async delete () {
             ${addRelationshipDeletes({ schema })}
-            await this.apikeys.deleteMany();
-            if (this.get('avatarId')) {
-                const avatar = await this.avatar();
-                await avatar.delete();
-            }
-            await super.delete();
         }
         `;
     }
@@ -149,8 +96,6 @@ export class ${name}Record extends VingRecord {
     }
 
     ${addRelationshipDelete({ schema })}
-
-    ${addRelationships({ name, schema })}
 }
 
 /** Management of all ${name}s.
@@ -158,11 +103,6 @@ export class ${name}Record extends VingRecord {
  */
 export class ${name}Kind extends VingKind  {
     // add custom Kind code here
-}
-
-/** Syntactic sugar that initializes \`${name}Kind\`. */
-export const use${name}s = () => {
-    return new ${name}Kind(useDB(), ${name}Table, ${name}Record);
 }`;
 
 export const generateRecord = (params) => {

@@ -1,7 +1,6 @@
 import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
 import { useDB } from '#ving/drizzle/db.mjs';
 import { S3FileTable } from '#ving/drizzle/schema/S3File.mjs';
-import { useUsers } from '#ving/record/records/User.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { v4 } from 'uuid';
 import sanitize from 'sanitize-filename';
@@ -304,36 +303,6 @@ export class S3FileRecord extends VingRecord {
         throw ouch('442', error)
     }
 
-    /**
-         * A parent relationship to a `UserRecord` that owns this file.
-         * 
-         * Usage: `const user = await s3file.user()`
-         * 
-         * @throws 404 if the user cannot be found
-         * @returns A `UserRecord` instance
-         */
-    async user() {
-        const users = await useKind('User');
-        return await users.findOrDie(this.get('userId'));
-    }
-
-    /**
-         * A child relationship to `UserKind` that use this file as an avatar
-         * 
-         * Usage: `const users = await s3file.avatarUsers.findMany()`
-         * 
-         * @returns UserKind
-         */
-    get avatarUsers() {
-        const users = useUsers();
-        users.propDefaults.push({
-            prop: 'avatarId',
-            field: users.table.avatarId,
-            value: this.get('id')
-        });
-        return users;
-    }
-
 }
 
 /** A subclass of VingKind that sets up S3FileRecords.
@@ -341,9 +310,4 @@ export class S3FileRecord extends VingRecord {
  */
 export class S3FileKind extends VingKind {
     // add custom Kind code here
-}
-
-/** Syntactic sugar that initializes `S3FileKind`. */
-export const useS3Files = () => {
-    return new S3FileKind(useDB(), S3FileTable, S3FileRecord);
 }

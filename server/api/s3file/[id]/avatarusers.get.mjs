@@ -1,10 +1,10 @@
-import { useS3Files } from '#ving/record/records/S3File.mjs';
+import { useKind } from '#ving/record/VingRecord.mjs';
 import { describeListParams } from '#ving/utils/rest.mjs';
 import { defineEventHandler, getRouterParams } from 'h3';
 export default defineEventHandler(async (event) => {
-    const S3Files = useS3Files();
+    const S3Files = await useKind('S3File');
     const { id } = getRouterParams(event);
     const s3file = await S3Files.findOrDie(id);
-    const Users = s3file.avatarUsers;
+    const Users = await s3file.children('avatarUsers');
     return await Users.describeList(describeListParams(event), describeListWhere(event, Users.describeListFilter()));
 });

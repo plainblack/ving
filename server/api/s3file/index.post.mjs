@@ -1,5 +1,6 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { useS3Files, sanitizeFilename, makeS3FolderName, getExtension } from '#ving/record/records/S3File.mjs';
+import { useKind } from '#ving/record/VingRecord.mjs';
+import { sanitizeFilename, makeS3FolderName, getExtension } from '#ving/record/records/S3File.mjs';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { getBody, obtainSessionIfRole, describeParams } from '#ving/utils/rest.mjs';
 import { defineEventHandler } from 'h3';
@@ -24,7 +25,7 @@ export default defineEventHandler(async (event) => {
         contentType: body.contentType,
         sizeInBytes: body.sizeInBytes,
     };
-    const s3files = useS3Files();
+    const s3files = await useKind('S3File');
     const s3file = await s3files.create(props);
     // would be nice to add an event here that would check in on this file after 60 minutes and see if it has been assigned to anything, otherwise we'll have to do it with polling
     const putObjectParams = {

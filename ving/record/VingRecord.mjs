@@ -7,6 +7,14 @@ import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving
 import { useDB } from '#ving/drizzle/db.mjs';
 
 const kindCache = {};
+/**
+ * Instanciates a VingKind by name. 
+ * 
+ * Usage: `const users = useKind('User');`
+ * 
+ * @param kind The name of the kind to instanciate.
+ * @returns `VingKind`
+ */
 export const useKind = async (kind) => {
     if (kind in kindCache)
         return kindCache[kind];
@@ -20,15 +28,15 @@ export const useKind = async (kind) => {
 /**
  * Get the schema for a specific kind within the ving schema list.
  * 
- * Usage: `const schema = findVingSchema('User')`
+ * Usage: `const schema = findVingSchema('users')`
  * 
- * @param nameToFind The table name.
- * @param by Can be `kind` or `tableName`.
+ * @param nameToFind The table name or kind name to find.
+ * @param by Can be `kind` or `tableName`. Defaults to `tableName`.
  * @returns A ving kind schema.
  */
 export const findVingSchema = (nameToFind = '-unknown-', by = 'tableName') => {
     try {
-        return findObject(by, nameToFind, vingSchemas);
+        return findObject(vingSchemas, obj => obj[by] == nameToFind);
     }
     catch {
         throw ouch(404, 'ving schema ' + nameToFind + ' not found');
@@ -297,17 +305,35 @@ export class VingRecord {
      * 
      * Usage: `const user = await apikey.parent('user')`
      * 
-     * @param name The relationship name
+     * @param name The relation name
+     * @throws 404 if it can't find the parent by name
      * @returns A record related to the this record
      */
     async parent(name) {
-        try {
-            return await this[name]()
-        }
-        catch {
-            const schema = findVingSchema(getTableName(this.table))
-            throw ouch(404, `Couldn't find parent "${name}" on ${schema.kind}.`);
-        }
+        const schema = findVingSchema(getTableName(this.table));
+        const prop = findObject(schema.props, obj => obj.relation?.name == name);
+        return await (await useKind(prop.relation.kind)).findOrDie(this.get(prop.name));
+    }
+
+    /**
+     * Returns a query to fetch the children of a child relationship attached to this kind's schema.
+     * 
+     * Usage: `const apikeys = await user.children('apikeys')
+     * 
+     * @param name The relation name
+     * @throws 404 if it can't find the children by name
+     * @returns A drizzle query.
+     */
+    async children(name) {
+        const schema = findVingSchema(getTableName(this.table));
+        const prop = findObject(schema.props, obj => obj.relation?.name == name);
+        const kind = await useKind(prop.relation.kind);
+        kind.propDefaults.push({
+            prop: prop.name,
+            field: kind.table[prop.name],
+            value: this.get('id'),
+        });
+        return kind;
     }
 
     /**
