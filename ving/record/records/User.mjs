@@ -190,5 +190,13 @@ export class UserRecord extends RoleMixin(VingRecord) {
  * @class
  */
 export class UserKind extends VingKind {
-    // add custom Kind code here
+    /**
+     * Find users with a matching role.
+     * @param {string} role A role name as defined in `#ving/schema/schemas/User.mjs`
+     * @returns a list of `UserRecord`s where the specified role is true
+     */
+    async findWithRole(role) {
+        return await this.select.findMany(eq(this.table[role], true));
+    }
+
 }
