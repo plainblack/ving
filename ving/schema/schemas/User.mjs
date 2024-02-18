@@ -142,7 +142,7 @@ export const userSchema = {
         },
         {
             type: "virtual",
-            name: 'apikeys',
+            name: 'userId',
             required: false,
             view: ['public'],
             edit: [],
