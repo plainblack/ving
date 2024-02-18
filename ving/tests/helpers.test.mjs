@@ -7,7 +7,7 @@ const data = [
 ];
 
 test('findObject', () => {
-	let result = findObject('name', 'bar', data);
+	let result = findObject(data, obj => obj.name == 'bar');
 	expect(result.name).toBe('bar');
 	expect(() => findObject('name', 'barf', data)).toThrowError();
 });

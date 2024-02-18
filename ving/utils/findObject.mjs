@@ -1,15 +1,15 @@
 import { ouch } from '#ving/utils/ouch.mjs';
 
-export const findObjectIndex = (field, value, list) => {
-    return list.findIndex((obj) => obj[field] == value);
+export const findObjectIndex = (list, func) => {
+    return list.findIndex((obj) => func(obj));
 }
 
-export const findObject = (field, value, list) => {
-    const index = findObjectIndex(field, value, list);
+export const findObject = (list, func) => {
+    const index = findObjectIndex(list, func);
     if (index >= 0) {
         return list[index];
     }
     else {
-        throw ouch(404, `cannot find "${value}" in "${field.toString()}" of  object`);
+        throw ouch(404, `cannot find matching object in list`);
     }
 }
