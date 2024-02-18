@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const session = obtainSession(event);
     if (session) {
         const user = await session.user();
-        return await user.describe(describeParams(event));
+        return await user.describe(describeParams(event, session));
     }
     else {
         return {};
