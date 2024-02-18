@@ -2,70 +2,70 @@ import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
 import fs from 'fs';
 
 const optionsTemplate = ({ name }) =>
-    `import { use${name}s } from '#ving/record/records/${name}.mjs';
+    `import { useKind } from '#ving/record/VingRecord.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
 import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
-    const ${name}s = use${name}s();
+    const ${name.toLowerCase()}s = await useKind('${name}');
     return ${name}s.mint().propOptions(describeParams(event), true);
 });`;
 
 const indexPostTemplate = ({ name }) =>
-    `import { use${name}s } from '#ving/record/records/${name}.mjs';
+    `import { useKind } from '#ving/record/VingRecord.mjs';
 import { describeParams, getBody, obtainSessionIfRole } from '#ving/utils/rest.mjs';
 import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
-    const ${name}s = use${name}s();
+    const ${name.toLowerCase()}s = await useKind('${name}');
     const session = obtainSessionIfRole(event, 'verifiedEmail');
-    const ${name.toLowerCase()} = await ${name}s.createAndVerify(await getBody(event), session);
+    const ${name.toLowerCase()} = await ${name.toLowerCase()}s.createAndVerify(await getBody(event), session);
     return ${name.toLowerCase()}.describe(describeParams(event, session));
 });`;
 
 const indexGetTemplate = ({ name }) =>
-    `import { use${name}s } from '#ving/record/records/${name}.mjs';
+    `import { useKind } from '#ving/record/VingRecord.mjs';
 import { describeListParams, describeListWhere } from '#ving/utils/rest.mjs';
 import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
-    const ${name}s = use${name}s();
-    return await ${name}s.describeList(describeListParams(event), describeListWhere(event, ${name}s.describeListFilter()));
+    const ${name.toLowerCase()}s = await useKind('${name}');
+    return await ${name.toLowerCase()}s.describeList(describeListParams(event), describeListWhere(event, ${name.toLowerCase()}s.describeListFilter()));
 });`;
 
 const idPutTemplate = ({ name }) =>
-    `import { use${name}s } from '#ving/record/records/${name}.mjs';
+    `import { useKind } from '#ving/record/VingRecord.mjs';
 import { describeParams, obtainSession, getBody } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {
-    const ${name}s = use${name}s();
+    const ${name.toLowerCase()}s = await useKind('${name}');
     const { id } = getRouterParams(event);
-    const ${name.toLowerCase()} = await ${name}s.findOrDie(id);
+    const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
     const session = obtainSession(event);
     ${name.toLowerCase()}.canEdit(session);
     await ${name.toLowerCase()}.updateAndVerify(await getBody(event), session);
-    return ${name.toLowerCase()}.describe(describeParams(event));
+    return ${name.toLowerCase()}.describe(describeParams(event, session));
 });`;
 
 const idGetTemplate = ({ name }) =>
-    `import { use${name}s } from '#ving/record/records/${name}.mjs';
+    `import { useKind } from '#ving/record/VingRecord.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {
-    const ${name}s = use${name}s();
+    const ${name.toLowerCase()}s = await useKind('${name}');
     const { id } = getRouterParams(event);
-    const ${name.toLowerCase()} = await ${name}s.findOrDie(id);
+    const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
     return ${name.toLowerCase()}.describe(describeParams(event));
 });`;
 
 const idDeleteTemplate = ({ name }) =>
-    `import { use${name}s } from '#ving/record/records/${name}.mjs';
+    `import { useKind } from '#ving/record/VingRecord.mjs';
 import { obtainSession, describeParams } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {
-    const ${name}s = use${name}s();
+    const ${name.toLowerCase()}s = await useKind('${name}');
     const { id } = getRouterParams(event);
-    const ${name.toLowerCase()} = await ${name}s.findOrDie(id);
+    const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
     ${name.toLowerCase()}.canEdit(obtainSession(event));
     await ${name.toLowerCase()}.delete();
-    return ${name.toLowerCase()}.describe(describeParams(event));
+    return ${name.toLowerCase()}.describe(describeParams(event, session));
 });`;
 
 const childGetTemplate = ({ name, prop }) =>
@@ -76,8 +76,8 @@ export default defineEventHandler(async (event) => {
     const ${name.toLowerCase()}s = await useKind('${name}');
     const { id } = getRouterParams(event);
     const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
-    const ${prop.relation.kind}s = await ${name.toLowerCase()}.children('${prop.relation.name}');
-    return await ${prop.relation.kind}s.describeList(describeListParams(event), describeListWhere(event, ${prop.relation.kind}s.describeListFilter()));
+    const ${prop.relation.kind}s = await ${name.toLowerCase()}.children('${prop.relation.name.toLowerCase()}');
+    return await ${prop.relation.kind.toLowerCase()}s.describeList(describeListParams(event), describeListWhere(event, ${prop.relation.kind.toLowerCase()}s.describeListFilter()));
 });`;
 
 const parentGetTemplate = ({ name, prop }) =>
@@ -88,8 +88,8 @@ export default defineEventHandler(async (event) => {
     const ${name.toLowerCase()}s = await useKind('${name}');
     const { id } = getRouterParams(event);
     const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
-    const ${prop.relation.name} = await ${name.toLowerCase()}.parent('${prop.relation.name}');
-    return await ${prop.relation.name}.describe(describeParams(event));
+    const ${prop.relation.name.toLowerCase()} = await ${name.toLowerCase()}.parent('${prop.relation.name.toLowerCase()}');
+    return await ${prop.relation.name.toLowerCase()}.describe(describeParams(event));
 });`;
 
 export const generateRest = (params) => {

@@ -1,21 +1,12 @@
 import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
 import { camelCase } from 'scule';
 
-function addImports({ schema }) {
-    let out = '';
-    for (const prop of schema.props) {
-        if (prop.relation) {
-            out += `import { use${prop.relation.kind}s } from '#ving/record/records/${prop.relation.kind}.mjs';` + "\n";
-        }
-    }
-    return out;
-}
 
 function addRelationshipNames({ schema }) {
     const names = [];
     for (const prop of schema.props) {
-        if (prop.relation) {
-            names.push(prop.relation.kind);
+        if (prop.relation?.type == 'child') {
+            names.push('`' + prop.relation.kind + '`');
         }
     }
     return names.join(' and ');
@@ -24,15 +15,7 @@ function addRelationshipNames({ schema }) {
 function addRelationshipDeletes({ schema }) {
     let out = '';
     for (const prop of schema.props) {
-        if (prop.relation && prop.relation.type == 'parent') {
-            out += `
-            if (this.get('${prop.name}')) {
-                const ${prop.relation.name} = await this.${prop.relation.name}();
-                await ${prop.relation.name}.delete();
-            }
-            `;
-        }
-        else if (prop.relation && prop.relation.type == 'child') {
+        if (prop.relation && prop.relation?.type == 'child') {
             out += `
             await this.${prop.relation.name}.deleteMany();
             `;
@@ -44,14 +27,14 @@ function addRelationshipDeletes({ schema }) {
 function addRelationshipDelete({ schema }) {
     let count = 0;
     for (const prop of schema.props) {
-        if (prop.relation) {
+        if (prop.relation?.type == 'child') {
             count++;
         }
     }
     if (count) {
         return `
         /**
-             * Extends \`delete()\` in \`VingRecord\` to delete ${addRelationshipNames({ schema })} the user created.
+             * Extends \`delete()\` in \`VingRecord\` to delete the associated ${addRelationshipNames({ schema })}.
              * 
              * @see VingRecord.delete()
              */
@@ -64,10 +47,8 @@ function addRelationshipDelete({ schema }) {
 }
 
 const recordTemplate = ({ name, schema }) =>
-    `import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
-import { useDB } from '#ving/drizzle/db.mjs';
-import { ${name}Table } from '#ving/drizzle/schema/${name}.mjs';
-${addImports({ schema })}
+    `import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
+import {eq} from '#ving/drizzle/orm.mjs';
 
 /** Management of individual ${name}s.
  * @class
@@ -78,6 +59,9 @@ export class ${name}Record extends VingRecord {
     /**
      * Extends \`describe()\` in \`VingRecord\` to add \`meta\` property \`bar\`
      *  and the \`extra\` property \`foo\`.
+     * 
+     * Note, these don't do anything, this is just here to explain how to extend
+     * the describe method.
      * 
      * @see VingRecord.describe()
      */
@@ -103,6 +87,15 @@ export class ${name}Record extends VingRecord {
  */
 export class ${name}Kind extends VingKind  {
     // add custom Kind code here
+
+    /**
+     * An example of a shortcut for a common query you might want to make.
+     * 
+     * @returns a list of \`${name}Record\`s that are cool
+     */
+    async findCool() {
+        return this.select.findMany(eq(this.table.isCool, true));
+    }
 }`;
 
 export const generateRecord = (params) => {
