@@ -2,9 +2,8 @@ import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
 import { RoleOptions, RoleMixin } from '#ving/record/mixins/Role.mjs';
 import bcrypt from 'bcryptjs';
 import { useCache } from '#ving/cache.mjs';
-import { useDB } from '#ving/drizzle/db.mjs';
-import { UserTable } from '#ving/drizzle/schema/User.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
+import { eq } from '#ving/drizzle/orm.mjs';
 
 /** Management of individual Users.
  * @class
