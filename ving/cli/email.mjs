@@ -1,6 +1,6 @@
 import { defineCommand } from "citty";
 import { sendMail } from '#ving/email/send.mjs';
-import { generateTemplates } from '#ving/email/gentemplates.mjs';
+import { generateTemplates } from '#ving/generator/emailtemplate.mjs';
 
 export default defineCommand({
     meta: {
