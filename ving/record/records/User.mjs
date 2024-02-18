@@ -170,10 +170,7 @@ export class UserRecord extends RoleMixin(VingRecord) {
          */
     async delete() {
         await (await this.chilren('apikeys')).deleteMany();
-        if (this.get('avatarId')) {
-            const avatar = await this.parent('avatar');
-            await avatar.delete();
-        }
+        await (await this.chilren('s3files')).deleteMany();
         await super.delete();
     }
 
