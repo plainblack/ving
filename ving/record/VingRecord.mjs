@@ -304,8 +304,13 @@ export class VingRecord {
         return false;
     }
 
+    #parentCache = {};
     /**
-     * Returns a record related to this record by relationship name
+     * Returns a record related to this record by relationship name.
+     * 
+     * A cache of previously fetched parent objects is kept so that subsequent calls to this 
+     * method with the same name will not hit the database multiple times. You can flush this
+     * cache by calling either `refresh()` or  `flushParentCache()`.
      * 
      * Usage: `const user = await apikey.parent('user')`
      * 
@@ -314,10 +319,22 @@ export class VingRecord {
      * @returns A record related to the this record
      */
     async parent(name) {
+        if (name in this.#parentCache)
+            return this.#parentCache[name];
         const schema = findVingSchema(getTableName(this.table));
         const prop = findObject(schema.props, obj => obj.relation?.name == name);
-        return await (await useKind(prop.relation.kind)).findOrDie(this.get(prop.name));
+        return this.#parentCache[name] = await (await useKind(prop.relation.kind)).findOrDie(this.get(prop.name));
     }
+
+    /**
+     * Flushes the parent cache created by calling the `parent()` method.
+     * 
+     * Usage: `apikey.flushParentCache()`
+     */
+    flushParentCache() {
+        this.#parentCache = {};
+    }
+
 
     /**
      * Returns a query to fetch the children of a child relationship attached to this kind's schema.
@@ -370,11 +387,12 @@ export class VingRecord {
     }
 
     /**
-     * Fetches the props from the database and overwrites whats in memory
+     * Fetches the props from the database and overwrites whats in memory. Also flushes the parent relation cache.
      * 
      * @returns the same as `getAll()`
      */
     async refresh() {
+        this.flushParentCache();
         return this.#props = (await this.db.select().from(this.table).where(eq(this.table.id, this.#props.id)))[0];
     }
 
