@@ -286,15 +286,19 @@ export class VingRecord {
         for (let owner of schema.owner) {
             let found = owner.match(/^\$(.*)$/);
             if (found) {
-                if (this.#props[found[1]] == currentUser.getRoleProp('id')) {
+                if (this.#props[found[1]] == currentUser.getRoleProp('id'))
                     return true;
-                }
             }
             found = owner.match(/^([A-Za-z]+)$/);
             if (found) {
-                if (found[1] && currentUser.isRole(found[1]) == true) {
+                if (found[1] && currentUser.isRole(found[1]) == true)
                     return true;
-                }
+            }
+            found = owner.match(/^\^(.*)$/);
+            if (found) {
+                const parent = this.parent(found[1]);
+                if (parent && parent.isOwner(currentUser))
+                    return true;
             }
         }
         return false;
