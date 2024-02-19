@@ -1,12 +1,12 @@
 import * as aws from "@pulumi/aws";
+import { prefix } from './utils.mjs';
 import * as pulumi from "@pulumi/pulumi";
 
 export const createUploads = () => {
-    const projectName = pulumi.getProject();
 
-    const uploadsBucket = new aws.s3.BucketV2(`${projectName}-uploads`, {});
+    const uploadsBucket = new aws.s3.BucketV2(prefix('uploads'), {});
 
-    const blockPublicAccessToUploads = new aws.s3.BucketPublicAccessBlock(`${projectName}-blockPublicAccessToUploads`, {
+    const blockPublicAccessToUploads = new aws.s3.BucketPublicAccessBlock(prefix('blockPublicAccessToUploads'), {
         bucket: uploadsBucket.id,
         blockPublicAcls: false,
         blockPublicPolicy: false,
@@ -29,12 +29,12 @@ export const createUploads = () => {
         }]
     };
 
-    const uploadsPublicReadPolicy = new aws.s3.BucketPolicy(`${projectName}-uploadsPublicReadPolicy`, {
+    const uploadsPublicReadPolicy = new aws.s3.BucketPolicy(prefix('uploadsPublicReadPolicy'), {
         bucket: uploadsBucket.id,
         policy: pulumi.output(publicReadPolicy).apply(JSON.stringify),
     });
 
-    const uploadsBucketCorsConfig = new aws.s3.BucketCorsConfigurationV2(`${projectName}-uploads-cors`, {
+    const uploadsBucketCorsConfig = new aws.s3.BucketCorsConfigurationV2(prefix('uploads-cors'), {
         bucket: uploadsBucket.id,
         corsRules: [
             {
@@ -53,8 +53,8 @@ export const createUploads = () => {
         ],
     });
 
-    const uploadsUser = new aws.iam.User(`${projectName}-uploadsUser`, {});
-    const uploadsAccessKey = new aws.iam.AccessKey(`${projectName}-uploadsAccessKey`, { user: uploadsUser.name });
+    const uploadsUser = new aws.iam.User(prefix('uploadsUser'), {});
+    const uploadsAccessKey = new aws.iam.AccessKey(prefix('uploadsAccessKey'), { user: uploadsUser.name });
 
     const uploadsIAMPolicyDocument = aws.iam.getPolicyDocument({
         statements: [{
@@ -70,7 +70,7 @@ export const createUploads = () => {
     }).then(document => document.json);
 
 
-    const uploadsUserPolicy = new aws.iam.UserPolicy(`${projectName}-uploadsUserPolicy`, {
+    const uploadsUserPolicy = new aws.iam.UserPolicy(prefix('uploadsUserPolicy'), {
         user: uploadsUser.name,
         policy: uploadsIAMPolicyDocument,
     });

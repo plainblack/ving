@@ -1,19 +1,19 @@
 import * as aws from "@pulumi/aws";
-import * as pulumi from "@pulumi/pulumi";
 import { local } from "@pulumi/command";
+import { prefix } from './utils.mjs';
+import * as pulumi from "@pulumi/pulumi";
 
 
 export const createLambdaProcessUploads = (thumbnailsBucket) => {
-    const projectName = pulumi.getProject();
 
-    const createNodeModsZip = new local.Command('createNodeModsZip', {
+    const createNodeModsZip = new local.Command(prefix('createNodeModsZip'), {
         create: './create.nodemods.layer.sh',
         dir: './pulumi/aws/lambda/layer/nodemods',
         assetPaths: ['./pulumi/aws/lambda/layer/nodemods/nodemods.zip'],
     });
 
-    const nodeModsLayer = new aws.lambda.LayerVersion("nodeModsLayer", {
-        layerName: `${projectName}-nodemods`,
+    const nodeModsLayer = new aws.lambda.LayerVersion(prefix('nodeModsLayer'), {
+        layerName: prefix('nodemods'),
         compatibleRuntimes: ["nodejs20.x"],
         code: new pulumi.asset.AssetArchive({
             "nodejs": new pulumi.asset.FileArchive("./pulumi/aws/lambda/layer/nodemods/nodemods.zip"),
@@ -30,11 +30,11 @@ export const createLambdaProcessUploads = (thumbnailsBucket) => {
             actions: ["sts:AssumeRole"],
         }],
     });
-    const iamForLambda = new aws.iam.Role(`${projectName}-iamLambdaPostProcessor`, {
+    const iamForLambda = new aws.iam.Role(prefix('iamLambdaPostProcessor'), {
         assumeRolePolicy: assumeRole.then(assumeRole => assumeRole.json)
     });
 
-    const lambdaRolePolicyAttachment = new aws.iam.RolePolicyAttachment(`${projectName}-lambdaRolePolicyAttachment`, {
+    const lambdaRolePolicyAttachment = new aws.iam.RolePolicyAttachment(prefix('lambdaRolePolicyAttachment'), {
         role: iamForLambda.name,
         policyArn: "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
     });
@@ -60,12 +60,12 @@ export const createLambdaProcessUploads = (thumbnailsBucket) => {
         }],
     }).then(document => document.json);
 
-    const lambdaS3Policy = new aws.iam.RolePolicy(`${projectName}-lambdaS3ThumbnailPolicy`, {
+    const lambdaS3Policy = new aws.iam.RolePolicy(prefix('lambdaS3ThumbnailPolicy'), {
         role: iamForLambda.id,
         policy: lambdaS3PolicyDoc,
     });
 
-    const processUploadsFunction = new aws.lambda.Function(`${projectName}-processUploadsFunction`, {
+    const processUploadsFunction = new aws.lambda.Function(prefix('processUploadsFunction'), {
         runtime: "nodejs20.x",
         handler: "index.handler",
         code: new pulumi.asset.AssetArchive({
@@ -82,7 +82,7 @@ export const createLambdaProcessUploads = (thumbnailsBucket) => {
         role: iamForLambda.arn,
     });
 
-    const processUploadsFunctionUrl = new aws.lambda.FunctionUrl(`${projectName}-processUploadsFunctionUrl`, {
+    const processUploadsFunctionUrl = new aws.lambda.FunctionUrl(prefix('processUploadsFunctionUrl'), {
         functionName: processUploadsFunction.name,
         authorizationType: "NONE", // Public access
     });

@@ -1,12 +1,12 @@
 import * as aws from "@pulumi/aws";
+import { prefix } from './utils.mjs';
 import * as pulumi from "@pulumi/pulumi";
 
 export const createThumbnails = () => {
-    const projectName = pulumi.getProject();
 
-    const thumbnailsBucket = new aws.s3.BucketV2(`${projectName}-thumbnails`, {});
+    const thumbnailsBucket = new aws.s3.BucketV2(prefix('thumbnails'), {});
 
-    const blockPublicAccessToThumbnails = new aws.s3.BucketPublicAccessBlock(`${projectName}-blockPublicAccessToThumbnails`, {
+    const blockPublicAccessToThumbnails = new aws.s3.BucketPublicAccessBlock(prefix('blockPublicAccessToThumbnails'), {
         bucket: thumbnailsBucket.id,
         blockPublicAcls: false,
         blockPublicPolicy: false,
@@ -29,7 +29,7 @@ export const createThumbnails = () => {
         }]
     };
 
-    const thumbnailsPublicReadPolicy = new aws.s3.BucketPolicy(`${projectName}-thumbnailsPublicReadPolicy`, {
+    const thumbnailsPublicReadPolicy = new aws.s3.BucketPolicy(prefix('thumbnailsPublicReadPolicy'), {
         bucket: thumbnailsBucket.id,
         policy: pulumi.output(publicReadPolicy).apply(JSON.stringify),
     });
