@@ -45,7 +45,7 @@ An array containing the method for determining who owns this object. Owners can 
 
 The owner can be any field that contains a User ID, so in the case of the `User` schema, it can use its own id by specifying `$id`, but in another table it might be `$userId`. 
 
-It can also contain any number of roles. By default there are 3 roles: `admin`, `developer`, `verifiedEmail`, but you could add more. 
+It can also contain any number of roles. By default there are 3 roles: `admin`, `developer`, `verifiedEmail`, but you could add more. Roles can be defined inside the `User` schema (`#ving/schema/schemas/User.mjs`). They have to be added as a [boolean prop type](boolean-props), and then also added to the `RoleOptions` at the bottom of the file.
 
 It can also defer to a parent object. So let's say you had a record called Invoice and another called LineItem. Each LineItem would have a parent relation to the Invoice called `invoice`. So you could then use `^invoice` (notice the carat) to indicate that you'd like to ask the Invoice if the User owns it, and if the answer is yes, then the LineItem will be considered to also be owned by that user. The carat means "look for a parent relation in the schema" and whatever comes after the carat is the name of that relation.
 
@@ -63,9 +63,7 @@ The `view` and `edit` props are arrays that can:
 - Contain any role (such as `admin`)
 - Contain the special keyword `owner`, so that whoever was defined as the owner in the attributes of the schema can view or edit that prop
 
-If a role can `edit` a prop it can automatically `view` a prop.
-
-> Roles can be defined inside the `User` schema (`#ving/schema/schemas/User.mjs`). They have to be added as a [boolean prop type](boolean-props), and then also added to the `RoleOptions` at the bottom of the file.
+If a user can `edit` a prop it can automatically `view` a prop.
 
 #### Prop Types
 
@@ -154,7 +152,7 @@ These are used to add a parent relationship.
 
 ##### Virtual Props
 
-These are used to add a child relationship.
+These are used to add a child relationship. They are virtual because they make no modification to the database table they represent.
 ```js
 {
     type: "virtual",
@@ -175,7 +173,7 @@ These are used to add a child relationship.
 Now that you've created or updated your schema, you can generate [Drizzle](drizzle.html) tables from  with this command:
 
 ```bash
-./ving.mjs schema --makeTables
+./ving.mjs schema --tables
 ```
 
-> Note that you shouldn't ever need to modify these files directly. If you need to change them, update the ving schema and run the above command again.
+> Note that you shouldn't ever need to modify these table files directly. If you need to change them, update the ving schema and run the above command again.
