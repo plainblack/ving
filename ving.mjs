@@ -7,6 +7,7 @@ const main = defineCommand({
     description: "ving CLI",
   },
   subCommands: {
+    alert: () => import('#ving/cli/alert.mjs').then((r) => r.default),
     cache: () => import('#ving/cli/cache.mjs').then((r) => r.default),
     drizzle: () => import('#ving/cli/drizzle.mjs').then((r) => r.default),
     email: () => import('#ving/cli/email.mjs').then((r) => r.default),

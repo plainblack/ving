@@ -1,0 +1,59 @@
+import { defineCommand } from "citty";
+import { useCache } from '#ving/cache.mjs';
+
+export default defineCommand({
+    meta: {
+        name: "System Wide Alert",
+        description: "Manage system wide alerts from the command line",
+    },
+    args: {
+        message: {
+            type: "string",
+            description: "Set a message",
+            valueHint: "'Hi there'",
+            alias: "m",
+        },
+        severity: {
+            type: "string",
+            description: "Set a severity level which changes the color",
+            default: 'info',
+            valueHint: "info|error|success|warn",
+            alias: "s",
+        },
+        ttl: {
+            type: "number",
+            description: "How many hours should the message last",
+            default: 1,
+            valueHint: "24",
+            alias: "t",
+        },
+        delete: {
+            type: "boolean",
+            description: "Delete the current alert",
+            default: false,
+            alias: "d",
+        },
+        get: {
+            type: "boolean",
+            description: "Get the current alert and display it",
+            default: false,
+            alias: "g",
+        },
+    },
+    async run({ args }) {
+        if (args.message) {
+            await useCache().set('system-wide-alert', {
+                message: args.message,
+                severity: args.severity,
+                ttl: 60 * 60 * 1000 * args.ttl,
+            }, 60 * 60 * 1000 * args.ttl);
+        }
+        if (args.get) {
+            console.log(await useCache().get('system-wide-alert'))
+        }
+        if (args.delete) {
+            await useCache().delete('system-wide-alert')
+        }
+        await useCache().disconnect();
+    },
+});
