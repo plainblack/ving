@@ -32,11 +32,11 @@ export class VingJobWorker {
 
     async start() {
         try {
-            const sourcePath = './ving/agent/handlers';
+            const sourcePath = './ving/jobs/handlers';
             const files = fs.readdirSync(sourcePath);
             for (const file of files) {
                 const name = file.replace(/^.*?(\w+)\.mjs$/, '$1');
-                const module = await import(`#ving/agent/handlers/${file}`);
+                const module = await import(`#ving/jobs/handlers/${file}`);
                 this.#modules[name] = module.default;
             }
         } catch (err) {

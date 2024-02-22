@@ -1,6 +1,6 @@
 import { defineCommand } from "citty";
-import { VingJobWorker } from '#ving/agent/worker.mjs';
-import { addJob } from '#ving/agent/queue.mjs';
+import { VingJobWorker } from '#ving/jobs/worker.mjs';
+import { addJob } from '#ving/jobs/queue.mjs';
 
 export default defineCommand({
     meta: {
