@@ -2,7 +2,7 @@ import { createLogger, format, transports } from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
 
-export const log = createLogger({
+export const mainlog = createLogger({
     level: 'info',
     format: format.combine(format.timestamp(), format.json()),
     transports: [
@@ -17,8 +17,16 @@ export const log = createLogger({
     ],
 });
 
+export const log = (topic) => {
+    if (!topic) {
+        return mainlog;
+    }
+    return mainlog.child({ topic });
+}
+
 if (process.env.NODE_ENV !== 'production') {
-    log.add(new transports.Console({
+    mainlog.add(new transports.Console({
+        level: 'debug',
         format: format.cli(),
     }));
 }
