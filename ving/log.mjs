@@ -9,7 +9,7 @@ export const mainlog = createLogger({
         new DailyRotateFile({
             dirname: './logs',
             filename: 'ving-%DATE%.log',
-            datePattern: 'YYYY-MM-DD-HH',
+            datePattern: 'YYYY-MM-DD',
             zippedArchive: true,
             maxSize: '20m',
             maxFiles: '14d'
