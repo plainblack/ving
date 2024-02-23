@@ -4,6 +4,7 @@ import { generateRest } from '#ving/generator/nuxtapis.mjs';
 import { generateWeb } from '#ving/generator/nuxtpages.mjs';
 import { findVingSchema } from '#ving/record/VingRecord.mjs';
 import { vingSchemas } from '#ving/schema/map.mjs';
+import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
@@ -50,5 +51,6 @@ export default defineCommand({
                 await generateRest({ name: schema.kind, schema, skipExisting: true });
             }
         }
+        await ving.close();
     },
 });

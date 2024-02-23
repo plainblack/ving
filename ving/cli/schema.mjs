@@ -1,5 +1,6 @@
 import { defineCommand } from "citty";
 import { generateSchema } from '#ving/generator/vingschema.mjs';
+import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
@@ -18,5 +19,6 @@ export default defineCommand({
         if (args.new) {
             await generateSchema({ name: args.new });
         }
+        await ving.close();
     },
 });

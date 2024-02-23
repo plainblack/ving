@@ -1,5 +1,6 @@
 import { defineCommand } from "citty";
 import crypto from 'crypto';
+import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
@@ -23,5 +24,6 @@ export default defineCommand({
         if (args.new) {
             console.log(crypto.randomBytes(Number(args.bytes)).toString('hex'))
         }
+        await ving.close();
     },
 });
