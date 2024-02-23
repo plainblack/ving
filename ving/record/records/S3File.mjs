@@ -2,6 +2,8 @@ import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
 import { ouch } from '#ving/utils/ouch.mjs';
 import { v4 } from 'uuid';
 import sanitize from 'sanitize-filename';
+import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import ving from '#ving/index.mjs';
 
 /** A list of supported file extensions and the thumbnail they will be represented by. */
 export const extensionMap = {
@@ -297,6 +299,65 @@ export class S3FileRecord extends VingRecord {
         }
         console.log(`S3File ${this.get('id')} unverified because ${error}.`);
         throw ouch('442', error)
+    }
+
+    /**
+     * Removes the thumbnail object for this file from S3.
+     */
+    async deleteThumbnail() {
+        if (this.get('icon') == 'thumbnail') {
+            const key = formatS3FolderName(this.get('id')) + '.png';
+            ving.log('S3File').info(`Deleting thumbnail ${this.get('id')} at ${key}`);
+            const command = new DeleteObjectCommand({
+                Bucket: process.env.AWS_THUMBNAILS_BUCKET,
+                Key: key,
+            });
+            try {
+                const response = await this.#s3client.send(command);
+                ving.log('S3File').debug(response);
+            } catch (err) {
+                ving.log('S3File').error(err);
+            }
+        }
+    }
+
+    /**
+     * Removes the file object for this file from S3.
+     */
+    async deleteFile() {
+        const key = this.get('s3folder');
+        ving.log('S3File').info(`Deleting file ${this.get('id')} at ${key}`);
+        const command = new DeleteObjectCommand({
+            Bucket: process.env.AWS_UPLOADS_BUCKET,
+            Key: key,
+        });
+        try {
+            const response = await this.#s3client.send(command);
+            ving.log('S3File').debug(response);
+        } catch (err) {
+            ving.log('S3File').error(err);
+        }
+    }
+
+    get #s3client() {
+        return new S3Client({
+            credentials: {
+                accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+                secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            },
+            region: process.env.AWS_REGION,
+        });
+    }
+
+    /**
+         * Extends `delete()` in `VingRecord` to delete the files in s3.
+         * 
+         * @see VingRecord.delete()
+         */
+    async delete() {
+        await this.deleteThumbnail();
+        await this.deleteFile();
+        await super.delete();
     }
 
 }
