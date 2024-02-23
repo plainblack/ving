@@ -1,9 +1,6 @@
 import mysql from 'mysql2/promise';
 import { drizzle } from '#ving/drizzle/orm.mjs';
 
-// TODO: Needed for tests/cli
-import * as dotenv from 'dotenv';
-dotenv.config();
 const dbConfig = new URL(process.env.DATABASE || '');
 
 let db = undefined;

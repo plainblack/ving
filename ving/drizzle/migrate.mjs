@@ -2,8 +2,6 @@
 import { migrate } from 'drizzle-orm/mysql2/migrator';
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
-import * as dotenv from 'dotenv';
-dotenv.config();
 const dbConfig = new URL(process.env.DATABASE || '');
 
 export async function runMigrations() {

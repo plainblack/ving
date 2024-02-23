@@ -1,11 +1,7 @@
 import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
-import { useDB } from '#ving/drizzle/db.mjs';
-import { S3FileTable } from '#ving/drizzle/schema/S3File.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { v4 } from 'uuid';
 import sanitize from 'sanitize-filename';
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 /** A list of supported file extensions and the thumbnail they will be represented by. */
 export const extensionMap = {

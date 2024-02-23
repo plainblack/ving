@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --env-file=.env
 import { defineCommand, runMain } from "citty";
 
 const main = defineCommand({

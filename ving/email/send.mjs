@@ -6,8 +6,6 @@ const vingConfig = JSON.parse(
         new URL('../../ving.json', import.meta.url)
     )
 );
-import * as dotenv from 'dotenv';
-dotenv.config();
 const emailConfig = new URL(process.env.EMAIL || '');
 
 const defaultTransporter = createTransport({

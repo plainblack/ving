@@ -4,8 +4,6 @@ import { sanitizeFilename, makeS3FolderName, getExtension } from '#ving/record/r
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { getBody, obtainSessionIfRole, describeParams } from '#ving/utils/rest.mjs';
 import { defineEventHandler } from 'h3';
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 export default defineEventHandler(async (event) => {
     const body = await getBody(event);
