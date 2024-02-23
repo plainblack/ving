@@ -45,7 +45,8 @@ export default defineCommand({
             await ving.addJob(args.addJob, JSON.parse(args.jobData), {
                 queueName: args.queueName,
             });
-            ving.close();
+            if (!args.worker)
+                ving.close();
         }
         if (args.worker) {
             const worker = new VingJobWorker(args.queueName);
