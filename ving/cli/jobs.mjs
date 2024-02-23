@@ -1,6 +1,6 @@
 import { defineCommand } from "citty";
 import { VingJobWorker } from '#ving/jobs/worker.mjs';
-import { addJob } from '#ving/jobs/queue.mjs';
+import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
@@ -42,9 +42,10 @@ export default defineCommand({
     },
     async run({ args }) {
         if (args.addJob) {
-            await addJob(args.addJob, JSON.parse(args.jobData), {
+            await ving.addJob(args.addJob, JSON.parse(args.jobData), {
                 queueName: args.queueName,
             });
+            ving.close();
         }
         if (args.worker) {
             const worker = new VingJobWorker(args.queueName);

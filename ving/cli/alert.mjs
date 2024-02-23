@@ -1,5 +1,5 @@
 import { defineCommand } from "citty";
-import { useCache } from '#ving/cache.mjs';
+import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
@@ -42,18 +42,18 @@ export default defineCommand({
     },
     async run({ args }) {
         if (args.message) {
-            await useCache().set('system-wide-alert', {
+            await ving.cache.set('system-wide-alert', {
                 message: args.message,
                 severity: args.severity,
                 ttl: 60 * 60 * 1000 * args.ttl,
             }, 60 * 60 * 1000 * args.ttl);
         }
         if (args.get) {
-            console.log(await useCache().get('system-wide-alert'))
+            ving.log('cli').info(await ving.cache.get('system-wide-alert'));
         }
         if (args.delete) {
-            await useCache().delete('system-wide-alert')
+            await ving.cache.delete('system-wide-alert');
         }
-        await useCache().disconnect();
+        await ving.close();
     },
 });

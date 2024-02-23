@@ -1,8 +1,7 @@
 import { defineCommand } from "citty";
 import { publishUserToast } from '#ving/messagebus.mjs';
-import { useCache } from '#ving/cache.mjs';
-import { useKind } from '#ving/record/VingRecord.mjs'
 import { eq } from '#ving/drizzle/orm.mjs';
+import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
@@ -31,7 +30,7 @@ export default defineCommand({
     },
     async run({ args }) {
         if (args.user) {
-            const users = await useKind('User');
+            const users = await ving.useKind('User');
             const user = await users.findOne(eq(users.table.username, args.user));
             if (user) {
                 const severity = args.severity == 'info' || 'danger' || 'success' || 'warning' ? args.type : 'info';
@@ -39,13 +38,12 @@ export default defineCommand({
                 await pub.quit();
             }
             else {
-                console.log('user not found');
+                ving.log('cli').error('user not found');
             }
-            await users.db.session.client.pool.end();
-            await useCache().disconnect();
         }
         else {
-            console.log('user is required');
+            ving.log('cli').error('user is required');
         }
+        await ving.close();
     },
 });

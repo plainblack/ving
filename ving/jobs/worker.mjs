@@ -1,7 +1,6 @@
 import { Worker } from 'bullmq';
-import { ouch } from '#ving/utils/ouch.mjs';
 import fs from 'fs';
-import { log } from '#ving/log.mjs';
+import ving from '#ving/index.mjs';
 
 /** 
  * A class for running Ving jobs
@@ -46,13 +45,13 @@ export class VingJobWorker {
         this.worker = new Worker(
             this.#queueName,
             async (job) => {
-                log('agent').info(`got job ${job.id} ${job.name}`);
+                ving.log('agent').info(`got job ${job.id} ${job.name}`);
                 if (job.name in this.#modules) {
                     this.#modules[job.name](job)
                 }
                 else {
                     const message = `No job handler for job ${job.id} ${job.name}`;
-                    log('agent').error(message);
+                    ving.log('agent').error(message);
                     throw ouch(501, message);
                 }
             },
@@ -65,14 +64,14 @@ export class VingJobWorker {
         );
 
         this.worker.on('completed', job => {
-            log('agent').info(`${job.id} ${job.name} has completed`);
+            ving.log('agent').info(`${job.id} ${job.name} has completed`);
         });
 
         this.worker.on('failed', (job, err) => {
-            log('agent').error(`${job.id} ${job.name} has failed with ${err.message}`);
+            ving.log('agent').error(`${job.id} ${job.name} has failed with ${err.message}`);
         });
 
-        log('agent').info(`worker started`);
+        ving.log('agent').info(`worker started`);
     }
 
     /**
@@ -80,7 +79,8 @@ export class VingJobWorker {
      */
     async end() {
         await this.worker.close();
-        log('agent').info(`worker ended`);
+        ving.log('agent').info(`worker ended`);
+        ving.close();
     }
 
 }

@@ -1,7 +1,6 @@
 import { defineCommand } from "citty";
-import { useKind } from '#ving/record/VingRecord.mjs'
-import { useCache } from '#ving/cache.mjs';
 import { like, or, eq } from '#ving/drizzle/orm.mjs';
+import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
@@ -54,7 +53,7 @@ export default defineCommand({
         },
     },
     async run({ args }) {
-        const users = await useKind('User');
+        const users = await ving.useKind('User');
         if (args.list) {
             formatList(await users.findMany());
         }
@@ -90,11 +89,10 @@ export default defineCommand({
                 formatList([user]);
             }
             else {
-                console.log(`Could not find user: ${args.modify}`);
+                ving.log('cli').error(`Could not find user: ${args.modify}`);
             }
         }
-        await users.db.session.client.pool.end();
-        await useCache().disconnect();
+        ving.close();
     },
 });
 

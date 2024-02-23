@@ -46,9 +46,7 @@ export default defineCommand({
             await generateWeb({ name: args.web, schema: findVingSchema(args.web, 'kind') });
         }
         else if (args.missingRest) {
-            console.log('got here')
             for (const schema of vingSchemas) {
-                console.log(schema.kind)
                 await generateRest({ name: schema.kind, schema, skipExisting: true });
             }
         }

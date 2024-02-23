@@ -1,6 +1,6 @@
 import { defineCommand } from "citty";
-import { sendMail } from '#ving/email/send.mjs';
 import { generateTemplates } from '#ving/generator/emailtemplate.mjs';
+import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
@@ -34,13 +34,14 @@ export default defineCommand({
     },
     async run({ args }) {
         if (args.to) {
-            await sendMail(args.template, {
+            ving.sendMail(args.template, {
                 options: { to: args.to, from: 'info@thegamecrafter.com', preview: args.preview },
             });
-            console.log('Email sent');
+            ving.log('cli').info(`Email sent to ${args.to}`);
         }
         else if (args.create) {
             await generateTemplates({ name: args.create });
         }
+        await ving.close();
     },
 });

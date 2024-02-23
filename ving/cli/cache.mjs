@@ -1,5 +1,5 @@
 import { defineCommand } from "citty";
-import { useCache } from '#ving/cache.mjs';
+import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
@@ -45,23 +45,22 @@ export default defineCommand({
         },
     },
     async run({ args }) {
-        const cache = useCache();
         if (args.clear) {
-            await cache.clear();
-            console.log('Cache cleared');
+            await ving.cache.clear();
+            ving.log('cli').info('Cache cleared');
         }
         if (args.get) {
-            const value = await cache.get(args.get);
-            console.log(`Value of ${args.get} is: ${value}`);
+            const value = await ving.cache.get(args.get);
+            ving.log('cli').info(`Value of ${args.get} is: ${value}`);
         }
         if (args.delete) {
-            await cache.delete(args.delete);
-            console.log(`${args.delete} deleted`);
+            await ving.cache.delete(args.delete);
+            ving.log('cli').info(`${args.delete} deleted`);
         }
         if (args.set) {
-            await cache.set(args.set, args.value, Number(args.ttl));
-            console.log(`${args.set} set to ${args.value} for ${args.ttl}ms`);
+            await ving.cache.set(args.set, args.value, Number(args.ttl));
+            ving.log('cli').info(`${args.set} set to ${args.value} for ${args.ttl}ms`);
         }
-        await cache.disconnect();
+        await ving.close();
     },
 });

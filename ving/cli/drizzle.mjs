@@ -3,6 +3,7 @@ import { exec } from "child_process";
 import { runMigrations } from '#ving/drizzle/migrate.mjs';
 import { makeTableFile } from '#ving/generator/drizzletable.mjs';
 import { vingSchemas } from '#ving/schema/map.mjs';
+import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
@@ -38,15 +39,16 @@ export default defineCommand({
         else if (args.prepare) {
             exec("npx drizzle-kit generate:mysql --out ./ving/drizzle/migrations --schema ving/drizzle/schema", (error, stdout, stderr) => {
                 if (error) {
-                    console.log(`error: ${error.message}`);
+                    ving.log('cli').error(error.message);
                     return;
                 }
                 if (stderr) {
-                    console.log(`stderr: ${stderr}`);
+                    ving.log('cli').error(stderr);
                     return;
                 }
-                console.log(stdout);
+                ving.log('cli').info(stdout);
             });
         }
+        await ving.close();
     },
 });
