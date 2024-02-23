@@ -39,19 +39,19 @@ export class VingJobWorker {
                 this.#modules[name] = module.default;
             }
         } catch (err) {
-            log('agent').error(err);
+            ving.log('jobs').error(err);
         }
 
         this.worker = new Worker(
             this.#queueName,
             async (job) => {
-                ving.log('agent').info(`got job ${job.id} ${job.name}`);
+                ving.log('jobs').info(`got job ${job.id} ${job.name}`);
                 if (job.name in this.#modules) {
-                    this.#modules[job.name](job)
+                    this.#modules[job.name](job);
                 }
                 else {
                     const message = `No job handler for job ${job.id} ${job.name}`;
-                    ving.log('agent').error(message);
+                    ving.log('jobs').error(message);
                     throw ouch(501, message);
                 }
             },
@@ -64,14 +64,14 @@ export class VingJobWorker {
         );
 
         this.worker.on('completed', job => {
-            ving.log('agent').info(`${job.id} ${job.name} has completed`);
+            ving.log('jobs').info(`${job.id} ${job.name} has completed`);
         });
 
         this.worker.on('failed', (job, err) => {
-            ving.log('agent').error(`${job.id} ${job.name} has failed with ${err.message}`);
+            ving.log('jobs').error(`${job.id} ${job.name} has failed with ${err.message}`);
         });
 
-        ving.log('agent').info(`worker started`);
+        ving.log('jobs').info(`worker started`);
     }
 
     /**
@@ -79,7 +79,7 @@ export class VingJobWorker {
      */
     async end() {
         await this.worker.close();
-        ving.log('agent').info(`worker ended`);
+        ving.log('jobs').info(`worker ended`);
         ving.close();
     }
 
