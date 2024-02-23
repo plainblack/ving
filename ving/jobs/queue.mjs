@@ -1,5 +1,5 @@
 import { Queue } from 'bullmq';
-import { log } from '#ving/log.mjs';
+import ving from '#ving/index.mjs';
 
 
 export const addJob = async (type, data = {}, options = { queueName: 'jobs ' }) => {
@@ -16,7 +16,8 @@ export const addJob = async (type, data = {}, options = { queueName: 'jobs ' }) 
         removeOnFail: {
             age: 24 * 3600, // keep up to 24 hours
         },
+        delay: options?.delay,
     });
-    log('agent').info(`Job ${job.id} ${job.name} enqueued.`);
+    ving.log('jobs').info(`Job ${job.id} ${job.name} enqueued.`);
     await queue.close();
 }
