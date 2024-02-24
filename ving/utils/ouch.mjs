@@ -1,6 +1,9 @@
 import { createError } from 'h3';
 import _ from 'lodash';
 
+/**
+ * The list of error codes matching a basic message that `ouch` supports to give an HTTP status message. An unknown code will result in a `500` status message
+ */
 const errorCodes = {
     400: 'Bad Request',
     401: 'Unauthorized',
@@ -22,6 +25,13 @@ const errorCodes = {
     504: 'Could Not Connect',
 };
 
+/**
+ * Formats an `Error` object that is structured in a specific way so that it can return a 3 digit HTTP error code.
+ * @param {number} code The error code from the list of `errorCodes`
+ * @param {string} error A message to be displayed about why the error occurred
+ * @param {Object} data Data that may be used to debug the error
+ * @returns An `Error` object that can be `throw`n
+ */
 export const ouch = (code, error, data) => {
     let message = '';
     if (_.isString(error)) {
@@ -42,6 +52,11 @@ export const ouch = (code, error, data) => {
     })
 }
 
+/** 
+ * Formats an error message as a string
+ * @param {Object} error any `Error` object
+ * @returns a string as an error message
+*/
 export const bleep = (error) => {
     if ('message' in error) {
         return error.message;

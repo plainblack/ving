@@ -3,6 +3,15 @@ import { getQuery, readBody } from 'h3';
 import { ouch } from '#ving/utils/ouch.mjs';
 import _ from 'lodash';
 
+/**
+ * Formatting of ingested data to make it match the SQL data where it will be stored. It 
+ * turns strings of 'true' and 'false' into the equivalent boolean values. Properly formats
+ * dates into something compatible with datetime or timestamp. And casts numbers that are
+ * represented as strings into numbers.
+ * @param {string} column the name of the column you're fixing data for
+ * @param {*} data the data you wish to have formatted
+ * @returns Fixed data
+ */
 const fixColumnData = (column, data) => {
     if (column.getSQLType() == 'datetime' || column.getSQLType() == 'timestamp') {
         if (!data.match(/^"/)) // make it JSON compatible
@@ -18,6 +27,13 @@ const fixColumnData = (column, data) => {
     return data;
 }
 
+/**
+ * Generates a drizzle where clause to filter a list of `VingRecord`s based upon values passed to a rest interface.
+ * @param {Object} event an `H3` event
+ * @param {Object} filter a `VingRecord` filter as defined in `describeListFilter()`
+ * @see Filters in the Ving Rest documentation.
+ * @returns a where clause
+ */
 export const describeListWhere = (event, filter) => {
     let where = undefined;
     const query = getQuery(event);
@@ -92,6 +108,13 @@ export const describeListWhere = (event, filter) => {
     return where;
 }
 
+/**
+ * Tests all required props on a VingRecord
+ * @param {string[]} list the list of required props
+ * @param {Object} params the list of parameters passed to the web service through the body
+ * @throws 400 if the params list is undefined
+ * @throws 441 if a field is required and is undefined or empty
+ */
 export const testRequired = (list, params) => {
     if (params === undefined) {
         throw ouch(400, 'No params detected.');
@@ -103,6 +126,11 @@ export const testRequired = (list, params) => {
     }
 }
 
+/**
+ * Gets a ving session from an `h3` event
+ * @param {Object} event an `h3` event
+ * @returns either `undefined` or a `#ving/session.mjs` instance
+ */
 export const obtainSession = (event) => {
     if (event && event.context && event.context.ving && event.context.ving.session) {
         return event.context.ving.session;
@@ -110,6 +138,13 @@ export const obtainSession = (event) => {
     return undefined;
 }
 
+/**
+ * Does the same thing as `obtainSession()` but only if the session obtained belongs to a user that has the specified role.
+ * @param {Object} event an `h3` event
+ * @param {*} role The name of a role as defined in `#ving/schema/schemas/User.mjs`
+ * @throws 401 if the specified role is not `true`
+ * @returns `true`
+ */
 export const obtainSessionIfRole = (event, role) => {
     const session = obtainSession(event);
     if (session) {
@@ -119,6 +154,11 @@ export const obtainSessionIfRole = (event, role) => {
     throw ouch(401, 'Login required.')
 }
 
+/**
+ * Tests for the various `include` params being passed to the rest service, and if they exist formats them properly for the `describe()` method on a `VingRecord`.
+ * @param {Object} event an `h3` event
+ * @returns An object with all of the include options
+ */
 export const includeParams = (event) => {
     const params = getQuery(event);
     const include = { options: false, links: false, related: [], extra: [], meta: false };
@@ -150,10 +190,22 @@ export const includeParams = (event) => {
     return include;
 }
 
+/**
+ * Calls `includeParams()` and `obtainSession()` if needed, and returns the list of describe params needed by the `describe` method in a `VingRecord`
+ * @param {Object} event an `h3` event
+ * @param {Object} session Optional, a Ving session instance
+ * @returns An object containing the describe params
+ */
 export const describeParams = (event, session) => {
     return { currentUser: session || obtainSession(event), include: includeParams(event) };
 }
 
+/**
+ * Calls `pagingParams()`, `obtainSession()`, and `includeParams()` as needed to format the params needed by the `describeList()` method in a `VingRecord`
+ * @param {Object} event an `h3` event
+ * @param {Object} session Optional, a Ving session instance
+ * @returns An object containing the describeList params
+ */
 export const describeListParams = (event, session) => {
     return { ...pagingParams(event), objectParams: { currentUser: session || obtainSession(event), include: includeParams(event) } };
 }
@@ -176,6 +228,12 @@ export const pagingParams = (event) => {
     return paging;
 }
 
+/**
+ * Gets the body from the `h3` event, makes sure it is formatted like an object and returns it.
+ * @param {Object} event an `h3` event
+ * @throws 400 if body is malformed
+ * @returns an `h3` body object
+ */
 export const getBody = async (event) => {
     const body = await readBody(event);
     if (body === undefined || (body && _.isObjectLike(body)))
