@@ -1,5 +1,10 @@
 import ving from '#ving/index.mjs';
 
+/**
+ * This handler does nothing other that write to the log with whatever data was passed in. 
+ * @param {Object} A `BullMQ` job.
+ * @returns `true`
+ */
 export default async function (job) {
     ving.log('jobs').info(`Instanciating S3File ${job.data.id}`);
     const s3files = await ving.useKind('S3File');
