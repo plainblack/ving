@@ -419,6 +419,8 @@ export class VingRecord {
                     throw ouch(442, key.toString() + ': ' + formatted._errors.join('.') + '.', key);
                 }
             }
+            if (prop?.relation?.type == 'parent')
+                this.flushParentCache();
         }
         else {
             throw ouch(400, key.toString() + ' is not a prop', key);
