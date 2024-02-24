@@ -1,7 +1,7 @@
 import mysql from 'mysql2/promise';
 import { drizzle } from '#ving/drizzle/orm.mjs';
 
-const dbConfig = new URL(process.env.DATABASE || '');
+const dbConfig = new URL(process.env.VING_MYSQL || '');
 
 let db = undefined;
 

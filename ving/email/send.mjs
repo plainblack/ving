@@ -6,7 +6,7 @@ const vingConfig = JSON.parse(
         new URL('../../ving.json', import.meta.url)
     )
 );
-const emailConfig = new URL(process.env.EMAIL || '');
+const emailConfig = new URL(process.env.VING_SMTP || '');
 
 const defaultTransporter = createTransport({
     host: emailConfig.hostname,
@@ -43,7 +43,7 @@ export const sendMail = async (template, props) => {
     await new Email({
         message: {
             from: `${options.fromName} ${options.from}`,
-            to: `${options.toName || ''} ${process.env.EMAIL_TO_OVERRIDE ?? options.to}`,
+            to: `${options.toName || ''} ${process.env.VING_EMAIL_OVERRIDE ?? options.to}`,
             cc: options.cc,
             bcc: options.bcc,
             attachments: options.attachments
@@ -76,7 +76,7 @@ export const sendMail = async (template, props) => {
             console.error('Error sending email from ving: ' + err);
 
             if (err.message.includes('getaddrinfo ENOTFOUND')) {
-                console.error(`Error Hint: could not connect to host EMAIL is set to ${emailConfig.hostname} `);
+                console.error(`Error Hint: could not connect to host VING_SMTP is set to ${emailConfig.hostname} `);
             }
 
             return err;

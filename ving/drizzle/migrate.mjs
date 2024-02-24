@@ -2,7 +2,7 @@
 import { migrate } from 'drizzle-orm/mysql2/migrator';
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
-const dbConfig = new URL(process.env.DATABASE || '');
+const dbConfig = new URL(process.env.VING_MYSQL || '');
 
 export async function runMigrations() {
     const con = await mysql.createConnection({

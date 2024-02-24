@@ -134,7 +134,7 @@ async function uploadThumbnail(filePath, fileName) {
     const fileContent = fs.readFileSync(filePath);
     const s3Client = new S3Client();
     await s3Client.send(new PutObjectCommand({
-        Bucket: process.env.AWS_THUMBNAILS_BUCKET,
+        Bucket: process.env.VING_AWS_THUMBNAILS_BUCKET,
         Key: fileName,
         Body: fileContent,
         ContentType: 'image/png',

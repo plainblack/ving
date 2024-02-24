@@ -1,6 +1,7 @@
 import { Worker } from 'bullmq';
 import fs from 'fs';
 import ving from '#ving/index.mjs';
+import { useRedis } from '#ving/jobs/connection.mjs';
 
 /** 
  * A class for running Ving jobs
@@ -56,10 +57,7 @@ export class VingJobWorker {
                 }
             },
             {
-                connection: {
-                    host: process.env.BULLMQ_REDIS_HOST,
-                    port: process.env.BULLMQ_REDIS_PORT,
-                }
+                connection: useRedis(),
             }
         );
 

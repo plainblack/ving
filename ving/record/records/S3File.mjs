@@ -136,7 +136,7 @@ export class S3FileRecord extends VingRecord {
          */
 
     fileUrl() {
-        return `https://${process.env.AWS_UPLOADS_BUCKET}.s3.amazonaws.com/${this.get('s3folder')}/${this.get('filename')}`;
+        return `https://${process.env.VING_AWS_UPLOADS_BUCKET}.s3.amazonaws.com/${this.get('s3folder')}/${this.get('filename')}`;
     }
 
     /**
@@ -151,7 +151,7 @@ export class S3FileRecord extends VingRecord {
             case 'self':
                 return this.fileUrl();
             case 'thumbnail':
-                return `https://${process.env.AWS_THUMBNAILS_BUCKET}.s3.amazonaws.com/${formatS3FolderName(this.get('id'))}.png`;
+                return `https://${process.env.VING_AWS_THUMBNAILS_BUCKET}.s3.amazonaws.com/${formatS3FolderName(this.get('id'))}.png`;
             case 'extension': {
                 const image = extensionMap[this.get('extension')] || 'unknown';
                 return `/img/filetype/${image}.png`;
@@ -195,7 +195,7 @@ export class S3FileRecord extends VingRecord {
         let response = null;
         let metadata = {};
         try {
-            response = await fetch(process.env.LAMBDA_PROCESS_UPLOADS_URL, {
+            response = await fetch(process.env.VING_LAMBDA_PROCESS_UPLOADS_URL, {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -309,7 +309,7 @@ export class S3FileRecord extends VingRecord {
             const key = formatS3FolderName(this.get('id')) + '.png';
             ving.log('S3File').info(`Deleting thumbnail ${this.get('id')} at ${key}`);
             const command = new DeleteObjectCommand({
-                Bucket: process.env.AWS_THUMBNAILS_BUCKET,
+                Bucket: process.env.VING_AWS_THUMBNAILS_BUCKET,
                 Key: key,
             });
             try {
@@ -328,7 +328,7 @@ export class S3FileRecord extends VingRecord {
         const key = this.get('s3folder');
         ving.log('S3File').info(`Deleting file ${this.get('id')} at ${key}`);
         const command = new DeleteObjectCommand({
-            Bucket: process.env.AWS_UPLOADS_BUCKET,
+            Bucket: process.env.VING_AWS_UPLOADS_BUCKET,
             Key: key,
         });
         try {

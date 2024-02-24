@@ -82,7 +82,7 @@ flush privileges;
 Create `.env` in the project root and add your dev database connection string.
 
 ```bash
-DATABASE="mysql://ving:vingpass@localhost:3306/ving"
+VING_MYSQL="mysql://ving:vingpass@localhost:3306/ving"
 ```
 
 > Obivously modify the username, password, and database name to match what you created in the previous step.

@@ -10,8 +10,8 @@ export default defineEventHandler(async (event) => {
     const session = obtainSessionIfRole(event, 'verifiedEmail');
     const client = new S3Client({
         credentials: {
-            accessKeyId: process.env.AWS_UPLOADS_KEY,
-            secretAccessKey: process.env.AWS_UPLOADS_SECRET,
+            accessKeyId: process.env.VING_AWS_UPLOADS_KEY,
+            secretAccessKey: process.env.VING_AWS_UPLOADS_SECRET,
         },
         region: process.env.AWS_REGION,
     });
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
     const s3file = await s3files.create(props);
     await ving.addJob('DeleteUnusedS3File', { id: s3file.get('id') }, { delay: 1000 * 60 * 60 });
     const putObjectParams = {
-        Bucket: process.env.AWS_UPLOADS_BUCKET,
+        Bucket: process.env.VING_AWS_UPLOADS_BUCKET,
         Key: props.s3folder + '/' + props.filename,
         ContentType: props.contentType,
     };

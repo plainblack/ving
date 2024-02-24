@@ -8,7 +8,7 @@ export const useCache = () => {
     }
     const globalForKeyv = global;
 
-    cache = globalForKeyv.keyv || new Keyv(process.env.KEYV_PROVIDER_URL);
+    cache = globalForKeyv.keyv || new Keyv(process.env.VING_REDIS);
 
     if (process.env.NODE_ENV !== 'production')
         globalForKeyv.keyv = cache;

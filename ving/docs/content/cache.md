@@ -6,13 +6,13 @@ By default ving uses an in-memory cache that goes away every time you restart yo
 To use a Redis cache, you must first have a Redis server. Then you simply need to add an entry in .env that points to your Redis server like so:
 
 ```
-KEYV_PROVIDER_URL="redis://@localhost:6379"
+VING_REDIS="redis://@localhost:6379"
 ```
 
 You can include a username and password in the URL like so:
 
 ```
-KEYV_PROVIDER_URL="redis://user:pass@localhost:6379"
+VING_REDIS="redis://user:pass@localhost:6379"
 ```
 
 ## Using the Cache

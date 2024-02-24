@@ -5,6 +5,7 @@ import { addJob } from '#ving/jobs/queue.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { useKind } from '#ving/record/VingRecord.mjs'
 import { useDB } from '#ving/drizzle/db.mjs'
+import { useRedis } from '#ving/jobs/connection.mjs'
 
 export default {
     cache: useCache(),
@@ -16,5 +17,6 @@ export default {
     close: async () => {
         await useDB().session.client.pool.end();
         await useCache().disconnect();
+        await useRedis().disconnect();
     }
 }

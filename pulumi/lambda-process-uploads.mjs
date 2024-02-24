@@ -75,7 +75,7 @@ export const createLambdaProcessUploads = (thumbnailsBucket) => {
         memorySize: 512,
         environment: {
             variables: {
-                AWS_THUMBNAILS_BUCKET: thumbnailsBucket.id.apply(id => id),
+                VING_AWS_THUMBNAILS_BUCKET: thumbnailsBucket.id.apply(id => id),
             }
         },
         layers: [nodeModsLayer.arn],

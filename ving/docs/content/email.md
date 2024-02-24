@@ -6,7 +6,7 @@ Ving's email system works over SMTP and is defined using templates created via [
 Add the following to your `.env` file to be able to send mail. 
 
 ```bash
-EMAIL="smtp://USER:PASS@SERVER:465/?tls=no&log=no"
+VING_SMTP="smtp://USER:PASS@SERVER:465/?tls=no&log=no"
 ```
 
 Replace `USER` and `PASS` and `SERVER` with the SMTP username, password, and server name of your SMTP server. You can also change the port from 465 to whatever you like. If it uses TLS then set `tls` to `yes`, and if you want logging enabled you can set `log` to `yes`.
@@ -16,7 +16,7 @@ Replace `USER` and `PASS` and `SERVER` with the SMTP username, password, and ser
 Add an environment variable to override all outbound emails to an email address of your chosing. 
 
 ```bash
-EMAIL_TO_OVERRIDE="example@gmail.com"
+VING_EMAIL_OVERRIDE="example@gmail.com"
 ```
 
 Normally you'd use this in your dev environment so that all your test users email you instead of whatever made up email addresses you might be using. You can add this to your `.env` file.

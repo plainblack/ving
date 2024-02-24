@@ -1,14 +1,11 @@
 import { Queue } from 'bullmq';
 import ving from '#ving/index.mjs';
-
+import { useRedis } from '#ving/jobs/connection.mjs';
 
 export const addJob = async (type, data = {}, options = { queueName: 'jobs ' }) => {
     const queue = new Queue(options?.queueName || 'jobs');
     const job = await queue.add(type, data, {
-        connection: {
-            host: process.env.BULLMQ_REDIS_HOST,
-            port: process.env.BULLMQ_REDIS_PORT,
-        },
+        connection: useRedis(),
         removeOnComplete: {
             age: 3600, // keep up to 1 hour
             count: 1000, // keep up to 1000 jobs
