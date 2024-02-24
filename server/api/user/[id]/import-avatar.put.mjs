@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
     const users = await useKind('User');
     const { id } = getRouterParams(event);
     const user = await users.findOrDie(id);
+    const oldAvatar = await user.parent('avatar');
     const session = obtainSession(event);
     user.canEdit(session);
     const body = await getBody(event);
@@ -17,5 +18,6 @@ export default defineEventHandler(async (event) => {
     await s3file.verifyExactDimensions(300, 300);
     user.set('avatarId', s3file.get('id'));
     await user.update();
+    await oldAvatar.delete();
     return await user.describe(describeParams(event, session));
 });
