@@ -314,7 +314,7 @@ export class S3FileRecord extends VingRecord {
             });
             try {
                 const response = await this.#s3client.send(command);
-                ving.log('S3File').debug(response);
+                ving.log('S3File').debug(JSON.stringify(response));
             } catch (err) {
                 ving.log('S3File').error(err);
             }
@@ -333,7 +333,7 @@ export class S3FileRecord extends VingRecord {
         });
         try {
             const response = await this.#s3client.send(command);
-            ving.log('S3File').debug(response);
+            ving.log('S3File').debug(JSON.stringify(response));
         } catch (err) {
             ving.log('S3File').error(err);
         }
