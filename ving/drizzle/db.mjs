@@ -5,6 +5,11 @@ const dbConfig = new URL(process.env.VING_MYSQL || '');
 
 let db = undefined;
 
+/**
+ * Connects to the MySQL database.
+ * 
+ * @returns a `mysql2` connection pool
+ */
 export const useDB = () => {
     if (db) {
         return db
