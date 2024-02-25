@@ -84,7 +84,7 @@ export class UserRecord extends RoleMixin(VingRecord) {
      * @throws 400 if the user doesn't have a password set
      * @throws 441 if no password is passed into the function
      * @throws 404 if the user has a `passwordType` other than those allowed
-     * @param password the password you'd like to test against the user's set password
+     * @param {string} password the password you'd like to test against the user's set password
      * @returns `true` if it passes, or `false` if it fails to pass
      */
     async testPassword(password) {
@@ -112,7 +112,7 @@ export class UserRecord extends RoleMixin(VingRecord) {
      * 
      * Usage: `await user.setPassword('my new cool password');`
      * 
-     * @param password A string that will act as the user's password.
+     * @param {string} password A string that will act as the user's password.
      */
     async setPassword(password) {
         const hashedPass = bcrypt.hashSync(password, 10);
