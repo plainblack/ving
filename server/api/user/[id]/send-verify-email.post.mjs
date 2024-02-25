@@ -1,5 +1,5 @@
 import { sendMail } from '#ving/email/send.mjs';
-import { useKind } from '#ving/record/VingRecord.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { obtainSession, describeParams } from '#ving/utils/rest.mjs';
 import crypto from 'crypto';

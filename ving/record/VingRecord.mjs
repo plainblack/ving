@@ -3,26 +3,6 @@ import ving from '#ving/index.mjs';
 import _ from 'lodash';
 import { eq, asc, desc, and, ne, sql, getTableName } from '#ving/drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving/schema/helpers.mjs';
-import { useDB } from '#ving/drizzle/db.mjs';
-
-const kindCache = {};
-/**
- * Instanciates a VingKind by name. 
- * 
- * Usage: `const users = useKind('User');`
- * 
- * @param {string} kind The name of the kind to instanciate. eg: `User`
- * @returns a `VingKind` subclass
- */
-export const useKind = async (kind) => {
-    if (kind in kindCache)
-        return kindCache[kind];
-    const kindTable = await import(`#ving/drizzle/schema/${kind}.mjs`);
-    const kindModule = await import(`#ving/record/records/${kind}.mjs`);
-    const instance = new kindModule[`${kind}Kind`](useDB(), kindTable[`${kind}Table`], kindModule[`${kind}Record`]);
-    kindCache[kind] = instance;
-    return instance;
-}
 
 /**
  * Get the schema for a specific kind within the ving schema list.
@@ -332,7 +312,7 @@ export class VingRecord {
             return this.#parentCache[name];
         const schema = findVingSchema(getTableName(this.table));
         const prop = ving.findObject(schema.props, obj => obj.relation?.name == name);
-        return this.#parentCache[name] = await (await useKind(prop.relation.kind)).findOrDie(this.get(prop.name));
+        return this.#parentCache[name] = await (await ving.useKind(prop.relation.kind)).findOrDie(this.get(prop.name));
     }
 
     /**
@@ -357,7 +337,7 @@ export class VingRecord {
     async children(name) {
         const schema = findVingSchema(getTableName(this.table));
         const prop = ving.findObject(schema.props, obj => obj.relation?.name == name);
-        const kind = await useKind(prop.relation.kind);
+        const kind = await ving.useKind(prop.relation.kind);
         kind.propDefaults.push({
             prop: prop.name,
             field: kind.table[prop.name],

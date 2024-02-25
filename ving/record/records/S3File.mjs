@@ -1,4 +1,4 @@
-import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
+import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
 import { v4 } from 'uuid';
 import sanitize from 'sanitize-filename';
 import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';

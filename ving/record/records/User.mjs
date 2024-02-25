@@ -1,4 +1,4 @@
-import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
+import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
 import { RoleOptions, RoleMixin } from '#ving/record/mixins/Role.mjs';
 import bcrypt from 'bcryptjs';
 import { useCache } from '#ving/cache.mjs';

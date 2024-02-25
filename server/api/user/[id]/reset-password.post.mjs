@@ -1,4 +1,4 @@
-import { useKind } from '#ving/record/VingRecord.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';

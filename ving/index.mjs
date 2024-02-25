@@ -4,7 +4,7 @@ import { sendMail } from '#ving/email/send.mjs';
 import { addJob } from '#ving/jobs/queue.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { findObject } from '#ving/utils/findObject.mjs';
-import { useKind } from '#ving/record/VingRecord.mjs'
+import { useKind } from '#ving/record/utils.mjs'
 import { useDB } from '#ving/drizzle/db.mjs'
 import { useRedis } from '#ving/jobs/connection.mjs'
 

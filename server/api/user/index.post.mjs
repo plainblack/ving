@@ -1,4 +1,4 @@
-import { useKind } from '#ving/record/VingRecord.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 import { describeParams, getBody } from '#ving/utils/rest.mjs';
 import { defineEventHandler } from 'h3';
 

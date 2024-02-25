@@ -45,7 +45,7 @@ function addRelationshipDelete({ schema }) {
 }
 
 const recordTemplate = ({ name, schema }) =>
-    `import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
+    `import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
 import {eq} from '#ving/drizzle/orm.mjs';
 
 /** Management of individual ${name}s.

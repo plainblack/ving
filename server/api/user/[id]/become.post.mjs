@@ -1,4 +1,4 @@
-import { useKind } from '#ving/record/VingRecord.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 import { describeParams, obtainSessionIfRole } from '#ving/utils/rest.mjs';
 import { Session } from '#ving/session.mjs';
 import { defineEventHandler, getRouterParams, setCookie } from 'h3';

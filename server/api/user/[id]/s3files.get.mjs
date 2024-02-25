@@ -1,4 +1,4 @@
-import { useKind } from '#ving/record/VingRecord.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 import { describeListParams } from '#ving/utils/rest.mjs';
 import { defineEventHandler, getRouterParams } from 'h3';
 export default defineEventHandler(async (event) => {

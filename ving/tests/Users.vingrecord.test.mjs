@@ -1,4 +1,4 @@
-import { useKind } from '#ving/record/VingRecord.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 import { describe, test, expect } from "vitest";
 import { like, eq, asc, desc, and, inArray, SQL } from '#ving/drizzle/orm.mjs';
 

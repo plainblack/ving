@@ -1,5 +1,5 @@
 import { sendMail } from '#ving/email/send.mjs';
-import { useKind } from '#ving/record/VingRecord.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { eq } from '#ving/drizzle/orm.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';

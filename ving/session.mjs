@@ -1,4 +1,4 @@
-import { useKind } from '#ving/record/VingRecord.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { RoleMixin, RoleOptions } from '#ving/record/mixins/Role.mjs';
 import { useCache } from '#ving/cache.mjs';

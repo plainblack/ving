@@ -1,4 +1,4 @@
-import { useKind } from '#ving/record/VingRecord.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 import { describeListParams, obtainSessionIfRole, describeListWhere } from '#ving/utils/rest.mjs';
 import { defineEventHandler } from 'h3';
 
