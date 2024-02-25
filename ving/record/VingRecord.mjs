@@ -12,8 +12,8 @@ const kindCache = {};
  * 
  * Usage: `const users = useKind('User');`
  * 
- * @param kind The name of the kind to instanciate.
- * @returns `VingKind`
+ * @param {string} kind The name of the kind to instanciate. eg: `User`
+ * @returns a `VingKind` subclass
  */
 export const useKind = async (kind) => {
     if (kind in kindCache)
@@ -30,8 +30,8 @@ export const useKind = async (kind) => {
  * 
  * Usage: `const schema = findVingSchema('users')`
  * 
- * @param nameToFind The table name or kind name to find.
- * @param by Can be `kind` or `tableName`. Defaults to `tableName`.
+ * @param {string} nameToFind The table name or kind name to find.
+ * @param {string} by Can be `kind` or `tableName`. Defaults to `tableName`.
  * @returns A ving kind schema.
  */
 export const findVingSchema = (nameToFind = '-unknown-', by = 'tableName') => {
@@ -44,13 +44,12 @@ export const findVingSchema = (nameToFind = '-unknown-', by = 'tableName') => {
 }
 
 /**
- * 
- * @param enums Creates a select list options datastructure from the `enums` and `enumLabels` on a ving schema.
+ * Creates a select list options datastructure from the `enums` and `enumLabels` on a ving schema.
  * 
  * Usage: `const options = enum2options([true,false], ['Is Admin','Is Not Admin'])`
  * 
- * @param enums An array of enumerated values
- * @param labels An array of enumerated labels
+ * @param {string[]} enums An array of enumerated values
+ * @param {string[]} labels An array of enumerated labels
  * @returns An array of objects that combines enums and labels into an object with attributes of `label` and `value`
  */
 export const enum2options = (enums, labels) => {
@@ -72,8 +71,8 @@ export const enum2options = (enums, labels) => {
  * 
  * Usage: `findPropInSchema('useAsDisplayName', [])`
  * 
- * @param name The name of the prop you are looking for
- * @param props The list of schema props to search in
+ * @param {string} name The name of the prop you are looking for
+ * @param {Object[]} props The list of schema props to search in
  * @returns The prop object
  */
 export const findPropInSchema = (name, props) => {
@@ -106,10 +105,10 @@ export class VingRecord {
      * 
      * Usage: `const user = new UserRecord(db, UsersTable)`
      * 
-     * @param db A mysql2 database connection or pool
-     * @param table The drizzle database table definition
-     * @param props Initializers for props
-     * @param inserted Whether or not the record already exists in the database
+     * @param {Object} db A mysql2 database connection or pool
+     * @param {string} table The drizzle database table definition
+     * @param {Object} props Initializers for props
+     * @param {boolean} inserted Whether or not the record already exists in the database
      */
     constructor(db, table, props, inserted = true) {
         this.#props = props;
@@ -123,7 +122,9 @@ export class VingRecord {
      * 
      * Usage: `user.addWarning({code: 404, message:'Brain not found.'})`
      * 
-     * @param warning A warning object that has a `code`, and a `message`
+     * @param {Object} warning A warning object that has a `code`, and a `message`
+     * @param {number} warning.code A 3 digit error code
+     * @param {string} warning.message A human readable message
      */
     addWarning(warning) {
         this.warnings?.push(warning);
@@ -134,7 +135,7 @@ export class VingRecord {
      * 
      * Usage: `apikey.canEdit(session)`
      * 
-     * @param currentUser A `User` or `Session`
+     * @param {Object} currentUser A `User` or `Session`
      * @returns Returns `true` or throws a `403` error
      */
     canEdit(currentUser) {
@@ -160,8 +161,17 @@ export class VingRecord {
      * 
      * Usage: `const description = await user.describe({currentUser: session})`
      * 
-     * @param params A list of params to change the output of the describe
-     * @returns Serialized version of the record
+     * @param {Object} params A list of params to change the output of the describe. Defaults to `{}`
+     * @param {Object} params.currentUser The `User` or `Session` instance to test ownership against
+     * @param {Object} params.include An object containing which things to be included in the description beyond the props
+     * @param {boolean} params.include.links If `true` will add a list of API links to the description
+     * @param {boolean} params.include.meta If `true` will add a list of generated metadata to the description
+     * @param {boolean} params.include.options If `true` will add a list of field options to the description
+     * @param {boolean} params.include.private If `true` will ignore ownership considerations when formulating the description
+     * @param {string[]} params.include.related An array of parent relationship names, which will then include those related objects in the description
+     * @param {string[]} params.include.extra Some `VingRecord`s may define weird description functions that can be initiated by naming it in this array
+     * 
+     * @returns Serialized version of the `VingRecord`
      */
     async describe(params = {}) {
         const currentUser = params.currentUser;
@@ -238,7 +248,7 @@ export class VingRecord {
      * 
      * Usage: `const value = user.get('id')`
      * 
-     * @param key The name of the prop
+     * @param {string} key The name of the prop
      * @returns A value
      */
     get(key) {
@@ -276,7 +286,7 @@ export class VingRecord {
      * 
      * Usage: `const owner = apikey.isOwner(session)`
      * 
-     * @param currentUser A `User` or `Session`
+     * @param {Object} currentUser A `User` or `Session`
      * @returns Whether or not the passed in user owns this record or not
      */
     isOwner(currentUser) {
@@ -314,7 +324,7 @@ export class VingRecord {
      * 
      * Usage: `const user = await apikey.parent('user')`
      * 
-     * @param name The relation name
+     * @param {string} name The relation name
      * @throws 404 if it can't find the parent by name
      * @returns A record related to the this record
      */
@@ -341,7 +351,7 @@ export class VingRecord {
      * 
      * Usage: `const apikeys = await user.children('apikeys')
      * 
-     * @param name The relation name
+     * @param {string} name The relation name
      * @throws 404 if it can't find the children by name
      * @returns A drizzle query.
      */
@@ -362,8 +372,16 @@ export class VingRecord {
      * 
      * Usage: `const options = user.propOptions({currentUser: session})`
      * 
-     * @param params The same params as `describe`
-     * @param all Include all options regardless of the `currentUser`
+     * @param {Object} params A list of params to change the output of the describe. Defaults to `{}`
+     * @param {Object} params.currentUser The `User` or `Session` instance to test ownership against
+     * @param {Object} params.include An object containing which things to be included in the description beyond the props
+     * @param {boolean} params.include.links If `true` will add a list of API links to the description
+     * @param {boolean} params.include.meta If `true` will add a list of generated metadata to the description
+     * @param {boolean} params.include.options If `true` will add a list of field options to the description
+     * @param {boolean} params.include.private If `true` will ignore ownership considerations when formulating the description
+     * @param {string[]} params.include.related An array of parent relationship names, which will then include those related objects in the description
+     * @param {string[]} params.include.extra Some `VingRecord`s may define weird description functions that can be initiated by naming it in this array
+     * @param {boolean} all Include all options regardless of the `currentUser`. Defaults to `false`.
      * @returns a list of the enumerated prop options
      */
     propOptions(params = {}, all = false) {
@@ -401,8 +419,8 @@ export class VingRecord {
      * 
      * Usage: `user.set('username', 'andy')`
      * 
-     * @param key The name of the prop
-     * @param value The value to set
+     * @param {string} key The name of the prop
+     * @param {*} value The value to set
      * @returns The value that was set
      */
     set(key, value) {
@@ -433,7 +451,7 @@ export class VingRecord {
      * 
      * Usage: `user.setAll({ username : 'andy' })`
      * 
-     * @param props An object containing name/value pairs to set. Doesn't need to be a complete list of all values.
+     * @param {Object} props An object containing name/value pairs to set. Doesn't need to be a complete list of all values.
      * @returns The same as `getAll()`
      */
     setAll(props) {
@@ -451,8 +469,10 @@ export class VingRecord {
      * 
      * Usage: `await user.setPostedProps({username: 'andy'}, session)`
      * 
-     * @param params A list of props to be set
-     * @param currentUser A `User` or `Session`
+     * @param {Object} params A list of props to be set
+     * @param {Object} currentUser A `User` or `Session`
+     * @throws 441 if a required field isn't set
+     * @throws 409 if a unique constraint fails
      * @returns `true` if set, or an exception if it couldn't be
      */
     async setPostedProps(params, currentUser) {
@@ -505,7 +525,8 @@ export class VingRecord {
      * 
      * Usage: `user.testCreationProps({username: 'andy'})`
      * 
-     * @param params A list of props to be set
+     * @param {Object} params A list of props to be set
+     * @throws 441 if a required field isn't set
      * @returns `true` if all the required params exist and validate or an exception if not
      */
     testCreationProps(params) {
@@ -542,8 +563,8 @@ export class VingRecord {
      * 
      * Usage: `await user.updateAndVerify({username:'andy'}, session)`
      * 
-     * @param params props to update
-     * @param currentUser A `User` or `Session`
+     * @param {Object} params props to update
+     * @param {Object} currentUser A `User` or `Session`
      */
     async updateAndVerify(params, currentUser) {
         await this.setPostedProps(params, currentUser);
@@ -585,9 +606,9 @@ export class VingKind {
      * 
      * Usage: `const users = UserKind(db, UsersTable, UserRecord)`
      * 
-     * @param db A mysql2 database connection or pool
-     * @param table A drizzle table definition
-     * @param recordClass a reference to the record class to instanciate upon fetching or creating records from this kind
+     * @param {Object} db A mysql2 database connection or pool
+     * @param {Object} table A drizzle table definition
+     * @param {Object} recordClass a reference to the record class to instanciate upon fetching or creating records from this kind
      */
     constructor(db, table, recordClass) {
         this.db = db;
@@ -600,7 +621,7 @@ export class VingKind {
      * 
      * Usage: `const results = await Users.delete.where(Users.calcWhere(like(Users.realName, 'Fred%')));`
      * 
-     * @param where A drizzle where clause
+     * @param {Object} where A drizzle where clause
      * @returns A drizzle where clause
      */
     calcWhere(where) {
@@ -633,7 +654,7 @@ export class VingKind {
      * 
      * Usage: `const newRecord = Users.copy(user.getAll())`
      * 
-     * @param originalProps a list of props to be copied
+     * @param {Object} originalProps a list of props to be copied
      * @returns a newly minted record based upon the original props
      */
     copy(originalProps) {
@@ -648,7 +669,7 @@ export class VingKind {
      * 
      * Usage: `const numberOfUsers = await Users.count()`
      * 
-     * @param where A drizzle where clause
+     * @param {Object} where A drizzle where clause
      * @returns A count of the records
      */
     async count(where) {
@@ -660,7 +681,7 @@ export class VingKind {
      * 
      * Usage: `const record = Users.create({username: 'andy'})`
      * 
-     * @param props The list of props to add to this record
+     * @param {Object} props The list of props to add to this record
      * @returns A newly minted record
      */
     async create(props) {
@@ -674,8 +695,8 @@ export class VingKind {
      * 
      * Usage: `const record = await Users.createAndVerify({username: 'andy'})`
      *
-     * @param props A list of props
-     * @param currentUser A `User` or `Session`
+     * @param {Object} props A list of props
+     * @param {Object} currentUser A `User` or `Session`
      * @returns A newly minted record or throws an error if validation fails
      */
     async createAndVerify(props, currentUser) {
@@ -691,8 +712,22 @@ export class VingKind {
      * 
      * Usage: `const list = await Users.describeList()`
      * 
-     * @param params Change the output of what is described
-     * @param where A drizzle where clause for filtering the list of records described
+     * @param {Object} params A list of params to change the output of the describe. Defaults to `{}`
+     * @param {string} params.sortOrder Either `desc` or `asc` for descending order or ascending order. Defaults to `asc`
+     * @param {string[]} params.sortBy An array of prop names to sort by. Defaults to `createdAt`
+     * @param {number} params.itemsPerPage How many items to include in 1 page of results, defaults to `10`, must be between `1` and `100`.
+     * @param {number} params.page The page number of results to display. Defaults to `1`.
+     * @param {maxItems} params.maxItems The maximum number of items that may be paginated. Defaults to `100000000000`
+     * @param {Object} params.objectParams An object formatted for `describe()` in `VingRecord`
+     * @param {Object} params.objectParams.currentUser The `User` or `Session` instance to test ownership against
+     * @param {Object} params.objectParams.include An object containing which things to be included in the description beyond the props
+     * @param {boolean} params.objectParams.include.links If `true` will add a list of API links to the description
+     * @param {boolean} params.objectParams.include.meta If `true` will add a list of generated metadata to the description
+     * @param {boolean} params.objectParams.include.options If `true` will add a list of field options to the description
+     * @param {boolean} params.objectParams.include.private If `true` will ignore ownership considerations when formulating the description
+     * @param {string[]} params.objectParams.include.related An array of parent relationship names, which will then include those related objects in the description
+     * @param {string[]} params.objectParams.include.extra Some `VingRecord`s may define weird description functions that can be initiated by naming it in this array
+     * @param {Object} where A drizzle where clause for filtering the list of records described
      * @returns A paginated list of records
      */
     async describeList(
@@ -752,7 +787,7 @@ export class VingKind {
      * A safer version of `delete` above as it uses `calcWhere()`.
      * 
      * 
-     * @param where a Drizzle where clause
+     * @param {Object} where a Drizzle where clause
      */
     async deleteMany(
         where,
@@ -790,7 +825,7 @@ export class VingKind {
      * 
      * Usage: `const record = await Users.find('xxx');`
      * 
-     * @param id The unique id of the record
+     * @param {string} id The unique id of the record
      * @returns a record or `undefined` if no record is found
      */
     async find(id) {
@@ -806,8 +841,11 @@ export class VingKind {
      *
      * Usage: `const listOfFredRecords = await Users.findMany(like(Users.realName, 'Fred%'));`
      * 
-     * @param where A drizzle where clause
-     * @param options Modify the sorting and pagination of the results
+     * @param {Object} where A drizzle where clause
+     * @param {Object} options Modify the sorting and pagination of the results. Defaults to `{}`
+     * @param {number} options.limit The max number of records to to return
+     * @param {number} options.offset The number of records to skip before returning results
+     * @param {Object[]} options.orderBy An array of drizzle table fields to sort by with `asc()` or `desc()` function wrappers
      * @returns A list of records
      */
     async findMany(
@@ -830,7 +868,7 @@ export class VingKind {
      * 
      * Usage: `const fredRecord = await Users.findOne(eq(Users.username, 'Fred'));`
      * 
-     * @param where A drizzle where clause
+     * @param {Object} where A drizzle where clause
      * @returns a record or `undefined` if no record is found
      */
     async findOne(where) {
@@ -845,8 +883,9 @@ export class VingKind {
      * 
      * Usage: `const record = await Users.findOrDie('xxx')`
      * 
-     * @param id the unique id of the record
-     * @returns a record or throws a `404` error if no record is found.
+     * @param {string} id the unique id of the record
+     * @throws 404 if no record is found
+     * @returns a record
      */
     async findOrDie(id) {
         const props = (await this.select.where(eq(this.table.id, id)))[0];
@@ -861,7 +900,7 @@ export class VingKind {
      * 
      * Usage: `const record = Users.mint({username: 'andy'})`
      * 
-     * @param props The list of props to initialize the record
+     * @param {Object} props The list of props to initialize the record
      * @returns A newly minted record
      */
     mint(props) {
