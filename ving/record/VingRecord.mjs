@@ -1,26 +1,8 @@
-import { vingSchemas } from '#ving/schema/map.mjs';
+import { findVingSchema } from '#ving/schema/map.mjs';
 import ving from '#ving/index.mjs';
 import _ from 'lodash';
 import { eq, asc, desc, and, ne, sql, getTableName } from '#ving/drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving/schema/helpers.mjs';
-
-/**
- * Get the schema for a specific kind within the ving schema list.
- * 
- * Usage: `const schema = findVingSchema('users')`
- * 
- * @param {string} nameToFind The table name or kind name to find.
- * @param {string} by Can be `kind` or `tableName`. Defaults to `tableName`.
- * @returns A ving kind schema.
- */
-export const findVingSchema = (nameToFind = '-unknown-', by = 'tableName') => {
-    try {
-        return ving.findObject(vingSchemas, obj => obj[by] == nameToFind);
-    }
-    catch {
-        throw ving.ouch(404, 'ving schema ' + nameToFind + ' not found');
-    }
-}
 
 /**
  * Creates a select list options datastructure from the `enums` and `enumLabels` on a ving schema.
