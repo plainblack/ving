@@ -1,6 +1,5 @@
 import { vingSchemas } from '#ving/schema/map.mjs';
-import { findObject } from '#ving/utils/findObject.mjs';
-import { ouch } from '#ving/utils/ouch.mjs';
+import ving from '#ving/index.mjs';
 import _ from 'lodash';
 import { eq, asc, desc, and, ne, sql, getTableName } from '#ving/drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving/schema/helpers.mjs';
@@ -36,10 +35,10 @@ export const useKind = async (kind) => {
  */
 export const findVingSchema = (nameToFind = '-unknown-', by = 'tableName') => {
     try {
-        return findObject(vingSchemas, obj => obj[by] == nameToFind);
+        return ving.findObject(vingSchemas, obj => obj[by] == nameToFind);
     }
     catch {
-        throw ouch(404, 'ving schema ' + nameToFind + ' not found');
+        throw ving.ouch(404, 'ving schema ' + nameToFind + ' not found');
     }
 }
 
@@ -143,7 +142,7 @@ export class VingRecord {
             return true;
         }
         const schema = findVingSchema(getTableName(this.table));
-        throw ouch(403, `You do not have the privileges to access ${schema.kind}.`)
+        throw ving.ouch(403, `You do not have the privileges to access ${schema.kind}.`)
     }
 
     /**
@@ -275,7 +274,7 @@ export class VingRecord {
     async insert() {
         if (this.#inserted) {
             const schema = findVingSchema(getTableName(this.table));
-            throw ouch(409, `${schema.kind} already inserted`);
+            throw ving.ouch(409, `${schema.kind} already inserted`);
         }
         this.#inserted = true;
         await this.db.insert(this.table).values(this.#props);
@@ -332,7 +331,7 @@ export class VingRecord {
         if (name in this.#parentCache)
             return this.#parentCache[name];
         const schema = findVingSchema(getTableName(this.table));
-        const prop = findObject(schema.props, obj => obj.relation?.name == name);
+        const prop = ving.findObject(schema.props, obj => obj.relation?.name == name);
         return this.#parentCache[name] = await (await useKind(prop.relation.kind)).findOrDie(this.get(prop.name));
     }
 
@@ -357,7 +356,7 @@ export class VingRecord {
      */
     async children(name) {
         const schema = findVingSchema(getTableName(this.table));
-        const prop = findObject(schema.props, obj => obj.relation?.name == name);
+        const prop = ving.findObject(schema.props, obj => obj.relation?.name == name);
         const kind = await useKind(prop.relation.kind);
         kind.propDefaults.push({
             prop: prop.name,
@@ -434,14 +433,14 @@ export class VingRecord {
                 }
                 else {
                     const formatted = result.error.format();
-                    throw ouch(442, key.toString() + ': ' + formatted._errors.join('.') + '.', key);
+                    throw ving.ouch(442, key.toString() + ': ' + formatted._errors.join('.') + '.', key);
                 }
             }
             if (prop?.relation?.type == 'parent')
                 this.flushParentCache();
         }
         else {
-            throw ouch(400, key.toString() + ' is not a prop', key);
+            throw ving.ouch(400, key.toString() + ' is not a prop', key);
         }
         return this.#props[key] = value;
     }
@@ -492,7 +491,7 @@ export class VingRecord {
                 continue;
             }
             if (param === '' && field.required) {
-                throw ouch(441, `${fieldName} is required.`, fieldName);
+                throw ving.ouch(441, `${fieldName} is required.`, fieldName);
             }
             if (field.name !== undefined && param !== undefined) {
                 if (field.unique) {
@@ -503,8 +502,8 @@ export class VingRecord {
 
                     let count = (await query.where(where))[0].count
                     if (count > 0) {
-                        console.log('--- unique check failed ---', fieldName)
-                        throw ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
+                        ving.log('VingRecord').warning(`${this.get('id')} unique check failed on ${field.name.toString()}`)
+                        throw ving.ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
                     }
                 }
                 if (param !== null) {
@@ -537,7 +536,7 @@ export class VingRecord {
             if (params[prop.name] !== undefined && params[prop.name] != '')
                 continue;
             const fieldName = prop.name.toString();
-            throw ouch(441, `${fieldName} is required.`, fieldName);
+            throw ving.ouch(441, `${fieldName} is required.`, fieldName);
         }
         return true;
     }
@@ -892,7 +891,7 @@ export class VingKind {
         if (props)
             return new this.recordClass(this.db, this.table, props);
         const schema = findVingSchema(getTableName(this.table));
-        throw ouch(404, `${schema.kind} not found.`, { id })
+        throw ving.ouch(404, `${schema.kind} not found.`, { id })
     }
 
     /**

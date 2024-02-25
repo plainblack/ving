@@ -1,6 +1,8 @@
 import { setHeader, setResponseStatus, defineEventHandler, sendNoContent } from 'h3';
 import { useMessageBusSub } from '#ving/messagebus.mjs';
 import { obtainSession } from '#ving/utils/rest.mjs';
+import ving from '#ving/index.mjs';
+
 export default defineEventHandler(async (event) => {
     const user = obtainSession(event);
     if (!user) {
@@ -8,7 +10,7 @@ export default defineEventHandler(async (event) => {
     }
     const messagebus = useMessageBusSub();
     const hangup = async () => {
-        console.log('ending sse stream');
+        ving.log('messageBus').info('ending sse stream');
         await messagebus.quit()
     }
     event.node.req.on('close', hangup)
@@ -20,7 +22,7 @@ export default defineEventHandler(async (event) => {
     event.node.res.write(`data: ${JSON.stringify({ type: 'ping' })}\n\n`);
     await messagebus.subscribe("notify:" + user.get('id'), (err) => {
         if (err) {
-            console.error("Failed to subscribe: %s", err.message);
+            ving.log('messageBus').error(`Failed to subscribe: ${err.message}`);
         }
     });
     messagebus.on("message", (channel, message) => {

@@ -1,5 +1,4 @@
 import { VingRecord, VingKind, useKind } from "#ving/record/VingRecord.mjs";
-import { ouch } from '#ving/utils/ouch.mjs';
 import { v4 } from 'uuid';
 import sanitize from 'sanitize-filename';
 import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
@@ -69,7 +68,7 @@ export const extensionMap = {
      * 
      * Usage: `const extension = getExtension('myimage.jpg')`
      * 
-     * @param filename A filename.
+     * @param {string} filename A filename.
      * @returns A file extension
      */
 export const getExtension = (filename) => {
@@ -85,7 +84,7 @@ export const getExtension = (filename) => {
      * Usage: `const filename = sanitizeFilename('myimage.jpg')`
      * 
      * @throws 415 if the file doesn't have an extension or has a disallowed extension
-     * @param filename A filename.
+     * @param {string} filename A filename.
      * @returns A file extension
      */
 export const sanitizeFilename = (nameIn) => {
@@ -93,9 +92,9 @@ export const sanitizeFilename = (nameIn) => {
     const ext = getExtension(nameOut);
     const allowedExtensions = Object.keys(extensionMap);
     if (!ext)
-        throw ouch(415, 'The file does not appear to have a file extension.');
+        throw ving.ouch(415, 'The file does not appear to have a file extension.');
     else if (!(allowedExtensions.includes(ext)))
-        throw ouch(415, `The extension ${ext} is not one of the allowed file extensions.`, allowedExtensions);
+        throw ving.ouch(415, `The extension ${ext} is not one of the allowed file extensions.`, allowedExtensions);
     return nameOut;
 };
 
@@ -104,7 +103,7 @@ export const sanitizeFilename = (nameIn) => {
      * 
      * Usage: `const folder = formatS3FolderName('0467810a-5d75-4a91-a868-4f87281fbab9')`
      * 
-     * @param input A v4 UUID.
+     * @param {string} input A v4 UUID.
      * @returns A string with slashes splitting the first few characters and all dashes replaced with slashes.
      */
 export const formatS3FolderName = (input) => {
@@ -168,7 +167,7 @@ export class S3FileRecord extends VingRecord {
      * Usage: `const description = await s3file.describe()`
      * 
      * @see VingRecord.describe()
-     * @param params See VingRecord describe for details.
+     * @param {Object} params See VingRecord describe for details.
      * @returns An object with the description. See VingRecord for details.
      */
     async describe(params = {}) {
@@ -206,16 +205,15 @@ export class S3FileRecord extends VingRecord {
             });
             metadata = await response.json();
             if (metadata.error) {
-                throw ouch(metadata.error.code, metadata.error.message);
+                throw ving.ouch(metadata.error.code, metadata.error.message);
             }
         }
         catch (e) {
             self.set('status', 'postProcessingFailed');
             await self.update();
-            // future: kick off deletion process
-            console.error(`Could not post process ${self.get('id')} because ${response.statusText}`, { response, error: e });
-            //console.debug(response);
-            throw ouch(504, `Could not post process ${self.get('filename')}.`);
+            ving.log('S3File').error(`Could not post process ${self.get('id')} because ${response.statusText}`);
+            ving.log('S3File').debug(JSON.stringify(response));
+            throw ving.ouch(504, `Could not post process ${self.get('filename')}.`);
         }
         if (metadata.thumbnail) {
             self.set('icon', 'thumbnail');
@@ -237,9 +235,9 @@ export class S3FileRecord extends VingRecord {
          * 
          * Usage: `await s3file.verifyExactDimensions(width, height)`
          * 
-         * @param width The width in pixels this image should be.
-         * @param height The height in pxiels this image should be.
-         * @param errorOnly A boolean that if true will skip marking the file as 
+         * @param {number} width The width in pixels this image should be.
+         * @param {number} height The height in pxiels this image should be.
+         * @param {boolean} errorOnly A boolean that if true will skip marking the file as 
          * failing verified and will also skip deletion. Useful when you are allowing
          * reuse of files and don't wish to delete files just due to failing verification
          * in one use case. Defaults to `false`.
@@ -259,8 +257,8 @@ export class S3FileRecord extends VingRecord {
          * 
          * Usage: `await s3file.verifyExtension(['png','gif','jpeg','jpg'])`
          * 
-         * @param whitelist An array of allowed file extensions
-         * @param errorOnly A boolean that if true will skip marking the file as 
+         * @param {string[]} whitelist An array of allowed file extensions
+         * @param {boolean} errorOnly A boolean that if true will skip marking the file as 
          * failing verified and will also skip deletion. Useful when you are allowing
          * reuse of files and don't wish to delete files just due to failing verification
          * in one use case. Defaults to `false`.
@@ -283,8 +281,8 @@ export class S3FileRecord extends VingRecord {
          * 
          * Usage: `await s3file.markVerifiyFailed('This file sucks!')`
          * 
-         * @param error A message about why the file is being marked as a failure.
-         * @param errorOnly A boolean that if true will skip marking the file as 
+         * @param {string} error A message about why the file is being marked as a failure.
+         * @param {boolean} errorOnly A boolean that if true will skip marking the file as 
          * failing verified and will also skip deletion. Useful when you are allowing
          * reuse of files and don't wish to delete files just due to failing verification
          * in one use case. Defaults to `false`.
@@ -297,8 +295,8 @@ export class S3FileRecord extends VingRecord {
             await this.update();
             // future: kick off deletion process
         }
-        console.log(`S3File ${this.get('id')} unverified because ${error}.`);
-        throw ouch('442', error)
+        ving.log('S3File').error(`${this.get('id')} unverified because ${error}.`);
+        throw ving.ouch('442', error)
     }
 
     /**
