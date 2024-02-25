@@ -1,6 +1,4 @@
 import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
-import { camelCase } from 'scule';
-
 
 function addRelationshipNames({ schema }) {
     const names = [];
