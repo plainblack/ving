@@ -1,7 +1,10 @@
 import { createLogger, format, transports } from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
-
+/**
+ * Creates a `winston` logger and returns it
+ * @returns a winston object
+ */
 export const mainlog = createLogger({
     level: 'info',
     format: format.combine(format.timestamp(), format.json()),
@@ -17,6 +20,11 @@ export const mainlog = createLogger({
     ],
 });
 
+/**
+ * Creates a child of the winston `mainlog` that can store a topic
+ * @param {string} topic the topic you want to associate with this log entry
+ * @returns the logger object
+ */
 export const log = (topic) => {
     if (!topic) {
         return mainlog;
