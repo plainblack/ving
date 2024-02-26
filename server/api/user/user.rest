@@ -16,25 +16,8 @@ Content-Type: application/json
 
 {
     "login": "brooks", 
-    "password": "Rock Hammer" 
-}
-
-### test
-POST http://localhost:3000/api/test?test=1
-Content-Type: application/json
-
-{
-    "login": "brooks", 
-    "password": "Rock Hammer" 
-}
-
-### import avatar
-POST http://localhost:3000/api/user/{{login.response.body.$.props.userId}}/import-avatar
-Content-Type: application/json
-Cookie: vingSessionId={{login.response.body.$.props.id}} 
-
-{
-    "s3key" : "88d8/23e6/b289/40bf/9746/802818ed9b31/astormlooms.png"
+    "password": "Rock Hammer",
+    "sessionType" : "native"
 }
 
 ### list

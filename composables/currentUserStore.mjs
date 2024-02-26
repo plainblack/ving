@@ -31,7 +31,8 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 method: 'post',
                 body: {
                     login,
-                    password
+                    password,
+                    sessionType: 'native',
                 },
             });
             if (!response.error) {

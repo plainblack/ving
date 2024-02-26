@@ -5,7 +5,8 @@ Content-Type: application/json
 
 {
     "login": "tommy", 
-    "password": "Elmo Blatch" 
+    "password": "Elmo Blatch",
+    "sessionType" : "native"
 }
 
 ### get

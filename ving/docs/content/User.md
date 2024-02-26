@@ -31,6 +31,13 @@ GET /api/user
 ### Create
 ```
 POST /api/user
+
+{
+    "username" : "adufresne",
+    "realName" : "Andy Dufresne",
+    "password" : "rock hammer",
+    "email" : "andy@shawshank.prison"
+}
 ```
 
 ### Read
@@ -41,6 +48,10 @@ GET /api/user/:id
 ### Update
 ```
 PUT /api/user/:id
+
+{
+    "useAsDisplayName" : "realName"
+}
 ```
 
 ### Delete

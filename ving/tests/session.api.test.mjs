@@ -19,7 +19,7 @@ describe('Session API', async () => {
 
     const session = (await axios.post(
         base + 'session',
-        { login: 'rita', password: 'poster' }
+        { login: 'rita', password: 'poster', sessionType: 'native' }
     )).data;
 
     test('login', () => {

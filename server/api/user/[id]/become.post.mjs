@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     const { id } = getRouterParams(event);
     const user = await users.findOrDie(id);
     session.end();
-    session = await Session.start(user);
+    session = await Session.start(user, 'become');
     setCookie(event, 'vingSessionId', session.id, { maxAge: 60 * 24 * 365 * 5, httpOnly: true });
     return user.describe(describeParams(event, session));
 });
