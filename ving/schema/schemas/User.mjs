@@ -154,7 +154,7 @@ export const userSchema = {
         },
         {
             type: "virtual",
-            name: 's3files',
+            name: 'userId',
             required: false,
             view: ['public'],
             edit: [],
