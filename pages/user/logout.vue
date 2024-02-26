@@ -8,10 +8,13 @@
 
 
 <script setup>
+import { sleep } from '#ving/utils/sleep.mjs';
 definePageMeta({
     middleware: 'auth'
 });
 const currentUser = useCurrentUserStore();
 await currentUser.logout();
+await sleep(1000 * 5);
+await navigateTo('/');
 
 </script>
