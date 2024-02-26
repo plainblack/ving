@@ -12,7 +12,7 @@
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
-        "tests": "vitest"
+        "tests": "export $(cat .env | xargs)&& vitest"
     },
     "devDependencies": {
         "@featherscloud/pinion": "^0.5.3",
