@@ -29,6 +29,7 @@
 
 <script setup>
 import ua from 'ua-parser-js';
+import { sleep } from '#ving/utils/sleep.mjs';
 const config = useRuntimeConfig();
 const email = ref('')
 const notify = useNotifyStore();
@@ -39,7 +40,10 @@ async function sendPasswordReset() {
         query: { includeOptions: true },
         body: { browser: parser.getBrowser().name, os: parser.getOS().name, email: email.value }
     });
-    if (!response.error)
+    if (!response.error) {
         notify.info('Check your email for the reset link.');
+        await sleep(1000 * 5);
+        await navigateTo('/');
+    }
 }
 </script>
