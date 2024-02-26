@@ -8,6 +8,7 @@ const vingConfig = JSON.parse(
         new URL('../../ving.json', import.meta.url)
     )
 );
+vingConfig.site.url = process.env.VING_SITE_URL;
 const emailConfig = new URL(process.env.VING_SMTP || '');
 
 const defaultTransporter = createTransport({

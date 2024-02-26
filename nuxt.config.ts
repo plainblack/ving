@@ -1,5 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import ving from './ving.json';
+//@ts-expect-error
+ving.site.url = process.env.VING_SITE_URL;
 
 export default defineNuxtConfig({
     modules: [
