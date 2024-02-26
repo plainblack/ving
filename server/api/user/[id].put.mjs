@@ -9,7 +9,6 @@ export default defineEventHandler(async (event) => {
     const user = await users.findOrDie(id);
     const session = obtainSession(event);
     user.canEdit(session);
-    console.log(session.id, session.get('id'), session.isHuman())
     if (!session.isHuman())
         throw ouch(403, 'You must be a human to modify user account settings.');
     await user.updateAndVerify(await getBody(event), session);
