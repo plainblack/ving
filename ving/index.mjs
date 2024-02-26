@@ -13,7 +13,7 @@ import { useRedis } from '#ving/jobs/connection.mjs'
  * 
  * @returns an object containing the following:
  * 
- * cache - the same as the result of `useCache()` from '#ving/cache.mjs'
+ * useCache() - the same as the result of `useCache()` from '#ving/cache.mjs'
  * log() - the same as `log` from '#ving/log.mjs'
  * sendMail() - the same as `sendMail` from '#ving/email/send.mjs'
  * addJob() - the same as `addJob` from '#ving/jobs/queue.mjs'
@@ -23,7 +23,7 @@ import { useRedis } from '#ving/jobs/connection.mjs'
  * close() - closes the connections mysql, redis/BullMQ, and redis/cache
  */
 export default {
-    cache: useCache(),
+    useCache,
     log,
     sendMail,
     addJob,

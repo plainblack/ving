@@ -46,19 +46,19 @@ export default defineCommand({
     },
     async run({ args }) {
         if (args.clear) {
-            await ving.cache.clear();
+            await ving.useCache().clear();
             ving.log('cli').info('Cache cleared');
         }
         if (args.get) {
-            const value = await ving.cache.get(args.get);
+            const value = await ving.useCache().get(args.get);
             ving.log('cli').info(`Value of ${args.get} is: ${value}`);
         }
         if (args.delete) {
-            await ving.cache.delete(args.delete);
+            await ving.useCache().delete(args.delete);
             ving.log('cli').info(`${args.delete} deleted`);
         }
         if (args.set) {
-            await ving.cache.set(args.set, args.value, Number(args.ttl));
+            await ving.useCache().set(args.set, args.value, Number(args.ttl));
             ving.log('cli').info(`${args.set} set to ${args.value} for ${args.ttl}ms`);
         }
         await ving.close();
