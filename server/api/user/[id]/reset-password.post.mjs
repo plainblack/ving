@@ -1,5 +1,5 @@
 import { useKind } from '#ving/record/utils.mjs';
-import { describeParams } from '#ving/utils/rest.mjs';
+import { describeParams, getBody } from '#ving/utils/rest.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { defineEventHandler, getRouterParams } from 'h3';
