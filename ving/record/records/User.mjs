@@ -144,7 +144,7 @@ export class UserRecord extends RoleMixin(VingRecord) {
         if (params.password && (currentUser === undefined || this.isOwner(currentUser))) {
             await this.setPassword(params.password);
         }
-        if (params.email) {
+        if (params.email != this.get('email')) {
             this.set('verifiedEmail', false);
         }
         await super.setPostedProps(params, currentUser);
