@@ -132,7 +132,7 @@ definePageMeta({
 const dt = useDateTime();
 const currentUser = useCurrentUserStore();
 const apikeys = useVingKind({
-    listApi: currentUser.links?.apikeys,
+    listApi: currentUser.links?.apikeys.href,
     createApi: '/api/apikey',
     query: { includeMeta: true },
     newDefaults: { name: '', reason: '', url: 'http://', userId: currentUser.props?.id },

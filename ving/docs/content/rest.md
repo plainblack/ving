@@ -381,9 +381,18 @@ Response:
      ...
     },
     "links" : {
-        "base" : "/api/user",
-        "self" : "/api/user/xxx",
-        "articles" : "/user/xxx/articles"
+        "base" : {
+          "href": "/api/user",
+          "methods": ["GET","POST"]
+        }, 
+        "self" : {
+          "href": "/api/user/xxx",
+          "methods": ["GET","PUT","DELETE"]
+        },
+        "articles" : {
+          "href": "/user/xxx/articles",
+          "methods": ["GET"]
+        },
      }
    }
  }

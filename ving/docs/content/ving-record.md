@@ -101,7 +101,13 @@ const list = await Users.describeList(params, where)
         { // same as the describe() method from a Record
             props : { id: 'xxx', ... }, // database properties
             meta : { displayName : 'Freddy', ... }, // calculated properties
-            links: { self : '/api/user/xxx', ... }, // urls for various web services 
+            links: { 
+                self : { 
+                    href : "/api/user/xxx", 
+                    methods: ['GET','PUT','DELETE'] 
+                }, 
+                ... 
+            }, // urls for various web services 
             options : { useAsDisplayName : [
                 { label : 'Username', value : 'username' },
                 ...
@@ -249,7 +255,12 @@ const description = await record.describe(params)
 {
     props : { id: 'xxx', ... }, // database properties
     meta : { displayName : 'Freddy', ... }, // calculated properties
-    links: { self : '/api/user/xxx', ... }, // urls for various web services 
+    links: { self : { 
+        href : "/api/user/xxx", 
+        methods: ['GET','PUT','DELETE'] 
+        }, 
+        ... 
+    }, // urls for various web services 
     options : { useAsDisplayName : [
         { label : 'Username', value : 'username' },
         ...

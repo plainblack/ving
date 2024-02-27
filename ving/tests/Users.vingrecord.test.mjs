@@ -45,7 +45,7 @@ describe('Users', async () => {
         expect(description.meta?.displayName).toBe('captain');
         expect(description.props.username).toBe('captain');
         if (description.links !== undefined) {
-            expect(description.links.base).toBe('/api/user');
+            expect(description.links.base.href).toBe('/api/user');
         }
         if (description.options !== undefined) {
             expect(description.options.useAsDisplayName).toBeTypeOf('object');
@@ -63,7 +63,7 @@ describe('Users', async () => {
         expect(description.props.username).toBe('captain');
         expect(description.props.admin).toBe(false);
         if (description.links !== undefined) {
-            expect(description.links.base).toBe('/api/user');
+            expect(description.links.base.href).toBe('/api/user');
         }
         if (description.options !== undefined) {
             expect(description.options.useAsDisplayName).toBeTypeOf('object');
@@ -76,7 +76,7 @@ describe('Users', async () => {
         expect(description.props.username).toBe(undefined);
         expect(description.props.admin).toBe(undefined);
         if (description.links !== undefined) {
-            expect(description.links.base).toBe('/api/user');
+            expect(description.links.base.href).toBe('/api/user');
         }
         expect(description.options).toEqual({});
         if (description.options !== undefined) {

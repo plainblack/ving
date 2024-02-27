@@ -94,7 +94,7 @@ await user.fetch()
 onBeforeRouteLeave(() => user.dispose());
 
 async function become() {
-    await user.call('post', user.links?.self + '/become', undefined, {
+    await user.call('post', user.links?.self.href + '/become', undefined, {
         async onSuccess() {
             const currentUser = useCurrentUserStore();
             currentUser.fetch();

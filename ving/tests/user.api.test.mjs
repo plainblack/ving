@@ -37,7 +37,7 @@ describe('User API', async () => {
             { headers: { Cookie: `vingSessionId=${session.props.id}` } }
         )).data;
         expect(result.props.username).toBe('brooks');
-        expect(result.links.base).toBe('/api/user');
+        expect(result.links.base.href).toBe('/api/user');
         expect(result.meta.displayName).toBe('brooks');
     });
 

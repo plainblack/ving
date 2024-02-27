@@ -23,7 +23,7 @@ export default (behavior) => {
             /**
              * A quick way to call an endpoint without directly setting up your own `useRest()` composable. The result then updates the local object.
             * 
-            * Usage: `const result = user.call('post', user.links.self+'/send-reset-password', {os:'Windows'});`
+            * Usage: `const result = user.call('post', user.links.self.href+'/send-reset-password', {os:'Windows'});`
             *
              * @param method `put`, `post`, `get` or `delete`.
              * @param url The endpoint to run this call on.
@@ -193,7 +193,7 @@ export default (behavior) => {
                     return this.createApi;
                 }
                 else if (this.links?.base) {
-                    return this.links.base;
+                    return this.links.base.href;
                 }
                 notify.error('No createApi');
                 throw ouch(401, 'No createApi');
@@ -211,7 +211,7 @@ export default (behavior) => {
                     return this.fetchApi;
                 }
                 else if (this.links?.self) {
-                    return this.links.self;
+                    return this.links.self.href;
                 }
                 notify.error('No fetchApi');
                 throw ouch(401, 'No fetchApi');
@@ -226,7 +226,7 @@ export default (behavior) => {
              */
             getSelfApi() {
                 if (this.links?.self) {
-                    return this.links.self;
+                    return this.links.self.href;
                 }
                 notify.error('No links.self');
                 throw ouch(400, 'No links.self');

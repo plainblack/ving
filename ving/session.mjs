@@ -90,7 +90,12 @@ class ProtoSession {
             return this.#userObj;
         }
         const users = await useKind('User');
-        return this.#userObj = await users.find(this.#props.id);
+        this.#userObj = await users.find(this.#props.id);
+        if (this.#userObj == undefined) {
+            await this.end();
+            throw ouch(404, `The user ${this.#props.id} no longer exists.`);
+        }
+        return this.#userObj;
     }
 
     /** Destroys the session
@@ -141,8 +146,14 @@ class ProtoSession {
             }
             if (params.include.links) {
                 out.links = {
-                    base: '/api/user/session',
-                    self: '/api/user/session/' + this.id,
+                    base: {
+                        href: '/api/user/session',
+                        methods: ["GET", "POST"],
+                    },
+                    self: {
+                        href: '/api/user/session/' + this.id,
+                        methods: ["GET", "PUT", "DELETE"],
+                    },
                 }
             }
             if (params.include.meta) {

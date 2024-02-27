@@ -47,6 +47,6 @@ definePageMeta({
 });
 const currentUser = useCurrentUserStore();
 const attachImageToUser = (s3file) => {
-    currentUser.call('POST', currentUser.links.self)
+    currentUser.call('POST', currentUser.links.self.href)
 }
 </script>

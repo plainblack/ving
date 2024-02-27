@@ -142,8 +142,8 @@ export class VingRecord {
         let out = { props: {} };
         out.props.id = this.get('id');
         if (include !== undefined && include.links) {
-            out.links = { base: `/api/${schema.kind?.toLowerCase()}` };
-            out.links.self = `${out.links.base}/${this.#props.id}`;
+            out.links = { base: { href: `/api/${schema.kind?.toLowerCase()}`, methods: ['GET', 'POST'] } };
+            out.links.self = { href: `${out.links.base.href}/${this.#props.id}`, methods: ['GET', 'PUT', 'DELETE'] };
         }
         if (include !== undefined && include.options) {
             out.options = this.propOptions(params);
@@ -183,9 +183,10 @@ export class VingRecord {
             if (typeof out.links === 'object'
                 && include.links
                 && field.relation
+                && out.links.self === 'object'
             ) {
                 let lower = field.relation.name.toLowerCase();
-                out.links[lower] = `${out.links.self}/${lower}`;
+                out.links[lower] = { href: `${out.links.self.href}/${lower}`, methods: ['GET'] };
             }
 
             // related
@@ -320,6 +321,8 @@ export class VingRecord {
         const schema = findVingSchema(getTableName(this.table));
         const prop = ving.findObject(schema.props, obj => obj.relation?.name == name);
         const kind = await ving.useKind(prop.relation.kind);
+        if (kind.table[prop.name] == undefined)
+            ving.log('VingRecord').error(`${schema.kind} has an invalid virtual prop name called ${name}`);
         kind.propDefaults.push({
             prop: prop.name,
             field: kind.table[prop.name],
