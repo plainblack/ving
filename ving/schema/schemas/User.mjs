@@ -85,7 +85,7 @@ export const userSchema = {
             default: false,
             db: (prop) => dbBoolean(prop),
             enums: [false, true],
-            enumLabels: ['Verified', 'Not Yet Verified'],
+            enumLabels: ['Not Yet Verified', 'Verified'],
             view: ['owner'],
             edit: ['admin'],
         },
