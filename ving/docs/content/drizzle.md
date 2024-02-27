@@ -45,3 +45,12 @@ import {eq} from '#ving/drizzle/orm.mjs';
 const users = await useKind('User');
 const result = await users.select.where(eq(Users.table.email, 'joe@example.com'));
 ```
+
+## Debugging
+You can enable logging by adding `?log=yes` to the end of your `VING_MYSQL` url like so:
+
+```
+VING_MYSQL="mysql://ving:vingPass@localhost:3306/ving?log=yes"
+```
+
+Queries will be logged at level `debug` in the `drizzle` topic.

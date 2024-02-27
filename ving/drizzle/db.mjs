@@ -1,7 +1,14 @@
 import mysql from 'mysql2/promise';
 import { drizzle } from '#ving/drizzle/orm.mjs';
+import { log } from '#ving/log.mjs';
 
 const dbConfig = new URL(process.env.VING_MYSQL || '');
+
+class VingDrizzleLogger {
+    logQuery(query, params) {
+        log('drizzle').debug(JSON.stringify({ query, params }))
+    }
+}
 
 let db = undefined;
 
@@ -20,8 +27,13 @@ export const useDB = () => {
         user: dbConfig.username,
         password: dbConfig.password,
         database: dbConfig.pathname.slice(1),
-    })
-    return db = drizzle(poolConnection);
+    });
+
+    const options = {};
+    if (dbConfig.searchParams.get('log') === 'yes') {
+        options.logger = new VingDrizzleLogger();
+    }
+    return db = drizzle(poolConnection, options);
 }
 
 db = useDB();
