@@ -60,7 +60,6 @@ This returns row results, not `VingRecord` instances. However, the `findaAll()` 
 
 ```js
 const allUsers = await Users.findAll();
-
 for await (const user of allUsers) {
   console.log(user.get('id'));
 }
