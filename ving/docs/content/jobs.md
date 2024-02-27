@@ -5,13 +5,13 @@ Ving uses a jobs server called [BullMQ](http://bullmq.io) to execute potentially
 ## Setting Up Redis
 To use the jobs system you must first have a Redis server. Then you simply need to add an entry in .env that points to your Redis server like so:
 
-```
+```bash
 VING_REDIS="redis://@localhost:6379"
 ```
 
 You can include a username and password in the URL like so:
 
-```
+```bash
 VING_REDIS="redis://user:pass@localhost:6379"
 ```
 
