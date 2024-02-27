@@ -6,7 +6,7 @@ import { ouch } from '#ving/utils/ouch.mjs';
 import { findObject } from '#ving/utils/findObject.mjs';
 import { useKind } from '#ving/record/utils.mjs'
 import { useDB } from '#ving/drizzle/db.mjs'
-import { useRedis } from '#ving/jobs/connection.mjs'
+import { useRedis } from '#ving/redis.mjs'
 
 /**
  * Exports a list of the most useful features of Ving from a single import location.

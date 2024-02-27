@@ -1,7 +1,7 @@
 import { Worker } from 'bullmq';
 import fs from 'fs';
 import ving from '#ving/index.mjs';
-import { useRedis } from '#ving/jobs/connection.mjs';
+import { useRedis } from '#ving/redis.mjs';
 
 /** 
  * A class for running Ving jobs

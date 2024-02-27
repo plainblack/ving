@@ -1,6 +1,6 @@
 import { Queue } from 'bullmq';
 import ving from '#ving/index.mjs';
-import { useRedis } from '#ving/jobs/connection.mjs';
+import { useRedis } from '#ving/redis.mjs';
 
 /**
  * Enqueues a job in the jobs system.
