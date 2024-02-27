@@ -46,6 +46,26 @@ const users = await useKind('User');
 const result = await users.select.where(eq(Users.table.email, 'joe@example.com'));
 ```
 
+### Queries Against Very Large Datasets
+If you are running queries against extremely large datasets and don't want to load all that data into memory at once, we've partnered with the Drizzle Team to implement [an asynchronous iterator](https://orm.drizzle.team/docs/select#iterator) that you can use. It works like this:
+
+```js
+const iterator = await db.select().from(UsersTable).iterator();
+
+for await (const row of iterator) {
+  console.log(row);
+}
+```
+This returns row results, not `VingRecord` instances. However, the `findaAll()` method in `VingRecord` does it with records:
+
+```js
+const allUsers = await Users.findAll();
+
+for await (const user of allUsers) {
+  console.log(user.get('id'));
+}
+```
+
 ## Debugging
 You can enable logging by adding `?log=yes` to the end of your `VING_MYSQL` url like so:
 

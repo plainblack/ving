@@ -112,6 +112,17 @@ describe('Users', async () => {
     // await key.insert();
     // console.log(JSON.stringify(await captain.describe({ currentUser: captain, include: { related: ['apiKeys'], extra: ['foo'] } }), undefined, 2));
 
+    test("can use findAll", async () => {
+        const allUsers = await Users.findAll(undefined, { limit: 3 });
+        let i = 0;
+        for await (const user of allUsers) {
+            //console.log(i, user.get('id'));
+            i++;
+        }
+        expect(i).toBe(3);
+    });
+
+
     test("can delete ving record", async () => {
         await warden.delete()
         expect(warden.get('username')).toBe('warden');

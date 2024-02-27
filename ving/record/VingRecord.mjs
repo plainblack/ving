@@ -828,6 +828,36 @@ export class VingKind {
     }
 
     /**
+     * Locates and returns an iterator of records by a drizzle where clause or an empty array if no records are found. This is identical to `findMany`, but returns an iterator rather than a list. Iterators are better for huge datasets.
+     *
+     * Usage: `const fredRecords = await Users.findAll(like(Users.realName, 'Fred%')); for await (const fred of fredRecords) { }`
+     * 
+     * @param {Object} where A drizzle where clause
+     * @param {Object} options Modify the sorting and pagination of the results. Defaults to `{}`
+     * @param {number} options.limit The max number of records to to return
+     * @param {number} options.offset The number of records to skip before returning results
+     * @param {Object[]} options.orderBy An array of drizzle table fields to sort by with `asc()` or `desc()` function wrappers
+     * @returns An iterator that points to a list of records
+     */
+    async * findAll(
+        where,
+        options = {}
+    ) {
+        const kind = this;
+        let query = this.select.where(this.calcWhere(where));
+        if (options.orderBy)
+            query.orderBy(...options.orderBy);
+        if (options.limit)
+            query.limit(options.limit);
+        if (options.offset)
+            query.offset(options.offset);
+        const iterator = await query.iterator();
+        for await (const data of iterator) {
+            yield new kind.recordClass(kind.db, kind.table, data);
+        }
+    }
+
+    /**
      * Locates and returns a single record by a drizzle where clause.
      * 
      * Usage: `const fredRecord = await Users.findOne(eq(Users.username, 'Fred'));`
