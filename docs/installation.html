@@ -2,251 +2,192 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>installation.md</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
-  <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
-  <style type="text/css">
-    html {
-      font-size: 1rem;
-      height: 100%;
-    }
-
-    body {
-      font-family: var(--font-family);
-      background-color: var(--bg-white);
-      color: var(--text-color);
-      padding: 0;
-      margin: 0;
-      min-height: 100%;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    li a {
-      text-decoration: none;
-    }
-
-    ol,
-    ul {
-      list-style: none;
-      margin-left: 0;
-      padding-left: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>installation.md</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
+        <style type="text/css">
+        html {
+            font-size: 1rem;
+            height: 100%;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-white);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        li a {
+            text-decoration: none;
+        }
+       ol,ul {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 10px;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="grid">
-    <div class="col-3 lg:col-2 p-3 surface-300">
-      <div class="sticky top-0 left-0">
-        <div class="text-4xl">Ving Docs</div>
-        <p>Basics</p>
-        <ul>
-          <li><a href="index.html">About</a></li>
-          <li><a href="installation.html">Installation</a></li>
-          <li><a href="error-codes.html">Error Codes</a></li>
-          <li><a href="change-log.html">Change Log</a></li>
-        </ul>
-        <p>Subsystems</p>
-        <ul>
-          <li><a href="cache.html">Cache</a></li>
-          <li><a href="cli.html">CLI</a></li>
-          <li><a href="drizzle.html">Database</a></li>
-          <li><a href="email.html">Email</a></li>
-          <li><a href="logging.html">Logging</a></li>
-          <li><a href="messagebus.html">Message Bus</a></li>
-          <li><a href="pulumi.html">Pulumi</a></li>
-          <li><a href="rest.html">Rest</a></li>
-          <li><a href="ui.html">UI</a></li>
-          <li><a href="ving-record.html">Ving Record</a></li>
-          <li><a href="ving-schema.html">Ving Schema</a></li>
-        </ul>
-        <p>Rest APIs</p>
-        <ul>
-          <li><a href="APIKey.html">API Key</a></li>
-          <li><a href="S3File.html">S3File</a></li>
-          <li><a href="Session.html">Session</a></li>
-          <li><a href="Test.html">Test</a></li>
-          <li><a href="User.html">User</a></li>
-        </ul>
+    <div class="grid">
+        <div class="col-3 lg:col-2 p-3 surface-300">
+            <div class="sticky top-0 left-0">
+                <div class="text-4xl">Ving Docs</div>
+                <p>Basics</p>
+<ul>
+<li><a href="index.html">About</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="error-codes.html">Error Codes</a></li>
+<li><a href="change-log.html">Change Log</a></li>
+</ul>
+<p>Subsystems</p>
+<ul>
+<li><a href="cache.html">Cache</a></li>
+<li><a href="cli.html">CLI</a></li>
+<li><a href="drizzle.html">Database</a></li>
+<li><a href="email.html">Email</a></li>
+<li><a href="env.html">Env Vars</a></li>
+<li><a href="logging.html">Logging</a></li>
+<li><a href="messagebus.html">Message Bus</a></li>
+<li><a href="pulumi.html">Pulumi</a></li>
+<li><a href="rest.html">Rest</a></li>
+<li><a href="ui.html">UI</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
+</ul>
+<p>Rest APIs</p>
+<ul>
+<li><a href="APIKey.html">API Key</a></li>
+<li><a href="S3File.html">S3File</a></li>
+<li><a href="Session.html">Session</a></li>
+<li><a href="Test.html">Test</a></li>
+<li><a href="User.html">User</a></li>
+</ul>
 
-      </div>
-    </div>
-    <div class="col lg:col-3 p-3 surface-200">
-      <div class="sticky top-0 right-0">
-        <nav class="table-of-contents">
-          <ol>
-            <li><a href="#installation">Installation </a>
-              <ol>
-                <li><a href="#requirements">Requirements </a></li>
-                <li><a href="#installation-variants">Installation Variants </a>
-                  <ol>
-                    <li><a href="#if-you-want-updates%3A-fork">If you want updates: FORK </a></li>
-                    <li><a href="#if-you-don%E2%80%99t-want-updates%3A-download">If you don’t want updates: DOWNLOAD
-                      </a></li>
-                    <li><a href="#either-way%3A-rename">Either way: RENAME </a></li>
-                  </ol>
-                </li>
-                <li><a href="#node-modules">Node Modules </a></li>
-                <li><a href="#vs-code">VS code </a></li>
-                <li><a href="#mysql">MySQL </a>
-                  <ol>
-                    <li><a href="#create-the-database">Create the database </a></li>
-                    <li><a href="#create-a-.env-file">Create a .env file </a></li>
-                    <li><a href="#create-the-initial-tables">Create the initial tables </a></li>
-                    <li><a href="#create-first-user">Create First User </a></li>
-                  </ol>
-                </li>
-                <li><a href="#startup">Startup </a></li>
-                <li><a href="#cache">Cache </a></li>
-                <li><a href="#email">Email </a></li>
-                <li><a href="#configuring-aws">Configuring AWS </a></li>
-              </ol>
-            </li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-    <div class="col min-h-screen">
-      <h1 id="installation" tabindex="-1">Installation <a class="header-anchor" href="#installation">
+            </div>
+        </div>
+            <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
+<nav class="table-of-contents"><ol><li><a href="#installation">Installation </a><ol><li><a href="#requirements">Requirements </a></li><li><a href="#installation-variants">Installation Variants </a><ol><li><a href="#if-you-want-updates%3A-fork">If you want updates: FORK </a></li><li><a href="#if-you-don%E2%80%99t-want-updates%3A-download">If you don’t want updates: DOWNLOAD </a></li><li><a href="#either-way%3A-rename">Either way: RENAME </a></li></ol></li><li><a href="#node-modules">Node Modules </a></li><li><a href="#vs-code">VS code </a></li><li><a href="#mysql">MySQL </a><ol><li><a href="#create-the-database">Create the database </a></li><li><a href="#create-a-.env-file">Create a .env file </a></li><li><a href="#create-the-initial-tables">Create the initial tables </a></li><li><a href="#create-first-user">Create First User </a></li></ol></li><li><a href="#startup">Startup </a></li><li><a href="#cache">Cache </a></li><li><a href="#email">Email </a></li><li><a href="#configuring-aws">Configuring AWS </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<h1 id="installation" tabindex="-1">Installation <a class="header-anchor" href="#installation">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h1>
-      <p>You need to choose whether you want to be able to get updates from future versions of ving or not.</p>
-      <h2 id="requirements" tabindex="-1">Requirements <a class="header-anchor" href="#requirements">
+<p>You need to choose whether you want to be able to get updates from future versions of ving or not.</p>
+<h2 id="requirements" tabindex="-1">Requirements <a class="header-anchor" href="#requirements">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
-      <p>Any modern computer should be able to run ving. But you will need to install a couple of things to get started.
-      </p>
-      <ul>
-        <li>You’ll need to <a href="https://nodejs.org/en">download</a> and install Node.</li>
-      </ul>
-      <h2 id="installation-variants" tabindex="-1">Installation Variants <a class="header-anchor"
-          href="#installation-variants">
+<p>Any modern computer should be able to run ving. But you will need to install a couple of things to get started.</p>
+<ul>
+<li>You’ll need to <a href="https://nodejs.org/en">download</a> and install Node.</li>
+</ul>
+<h2 id="installation-variants" tabindex="-1">Installation Variants <a class="header-anchor" href="#installation-variants">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
-      <h3 id="if-you-want-updates%3A-fork" tabindex="-1">If you want updates: FORK <a class="header-anchor"
-          href="#if-you-want-updates%3A-fork">
+<h3 id="if-you-want-updates%3A-fork" tabindex="-1">If you want updates: FORK <a class="header-anchor" href="#if-you-want-updates%3A-fork">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
-      <p>Choose this option so you can choose to <a
-          href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork">sync</a>
-        the changes from the main ving repo into your repository at any time in the future.</p>
-      <p><a href="https://github.com/plainblack/ving/fork">Fork the ving repo.</a></p>
-      <p>After forking, <a
-          href="https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository">clone</a>
-        your forked repo to your computer.</p>
-      <h3 id="if-you-don%E2%80%99t-want-updates%3A-download" tabindex="-1">If you don’t want updates: DOWNLOAD <a
-          class="header-anchor" href="#if-you-don%E2%80%99t-want-updates%3A-download">
+<p>Choose this option so you can choose to <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork">sync</a> the changes from the main ving repo into your repository at any time in the future.</p>
+<p><a href="https://github.com/plainblack/ving/fork">Fork the ving repo.</a></p>
+<p>After forking, <a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository">clone</a> your forked repo to your computer.</p>
+<h3 id="if-you-don%E2%80%99t-want-updates%3A-download" tabindex="-1">If you don’t want updates: DOWNLOAD <a class="header-anchor" href="#if-you-don%E2%80%99t-want-updates%3A-download">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
-      <p>Choose this option if you just want to use ving as a starter and don’t care about what happens in the future.
-      </p>
-      <p><a href="https://github.com/plainblack/ving/archive/refs/heads/main.zip">Download a zip file of the repo.</a>
-      </p>
-      <p>Then unzip it.</p>
-      <h3 id="either-way%3A-rename" tabindex="-1">Either way: RENAME <a class="header-anchor"
-          href="#either-way%3A-rename">
+<p>Choose this option if you just want to use ving as a starter and don’t care about what happens in the future.</p>
+<p><a href="https://github.com/plainblack/ving/archive/refs/heads/main.zip">Download a zip file of the repo.</a></p>
+<p>Then unzip it.</p>
+<h3 id="either-way%3A-rename" tabindex="-1">Either way: RENAME <a class="header-anchor" href="#either-way%3A-rename">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
-      <p>Then feel free to rename the folder to whatever you are calling your project.</p>
-      <pre><code class="language-bash">mv ving my-cool-project
+<p>Then feel free to rename the folder to whatever you are calling your project.</p>
+<pre><code class="language-bash">mv ving my-cool-project
 </code></pre>
-      <h2 id="node-modules" tabindex="-1">Node Modules <a class="header-anchor" href="#node-modules">
+<h2 id="node-modules" tabindex="-1">Node Modules <a class="header-anchor" href="#node-modules">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
-      <p>Type the following:</p>
-      <pre><code class="language-bash">cd ving
+<p>Type the following:</p>
+<pre><code class="language-bash">cd ving
 npm install
 </code></pre>
-      <h2 id="vs-code" tabindex="-1">VS code <a class="header-anchor" href="#vs-code">
+<h2 id="vs-code" tabindex="-1">VS code <a class="header-anchor" href="#vs-code">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
-      <p>For developement we recommend <a href="https://code.visualstudio.com/download">Visual Studio Code</a>.</p>
-      <p>And for the best possible experience, we also recommend installing these plugins:</p>
-      <ul>
-        <li><a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">REST Client</a> - optional,
-          but nice</li>
-        <li><a
-            href="https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons">vscode-icons</a> -
-          optional, but nice</li>
-        <li><a href="https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-mysql-client2">MySQL</a> -
-          optional, but nice</li>
-        <li><a href="https://marketplace.visualstudio.com/items?itemName=antfu.iconify">Iconify IntelliSense</a> -
-          optional, but nice</li>
-        <li><a href="https://marketplace.visualstudio.com/items?itemName=eseom.nunjucks-template">Nunjucks Template
-            Formatting</a> - optional, but nice</li>
-      </ul>
-      <h2 id="mysql" tabindex="-1">MySQL <a class="header-anchor" href="#mysql">
+<p>For developement we recommend <a href="https://code.visualstudio.com/download">Visual Studio Code</a>.</p>
+<p>And for the best possible experience, we also recommend installing these plugins:</p>
+<ul>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">REST Client</a> - optional, but nice</li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons">vscode-icons</a> - optional, but nice</li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-mysql-client2">MySQL</a> - optional, but nice</li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=antfu.iconify">Iconify IntelliSense</a> - optional, but nice</li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=eseom.nunjucks-template">Nunjucks Template Formatting</a> - optional, but nice</li>
+</ul>
+<h2 id="mysql" tabindex="-1">MySQL <a class="header-anchor" href="#mysql">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
-      <p>You’ll need to <a href="https://dev.mysql.com/downloads/mysql/">download and install a MySQL 8 database</a>.
-      </p>
-      <blockquote>
-        <p>You could convert ving to Postgres or any other supported Drizzle database, but that’s not on our todo list.
-        </p>
-      </blockquote>
-      <h3 id="create-the-database" tabindex="-1">Create the database <a class="header-anchor"
-          href="#create-the-database">
+<p>You’ll need to <a href="https://dev.mysql.com/downloads/mysql/">download and install a MySQL 8 database</a>.</p>
+<blockquote>
+<p>You could convert ving to Postgres or any other supported Drizzle database, but that’s not on our todo list.</p>
+</blockquote>
+<h3 id="create-the-database" tabindex="-1">Create the database <a class="header-anchor" href="#create-the-database">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
-      <p>Log in to your MySQL database as the root user and then type the following:</p>
-      <pre><code class="language-sql">create database ving;
+<p>Log in to your MySQL database as the root user and then type the following:</p>
+<pre><code class="language-sql">create database ving;
 CREATE USER 'ving'@'localhost' IDENTIFIED BY 'vingPass';
 grant all privileges on ving.* to 'ving'@'localhost';
 flush privileges;
 </code></pre>
-      <blockquote>
-        <p>Obivously use your own username and password options, not the samples we provided here.</p>
-      </blockquote>
-      <h3 id="create-a-.env-file" tabindex="-1">Create a .env file <a class="header-anchor" href="#create-a-.env-file">
+<blockquote>
+<p>Obivously use your own username and password options, not the samples we provided here.</p>
+</blockquote>
+<h3 id="create-a-.env-file" tabindex="-1">Create a .env file <a class="header-anchor" href="#create-a-.env-file">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
-      <p>Create <code>.env</code> in the project root and add your dev database connection string.</p>
-      <pre><code class="language-bash">VING_MYSQL=&quot;mysql://ving:vingpass@localhost:3306/ving&quot;
+<p>Create <code>.env</code> in the project root and add your dev database connection string.</p>
+<pre><code class="language-bash">VING_MYSQL=&quot;mysql://ving:vingpass@localhost:3306/ving&quot;
 </code></pre>
-      <blockquote>
-        <p>Obivously modify the username, password, and database name to match what you created in the previous step.
-        </p>
-      </blockquote>
-      <h3 id="create-the-initial-tables" tabindex="-1">Create the initial tables <a class="header-anchor"
-          href="#create-the-initial-tables">
+<blockquote>
+<p>Obivously modify the username, password, and database name to match what you created in the previous step.</p>
+</blockquote>
+<h3 id="create-the-initial-tables" tabindex="-1">Create the initial tables <a class="header-anchor" href="#create-the-initial-tables">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
-      <p>Now you can create the initial tables into your database using the <a href="cli.html">CLI</a>.</p>
-      <pre><code class="language-bash">./ving.mjs drizzle --prepare
+<p>Now you can create the initial tables into your database using the <a href="cli.html">CLI</a>.</p>
+<pre><code class="language-bash">./ving.mjs drizzle --prepare
 ./ving.mjs drizzle --up
 </code></pre>
-      <h3 id="create-first-user" tabindex="-1">Create First User <a class="header-anchor" href="#create-first-user">
+<h3 id="create-first-user" tabindex="-1">Create First User <a class="header-anchor" href="#create-first-user">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
-      <p>Also use the <a href="cli.html">CLI</a> to create a user so you can log in to the web interface.</p>
-      <pre><code class="language-bash">./ving.mjs user --add Admin --email you@domain.com --password 123qwe --admin
+<p>Also use the <a href="cli.html">CLI</a> to create a user so you can log in to the web interface.</p>
+<pre><code class="language-bash">./ving.mjs user --add Admin --email you@domain.com --password 123qwe --admin
 </code></pre>
-      <h2 id="startup" tabindex="-1">Startup <a class="header-anchor" href="#startup">
+<h2 id="startup" tabindex="-1">Startup <a class="header-anchor" href="#startup">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
-      <p>Start the development server on <a href="http://localhost:3000">http://localhost:3000</a></p>
-      <pre><code class="language-bash">npm run dev
+<p>Start the development server on <a href="http://localhost:3000">http://localhost:3000</a></p>
+<pre><code class="language-bash">npm run dev
 </code></pre>
-      <h2 id="cache" tabindex="-1">Cache <a class="header-anchor" href="#cache">
+<h2 id="cache" tabindex="-1">Cache <a class="header-anchor" href="#cache">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
-      <p>To use <a href="cache.html">Redis as your cache</a>, you’ll need to configure it first.</p>
-      <h2 id="email" tabindex="-1">Email <a class="header-anchor" href="#email">
+<p>To use <a href="cache.html">Redis as your cache</a>, you’ll need to configure it first.</p>
+<h2 id="email" tabindex="-1">Email <a class="header-anchor" href="#email">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
-      <p>Ving offers <a href="email.html">email sending and templating</a>, but you need to configure an SMTP server
-        first.</p>
-      <h2 id="configuring-aws" tabindex="-1">Configuring AWS <a class="header-anchor" href="#configuring-aws">
+<p>Ving offers <a href="email.html">email sending and templating</a>, but you need to configure an SMTP server first.</p>
+<h2 id="configuring-aws" tabindex="-1">Configuring AWS <a class="header-anchor" href="#configuring-aws">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
-      <p>If you want to make use of AWS for things like storing file uploads in S3, then you’ll also want to check out
-        our <a href="pulumi.html">Pulumi</a> integration.</p>
+<p>If you want to make use of AWS for things like storing file uploads in S3, then you’ll also want to check out our <a href="pulumi.html">Pulumi</a> integration.</p>
+</div>
     </div>
-  </div>
-
+    
 </body>
 
 </html>

@@ -53,6 +53,7 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
+<li><a href="env.html">Env Vars</a></li>
 <li><a href="logging.html">Logging</a></li>
 <li><a href="messagebus.html">Message Bus</a></li>
 <li><a href="pulumi.html">Pulumi</a></li>
@@ -73,12 +74,20 @@
             </div>
         </div>
             <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
-<nav class="table-of-contents"><ol><li><a href="#logging">Logging </a></li></ol></nav></div></div><div class="col min-h-screen"> 
+<nav class="table-of-contents"><ol><li><a href="#logging">Logging </a><ol><li><a href="#writing-to-logs">Writing To Logs </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
 <h1 id="logging" tabindex="-1">Logging <a class="header-anchor" href="#logging">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h1>
 <p>By default Ving logs to the <code>logs</code> folder. It automatically rotates its own logs.</p>
 <p>Ving uses <a href="https://github.com/winstonjs/winston">Winston</a> for logging. Winston has a lot of amazing configurability, so instead of creating a config file that cannot possibly encapsulate all of that, we leave it to you to modify <code>server/log.mjs</code>.</p>
+<h2 id="writing-to-logs" tabindex="-1">Writing To Logs <a class="header-anchor" href="#writing-to-logs">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>To write to a log you’d do something like this:</p>
+<pre><code class="language-js">import ving from '#ving/index.mjs';
+ving.log('topic').error('Error message goes here.');
+</code></pre>
+<p>The parameter going into the <code>log()</code> function is there to set a topic (or category) for the log entry, and then the actual message to be logged would go inside one of the sub functions. Sub function are <code>info()</code>, <code>error()</code>, <code>warn()</code>, or <code>debug()</code>.</p>
 </div>
     </div>
     

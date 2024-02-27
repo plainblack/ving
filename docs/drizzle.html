@@ -53,6 +53,7 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
+<li><a href="env.html">Env Vars</a></li>
 <li><a href="logging.html">Logging</a></li>
 <li><a href="messagebus.html">Message Bus</a></li>
 <li><a href="pulumi.html">Pulumi</a></li>
@@ -73,7 +74,7 @@
             </div>
         </div>
             <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
-<nav class="table-of-contents"><ol><li><a href="#drizzle">Drizzle </a><ol><li><a href="#migrations">Migrations </a><ol><li><a href="#generate-database-migrations">Generate Database Migrations </a></li><li><a href="#apply-database-migrations">Apply Database Migrations </a></li></ol></li><li><a href="#writing-queries">Writing Queries </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<nav class="table-of-contents"><ol><li><a href="#drizzle">Drizzle </a><ol><li><a href="#migrations">Migrations </a><ol><li><a href="#generate-database-migrations">Generate Database Migrations </a></li><li><a href="#apply-database-migrations">Apply Database Migrations </a></li></ol></li><li><a href="#writing-queries">Writing Queries </a><ol><li><a href="#queries-against-very-large-datasets">Queries Against Very Large Datasets </a></li></ol></li><li><a href="#debugging">Debugging </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
 <h1 id="drizzle" tabindex="-1">Drizzle <a class="header-anchor" href="#drizzle">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h1>
@@ -108,11 +109,35 @@ const db = useDB()
 const result = await db.select().from(UsersTable).where(eq(UsersTable.email, 'joe@example.com'));
 </code></pre>
 <p>Or if you are using <a href="ving-record.html">ving records</a> then its even easier:</p>
-<pre><code class="language-js">import {useUsers} from '#ving/record/records/User.mjs';
+<pre><code class="language-js">import {useKind} from '#ving/record/VingRecord.mjs';
 import {eq} from '#ving/drizzle/orm.mjs';
 
-const result = await useUsers().select.where(eq(Users.table.email, 'joe@example.com'));
+const users = await useKind('User');
+const result = await users.select.where(eq(Users.table.email, 'joe@example.com'));
 </code></pre>
+<h3 id="queries-against-very-large-datasets" tabindex="-1">Queries Against Very Large Datasets <a class="header-anchor" href="#queries-against-very-large-datasets">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>If you are running queries against extremely large datasets and don’t want to load all that data into memory at once, we’ve partnered with the Drizzle Team to implement <a href="https://orm.drizzle.team/docs/select#iterator">an asynchronous iterator</a> that you can use. It works like this:</p>
+<pre><code class="language-js">const iterator = await db.select().from(UsersTable).iterator();
+
+for await (const row of iterator) {
+  console.log(row);
+}
+</code></pre>
+<p>This returns row results, not <code>VingRecord</code> instances. However, the <code>findaAll()</code> method in <code>VingRecord</code> does it with records:</p>
+<pre><code class="language-js">const allUsers = await Users.findAll();
+for await (const user of allUsers) {
+  console.log(user.get('id'));
+}
+</code></pre>
+<h2 id="debugging" tabindex="-1">Debugging <a class="header-anchor" href="#debugging">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>You can enable logging by adding <code>?log=yes</code> to the end of your <code>VING_MYSQL</code> url like so:</p>
+<pre><code>VING_MYSQL=&quot;mysql://ving:vingPass@localhost:3306/ving?log=yes&quot;
+</code></pre>
+<p>Queries will be logged at level <code>debug</code> in the <code>drizzle</code> topic.</p>
 </div>
     </div>
     

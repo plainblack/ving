@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>jobs.md</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-light.css">
+        <style type="text/css">
+        html {
+            font-size: 1rem;
+            height: 100%;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-white);
+            color: var(--text-color);
+            padding: 0;
+            margin: 0;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        li a {
+            text-decoration: none;
+        }
+       ol,ul {
+            list-style: none;
+            margin-left: 0;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid">
+        <div class="col-3 lg:col-2 p-3 surface-300">
+            <div class="sticky top-0 left-0">
+                <div class="text-4xl">Ving Docs</div>
+                <p>Basics</p>
+<ul>
+<li><a href="index.html">About</a></li>
+<li><a href="installation.html">Installation</a></li>
+<li><a href="error-codes.html">Error Codes</a></li>
+<li><a href="change-log.html">Change Log</a></li>
+</ul>
+<p>Subsystems</p>
+<ul>
+<li><a href="cache.html">Cache</a></li>
+<li><a href="cli.html">CLI</a></li>
+<li><a href="drizzle.html">Database</a></li>
+<li><a href="email.html">Email</a></li>
+<li><a href="env.html">Env Vars</a></li>
+<li><a href="logging.html">Logging</a></li>
+<li><a href="messagebus.html">Message Bus</a></li>
+<li><a href="pulumi.html">Pulumi</a></li>
+<li><a href="rest.html">Rest</a></li>
+<li><a href="ui.html">UI</a></li>
+<li><a href="ving-record.html">Ving Record</a></li>
+<li><a href="ving-schema.html">Ving Schema</a></li>
+</ul>
+<p>Rest APIs</p>
+<ul>
+<li><a href="APIKey.html">API Key</a></li>
+<li><a href="S3File.html">S3File</a></li>
+<li><a href="Session.html">Session</a></li>
+<li><a href="Test.html">Test</a></li>
+<li><a href="User.html">User</a></li>
+</ul>
+
+            </div>
+        </div>
+            <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
+<nav class="table-of-contents"><ol><li><a href="#jobs">Jobs </a><ol><li><a href="#setting-up-redis">Setting Up Redis </a></li><li><a href="#enqueueing-jobs">Enqueueing Jobs </a></li><li><a href="#running-jobs">Running Jobs </a></li><li><a href="#job-handlers">Job Handlers </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<h1 id="jobs" tabindex="-1">Jobs <a class="header-anchor" href="#jobs">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h1>
+<p>Ving uses a jobs server called <a href="http://bullmq.io">BullMQ</a> to execute potentially long running asynchronous background jobs.</p>
+<h2 id="setting-up-redis" tabindex="-1">Setting Up Redis <a class="header-anchor" href="#setting-up-redis">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>To use the jobs system you must first have a Redis server. Then you simply need to add an entry in .env that points to your Redis server like so:</p>
+<pre><code class="language-bash">VING_REDIS=&quot;redis://@localhost:6379&quot;
+</code></pre>
+<p>You can include a username and password in the URL like so:</p>
+<pre><code class="language-bash">VING_REDIS=&quot;redis://user:pass@localhost:6379&quot;
+</code></pre>
+<p><strong>NOTE:</strong> You must enable the setting <code>maxmemory-policy=noeviction</code> in your Redis server to prevent it from automatically deleting keys when memory runs low as this will cause problems with the BullMQ system.</p>
+<h2 id="enqueueing-jobs" tabindex="-1">Enqueueing Jobs <a class="header-anchor" href="#enqueueing-jobs">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>To enqueue a job you’d use the following code.</p>
+<pre><code class="language-js">import ving from '#ving/index.mjs';
+
+ving.addJob('Test', { foo: 'bar' }, { delay: 1000 * 60 });
+</code></pre>
+<p>That would run a handler called <code>Test</code> with the parameter of <code>{ foo: 'bar' }</code>, but first it would wait 60 seconds before the job would be run.</p>
+<p>You can also enqueue jobs from the <a href="cli.html">CLI</a>.</p>
+<pre><code class="language-bash">./ving.mjs jobs --addJob Test --jobData '{ &quot;foo&quot;: &quot;bar&quot; }'
+</code></pre>
+<h2 id="running-jobs" tabindex="-1">Running Jobs <a class="header-anchor" href="#running-jobs">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>Jobs are run by job workers using handlers. The job worker system is run via the <a href="cli.html">CLI</a>.</p>
+<pre><code class="language-bash">./ving.mjs --worker --ttl 60
+</code></pre>
+<p>The above would run a worker for 60 seconds afterwhich the worker would shut down. If you want to run it indefinitely just leave the <code>ttl</code> off.</p>
+<h2 id="job-handlers" tabindex="-1">Job Handlers <a class="header-anchor" href="#job-handlers">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h2>
+<p>At the heart of the jobs system are handlers. Handlers are custom code that knows how to process a job. You can find handlers in the <code>#ving/jobs/handlers</code> folder. This is what a simple handler looks like:</p>
+<pre><code class="language-js">import ving from '#ving/index.mjs';
+
+export default async function (job) {
+    ving.log('jobs').debug(`Test ran with data: ${JSON.stringify(job.data)}`);
+    return true;
+}
+</code></pre>
+<p>The handler’s job is to do whatever needs to be done with <code>job.data</code> to complete the job. It should return <code>true</code> when done, or <code>throw</code> an <a href="utils.html">ouch</a> if it fails.</p>
+</div>
+    </div>
+    
+</body>
+
+</html>

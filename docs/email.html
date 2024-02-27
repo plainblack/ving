@@ -53,6 +53,7 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
+<li><a href="env.html">Env Vars</a></li>
 <li><a href="logging.html">Logging</a></li>
 <li><a href="messagebus.html">Message Bus</a></li>
 <li><a href="pulumi.html">Pulumi</a></li>
@@ -82,14 +83,14 @@
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
 <p>Add the following to your <code>.env</code> file to be able to send mail.</p>
-<pre><code class="language-bash">EMAIL=&quot;smtp://USER:PASS@SERVER:465/?tls=no&amp;log=no&quot;
+<pre><code class="language-bash">VING_SMTP=&quot;smtp://USER:PASS@SERVER:465/?tls=no&amp;log=no&quot;
 </code></pre>
 <p>Replace <code>USER</code> and <code>PASS</code> and <code>SERVER</code> with the SMTP username, password, and server name of your SMTP server. You can also change the port from 465 to whatever you like. If it uses TLS then set <code>tls</code> to <code>yes</code>, and if you want logging enabled you can set <code>log</code> to <code>yes</code>.</p>
 <h3 id="overriding-outbound-emails" tabindex="-1">Overriding Outbound Emails <a class="header-anchor" href="#overriding-outbound-emails">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
 <p>Add an environment variable to override all outbound emails to an email address of your chosing.</p>
-<pre><code class="language-bash">EMAIL_TO_OVERRIDE=&quot;example@gmail.com&quot;
+<pre><code class="language-bash">VING_EMAIL_OVERRIDE=&quot;example@gmail.com&quot;
 </code></pre>
 <p>Normally you’d use this in your dev environment so that all your test users email you instead of whatever made up email addresses you might be using. You can add this to your <code>.env</code> file.</p>
 <h3 id="testing" tabindex="-1">Testing <a class="header-anchor" href="#testing">

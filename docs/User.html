@@ -53,6 +53,7 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
+<li><a href="env.html">Env Vars</a></li>
 <li><a href="logging.html">Logging</a></li>
 <li><a href="messagebus.html">Message Bus</a></li>
 <li><a href="pulumi.html">Pulumi</a></li>
@@ -174,6 +175,13 @@
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
 <pre><code>POST /api/user
+
+{
+    &quot;username&quot; : &quot;adufresne&quot;,
+    &quot;realName&quot; : &quot;Andy Dufresne&quot;,
+    &quot;password&quot; : &quot;rock hammer&quot;,
+    &quot;email&quot; : &quot;andy@shawshank.prison&quot;
+}
 </code></pre>
 <h3 id="read" tabindex="-1">Read <a class="header-anchor" href="#read">
           <span aria-hidden="true" class="hidden">#</span>
@@ -184,6 +192,10 @@
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
 <pre><code>PUT /api/user/:id
+
+{
+    &quot;useAsDisplayName&quot; : &quot;realName&quot;
+}
 </code></pre>
 <h3 id="delete" tabindex="-1">Delete <a class="header-anchor" href="#delete">
           <span aria-hidden="true" class="hidden">#</span>

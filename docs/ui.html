@@ -53,6 +53,7 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
+<li><a href="env.html">Env Vars</a></li>
 <li><a href="logging.html">Logging</a></li>
 <li><a href="messagebus.html">Message Bus</a></li>
 <li><a href="pulumi.html">Pulumi</a></li>
@@ -73,7 +74,7 @@
             </div>
         </div>
             <div class="col lg:col-3 p-3 surface-200"><div class="sticky top-0 right-0"> 
-<nav class="table-of-contents"><ol><li><a href="#web-ui">Web UI </a><ol><li><a href="#pages">Pages </a></li><li><a href="#components">Components </a><ol><li><a href="#adminnav">AdminNav </a></li><li><a href="#crumbtrail">Crumbtrail </a></li><li><a href="#dropzone">Dropzone </a></li><li><a href="#fieldsetitem">FieldsetItem </a></li><li><a href="#fieldsetnav">FieldsetNav </a></li><li><a href="#form">Form </a></li><li><a href="#forminput">FormInput </a></li><li><a href="#formlabel">FormLabel </a></li><li><a href="#formselect">FormSelect </a></li><li><a href="#pager">Pager </a></li></ol></li><li><a href="#composables">Composables </a><ol><li><a href="#usedatetime()">useDateTime() </a></li><li><a href="#usemessagebus()">useMessageBus() </a></li><li><a href="#userest()">useRest() </a></li><li><a href="#usevingkind()">useVingKind() </a></li><li><a href="#usevingrecord()">useVingRecord() </a></li></ol></li><li><a href="#stores">Stores </a></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
+<nav class="table-of-contents"><ol><li><a href="#web-ui">Web UI </a><ol><li><a href="#pages">Pages </a></li><li><a href="#components">Components </a><ol><li><a href="#adminnav">AdminNav </a></li><li><a href="#crumbtrail">Crumbtrail </a></li><li><a href="#dropzone">Dropzone </a></li><li><a href="#fieldsetitem">FieldsetItem </a></li><li><a href="#fieldsetnav">FieldsetNav </a></li><li><a href="#form">Form </a></li><li><a href="#forminput">FormInput </a></li><li><a href="#formlabel">FormLabel </a></li><li><a href="#formselect">FormSelect </a></li><li><a href="#notify">Notify </a></li><li><a href="#pager">Pager </a></li><li><a href="#systemwidealert">SystemWideAlert </a></li><li><a href="#throbber">Throbber </a></li><li><a href="#usersettingsnav">UserSettingsNav </a></li></ol></li><li><a href="#composables">Composables </a><ol><li><a href="#usecurrentuserstore()">useCurrentUserStore() </a></li><li><a href="#usedatetime()">useDateTime() </a></li><li><a href="#usemessagebus()">useMessageBus() </a></li><li><a href="#usenotifystore()">useNotifyStore() </a></li><li><a href="#userest()">useRest() </a></li><li><a href="#usesystemwidealertstore()">useSystemWideAlertStore() </a></li><li><a href="#usethrobberstore()">useThrobberStore() </a></li><li><a href="#usevingkind()">useVingKind() </a></li><li><a href="#usevingrecord()">useVingRecord() </a></li></ol></li></ol></li></ol></nav></div></div><div class="col min-h-screen"> 
 <h1 id="web-ui" tabindex="-1">Web UI <a class="header-anchor" href="#web-ui">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h1>
@@ -221,6 +222,14 @@ Forms go here...
 </ul>
 </li>
 </ul>
+<h3 id="notify" tabindex="-1">Notify <a class="header-anchor" href="#notify">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Place this in your layouts so that users can receive toasts that will be triggered via the <code>useNotifyStore()</code> composable.</p>
+<pre><code class="language-html">&lt;client-only&gt;
+    &lt;Notify/&gt;
+&lt;/client-only&gt;
+</code></pre>
 <h3 id="pager" tabindex="-1">Pager <a class="header-anchor" href="#pager">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
@@ -231,10 +240,49 @@ Forms go here...
 <ul>
 <li><strong>kind</strong> - A <a href="ui.html#usevingkind()">useVingKind() object</a>.</li>
 </ul>
+<h3 id="systemwidealert" tabindex="-1">SystemWideAlert <a class="header-anchor" href="#systemwidealert">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Place this in your layouts where you would like the system wide alert to be displayed when an admin has configured one. It is triggered by the <code>useSystemWideAlertStore()</code> composable.</p>
+<pre><code class="language-html">&lt;client-only&gt;
+    &lt;SystemWideAlert/&gt;
+&lt;/client-only&gt;
+</code></pre>
+<h3 id="throbber" tabindex="-1">Throbber <a class="header-anchor" href="#throbber">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Place this in your layouts so the user has an indication that there are some background activites such as rest calls happening. It is triggered by the <code>useThrobberStore()</code> composable.</p>
+<pre><code class="language-html">&lt;client-only&gt;
+    &lt;Throbber /&gt;
+&lt;/client-only&gt;
+</code></pre>
+<h3 id="usersettingsnav" tabindex="-1">UserSettingsNav <a class="header-anchor" href="#usersettingsnav">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Navigation for user settings.</p>
+<pre><code class="language-html">&lt;UserSettingsNav /&gt;
+</code></pre>
 <h2 id="composables" tabindex="-1">Composables <a class="header-anchor" href="#composables">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
 <p>Each of these also has documentation of how to use them in the form of JSDocs in the source code.</p>
+<h3 id="usecurrentuserstore()" tabindex="-1">useCurrentUserStore() <a class="header-anchor" href="#usecurrentuserstore()">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Gets you the currently logged in user.</p>
+<pre><code class="language-js">const user = useCurrentUserStore();
+if (await user.isAuthenticated()) {
+    // do logged in user stuff
+}
+</code></pre>
+<p>It also triggers 2 window events for when the user logs in or out.</p>
+<pre><code class="language-js">    window.addEventListener('ving-login', (event) =&gt; {
+        // do something after login
+    });
+    window.addEventListener('ving-logout', (event) =&gt; {
+        // do something after logout
+    });
+</code></pre>
 <h3 id="usedatetime()" tabindex="-1">useDateTime() <a class="header-anchor" href="#usedatetime()">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
@@ -248,14 +296,50 @@ const timeago = dt.formatTimeAgo(&quot;2012-04-23T18:25:43.511Z&quot;);
 <h3 id="usemessagebus()" tabindex="-1">useMessageBus() <a class="header-anchor" href="#usemessagebus()">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
-<p>Connects the browser to the server’s <a href="messagebus.html">message bus</a>. This should be installed in an <code>onMounted()</code> handler inside each of your layouts.</p>
-<pre><code class="language-js">useMessageBus();
+<p>Connects the browser to the server’s <a href="messagebus.html">message bus</a>. It establishes a connection between your browser and the server, so it needs to be installed in an <code>onMounted()</code> handler in your layouts.</p>
+<pre><code class="language-js">onMounted(() =&gt; {
+    useMessageBus();
+})
+</code></pre>
+<h3 id="usenotifystore()" tabindex="-1">useNotifyStore() <a class="header-anchor" href="#usenotifystore()">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Allows you to notify the user via toasts.</p>
+<pre><code class="language-js">    const notify = useNotifyStore();
+    notify.info('Just wanted to let you know');
+    notify.warn('You might want to get concerned');
+    notify.error('Be afraid');
+    notify.success('Totally did it');
+    notify.notify('info', 'Hello');
+</code></pre>
+<p>You would then use the Notify Component in your layout.</p>
+<pre><code class="language-html">&lt;client-only&gt;
+    &lt;Notify /&gt;
+&lt;/client-only&gt;
 </code></pre>
 <h3 id="userest()" tabindex="-1">useRest() <a class="header-anchor" href="#userest()">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
 <p>A wrapper around the Nuxt composable <code>$fetch()</code> that allows for streamlined fetches, but integrate’s with ving’s subsystems.</p>
 <pre><code class="language-js">const response = useFetch('/api/user');
+</code></pre>
+<h3 id="usesystemwidealertstore()" tabindex="-1">useSystemWideAlertStore() <a class="header-anchor" href="#usesystemwidealertstore()">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Generally not something you’d need to use, but you will interact with it through the admin UI for the system wide alert, but it is used by the <code>SystemWideAlert</code> component.</p>
+<pre><code class="language-js">const swa = useSystemWideAlertStore();
+onMounted(async () =&gt; {
+    swa.check();
+}
+</code></pre>
+<h3 id="usethrobberstore()" tabindex="-1">useThrobberStore() <a class="header-anchor" href="#usethrobberstore()">
+          <span aria-hidden="true" class="hidden">#</span>
+        </a></h3>
+<p>Whenever there is an interaction with the API via the <code>useRest()</code> composable it will update the throbber store. It is then used by the <code>Throbber</code> component.</p>
+<p>You may also wish to trigger it for other background actions that are happening so that your user knows something is going on at the moment. Maybe if you’re processing a file for export, or if you have some heavy calculations going on, or if you’re waiting on a web worker.</p>
+<pre><code class="language-js">    const throbber = useThrobberStore();
+    throbber.working();
+    throbber.done();
 </code></pre>
 <h3 id="usevingkind()" tabindex="-1">useVingKind() <a class="header-anchor" href="#usevingkind()">
           <span aria-hidden="true" class="hidden">#</span>
@@ -290,10 +374,6 @@ const user = useVingRecord&lt;'User'&gt;({
 await user.fetch()
 onBeforeRouteLeave(() =&gt; user.dispose());
 </code></pre>
-<h2 id="stores" tabindex="-1">Stores <a class="header-anchor" href="#stores">
-          <span aria-hidden="true" class="hidden">#</span>
-        </a></h2>
-<p>TODO: write content</p>
 </div>
     </div>
     

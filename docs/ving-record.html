@@ -53,6 +53,7 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
+<li><a href="env.html">Env Vars</a></li>
 <li><a href="logging.html">Logging</a></li>
 <li><a href="messagebus.html">Message Bus</a></li>
 <li><a href="pulumi.html">Pulumi</a></li>
@@ -101,8 +102,8 @@
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
 <p>The Kind is akin to a relational database table. To start with you need to get a reference to it:</p>
-<pre><code class="language-js">import {useUsers} from '#ving/record/records/User.mjs';
-const Users = useUsers();
+<pre><code class="language-js">import {useKind} from '#ving/record/VingKind.mjs';
+const users = await useKind('User');
 </code></pre>
 <h3 id="creating-records-1" tabindex="-1">Creating Records <a class="header-anchor" href="#creating-records-1">
           <span aria-hidden="true" class="hidden">#</span>
@@ -164,7 +165,13 @@ const Users = useUsers();
         { // same as the describe() method from a Record
             props : { id: 'xxx', ... }, // database properties
             meta : { displayName : 'Freddy', ... }, // calculated properties
-            links: { self : '/api/user/xxx', ... }, // urls for various web services 
+            links: { 
+                self : { 
+                    href : &quot;/api/user/xxx&quot;, 
+                    methods: ['GET','PUT','DELETE'] 
+                }, 
+                ... 
+            }, // urls for various web services 
             options : { useAsDisplayName : [
                 { label : 'Username', value : 'username' },
                 ...
@@ -287,9 +294,9 @@ const Users = useUsers();
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
 <p>The Record is akin to a relational database table row. You’ll get a record via the <a href="#kind-api">Kind API</a>, perhaps like this:</p>
-<pre><code class="language-js">import {Users} from '#ving/record/records/User.mjs';
-const Users = useUsers();
-const record = Users.findOrDie('xxx');
+<pre><code class="language-js">import {useKind} from '#ving/record/VingRecord.mjs';
+const users = await useKind('User');
+const record = users.findOrDie('xxx');
 </code></pre>
 <p>Once you have a record you can use the following methods to manipulate it.</p>
 <h3 id="reading-data" tabindex="-1">Reading Data <a class="header-anchor" href="#reading-data">
@@ -307,7 +314,12 @@ const record = Users.findOrDie('xxx');
 <pre><code class="language-js">{
     props : { id: 'xxx', ... }, // database properties
     meta : { displayName : 'Freddy', ... }, // calculated properties
-    links: { self : '/api/user/xxx', ... }, // urls for various web services 
+    links: { self : { 
+        href : &quot;/api/user/xxx&quot;, 
+        methods: ['GET','PUT','DELETE'] 
+        }, 
+        ... 
+    }, // urls for various web services 
     options : { useAsDisplayName : [
         { label : 'Username', value : 'username' },
         ...

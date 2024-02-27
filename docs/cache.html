@@ -53,6 +53,7 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
+<li><a href="env.html">Env Vars</a></li>
 <li><a href="logging.html">Logging</a></li>
 <li><a href="messagebus.html">Message Bus</a></li>
 <li><a href="pulumi.html">Pulumi</a></li>
@@ -82,10 +83,10 @@
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
 <p>To use a Redis cache, you must first have a Redis server. Then you simply need to add an entry in .env that points to your Redis server like so:</p>
-<pre><code>KEYV_PROVIDER_URL=&quot;redis://@localhost:6379&quot;
+<pre><code>VING_REDIS=&quot;redis://@localhost:6379&quot;
 </code></pre>
 <p>You can include a username and password in the URL like so:</p>
-<pre><code>KEYV_PROVIDER_URL=&quot;redis://user:pass@localhost:6379&quot;
+<pre><code>VING_REDIS=&quot;redis://user:pass@localhost:6379&quot;
 </code></pre>
 <h2 id="using-the-cache" tabindex="-1">Using the Cache <a class="header-anchor" href="#using-the-cache">
           <span aria-hidden="true" class="hidden">#</span>

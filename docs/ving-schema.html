@@ -53,6 +53,7 @@
 <li><a href="cli.html">CLI</a></li>
 <li><a href="drizzle.html">Database</a></li>
 <li><a href="email.html">Email</a></li>
+<li><a href="env.html">Env Vars</a></li>
 <li><a href="logging.html">Logging</a></li>
 <li><a href="messagebus.html">Message Bus</a></li>
 <li><a href="pulumi.html">Pulumi</a></li>
@@ -119,7 +120,10 @@
 <h3 id="owner" tabindex="-1">owner <a class="header-anchor" href="#owner">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
-<p>An array containing the method for determining who owns this object. Owners can be assigned special rights on <code>props</code>. The owner can be any field that contains a User ID, so in the case of the <code>User</code> schema, it can use its own id by specifying <code>$id</code>, but in another table it might be <code>$userId</code>. It can also contain any number of roles. By default there are 3 roles: <code>admin</code>, <code>developer</code>, <code>verifiedEmail</code>, but you could add more.</p>
+<p>An array containing the method for determining who owns this object. Owners can be assigned special rights on <code>props</code>.</p>
+<p>The owner can be any field that contains a User ID, so in the case of the <code>User</code> schema, it can use its own id by specifying <code>$id</code>, but in another table it might be <code>$userId</code>.</p>
+<p>It can also contain any number of roles. By default there are 3 roles: <code>admin</code>, <code>developer</code>, <code>verifiedEmail</code>, but you could add more. Roles can be defined inside the <code>User</code> schema (<code>#ving/schema/schemas/User.mjs</code>). They have to be added as a <a href="boolean-props">boolean prop type</a>, and then also added to the <code>RoleOptions</code> at the bottom of the file.</p>
+<p>It can also defer to a parent object. So let’s say you had a record called Invoice and another called LineItem. Each LineItem would have a parent relation to the Invoice called <code>invoice</code>. So you could then use <code>^invoice</code> (notice the carat) to indicate that you’d like to ask the Invoice if the User owns it, and if the answer is yes, then the LineItem will be considered to also be owned by that user. The carat means “look for a parent relation in the schema” and whatever comes after the carat is the name of that relation.</p>
 <h3 id="props" tabindex="-1">props <a class="header-anchor" href="#props">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h3>
@@ -135,10 +139,7 @@
 <li>Contain any role (such as <code>admin</code>)</li>
 <li>Contain the special keyword <code>owner</code>, so that whoever was defined as the owner in the attributes of the schema can view or edit that prop</li>
 </ul>
-<p>If a role can <code>edit</code> a prop it can automatically <code>view</code> a prop.</p>
-<blockquote>
-<p>Roles can be defined inside the <code>User</code> schema (<code>#ving/schema/schemas/User.mjs</code>). They have to be added as a <a href="boolean-props">boolean prop type</a>, and then also added to the <code>RoleOptions</code> at the bottom of the file.</p>
-</blockquote>
+<p>If a user can <code>edit</code> a prop it can automatically <code>view</code> a prop.</p>
 <h4 id="prop-types" tabindex="-1">Prop Types <a class="header-anchor" href="#prop-types">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h4>
@@ -227,10 +228,10 @@
 <h5 id="virtual-props" tabindex="-1">Virtual Props <a class="header-anchor" href="#virtual-props">
           <span aria-hidden="true" class="hidden">#</span>
         </a></h5>
-<p>These are used to add a child relationship.</p>
+<p>These are used to add a child relationship. They are virtual because they make no modification to the database table they represent.</p>
 <pre><code class="language-js">{
     type: &quot;virtual&quot;,
-    name: 'apikeys',
+    name: 'userId',
     required: false,
     view: ['public'],
     edit: [],
@@ -245,10 +246,10 @@
           <span aria-hidden="true" class="hidden">#</span>
         </a></h2>
 <p>Now that you’ve created or updated your schema, you can generate <a href="drizzle.html">Drizzle</a> tables from  with this command:</p>
-<pre><code class="language-bash">./ving.mjs schema --makeTables
+<pre><code class="language-bash">./ving.mjs schema --tables
 </code></pre>
 <blockquote>
-<p>Note that you shouldn’t ever need to modify these files directly. If you need to change them, update the ving schema and run the above command again.</p>
+<p>Note that you shouldn’t ever need to modify these table files directly. If you need to change them, update the ving schema and run the above command again.</p>
 </blockquote>
 </div>
     </div>
