@@ -1,9 +1,18 @@
 import Redis from 'ioredis';
 
+/**
+ * Spawns a new connection to redis
+ * 
+ * @returns an  `IORedis` connection
+ */
+export const spawnRedis = () => {
+    return new Redis(process.env.VING_REDIS || '', { maxRetriesPerRequest: null });
+}
+
 let redis = undefined;
 
 /**
- * Connect to Redis.
+ * Provides a shared reusable connection to redis.
  * 
  * @returns an  `IORedis` connection
  */
@@ -11,7 +20,7 @@ export const useRedis = () => {
     if (redis) {
         return redis
     }
-    return redis = new Redis(process.env.VING_REDIS || '', { maxRetriesPerRequest: null });
+    return redis = spawnRedis();
 }
 
 redis = useRedis();

@@ -1,5 +1,6 @@
 import { setHeader, setResponseStatus, defineEventHandler, sendNoContent } from 'h3';
-import { useMessageBusSub } from '#ving/messagebus.mjs';
+import { spawnRedis } from '#ving/redis.mjs';
+
 import { obtainSession } from '#ving/utils/rest.mjs';
 import ving from '#ving/index.mjs';
 
@@ -8,7 +9,7 @@ export default defineEventHandler(async (event) => {
     if (!user) {
         return sendNoContent(event);
     }
-    const messagebus = useMessageBusSub();
+    const messagebus = spawnRedis();
     const hangup = async () => {
         ving.log('messageBus').info('ending sse stream');
         await messagebus.quit()
