@@ -144,6 +144,16 @@ Locates and returns a list of [record](#record-api)s by a drizzle where clause o
 const listOfFredRecords = await Users.findMany(like(Users.realName, 'Fred%'));
 ```
 
+#### findAll
+Does the same thing as `findMany` except with an iterator so not all records are loaded into memory at the same time.
+
+```js
+const allFreds = await Users.findMany(like(Users.realName, 'Fred%'));
+for await (const fred of allFreds) { 
+    console.log(fred.get('id'));
+}
+```
+
 #### findOne
 Locates and returns a single [record](#record-api) by a drizzle where clause or `undefined` if no record is found.
 
