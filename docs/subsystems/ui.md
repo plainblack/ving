@@ -173,7 +173,7 @@ Displays a pagination bar for a [useVingKind() result set](#usevingkind).
 
 Props:
 
-- **kind** - A [useVingKind() object](usevingkind).
+- **kind** - A [useVingKind() object](#usevingkind).
 
 ### SystemWideAlert
 Place this in your layouts where you would like the system wide alert to be displayed when an admin has configured one. It is triggered by the `useSystemWideAlertStore()` composable.

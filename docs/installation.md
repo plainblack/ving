@@ -108,7 +108,7 @@ Also use the [CLI](subsystems/cli) to create a user so you can log in to the web
 
 ## Startup
 
-Start the development server on http://localhost:3000
+Start the development server on `http://localhost:3000`
 
 ```bash
 npm run dev

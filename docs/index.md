@@ -51,7 +51,7 @@ Ving is written entirely in Javascript using [Nuxt 3](http://nuxt.com), [Vue 3](
 
 
 ## How Ving is Constructed
-Everything starts with the [Ving Schema](subsytems/ving-schema), which defines tables in a database, along with fields, privileges, and other properties. From there everything is automatically generated, but still modifyable by you. Ving will generate [database schemas and migrations](subsytems/drizzle), [server-side Javascript APIs](subsytems/ving-record), [REST APIs](subsytems/rest), [Web UIs](subsytems/ui), [email templates](subsytems/email), and more.
+Everything starts with the [Ving Schema](subsystems/ving-schema), which defines tables in a database, along with fields, privileges, and other properties. From there everything is automatically generated, but still modifyable by you. Ving will generate [database schemas and migrations](subsystems/drizzle), [server-side Javascript APIs](subsystems/ving-record), [REST APIs](subsystems/rest), [Web UIs](subsystems/ui), [email templates](subsystems/email), and more.
 
 
 ## Why Rest?
