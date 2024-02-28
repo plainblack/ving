@@ -11,3 +11,5 @@ dist
 **/node_modules
 *.zip
 ving/drizzle/migrations
+docs/.vitepress/cache
+docs/.vitepress/dist
