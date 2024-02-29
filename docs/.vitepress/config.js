@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Ving",
-  base: '/repo/',
+  base: '/ving/',
   description: "An opinionated Nuxt starter with restful API included",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
