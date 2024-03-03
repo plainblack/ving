@@ -44,7 +44,7 @@ mv ving my-cool-project
 Type the following:
 
 ```bash
-cd ving
+cd my-cool-project
 npm install
 ```
 
@@ -71,9 +71,9 @@ You'll need to [download and install a MySQL 8 database](https://dev.mysql.com/d
 Log in to your MySQL database as the root user and then type the following:
 
 ```sql
-create database ving;
-CREATE USER 'ving'@'localhost' IDENTIFIED BY 'vingPass';
-grant all privileges on ving.* to 'ving'@'localhost';
+create database mycoolproject;
+CREATE USER 'mycooluser'@'localhost' IDENTIFIED BY 'mycoolpass';
+grant all privileges on mycoolproject.* to 'mycooluser'@'localhost';
 flush privileges;
 ```
 
@@ -84,7 +84,7 @@ flush privileges;
 Create `.env` in the project root and add your dev database connection string.
 
 ```bash
-VING_MYSQL="mysql://ving:vingpass@localhost:3306/ving"
+VING_MYSQL="mysql://mycooluser:mycoolpass@localhost:3306/mycoolproject"
 ```
 
 > Modify the username, password, and database name to match what you created in the previous step.
