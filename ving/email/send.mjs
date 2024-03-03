@@ -9,7 +9,7 @@ const vingConfig = JSON.parse(
     )
 );
 vingConfig.site.url = process.env.VING_SITE_URL;
-const emailConfig = new URL(process.env.VING_SMTP || '');
+const emailConfig = new URL(process.env.VING_SMTP || 'smtp://localhost:465');
 
 const defaultTransporter = createTransport({
     host: emailConfig.hostname,
