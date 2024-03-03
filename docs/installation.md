@@ -6,7 +6,7 @@ outline: deep
 
 ## Requirements
 
-Any modern computer should be able to run ving, but you will need to [download and install Node.js](https://nodejs.org/en).
+Any modern computer should be able to run ving, but you will need to [download and install Node.js](https://nodejs.org/en). You'll need at least Node 20.
 
 ## Installation Variants
 
