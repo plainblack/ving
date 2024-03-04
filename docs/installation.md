@@ -3,12 +3,26 @@ outline: deep
 ---
 # Installation
 
+Any modern computer can run Ving, but it needs 3 prerequistes:
 
-## Requirements
+- Node 20
+- Redis 7
+- MySQL 8
 
-Any modern computer should be able to run ving, but you will need to [download and install Node.js](https://nodejs.org/en). You'll need at least Node 20.
+## Node 20
 
-## Installation Variants
+You will need to [download and install Node.js](https://nodejs.org/en). You'll need at least Node 20. 
+
+You can install it via a GUI installer using the link above, but if you want to do it quickly via the command line follow these steps:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.bashrc
+nvm install --lts
+node -e "console.log('Running Node.js ' + process.version)"
+```
+
+## Ving Installation Variants
 
 You need to choose whether you want to be able to get updates from future versions of ving or not.
 
@@ -48,17 +62,23 @@ cd my-cool-project
 npm install
 ```
 
-## VS code
+## Redis
+You'll need to [download and install Redis 7](https://redis.com/redis-enterprise-software/download-center/software/). Ving uses for the [cache](subsystems/cache), the [message bus](subsystems/messagebus), and the [jobs system](subsystems/jobs) subsystems. 
 
-For developement we recommend [Visual Studio Code](https://code.visualstudio.com/download).
 
-And for the best possible experience, we also recommend installing these plugins:
+### Create your .env file
 
- - [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) - optional, but nice
- - [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons) - optional, but nice
- - [MySQL](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-mysql-client2) - optional, but nice
- - [Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify) - optional, but nice
- - [Nunjucks Template Formatting](https://marketplace.visualstudio.com/items?itemName=eseom.nunjucks-template) - optional, but nice
+Configuring Ving to use Redis is pretty simple. Just create an `.env` file in your project root and add a connection string that points to your Redis server:
+
+```bash
+VING_REDIS="redis://localhost:6379"
+```
+You can also include username and password like this:
+```bash
+VING_REDIS="redis://user:pass@localhost:6379"
+```
+
+> **NOTE:** You must enable the setting `maxmemory-policy=noeviction` in your Redis server to prevent it from automatically deleting keys when memory runs low as this will cause problems with the [jobs system](subsystems/jobs).
 
 ## MySQL
 
@@ -79,9 +99,9 @@ flush privileges;
 
 > Use your own username and password options, not the samples we provided here.
 
-### Create a .env file
+### Update your .env file
 
-Create `.env` in the project root and add your dev database connection string.
+Update your `.env` in the project root and add your dev database connection string:
 
 ```bash
 VING_MYSQL="mysql://mycooluser:mycoolpass@localhost:3306/mycoolproject"
@@ -98,7 +118,7 @@ Now you can create the initial tables into your database using the [CLI](subsyst
 ./ving.mjs drizzle --up
 ```
 
-### Create First User
+## Create First User
 
 Also use the [CLI](subsystems/cli) to create a user so you can log in to the web interface.
 
@@ -117,6 +137,18 @@ npm run dev
 ## Optional Extras
 To make full use of all of Ving's features, there are other things you'll need to configure:
 
-- To use [Redis as your cache](subsystems/cache), use the [message bus](subsystems/messagebus), or the [jobs system](subsystems/jobs) you'll need to configure Redis first.
 - Ving offers [email sending and templating](subsystems/email), but you need to configure an SMTP server first.
 - If you want to make use of AWS for things like storing file uploads in S3, then you'll also want to check out our [Pulumi](subsystems/pulumi) integration.
+
+
+## VS code
+
+For developement we recommend [Visual Studio Code](https://code.visualstudio.com/download).
+
+And for the best possible experience, we also recommend installing these plugins:
+
+ - [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) - optional, but nice
+ - [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons) - optional, but nice
+ - [MySQL](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-mysql-client2) - optional, but nice
+ - [Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify) - optional, but nice
+ - [Nunjucks Template Formatting](https://marketplace.visualstudio.com/items?itemName=eseom.nunjucks-template) - optional, but nice
