@@ -11,7 +11,7 @@ Ving is a Web and REST code generation tool and services framework. It has a hea
  - API key and privilege system with access to make requests on behalf of other users
  - A useful set of custom made client components and composables
  - A full user interface for user management
- - Email subsystem
+ - A templated email subsystem
 
 Ving is written entirely in Javascript using [Nuxt 3](http://nuxt.com), [Vue 3](http://vuejs.org), [PrimeVue](https://primevue.org), [PrimeFlex](https://www.primefaces.org/primeflex/) and [Drizzle](https://github.com/drizzle-team/drizzle-orm).
 
