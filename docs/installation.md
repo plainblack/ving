@@ -62,13 +62,23 @@ cd my-cool-project
 npm install
 ```
 
+## Create your .env file
+All of Ving's secrets and variables that can change in various environments like dev to prod are stored in a `.env` file in the root of your project. You can read more about [environment variables here](env).
+
+Go ahead and create your `.env` file now and we'll add to it in the next few sections.
+
+```bash
+touch .env
+```
+
+
 ## Redis
 You'll need to [download and install Redis 7](https://redis.com/redis-enterprise-software/download-center/software/). Ving uses for the [cache](subsystems/cache), the [message bus](subsystems/messagebus), and the [jobs system](subsystems/jobs) subsystems. 
 
 
-### Create your .env file
+### Update your .env file
 
-Configuring Ving to use Redis is pretty simple. Just create an `.env` file in your project root and add a connection string that points to your Redis server:
+Configuring Ving to use Redis is pretty simple. Just dd a connection string that points to your Redis server:
 
 ```bash
 VING_REDIS="redis://localhost:6379"
@@ -101,7 +111,7 @@ flush privileges;
 
 ### Update your .env file
 
-Update your `.env` in the project root and add your dev database connection string:
+Update your `.env` to add your dev database connection string:
 
 ```bash
 VING_MYSQL="mysql://mycooluser:mycoolpass@localhost:3306/mycoolproject"
