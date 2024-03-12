@@ -78,7 +78,7 @@ You'll need to [download and install Redis 7](https://redis.com/redis-enterprise
 
 ### Update your .env file
 
-Configuring Ving to use Redis is pretty simple. Just dd a connection string that points to your Redis server:
+Configuring Ving to use Redis is pretty simple. Just add a connection string that points to your Redis server:
 
 ```bash
 VING_REDIS="redis://localhost:6379"
