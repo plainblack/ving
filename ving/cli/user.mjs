@@ -68,10 +68,11 @@ export default defineCommand({
                 username: args.add,
                 realName: args.add,
                 email: args.email,
-                password: args.password,
                 admin: args.admin,
             });
             await user.insert();
+            await user.setPassword(args.password);
+            await user.update();
             formatList([user]);
         }
         else if (args.modify) {

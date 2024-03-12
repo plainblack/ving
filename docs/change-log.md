@@ -3,4 +3,5 @@ outline: deep
 ---
 # Change Log
 
-TODO: Once we start doing relases I'll add that here.
+## 2024-03-12
+* Fixed a security bug where passwords created via the CLI were stored incorrectly.
