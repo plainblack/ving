@@ -176,7 +176,7 @@ These are used to add a child relationship. They are virtual because they make n
 Now that you've created or updated your schema, you can generate [Drizzle](drizzle) tables from  with this command:
 
 ```bash
-./ving.mjs schema --tables
+./ving.mjs drizzle --tables
 ```
 
 > Note that you shouldn't ever need to modify these table files directly. If you need to change them, update the ving schema and run the above command again.
