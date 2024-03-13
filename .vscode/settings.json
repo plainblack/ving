@@ -1,0 +1,16 @@
+{
+  "editor.formatOnSave": true,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "files.associations": {
+    "*.css": "\"tailwindcss\""
+  },
+  "window.zoomLevel": 1,
+  "workbench.iconTheme": "vscode-icons",
+  "vsicons.dontShowNewVersionMessage": true,
+  "explorer.confirmDelete": false,
+  "eslint.options": {},
+  "editor.stickyScroll.enabled": true,
+  "terminal.integrated.env.osx": {},
+}
