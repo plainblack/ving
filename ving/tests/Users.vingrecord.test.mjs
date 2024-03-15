@@ -29,8 +29,8 @@ describe('Users', async () => {
         expect(warden.isOwner(captain)).toBe(false);
     });
     test("can update ving record", async () => {
-        warden.set('admin', true);
-        expect(warden.get('admin')).toBe(true);
+        warden.admin = true;
+        expect(warden.admin).toBe(true);
         await warden.update();
     });
     test("can refetch ving record", async () => {

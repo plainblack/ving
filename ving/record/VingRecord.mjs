@@ -76,6 +76,21 @@ export class VingRecord {
         this.#inserted = inserted;
         this.db = db;
         this.table = table;
+        const schema = findVingSchema(getTableName(table));
+        const pseudoProps = {}
+        for (const prop of schema.props) {
+            if (prop.type == 'virtual')
+                continue;
+            pseudoProps[prop.name] = {
+                get() {
+                    return this.get(prop.name);
+                },
+                set(value) {
+                    return this.set(prop.name, value);
+                },
+            }
+        }
+        Object.defineProperties(this, pseudoProps);
     }
 
     /**
