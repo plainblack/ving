@@ -375,7 +375,7 @@ await record.updateAndVerify({foo: 'bar', one: 1}, currentUserOrSession);
 ```
 
 ### Pseudo Properties
-In addition to all the methods below, every [schema](ving-schema) prop except those of type `virtual` will also get pseudo props added to the record. The means that in addition to using `get('username')` and `set('username', 'adufresne')` methods you can use the pseudo props as getters and setters like this:
+In addition to all the methods above, every [schema](ving-schema) prop except those of type `virtual` will also get pseudo props added to the record. The means that in addition to using `get('username')` and `set('username', 'adufresne')` methods you can use the pseudo props as getters and setters like this:
 
 ```js
 const username = user.username;
