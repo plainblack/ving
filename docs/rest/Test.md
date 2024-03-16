@@ -7,16 +7,16 @@ Use this endpoint to test that you can post query params and body params to a vi
 ## Endpoints
 
 ```
-GET /api/test
+GET /api/v1/test
 ```
 ```
-POST /api/test
+POST /api/v1/test
 ```
 ```
-PUT /api/test
+PUT /api/v1/test
 ```
 ```
-DELETE /api/test
+DELETE /api/v1/test
 ```
 
 ### Query Params
