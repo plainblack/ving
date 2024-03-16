@@ -30,8 +30,8 @@ const route = useRoute();
 const dt = useDateTime();
 
 const user = useVingRecord({
-    fetchApi: `/api/${rest.defaultVersion}/user/${route.params.id}`,
-    createApi: `/api/${rest.defaultVersion}/user`,
+    fetchApi: `/api/${rest.version}/user/${route.params.id}`,
+    createApi: `/api/${rest.version}/user`,
     query: { includeMeta: true, includeOptions: true },
 });
 await user.fetch()

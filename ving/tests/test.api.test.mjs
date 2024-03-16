@@ -3,7 +3,7 @@ import axios from 'axios'
 import { getConfig } from '#ving/config.mjs';
 
 const vingConfig = getConfig();
-const base = `http://localhost:3000/api/${vingConfig.rest.defaultVersion}/`;
+const base = `http://localhost:3000/api/${vingConfig.rest.version}/`;
 describe('Test API', async () => {
 
     test(`get ${base}`, async () => {

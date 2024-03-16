@@ -5,6 +5,6 @@
 
 <script setup>
 async function doit() {
-    console.log(await $fetch(`/api/${rest.defaultVersion}/test?foo=bar`))
+    console.log(await $fetch(`/api/${rest.version}/test?foo=bar`))
 }
 </script>

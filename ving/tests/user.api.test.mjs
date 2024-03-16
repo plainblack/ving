@@ -6,7 +6,7 @@ import { getConfig } from '#ving/config.mjs';
 
 const Users = await useKind('User');
 const vingConfig = getConfig();
-const base = `http://localhost:3000/api/${vingConfig.rest.defaultVersion}/`;
+const base = `http://localhost:3000/api/${vingConfig.rest.version}/`;
 
 describe('User API', async () => {
     await Users.delete.where(eq(Users.table.username, 'brooks'));
