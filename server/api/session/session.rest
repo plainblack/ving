@@ -1,6 +1,6 @@
 ### login
 # @name login
-POST http://localhost:3000/api/session
+POST http://localhost:3000/api/v1/session
 Content-Type: application/json
 
 {
@@ -10,19 +10,19 @@ Content-Type: application/json
 }
 
 ### get
-GET http://localhost:3000/api/session/{{login.response.body.$.props.id}}?includeRelated=user 
+GET http://localhost:3000/api/v1/session/{{login.response.body.$.props.id}}?includeRelated=user 
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 
 
 ### logout
-DELETE http://localhost:3000/api/session/{{login.response.body.$.props.id}} 
+DELETE http://localhost:3000/api/v1/session/{{login.response.body.$.props.id}} 
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 
 
 
 
 ### create user
-POST http://localhost:3000/api/user?includeMeta=true
+POST http://localhost:3000/api/v1/user?includeMeta=true
 Content-Type: application/json
 
 {
@@ -33,6 +33,6 @@ Content-Type: application/json
 }
 
 ### delete user
-DELETE http://localhost:3000/api/user/{{login.response.body.$.props.userId}} 
+DELETE http://localhost:3000/api/v1/user/{{login.response.body.$.props.userId}} 
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 

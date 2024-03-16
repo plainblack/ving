@@ -16,37 +16,37 @@ Developers use an API Key to create a [Session](Session) via the Rest API and pe
 
 | Name      | Record                    | Type      | Endpoint              |
 | ---       | ---                       | ---       | ---                   |
-| user      | [User](User)   | Parent    | /api/apikey/:id/user  |
+| user      | [User](User)   | Parent    | /api/v1/apikey/:id/user  |
 
 ## Endpoints
 
 ### List
 
 ```
-GET /api/apikey
+GET /api/v1/apikey
 ```
 
 ### Create
 ```
-POST /api/apikey
+POST /api/v1/apikey
 ```
 
 ### Read
 ```
-GET /api/apikey/:id
+GET /api/v1/apikey/:id
 ```
 
 ### Update
 ```
-PUT /api/apikey/:id
+PUT /api/v1/apikey/:id
 ```
 
 ### Delete
 ```
-DELETE /api/apikey/:id
+DELETE /api/v1/apikey/:id
 ```
 
 ### Options
 ```
-GET /api/apikey/options
+GET /api/v1/apikey/options
 ```

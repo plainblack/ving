@@ -8,5 +8,8 @@
             "Madison, WI 53701",
             "USA"
         ]
+    },
+    "rest": {
+        "defaultVersion": "v1"
     }
 }

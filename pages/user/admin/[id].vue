@@ -79,8 +79,8 @@ const notify = useNotifyStore();
 const id = route.params.id.toString();
 const user = useVingRecord({
     id,
-    fetchApi: '/api/user/' + id,
-    createApi: '/api/user',
+    fetchApi: `/api/${rest.defaultVersion}/user/${id}`,
+    createApi: `/api/${rest.defaultVersion}/user`,
     query: { includeMeta: true, includeOptions: true },
     onUpdate() {
         notify.success('Updated user.');

@@ -157,7 +157,8 @@ export class VingRecord {
         let out = { props: {} };
         out.props.id = this.get('id');
         if (include !== undefined && include.links) {
-            out.links = { base: { href: `/api/${schema.kind?.toLowerCase()}`, methods: ['GET', 'POST'] } };
+            const vingConfig = ving.getConfig();
+            out.links = { base: { href: `/api/${vingConfig.rest.defaultVersion}/${schema.kind?.toLowerCase()}`, methods: ['GET', 'POST'] } };
             out.links.self = { href: `${out.links.base.href}/${this.#props.id}`, methods: ['GET', 'PUT', 'DELETE'] };
         }
         if (include !== undefined && include.options) {

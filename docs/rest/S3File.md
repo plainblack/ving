@@ -13,7 +13,7 @@ The process of uploading a file happens in 3 steps:
 Here's a bit more detail:
 
 ```
-Browser / Your Code --> POST filename and content type to /api/s3file 
+Browser / Your Code --> POST filename and content type to /api/v1/s3file 
                             * creates an S3File and sets its status to pending
                             * generates a Presigned URL for S3
                     <-- Return S3File description, including meta.presignedUrl
@@ -22,7 +22,7 @@ Browser / Your Code --> POST filename and content type to /api/s3file
                             * stores file in S3
                     <-- Return nothing
 
-                    --> PUT s3file.props.id to an import API such as /api/user/:id/import-avatar
+                    --> PUT s3file.props.id to an import API such as /api/v1/user/:id/import-avatar
                             * post processes the file uploaded to S3
                             * verifies that the file conforms to the import rules
                     <-- Return updated record such as User
@@ -43,40 +43,40 @@ Browser / Your Code --> POST filename and content type to /api/s3file
 
 | Name          | Record              | Type      | Endpoint              |
 | ---           | ---                 | ---       | ---                   |
-| user          | [User](User)   | Parent    | /api/s3file/:id/user  |
-| avatarUsers   | [User](User)   | Child     | /api/s3file/:id/avatarusers  |
+| user          | [User](User)   | Parent    | /api/v1/s3file/:id/user  |
+| avatarUsers   | [User](User)   | Child     | /api/v1/s3file/:id/avatarusers  |
 
 ## Endpoints
 
 ### List
 
 ```
-GET /api/s3file
+GET /api/v1/s3file
 ```
 
 ### Create
 ```
-POST /api/s3file
+POST /api/v1/s3file
 ```
 You won't actually post the file here. You post the `filename`, `contentType`, and `sizeInBytes` here and it will return a `presignedUrl` in the `meta` section. 
 
 
 ### Read
 ```
-GET /api/s3file/:id
+GET /api/v1/s3file/:id
 ```
 
 ### Update
 ```
-PUT /api/s3file/:id
+PUT /api/v1/s3file/:id
 ```
 
 ### Delete
 ```
-DELETE /api/s3file/:id
+DELETE /api/v1/s3file/:id
 ```
 
 ### Options
 ```
-GET /api/s3file/options
+GET /api/v1/s3file/options
 ```

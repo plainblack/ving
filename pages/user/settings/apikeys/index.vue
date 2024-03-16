@@ -133,7 +133,7 @@ const dt = useDateTime();
 const currentUser = useCurrentUserStore();
 const apikeys = useVingKind({
     listApi: currentUser.links?.apikeys.href,
-    createApi: '/api/apikey',
+    createApi: `/api/${rest.defaultVersion}/apikey`,
     query: { includeMeta: true },
     newDefaults: { name: '', reason: '', url: 'http://', userId: currentUser.props?.id },
 });

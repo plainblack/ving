@@ -2,9 +2,11 @@ import axios from 'axios';
 import { useKind } from '#ving/record/utils.mjs';
 import { describe, test, expect, afterAll } from "vitest";
 import { like, eq, asc, desc, and } from '#ving/drizzle/orm.mjs';
+import { getConfig } from '#ving/config.mjs';
 
 const Users = await useKind('User');
-const base = 'http://localhost:3000/api/';
+const vingConfig = getConfig();
+const base = `http://localhost:3000/api/${vingConfig.rest.defaultVersion}`;
 
 describe('Session API', async () => {
     await Users.delete.where(eq(Users.table.username, 'rita'));

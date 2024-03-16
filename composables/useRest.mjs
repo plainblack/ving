@@ -1,10 +1,10 @@
 /**
  * A wrapper around the Nuxt composable `$fetch()` that allows for streamlined fetches, but integrate's with ving's subsystems.
  * 
- * Usage: `const response = await useRest('/api/user/xxx')`
+ * Usage: `const response = await useRest('/api/v1/user/xxx')`
  * 
   * 
- * @param url An endpoint that you wish to interact with like `/api/user`.
+ * @param url An endpoint that you wish to interact with like `/api/v1/user`.
  * @param behavior An object that modifies the behavior of this function.
  * @returns It ultimately returns an object that looks like:
  *

@@ -1,5 +1,5 @@
 ### create
-POST http://localhost:3000/api/user?includeMeta=true
+POST http://localhost:3000/api/v1/user?includeMeta=true
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 ### login
 # @name login
-POST http://localhost:3000/api/session
+POST http://localhost:3000/api/v1/session
 Content-Type: application/json
 
 {
@@ -21,20 +21,20 @@ Content-Type: application/json
 }
 
 ### list
-GET http://localhost:3000/api/user
+GET http://localhost:3000/api/v1/user
 Content-Type: application/json
 
 ### get
-GET http://localhost:3000/api/user/{{login.response.body.$.props.userId}}?includeLinks=true&includeMeta=true 
+GET http://localhost:3000/api/v1/user/{{login.response.body.$.props.userId}}?includeLinks=true&includeMeta=true 
 Content-Type: application/json
 
 ### get options
-GET http://localhost:3000/api/user/options
+GET http://localhost:3000/api/v1/user/options
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 
 
 ### put
-PUT http://localhost:3000/api/user/{{login.response.body.$.props.userId}} 
+PUT http://localhost:3000/api/v1/user/{{login.response.body.$.props.userId}} 
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 
 
@@ -43,12 +43,12 @@ Cookie: vingSessionId={{login.response.body.$.props.id}}
 }
 
 ### get with auth
-GET http://localhost:3000/api/user/{{login.response.body.$.props.userId}}?includeOptions=true
+GET http://localhost:3000/api/v1/user/{{login.response.body.$.props.userId}}?includeOptions=true
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 
 
 
 ### delete
-DELETE http://localhost:3000/api/user/{{login.response.body.$.props.userId}} 
+DELETE http://localhost:3000/api/v1/user/{{login.response.body.$.props.userId}} 
 Content-Type: application/json
 Cookie: vingSessionId={{login.response.body.$.props.id}} 

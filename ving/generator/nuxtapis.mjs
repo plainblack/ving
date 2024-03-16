@@ -1,5 +1,6 @@
 import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
 import fs from 'fs';
+import ving from '#ving/index.mjs';
 
 const optionsTemplate = ({ name }) =>
     `import { useKind } from '#ving/record/utils.mjs';
@@ -94,7 +95,7 @@ export default defineEventHandler(async (event) => {
 
 export const generateRest = (params) => {
     const context = { ...getContext({}), ...params };
-    const folderName = `server/api/${context.name.toLowerCase()}`;
+    const folderName = `server/api/${ving.getConfig().rest.defaultVersion}${context.name.toLowerCase()}`;
     let gen = Promise.resolve(context);
     let filePath = `${folderName}/[id].delete.mjs`;
     if (!(params.skipExisting && fs.existsSync(filePath)))

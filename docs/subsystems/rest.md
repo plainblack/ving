@@ -13,7 +13,7 @@ Your Rest endpoints will be generated from your [Ving Schema](ving-schema) by us
 ./ving.mjs record --rest Foo
 ```
 
-These will be placed in the `server/api/foo` folder and can be modified by you after the fact.
+These will be placed in the `server/api/v1/foo` folder and can be modified by you after the fact.
 
 
 ## Conventions
@@ -33,8 +33,12 @@ ID's are often represented as 3 x's: `xxx`. If you see `xxx` anywhere that means
 When referencing any API herein we omit the domain for the site. So you should prefix it with whatever site you are trying to access like:
 
 ```
-http://some.example.com/api/user/xxx
+http://some.example.com/api/v1/user/xxx
 ```
+
+## Versioning
+
+The API is versioned with a `v1` in the URL. In this context `v1` actually just represents the default version number which is set in `ving.json`. If you want to make API breaking changes, increment the version number in `ving.json`, then copy all your APIs from the `server/api/v1` folder into a `server/api/v2` folder and then make your changes to the `v2` version of the API. That way your users on the `v1` API will be able to continue using the service until you deprecate it. 
 
 ##  Requests and Responses
 
@@ -43,7 +47,7 @@ To make a request to a Wing web service you need nothing more than a command lin
 ### Create a record
 
 ```
-POST http://ving.example.com/api/article
+POST http://ving.example.com/api/v1/article
 Content-Type: application/json
 
 { 
@@ -67,7 +71,7 @@ Response:
 ### Read a record
 
 ```
-GET http://wing.example.com/api/article/xxx
+GET http://wing.example.com/api/v1/article/xxx
 ```
 
 Response:
@@ -85,7 +89,7 @@ Response:
 ### Update a record
 
 ```
-PUT http://ving.example.com/api/article/xxx
+PUT http://ving.example.com/api/v1/article/xxx
 Content-Type: application/json
 
 {
@@ -107,7 +111,7 @@ Response:
 
 ### Delete a record
 ```
-DELETE http://ving.example.com/api/article/xxx?includeMeta=true
+DELETE http://ving.example.com/api/v1/article/xxx?includeMeta=true
 ```
 
 Response
@@ -128,7 +132,7 @@ Response
 
 ### Get a list of records
 ```
-GET http://ving.example.com/api/article
+GET http://ving.example.com/api/v1/article
 ```
 
 Response:
@@ -166,7 +170,7 @@ request information about your user account without specifying a `vingSessionId`
 then all you'd get back is an ID and some other basic information, like this:
 
 ```
-GET http://wing.example.com/api/user/xxx?includeMeta=true
+GET http://wing.example.com/api/v1/user/xxx?includeMeta=true
 ```
 
 Response:
@@ -189,7 +193,7 @@ But if you request your account information with your `vingSessionId`, then you'
 get a result set with everything we know about you:
 
 ```
-GET http://wing.example.com/api/user/xxx?includeMeta=true
+GET http://wing.example.com/api/v1/user/xxx?includeMeta=true
 Cookie: vingSessionId="yyy"
 ```
 
@@ -294,7 +298,7 @@ Results will always start with a top level object, and if its a [Ving Record](vi
 Paginated lists are always handled exactly the same way, and always have the same minimum set of parameters for manipulation.
 
 ```
-GET /api/article?itemsPerPage=25&page=3
+GET /api/v1/article?itemsPerPage=25&page=3
 ```
 
 You can tell how many items per page to return and which page number to return. That will give you a result set like this:
@@ -373,7 +377,7 @@ In addition to exceptions there can be less severe issues that come up. These ar
 All objects can have relationships to each other. When you fetch an object, you can pass `includeLinks=true` as a parameter if you want to get the relationship data as well.
 
 ```
-GET /api/article/xxx?includeLinks=true
+GET /api/v1/article/xxx?includeLinks=true
 ```
 
 Response:
@@ -385,15 +389,15 @@ Response:
     },
     "links" : {
         "base" : {
-          "href": "/api/user",
+          "href": "/api/v1/user",
           "methods": ["GET","POST"]
         }, 
         "self" : {
-          "href": "/api/user/xxx",
+          "href": "/api/v1/user/xxx",
           "methods": ["GET","PUT","DELETE"]
         },
         "articles" : {
-          "href": "/user/xxx/articles",
+          "href": "/api/v1/user/xxx/articles",
           "methods": ["GET"]
         },
      }
@@ -448,14 +452,14 @@ Filters allow you to modify the result set when querying a list of records.
 Some relationships will allow you to use a `search` parameter on the URL that will allow you to search the result set. The documentation will tell you when this is the case and which fields will be searched to provide you with a result set.
 
 ```
-GET /api/article/xxx/related-articles?search=prison
+GET /api/v1/article/xxx/related-articles?search=prison
 ```
 
 #### Qualifiers
 In search engines these are sometimes called facets. They are criteria that allow you to filter the result set by specific values of a specfic field. The documentation will tell you when a relationship has a qualifier. To use it you'd add a parameter of the name of the qualifier to the URL along with the value you want to search for.
 
 ```
-GET /api/article/xxx/related-articles?userId=xxx
+GET /api/v1/article/xxx/related-articles?userId=xxx
 ```
 
 That will search for all related articles with a `userId` of `xxx`.
@@ -463,7 +467,7 @@ That will search for all related articles with a `userId` of `xxx`.
 You can also modify the qualifier by prepending operators such as `>`, `>=`, `<=`, and `<>` (or `!=`) onto the value. For example:
 
 ```
- GET /api/article/xxx/related-articles?wordCount=>=100
+ GET /api/v1/article/xxx/related-articles?wordCount=>=100
 ```
 
 Get all related articles with a word count greater than or equal to `100`.
@@ -471,7 +475,7 @@ Get all related articles with a word count greater than or equal to `100`.
 You can also request that a qualifier be limited to a `null` value.
 
 ```
-GET /api/article/xxx/related-articles?userId=null
+GET /api/v1/article/xxx/related-articles?userId=null
 ```
 
 If you did this with an empty `''` or `undefined` value rather than specifically `null` then this qualifier will be skipped.
@@ -480,7 +484,7 @@ If you did this with an empty `''` or `undefined` value rather than specifically
 You can also use ranged filters to limit data that must fall between 2 values by prepending `_start_` or `_end_` to the name of the prop you wish to filter on range.
 
 ```
-GET /api/article/xxx/related-articles \
+GET /api/v1/article/xxx/related-articles \
   ?_start_createdAt=2012-04-23T18:25:43.511Z \
   &_end_createdAt=2023-04-25T08:13:10.001Z
 ```
@@ -490,7 +494,7 @@ GET /api/article/xxx/related-articles \
 Some records will allow for extra includes, and will show this in the documenation. Extra includes are extra bits of data you can pull back when you request the record, that are unique to that record.
 
 ```
-GET /api/article/xxx/related-articles?includeExtra=foo
+GET /api/v1/article/xxx/related-articles?includeExtra=foo
 ```
 
 The result will then have `foo` in an `extras` block like:
@@ -514,7 +518,7 @@ Sometimes a record will have fields that require you to choose an option from an
 This way would be most often used when you need the list of options in order to create a record.
 
 ```
-GET /api/article/options
+GET /api/v1/article/options
 ```
 
 Response:
@@ -531,7 +535,7 @@ Response:
 This way would be most often used when you need the list of options to update an object, because you can get the properties of the object and the options in one call.
 
 ```
-GET http://wing.example.com/article/xxx?includeOptions=true
+GET http://ving.example.com/api/v1/article/xxx?includeOptions=true
 ```
 
 ```json
@@ -562,14 +566,14 @@ There is a composable built into ving called [useVingKind](ui#usevingkind()) tha
 ```
 curl -X POST -d '{"title":"Ethics in Prisons","author":"Andy Dufresne"}' \
   -H Content-Type: application/json \
-  -H Cookie: vingSessionId=yyy http://ving.example.com/api/article
+  -H Cookie: vingSessionId=yyy http://ving.example.com/api/v1/article
 ```
 
 ### VS Code Rest Client
 [VS Code Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
 ```
-POST http://ving.example.com/api/article
+POST http://ving.example.com/api/v1/article
 Content-Type: application/json
 Cookie: vingSessionId=yyy
 

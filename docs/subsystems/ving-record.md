@@ -22,7 +22,7 @@ Once you're done adding functionality you can then generate a Rest API for it by
 ./ving.mjs record --rest Foo
 ```
 
-Those files will be placed in `server/api/foo` and you can modify them as needed, but they should work without modification. And you can access them at `http://localhost:3000/api/foo`.
+Those files will be placed in `server/api/v1/foo` and you can modify them as needed, but they should work without modification. And you can access them at `http://localhost:3000/api/v1/foo`.
 
 And if you want to build a user interface for your services, you can generate that too by invoking the CLI once more.
 
@@ -106,7 +106,7 @@ const list = await Users.describeList(params, where)
             meta : { displayName : 'Freddy', ... }, // calculated properties
             links: { 
                 self : { 
-                    href : "/api/user/xxx", 
+                    href : "/api/v1/user/xxx", 
                     methods: ['GET','PUT','DELETE'] 
                 }, 
                 ... 
@@ -270,7 +270,7 @@ const description = await record.describe(params)
     props : { id: 'xxx', ... }, // database properties
     meta : { displayName : 'Freddy', ... }, // calculated properties
     links: { self : { 
-        href : "/api/user/xxx", 
+        href : "/api/v1/user/xxx", 
         methods: ['GET','PUT','DELETE'] 
         }, 
         ... 

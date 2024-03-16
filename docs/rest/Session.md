@@ -8,13 +8,13 @@ In order to access privileged data you'll on any ving endpoint you'll need to pa
 
 | Name      | Record                        | Type      | Endpoint              |
 | ---       | ---                           | ---       | ---                   |
-| user      | [User](User)   | Parent    | /api/session/:id/user  |
+| user      | [User](User)   | Parent    | /api/v1/session/:id/user  |
 
 ## Endpoints
 
 ### Login / Create
 ```
-POST /api/session
+POST /api/v1/session
 
 {
     "apiKey" : "1b8e4f16-08ca-4829-befe-865cec37679b",
@@ -24,19 +24,19 @@ POST /api/session
 
 ### Read
 ```
-GET /api/session/:id
+GET /api/v1/session/:id
 Cookie: vingSessionId=xxx
 ```
 
 ### Logout / Delete
 ```
-DELETE /api/session/:id
+DELETE /api/v1/session/:id
 Cookie: vingSessionId=xxx
 ```
 
 Or
 
 ```
-DELETE /api/session
+DELETE /api/v1/session
 Cookie: vingSessionId=xxx
 ```

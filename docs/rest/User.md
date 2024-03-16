@@ -20,20 +20,20 @@ Users can own records in ving. Users have privileges to access various types of 
 
 | Name      | Record                        | Type      | Endpoint              |
 | ---       | ---                           | ---       | ---                   |
-| apikeys   | [APIKey](APIKey)   | Child     | /api/user/:id/apikeys |
-| avatar   | [S3File](S3File)   | Child     | /api/user/:id/avatar |
+| apikeys   | [APIKey](APIKey)   | Child     | /api/v1/user/:id/apikeys |
+| avatar   | [S3File](S3File)   | Child     | /api/v1/user/:id/avatar |
 
 ## Endpoints
 
 ### List
 
 ```
-GET /api/user
+GET /api/v1/user
 ```
 
 ### Create
 ```
-POST /api/user
+POST /api/v1/user
 
 {
     "username" : "adufresne",
@@ -45,12 +45,12 @@ POST /api/user
 
 ### Read
 ```
-GET /api/user/:id
+GET /api/v1/user/:id
 ```
 
 ### Update
 ```
-PUT /api/user/:id
+PUT /api/v1/user/:id
 
 {
     "useAsDisplayName" : "realName"
@@ -59,18 +59,18 @@ PUT /api/user/:id
 
 ### Delete
 ```
-DELETE /api/user/:id
+DELETE /api/v1/user/:id
 ```
 
 ### Options
 ```
-GET /api/user/options
+GET /api/v1/user/options
 ```
 
 ### Who Am I?
 Returns a user record for the currently logged in user based upon the session passed.
 ```
-GET /api/user/whoami
+GET /api/v1/user/whoami
 Cookie: vingSessionId=xxx
 ```
 
@@ -78,7 +78,7 @@ Cookie: vingSessionId=xxx
 Attach an uploaded [S3File](S3File) to this user as an avatar.
 
 ```
-PUT /api/user/:id/import-avatar
+PUT /api/v1/user/:id/import-avatar
 Cookie: vingSessionId=xxx
 
 {

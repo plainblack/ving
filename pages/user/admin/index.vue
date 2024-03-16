@@ -82,8 +82,8 @@ definePageMeta({
 
 const dt = useDateTime();
 const users = useVingKind({
-    listApi: '/api/user',
-    createApi: '/api/user',
+    listApi: `/api/${rest.defaultVersion}/user`,
+    createApi: `/api/${rest.defaultVersion}/user`,
     query: { includeMeta: true, sortBy: 'username', sortOrder: 'asc' },
     newDefaults: { username: '', realName: '', email: '' },
 });

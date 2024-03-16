@@ -1,8 +1,10 @@
 import { useKind } from '#ving/record/utils.mjs';
 import { describe, test, expect } from "vitest";
 import { like, eq, asc, desc, and, inArray, SQL } from '#ving/drizzle/orm.mjs';
+import { getConfig } from '#ving/config.mjs';
 
 const Users = await useKind('User');
+const vingConfig = getConfig();
 
 await Users.delete.where(inArray(Users.table.username, ['warden', 'captain', 'guard']));
 const warden = await Users.create({ username: 'warden', email: 'warden@shawshank.jail', realName: 'Samuel Norton' });
@@ -45,7 +47,7 @@ describe('Users', async () => {
         expect(description.meta?.displayName).toBe('captain');
         expect(description.props.username).toBe('captain');
         if (description.links !== undefined) {
-            expect(description.links.base.href).toBe('/api/user');
+            expect(description.links.base.href).toBe(`/api/${vingConfig.rest.defaultVersion}/user`);
         }
         if (description.options !== undefined) {
             expect(description.options.useAsDisplayName).toBeTypeOf('object');
@@ -63,7 +65,7 @@ describe('Users', async () => {
         expect(description.props.username).toBe('captain');
         expect(description.props.admin).toBe(false);
         if (description.links !== undefined) {
-            expect(description.links.base.href).toBe('/api/user');
+            expect(description.links.base.href).toBe(`/api/${vingConfig.rest.defaultVersion}/user`);
         }
         if (description.options !== undefined) {
             expect(description.options.useAsDisplayName).toBeTypeOf('object');
@@ -76,7 +78,7 @@ describe('Users', async () => {
         expect(description.props.username).toBe(undefined);
         expect(description.props.admin).toBe(undefined);
         if (description.links !== undefined) {
-            expect(description.links.base.href).toBe('/api/user');
+            expect(description.links.base.href).toBe(`/api/${vingConfig.rest.defaultVersion}/user`);
         }
         expect(description.options).toEqual({});
         if (description.options !== undefined) {
