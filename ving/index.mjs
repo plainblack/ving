@@ -8,6 +8,7 @@ import { findObject } from '#ving/utils/findObject.mjs';
 import { useKind } from '#ving/record/utils.mjs'
 import { useDB } from '#ving/drizzle/db.mjs'
 import { useRedis } from '#ving/redis.mjs'
+import { getConfig } from '#ving/config.mjs';
 
 /**
  * Exports a list of the most useful features of Ving from a single import location.
@@ -21,6 +22,7 @@ import { useRedis } from '#ving/redis.mjs'
  * addJob() - the same as `addJob` from '#ving/jobs/queue.mjs'
  * findObject() - the same as `ouch` from '#ving/utils/findObject.mjs'
  * ouch() - the same as `ouch` from '#ving/utils/ouch.mjs'
+ * getConfig() - the sames `getConfig` from '#ving/config.mjs'
  * useKind() - the same as `useKind` from '#ving/record/VingRecord.mjs'
  * close() - closes the connections mysql, redis/BullMQ, and redis/cache
  */
@@ -32,6 +34,7 @@ export default {
     addJob,
     findObject,
     ouch,
+    getConfig,
     useKind,
     close: async () => {
         await useDB().session.client.pool.end();

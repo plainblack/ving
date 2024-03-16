@@ -1,14 +1,7 @@
 import Email from 'email-templates';
 import { createTransport } from 'nodemailer';
-import { readFile } from 'fs/promises';
 import ving from '#ving/index.mjs';
 
-const vingConfig = JSON.parse(
-    await readFile(
-        new URL('../../ving.json', import.meta.url)
-    )
-);
-vingConfig.site.url = process.env.VING_SITE_URL;
 const emailConfig = new URL(process.env.VING_SMTP || 'smtp://localhost:465');
 
 const defaultTransporter = createTransport({
@@ -66,6 +59,8 @@ export const customTransporter = (options) => {
  * @param {Object} props.transporter A custom `nodemailer` transport
  */
 export const sendMail = async (template, props) => {
+    const vingConfig = await ving.getConfig();
+    vingConfig.site.url = process.env.VING_SITE_URL;
     const options = props.options;
     options.from = options.from ?? vingConfig.site.email;
     options.fromName = options.fromName ?? vingConfig.site.name;
