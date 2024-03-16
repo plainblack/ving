@@ -35,7 +35,7 @@ const email = ref('')
 const notify = useNotifyStore();
 async function sendPasswordReset() {
     const parser = new ua(navigator.userAgent);
-    const response = await useRest(`/api/${rest.version}/user/send-password-reset`, {
+    const response = await useRest(`/api/${restVersion()}/user/send-password-reset`, {
         method: 'post',
         query: { includeOptions: true },
         body: { browser: parser.getBrowser().name, os: parser.getOS().name, email: email.value }

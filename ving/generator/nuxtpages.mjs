@@ -141,8 +141,8 @@ const indexTemplate = ({ name, schema }) =>
 <script setup>
 const dt = useDateTime();
 const ${schema.tableName} = useVingKind({
-    listApi: \`/api/\${rest.version}/${name.toLowerCase()}\`,
-    createApi: \`/api/\${rest.version}/${name.toLowerCase()}\`,
+    listApi: \`/api/\${restVersion()}/${name.toLowerCase()}\`,
+    createApi: \`/api/\${restVersion()}/${name.toLowerCase()}\`,
     query: { includeMeta: true, sortBy: 'createdAt', sortOrder: 'desc' },
     newDefaults: { ${newDefaults(schema)} },
 });
@@ -195,7 +195,7 @@ const route = useRoute();
 const id = route.params.id.toString();
 const ${name.toLowerCase()} = useVingRecord({
     id,
-    fetchApi: \`/api/\${rest.version}/${name.toLowerCase()}/\${id}\`,
+    fetchApi: \`/api/\${restVersion()}/${name.toLowerCase()}/\${id}\`,
     query: { includeMeta: true, includeOptions: true },
     async onDelete() {
         await navigateTo('/${name.toLowerCase()}');
@@ -284,8 +284,8 @@ const notify = useNotifyStore();
 const id = route.params.id.toString();
 const ${name.toLowerCase()} = useVingRecord({
     id,
-    fetchApi: \`/api/\${rest.version}/${name.toLowerCase()}/\${id}\`,
-    createApi: \`/api/\${rest.version}/${name.toLowerCase()}\`,
+    fetchApi: \`/api/\${restVersion()}/${name.toLowerCase()}/\${id}\`,
+    createApi: \`/api/\${restVersion()}/${name.toLowerCase()}\`,
     query: { includeMeta: true, includeOptions: true },
     onUpdate() {
         notify.success('Updated ${makeWords(name)}.');

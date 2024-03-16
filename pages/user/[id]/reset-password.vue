@@ -43,7 +43,7 @@ const config = useRuntimeConfig();
 const notify = useNotifyStore();
 async function resetPassword() {
     notify.info('Please wait while we reset your password...');
-    const response = await useRest(`/api/${rest.version}/user/${route.params.id}/reset-password`, {
+    const response = await useRest(`/api/${restVersion()}/user/${route.params.id}/reset-password`, {
         method: 'post',
         query: { includeOptions: true },
         body: { code: newPassword.code, password: newPassword.password },

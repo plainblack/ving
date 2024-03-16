@@ -201,6 +201,13 @@ Navigation for user settings.
 ## Composables
 Each of these also has documentation of how to use them in the form of JSDocs in the source code.
 
+### restVersion()
+Returns the current rest version number from `ving.json` for when you are manually specifying URLs to rest services. such as this:
+
+```
+useRest(`/api/${restVersion()}/user`);
+```
+
 ### useCurrentUserStore()
 Gets you the currently logged in user. 
 
@@ -263,7 +270,7 @@ You would then use the Notify Component in your layout.
 A wrapper around the Nuxt composable `$fetch()` that allows for streamlined fetches, but integrate's with ving's subsystems.
 
 ```js
-const response = useFetch('/api/v1/user');
+const response = useFetch(`/api/${restVersion()}/user`);
 ```
 
 ### useSystemWideAlertStore()
@@ -294,8 +301,8 @@ A client for interacting with [server-side ving kinds](ving-record#kind-api) thr
 
 ```js
 const users = useVingKind({
-    listApi : '/api/v1/user',
-    createApi : '/api/v1/user',
+    listApi : `/api/${restVersion()}/user`,
+    createApi : `/api/${restVersion()}/user`,
     query: { includeMeta: true, sortBy: 'username', sortOrder: 'asc' },
     newDefaults: { username: '', realName: '', email: '' },
 });
@@ -310,8 +317,8 @@ A client for interacting with [server-side ving records](ving-record#record-api)
 const id = route.params.id.toString();
 const user = useVingRecord<'User'>({
     id,
-    fetchApi: '/api/v1/user/' + id,
-    createApi: '/api/v1/user',
+    fetchApi: `/api/${restVersion()}/user/${id}`,
+    createApi: `/api/${restVersion()}/user`,
     query: { includeMeta: true, includeOptions: true },
     onUpdate() {
         notify.success('Updated user.');
