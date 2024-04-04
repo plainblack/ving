@@ -1,9 +1,10 @@
 import { getContext, renderTemplate, toFile, after, inject } from '@featherscloud/pinion';
+import { camelCase } from 'scule';
 
 const schemaTemplate = ({ name }) =>
     `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject } from '../helpers.mjs';
 
-export const ${name.toLowerCase()}Schema = {
+export const ${camelCase(name)}Schema = {
     kind: '${name}',
     tableName: '${name.toLowerCase()}s',
     owner: ['$userId', 'admin'],
