@@ -30,7 +30,7 @@ export const makeTable = ({ schema }) => {
             references.push(`import {${prop.relation.kind}Table} from '#ving/drizzle/schema/${prop.relation.kind}.mjs';`);
         }
     }
-    return `import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text, int, json } from '#ving/drizzle/orm.mjs';
+    return `import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, varchar, text, int, json, mediumText } from '#ving/drizzle/orm.mjs';
 ${references.join("\n")}
 
 ${makeBaseTable(schema)}

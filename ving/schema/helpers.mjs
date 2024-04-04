@@ -108,6 +108,15 @@ export const zodText = (prop) => {
 }
 
 /**
+ * Generates a zod rule for a text prop which must be a string with at least 1 character and not more 162,777,215
+ * @param {Object} prop An object containing the properties of this prop
+ * @returns a zod rule
+ */
+export const zodMediumText = (prop) => {
+    return z.string().min(1).max(162777215);
+}
+
+/**
  * Generates a drizzle schema field definition for a timestamp prop that defaults itself to now and is not null, and `onUpdateNow()` if `autoUpdate` is set to `true`
  * @param {Object} prop An object containing the properties of this prop
  * @returns a drizzle field schema definition
@@ -141,6 +150,15 @@ export const dbString = (prop) => {
  */
 export const dbText = (prop) => {
     return `text('${prop.name}').notNull()`;
+}
+
+/**
+ * Generates a drizzle schema field definition for a mediumtext prop setting it to not null
+ * @param {Object} prop An object containing the properties of this prop
+ * @returns a drizzle field schema definition
+ */
+export const dbMediumText = (prop) => {
+    return `mediumText('${prop.name}').notNull()`;
 }
 
 /**

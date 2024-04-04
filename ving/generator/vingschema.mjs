@@ -2,7 +2,7 @@ import { getContext, renderTemplate, toFile, after, inject } from '@feathersclou
 import { camelCase } from 'scule';
 
 const schemaTemplate = ({ name }) =>
-    `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject } from '../helpers.mjs';
+    `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject, dbMediumText, zodMediumText } from '../helpers.mjs';
 
 export const ${camelCase(name)}Schema = {
     kind: '${name}',
