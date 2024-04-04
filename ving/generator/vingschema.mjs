@@ -109,7 +109,7 @@ export const ${camelCase(name)}Schema = {
         // 1:N relationship - aka a relationship to my children
        /* {
             type: "virtual",
-            name: '${name.toLowerCase()}Id', // the name of this record's id in the remote table
+            name: '${camelCase(name)}Id', // the name of this record's id in the remote table
             required: false,
             view: ['public'],
             edit: [],
@@ -122,7 +122,7 @@ export const ${camelCase(name)}Schema = {
         // N:1 relationship - aka a relationship to my parent
         /*{
             type: "id",
-            name: '${name.toLowerCase()}GroupId', // the name of the remote record's id in this table
+            name: '${camelCase(name)}GroupId', // the name of the remote record's id in this table
             required: true,
             length: 36,
             db: (prop) => dbRelation(prop),
