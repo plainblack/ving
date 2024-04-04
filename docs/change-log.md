@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 2024-04-04
+* Provided a little more documentation about virtual columns
+
 ## 2024-03-16
 * Created a function for fetching ving config in `ving/config.mjs`
 * Added a Rest versioning system for API breakages

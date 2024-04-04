@@ -159,14 +159,14 @@ These are used to add a child relationship. They are virtual because they make n
 ```js
 {
     type: "virtual",
-    name: 'userId',
+    name: 'userId',  // the name of the column in the child table that connects it to this table
     required: false,
     view: ['public'],
     edit: [],
     relation: {
         type: 'child',
-        name: 'apikeys',
-        kind: 'APIKey',
+        name: 'apikeys', // the name of the relationship, think of it like the method name
+        kind: 'APIKey', // the class name of the child table
     },
 },
 ```
