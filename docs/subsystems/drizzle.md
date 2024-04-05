@@ -15,6 +15,14 @@ Drizzle can automatically generate database migrations based upon changes in the
 ./ving.mjs drizzle --prepare
 ```
 
+### Compare Generated Migrations With Database
+
+If you want to compare what migrations you have generated vs what migration has been applied to the database, then use this:
+
+```bash
+./ving.mjs drizzle --status
+```
+
 ### Apply Database Migrations 
 
 Drizzle can automatically apply migrations to your database by running this command:

@@ -5,6 +5,7 @@ outline: deep
 
 ## 2024-04-05
 * Changed the way foreign keys are generated due to the possibility of creating keynames that were too long.
+* Added a migration status to the drizzle CLI.
 
 ## 2024-04-04
 * Provided a little more documentation about virtual columns

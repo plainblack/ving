@@ -16,6 +16,7 @@ import { getConfig } from '#ving/config.mjs';
  * 
  * @returns an object containing the following:
  * 
+ * useDB() - the same as the result of `useDB()` from '#ving/drizzle/db.mjs'
  * useCache() - the same as the result of `useCache()` from '#ving/cache.mjs'
  * log() - the same as `log` from '#ving/log.mjs'
  * sendMail() - the same as `sendMail` from '#ving/email/send.mjs'
@@ -29,6 +30,7 @@ import { getConfig } from '#ving/config.mjs';
  * close() - closes the connections mysql, redis/BullMQ, and redis/cache
  */
 export default {
+    useDB,
     useCache,
     log,
     sendMail,
