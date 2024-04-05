@@ -57,7 +57,7 @@ export default defineCommand({
                 const [rows] = await ving.useDB().session.client.pool.promise().query('SELECT * from __drizzle_migrations order by created_at desc limit 1');
                 const applied = migrations.find(m => m.hash == rows[0].hash);
                 if (applied) {
-                    ving.log('cli').info(`Last Migration Applied: ${applied.tag} [${applied.hash}]`);
+                    ving.log('cli').info(`Last Migration Applied:   ${applied.tag}  [${applied.hash}]`);
                 }
                 else {
                     ving.log('cli').error(`Last Migration Applied: None`);
