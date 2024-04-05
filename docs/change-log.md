@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 2024-04-05
+* Changed the way foreign keys are generated due to the possibility of creating keynames that were too long.
+
 ## 2024-04-04
 * Provided a little more documentation about virtual columns
 * Fixed camelCasing of schema names in the schema generator

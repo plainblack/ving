@@ -228,7 +228,7 @@ export const dbPk = (prop) => {
  * @returns a drizzle field schema definition
  */
 export const dbRelation = (prop) => {
-    return `${dbId(prop)}.references(() => ${prop.relation?.kind}Table.id, {onDelete: ${prop.required ? '"cascade"' : '"set null"'}, onUpdate: ${prop.required ? '"cascade"' : '"no action"'}})`;
+    return `${dbId(prop)}`;
 }
 
 /**
