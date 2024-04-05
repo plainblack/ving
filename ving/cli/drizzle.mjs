@@ -43,11 +43,9 @@ export default defineCommand({
         else if (args.status) {
             const migrationFolderTo = './ving/drizzle/migrations';
             const migrations = [];
-            const journalPath = `${migrationFolderTo}/meta/_journal.json`;
             const journalAsString = fs.readFileSync(`${migrationFolderTo}/meta/_journal.json`).toString();
             const journal = JSON.parse(journalAsString);
             for (const journalEntry of journal.entries) {
-                const migrationPath = `${migrationFolderTo}/${journalEntry.tag}.sql`;
                 const query = fs.readFileSync(`${migrationFolderTo}/${journalEntry.tag}.sql`).toString();
                 migrations.push({
                     tag: journalEntry.tag,
@@ -56,7 +54,7 @@ export default defineCommand({
             }
             console.log(`Last Migration Available: ${migrations[migrations.length - 1].tag}  [${migrations[migrations.length - 1].hash}]`);
             try {
-                const [rows, fields] = await ving.useDB().session.client.pool.promise().query('SELECT * from __drizzle_migrations order by created_at desc limit 1');
+                const [rows] = await ving.useDB().session.client.pool.promise().query('SELECT * from __drizzle_migrations order by created_at desc limit 1');
                 const applied = migrations.find(m => m.hash == rows[0].hash);
                 if (applied) {
                     console.log(`Last Migration Applied: ${applied.tag} [${applied.hash}]`);
