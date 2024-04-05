@@ -52,19 +52,19 @@ export default defineCommand({
                     hash: crypto.createHash("sha256").update(query).digest("hex")
                 });
             }
-            console.log(`Last Migration Available: ${migrations[migrations.length - 1].tag}  [${migrations[migrations.length - 1].hash}]`);
+            ving.log('cli').info(`Last Migration Available: ${migrations[migrations.length - 1].tag}  [${migrations[migrations.length - 1].hash}]`);
             try {
                 const [rows] = await ving.useDB().session.client.pool.promise().query('SELECT * from __drizzle_migrations order by created_at desc limit 1');
                 const applied = migrations.find(m => m.hash == rows[0].hash);
                 if (applied) {
-                    console.log(`Last Migration Applied: ${applied.tag} [${applied.hash}]`);
+                    ving.log('cli').info(`Last Migration Applied: ${applied.tag} [${applied.hash}]`);
                 }
                 else {
-                    console.log(`Last Migration Applied: None`);
+                    ving.log('cli').error(`Last Migration Applied: None`);
                 }
             }
             catch {
-                console.log(`Last Migration Applied: Database not initialized`);
+                ving.log('cli').error(`Last Migration Applied: Database not initialized`);
             }
 
         }
