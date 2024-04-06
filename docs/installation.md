@@ -68,7 +68,7 @@ All of Ving's secrets and variables that can change in various environments like
 Go ahead and create your `.env` file now and we'll add to it in the next few sections.
 
 ```bash
-touch .env
+echo "VING_SITE_URL=http://localhost:3000" >> .env
 ```
 
 
