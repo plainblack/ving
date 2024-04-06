@@ -8,7 +8,7 @@ import { describeParams } from '#ving/utils/rest.mjs';
 import {defineEventHandler} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name.toLowerCase()}s = await useKind('${name}');
-    return ${name}s.mint().propOptions(describeParams(event), true);
+    return ${name.toLowerCase()}s.mint().propOptions(describeParams(event), true);
 });`;
 
 const indexPostTemplate = ({ name }) =>

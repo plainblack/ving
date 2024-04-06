@@ -6,6 +6,7 @@ outline: deep
 ## 2024-04-06
 * Added VING_SITE_URL to install instructions.
 * Fixed API generator missing a slash.
+* Fixed API options cassing problem.
 
 ## 2024-04-05
 * Changed the way foreign keys are generated due to the possibility of creating keynames that were too long.
