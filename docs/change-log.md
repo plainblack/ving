@@ -3,6 +3,10 @@ outline: deep
 ---
 # Change Log
 
+## 2024-04-06
+* Added VING_SITE_URL to install instructions.
+* Fixed API generator missing a slash.
+
 ## 2024-04-05
 * Changed the way foreign keys are generated due to the possibility of creating keynames that were too long.
 * Added a migration status to the drizzle CLI.
