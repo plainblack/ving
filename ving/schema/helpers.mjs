@@ -104,7 +104,7 @@ export const zodJsonObject = (prop) => {
  * @returns a zod rule
  */
 export const zodText = (prop) => {
-    return z.string().min(1).max(prop.length);
+    return z.string().min(0).max(prop.length);
 }
 
 /**
@@ -113,7 +113,7 @@ export const zodText = (prop) => {
  * @returns a zod rule
  */
 export const zodMediumText = (prop) => {
-    return z.string().min(1).max(162777215);
+    return z.string().min(0).max(162777215);
 }
 
 /**
