@@ -295,7 +295,7 @@ const ${name.toLowerCase()} = useVingRecord({
     },
 });
 await ${name.toLowerCase()}.fetch()
-onBeforeRouteLeave(() => ${name.toLowerCase()}.dispose());
+
 const breadcrumbs = [
     { label: '${makeWords(name)}s', to: '/${name.toLowerCase()}' },
     { label: 'View', to: '/${name.toLowerCase()}/'+${name.toLowerCase()}.props.id },
