@@ -11,9 +11,16 @@
                         :class="[route.path == item.href ? 'text-primary group-hover:text-primary' : 'text-color-secondary group-hover:text-color', item.icon, 'md:mr-2']" />
                     <span class="font-medium hidden md:block">{{ item.name }}</span>
                 </NuxtLink>
-
             </li>
         </template>
+        <li class="mt-1">
+            <hr class="mb-4 border-50" />
+            <NuxtLink to="/user/logout" v-ripple>
+                <Button>
+                    <Icon name="fa6-solid:door-closed" class="mr-2" /> Sign Out
+                </Button>
+            </NuxtLink>
+        </li>
     </ul>
 </template>
 

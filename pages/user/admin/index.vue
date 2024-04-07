@@ -5,14 +5,14 @@
 
     <div class="surface-card p-4 border-1 surface-border border-round">
 
-        <div class="p-inputgroup flex-1">
-            <span class="p-input-icon-left w-full">
+        <InputGroup>
+            <InputGroupAddon>
                 <i class="pi pi-search" />
-                <InputText type="text" placeholder="Search Users" class="w-full" v-model="users.query.search"
-                    @keydown.enter="users.search()" />
-            </span>
+            </InputGroupAddon>
+            <InputText type="text" placeholder="Search Users" class="w-full" v-model="users.query.search"
+                @keydown.enter="users.search()" />
             <Button label="Search" @click="users.search()" />
-        </div>
+        </InputGroup>
 
         <client-only>
             <DataTable :value="users.records" stripedRows @sort="users.sortDataTable">
@@ -51,10 +51,12 @@
             <div class="flex gap-5 flex-column-reverse md:flex-row">
                 <div class="flex-auto p-fluid">
                     <div class="mb-4">
-                        <FormInput name="nausernameme" type="text" v-model="users.new.username" required label="Username" />
+                        <FormInput name="nausernameme" type="text" v-model="users.new.username" required
+                            label="Username" />
                     </div>
                     <div class="mb-4">
-                        <FormInput name="realName" type="text" v-model="users.new.realName" required label="Real Name" />
+                        <FormInput name="realName" type="text" v-model="users.new.realName" required
+                            label="Real Name" />
                     </div>
                     <div class="mb-4">
                         <FormInput name="email" type="email" v-model="users.new.email" required label="Email" />

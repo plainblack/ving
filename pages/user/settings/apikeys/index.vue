@@ -11,14 +11,14 @@
                         <div class="flex-auto p-fluid">
                             <div class="mb-4">
 
-                                <div class="p-inputgroup flex-1">
-                                    <span class="p-input-icon-left w-full">
+                                <InputGroup>
+                                    <InputGroupAddon>
                                         <i class="pi pi-search" />
-                                        <InputText type="text" placeholder="Search Users" class="w-full"
-                                            v-model="apikeys.query.search" @keydown.enter="apikeys.search()" />
-                                    </span>
+                                    </InputGroupAddon>
+                                    <InputText type="text" placeholder="Search API Keys" class="w-full"
+                                        v-model="apikeys.query.search" @keydown.enter="apikeys.search()" />
                                     <Button label="Search" @click="apikeys.search()" />
-                                </div>
+                                </InputGroup>
 
                                 <client-only>
                                     <DataTable :value="apikeys.records" stripedRows
@@ -97,13 +97,15 @@
                         <div class="flex gap-5 flex-column-reverse md:flex-row">
                             <div class="flex-auto p-fluid">
                                 <div class="mb-4">
-                                    <FormInput name="name" type="text" v-model="apikeys.new.name" required label="Name" />
+                                    <FormInput name="name" type="text" v-model="apikeys.new.name" required
+                                        label="Name" />
                                 </div>
                                 <div class="mb-4">
                                     <FormInput name="url" type="text" v-model="apikeys.new.url" label="URL" />
                                 </div>
                                 <div class="mb-4">
-                                    <FormInput name="reason" type="textarea" v-model="apikeys.new.reason" label="Reason" />
+                                    <FormInput name="reason" type="textarea" v-model="apikeys.new.reason"
+                                        label="Reason" />
                                 </div>
 
                                 <div>

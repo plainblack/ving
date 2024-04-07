@@ -94,14 +94,14 @@ const indexTemplate = ({ name, schema }) =>
 
     <div class="surface-card p-4 border-1 surface-border border-round">
 
-        <div class="p-inputgroup flex-1">
-            <span class="p-input-icon-left w-full">
+        <InputGroup>
+            <InputGroupAddon>
                 <i class="pi pi-search" />
-                <InputText type="text" placeholder="Search ${makeWords(name)}s" class="w-full" v-model="${schema.tableName}.query.search"
-                    @keydown.enter="${schema.tableName}.search()" />
-            </span>
+            </InputGroupAddon>
+            <InputText type="text" placeholder="${makeWords(name)}s" class="w-full"
+                v-model="${schema.tableName}.query.search" @keydown.enter="${schema.tableName}.search()" />
             <Button label="Search" @click="${schema.tableName}.search()" />
-        </div>
+        </InputGroup>
 
         <DataTable :value="${schema.tableName}.records" stripedRows @sort="(e) => ${schema.tableName}.sortDataTable(e)">
             ${columns(schema)}
