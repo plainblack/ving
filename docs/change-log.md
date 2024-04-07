@@ -7,6 +7,7 @@ outline: deep
 * Made the MenuBar in the default layout client only until PrimeVue fixes #5541.
 * useVingKind().mint() now carries forward the query params into the new record.
 * Updated zodString(), zodText(), and zodMediumText() schema helper to allow for 0 length strings.
+* Fixed useVingKind() not settings propsOptions.
 
 ## 2024-04-06
 * Added VING_SITE_URL to install instructions.

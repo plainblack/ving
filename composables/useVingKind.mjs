@@ -260,6 +260,7 @@ class VingKind {
         }
         else {
             const data = response.data;
+            this.propsOptions = data;
             if (options?.onSuccess)
                 options?.onSuccess(data);
         }
