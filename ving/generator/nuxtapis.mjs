@@ -64,7 +64,8 @@ export default defineEventHandler(async (event) => {
     const ${name.toLowerCase()}s = await useKind('${name}');
     const { id } = getRouterParams(event);
     const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
-    ${name.toLowerCase()}.canEdit(obtainSession(event));
+    const session = obtainSession(event);
+    ${name.toLowerCase()}.canEdit(session);
     await ${name.toLowerCase()}.delete();
     return ${name.toLowerCase()}.describe(describeParams(event, session));
 });`;
