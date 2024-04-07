@@ -368,7 +368,7 @@ class VingKind {
     /**
      * Updates just a defined segment of a specified record.
      * 
-     * Usage: `await Users.partialUpdate(0, {realName : 'George'});
+     * Usage: `await users.partialUpdate(0, {realName : 'George'});
      * 
      * @param index An index number on the `records` list
      * @param props The props you wish to update
@@ -382,7 +382,7 @@ class VingKind {
     /**
      * Remove a record from `records` locally, but not delete it from the server.
      * 
-     * Usage: `Users.remove('xxx')`
+     * Usage: `users.remove('xxx')`
      * 
      * @param id The uniqiue id of a record you'd like to remove from `records`
      */
@@ -391,12 +391,15 @@ class VingKind {
         if (index >= 0) {
             this.records.splice(index, 1);
         }
+        else {
+            console.log(`Could not find ${id} to delete it.`);
+        }
     }
 
     /**
      * Locally empties the `records` array.
      * 
-     * Usage: `Users.reset()`
+     * Usage: `users.reset()`
      * 
      * @returns A reference to this object for chaining
      */
