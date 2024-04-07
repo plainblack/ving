@@ -9,6 +9,7 @@ outline: deep
 * Fixed API options cassing problem.
 * Upgraded to PrimeVue 3.51.0 from 3.47.2.
 * Fixed undefined session in delete api.
+* Fixed record page generator capitalization and record disposal.
 
 ## 2024-04-05
 * Changed the way foreign keys are generated due to the possibility of creating keynames that were too long.
