@@ -77,7 +77,7 @@ export const dateDefault = (prop, skipFunc = false) => {
  * @returns a zod rule
  */
 export const zodString = (prop) => {
-    return z.string().min(1).max(prop.length);
+    return z.string().min(0).max(prop.length);
 }
 
 /**
