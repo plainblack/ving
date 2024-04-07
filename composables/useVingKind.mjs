@@ -352,6 +352,7 @@ class VingKind {
         const self = this;
         return useVingRecord({
             ...params,
+            query: self.query,
             createApi: self.getCreateApi(),
             onCreate: self.#behavior.onCreate,
             onUpdate: self.#behavior.onUpdate,
