@@ -492,7 +492,8 @@ export class VingRecord {
                     this.set(field.name, param);
                     if (field.relation && field.relation.type == 'parent') {
                         const parent = await this.parent(field.relation.name);
-                        await parent.canEdit(currentUser);
+                        if (!field.relation.skipOwnerCheck)
+                            await parent.canEdit(currentUser);
                     }
                 }
 
