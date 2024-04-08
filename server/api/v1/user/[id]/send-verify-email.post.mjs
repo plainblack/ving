@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     const users = await useKind('User');
     const { id } = getRouterParams(event);
     const user = await users.findOrDie(id);
-    user.canEdit(obtainSession(event));
+    await user.canEdit(obtainSession(event));
     if (!user.get('verifiedEmail')) {
         const query = getQuery(event);
         const config = useRuntimeConfig();

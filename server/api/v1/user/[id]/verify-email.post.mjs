@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     const users = await useKind('User');
     const { id } = getRouterParams(event);
     const user = await users.findOrDie(id);
-    user.canEdit(obtainSession(event));
+    await user.canEdit(obtainSession(event));
     const query = getQuery(event);
     const result = await useCache().get('verifyEmail-' + query.verify);
     if (result && result.userId == id) {

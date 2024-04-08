@@ -20,15 +20,15 @@ describe('Users', async () => {
         expect(warden.get('email')).toBe('warden@shawshank.jail');
     });
     test("is owner by id", async () => {
-        expect(warden.isOwner(warden)).toBe(true);
+        expect(await warden.isOwner(warden)).toBe(true);
     });
     test("is not admin role", async () => {
-        expect(warden.isRole('admin')).toBe(false);
+        expect(await warden.isRole('admin')).toBe(false);
     });
     test("is not owner by id or role", async () => {
         await captain.insert();
-        expect(captain.isOwner(warden)).toBe(false);
-        expect(warden.isOwner(captain)).toBe(false);
+        expect(await captain.isOwner(warden)).toBe(false);
+        expect(await warden.isOwner(captain)).toBe(false);
     });
     test("can update ving record", async () => {
         warden.admin = true;
@@ -40,7 +40,7 @@ describe('Users', async () => {
         expect(warden.get('admin')).toBe(true);
     });
     test("is owner by role", async () => {
-        expect(captain.isOwner(warden)).toBe(true);
+        expect(await captain.isOwner(warden)).toBe(true);
     });
     test("described by owner", async () => {
         const description = await captain.describe({ currentUser: captain, include: { links: true, options: true, meta: true } });
@@ -90,11 +90,11 @@ describe('Users', async () => {
         expect(await warden.testPassword('foo')).toBe(true);
     });
     test('set password via posted params', async () => {
-        warden.setPostedProps({ password: 'food' }, warden);
+        await warden.setPostedProps({ password: 'food' }, warden);
         expect(await warden.testPassword('food')).toBe(true);
     });
-    test('set useAsDisplayName via posted params', () => {
-        warden.setPostedProps({ useAsDisplayName: 'email' }, warden);
+    test('set useAsDisplayName via posted params', async () => {
+        await warden.setPostedProps({ useAsDisplayName: 'email' }, warden);
         expect(warden.get('useAsDisplayName')).toBe('email');
     });
     const guard = Users.copy(captain.getAll());

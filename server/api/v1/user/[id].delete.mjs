@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const { id } = getRouterParams(event);
     const user = await users.findOrDie(id);
     const session = obtainSession(event);
-    user.canEdit(session);
+    await user.canEdit(session);
     await user.delete();
     return user.describe(describeParams(event, session));
 });

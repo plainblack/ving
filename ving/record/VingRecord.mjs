@@ -109,13 +109,13 @@ export class VingRecord {
     /**
      * The same as `isOwner` except throws a `403` error instead of returning `false`
      * 
-     * Usage: `apikey.canEdit(session)`
+     * Usage: `await apikey.canEdit(session)`
      * 
      * @param {Object} currentUser A `User` or `Session`
      * @returns Returns `true` or throws a `403` error
      */
-    canEdit(currentUser) {
-        if (this.isOwner(currentUser)) {
+    async canEdit(currentUser) {
+        if (await this.isOwner(currentUser)) {
             return true;
         }
         const schema = findVingSchema(getTableName(this.table));
@@ -152,7 +152,7 @@ export class VingRecord {
     async describe(params = {}) {
         const currentUser = params.currentUser;
         const include = params.include || {};
-        const isOwner = currentUser !== undefined && this.isOwner(currentUser);
+        const isOwner = currentUser !== undefined && await this.isOwner(currentUser);
         const schema = findVingSchema(getTableName(this.table));
         let out = { props: {} };
         out.props.id = this.get('id');
@@ -162,12 +162,12 @@ export class VingRecord {
             out.links.self = { href: `${out.links.base.href}/${this.#props.id}`, methods: ['GET', 'PUT', 'DELETE'] };
         }
         if (include !== undefined && include.options) {
-            out.options = this.propOptions(params);
+            out.options = await this.propOptions(params);
         }
         if (include !== undefined && include.meta) {
             out.meta = {
                 kind: schema.kind,
-                isOwner: isOwner,
+                isOwner,
             };
             if (this.#deleted) {
                 out.meta.deleted = true;
@@ -262,12 +262,12 @@ export class VingRecord {
     /**
      * Determine whether a user owns the current record. 
      * 
-     * Usage: `const owner = apikey.isOwner(session)`
+     * Usage: `const owner = await apikey.isOwner(session)`
      * 
      * @param {Object} currentUser A `User` or `Session`
      * @returns Whether or not the passed in user owns this record or not
      */
-    isOwner(currentUser) {
+    async isOwner(currentUser) {
         if (currentUser === undefined)
             return false;
         const schema = findVingSchema(getTableName(this.table));
@@ -285,7 +285,7 @@ export class VingRecord {
             found = owner.match(/^\^(.*)$/);
             if (found) {
                 const parent = this.parent(found[1]);
-                if (parent && parent.isOwner(currentUser))
+                if (parent && await parent.isOwner(currentUser))
                     return true;
             }
         }
@@ -350,7 +350,7 @@ export class VingRecord {
     /**
      * Returns a list of the enumerated prop options available to the current user
      * 
-     * Usage: `const options = user.propOptions({currentUser: session})`
+     * Usage: `const options = await user.propOptions({currentUser: session})`
      * 
      * @param {Object} params A list of params to change the output of the describe. Defaults to `{}`
      * @param {Object} params.currentUser The `User` or `Session` instance to test ownership against
@@ -364,11 +364,11 @@ export class VingRecord {
      * @param {boolean} all Include all options regardless of the `currentUser`. Defaults to `false`.
      * @returns a list of the enumerated prop options
      */
-    propOptions(params = {}, all = false) {
+    async propOptions(params = {}, all = false) {
         const options = {};
         const currentUser = params.currentUser;
         const include = params.include || {};
-        const isOwner = currentUser !== undefined && this.isOwner(currentUser);
+        const isOwner = currentUser !== undefined && await this.isOwner(currentUser);
         for (const prop of findVingSchema(getTableName(this.table)).props) {
             const roles = [...prop.view, ...prop.edit];
             const visible = roles.includes('public')
@@ -457,7 +457,7 @@ export class VingRecord {
      */
     async setPostedProps(params, currentUser) {
         const schema = findVingSchema(getTableName(this.table));
-        const isOwner = currentUser !== undefined && this.isOwner(currentUser);
+        const isOwner = currentUser !== undefined && await this.isOwner(currentUser);
 
         for (const field of schema.props) {
             const fieldName = field.name.toString();
@@ -491,7 +491,7 @@ export class VingRecord {
                     this.set(field.name, param);
                     if (field.relation && field.relation.type == 'parent') {
                         const parent = await this.parent(field.relation.name);
-                        parent.canEdit(currentUser);
+                        await parent.canEdit(currentUser);
                     }
                 }
 

@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
     const { id } = getRouterParams(event);
     const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
     const session = obtainSession(event);
-    ${name.toLowerCase()}.canEdit(session);
+    await ${name.toLowerCase()}.canEdit(session);
     await ${name.toLowerCase()}.updateAndVerify(await getBody(event), session);
     return ${name.toLowerCase()}.describe(describeParams(event, session));
 });`;
@@ -65,7 +65,7 @@ export default defineEventHandler(async (event) => {
     const { id } = getRouterParams(event);
     const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
     const session = obtainSession(event);
-    ${name.toLowerCase()}.canEdit(session);
+    await ${name.toLowerCase()}.canEdit(session);
     await ${name.toLowerCase()}.delete();
     return ${name.toLowerCase()}.describe(describeParams(event, session));
 });`;

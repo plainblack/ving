@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     const { id } = getRouterParams(event);
     const user = await users.findOrDie(id);
     const session = obtainSession(event);
-    user.canEdit(session);
+    await user.canEdit(session);
     if (!session.isHuman())
         throw ouch(403, 'You must be a human to modify user account settings.');
     await user.updateAndVerify(await getBody(event), session);

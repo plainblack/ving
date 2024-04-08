@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
     const APIKeys = await useKind('APIKey');
     const { id } = getRouterParams(event);
     const apikey = await APIKeys.findOrDie(id);
-    apikey.canEdit(obtainSession(event));
+    await apikey.canEdit(obtainSession(event));
     await apikey.delete();
     return apikey.describe(describeParams(event));
 });

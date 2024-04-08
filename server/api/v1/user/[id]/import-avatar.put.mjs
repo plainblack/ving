@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     const user = await users.findOrDie(id);
     const oldAvatar = await user.parent('avatar');
     const session = obtainSession(event);
-    user.canEdit(session);
+    await user.canEdit(session);
     const body = await getBody(event);
     const S3Files = await useKind('S3File');
     const s3file = await S3Files.findOrDie(body.s3FileId);

@@ -389,14 +389,14 @@ user.username = 'adufresne';
 Returns `true` if the current user has edit rights on this record or throws a `403` error if not.
 
 ```js
-record.canEdit(currentUserOrSession);
+await record.canEdit(currentUserOrSession);
 ```
 
 #### isOwner
 Returns `true` if the current user or session is defined as the owner of this record, or returns `false` if not.
 
 ```js
-if (record.isOwner(currentUserOrSession) {
+if (await record.isOwner(currentUserOrSession) {
     console.log('they own it!')
 }
 else {

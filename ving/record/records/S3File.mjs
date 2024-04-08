@@ -173,7 +173,7 @@ export class S3FileRecord extends VingRecord {
     async describe(params = {}) {
         const out = await super.describe(params);
         if (params?.include?.meta && out.meta) {
-            if (this.isOwner(params?.currentUser)) {
+            if (await this.isOwner(params?.currentUser)) {
                 out.meta.fileUrl = this.fileUrl();
             }
             out.meta.thumbnailUrl = this.thumbnailUrl();
