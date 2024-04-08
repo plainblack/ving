@@ -8,6 +8,7 @@ outline: deep
 * useVingKind().mint() now carries forward the query params into the new record.
 * Updated zodString(), zodText(), and zodMediumText() schema helper to allow for 0 length strings.
 * Fixed useVingKind() not settings propsOptions.
+* Added enum2label() composable.
 
 ## 2024-04-06
 * Added VING_SITE_URL to install instructions.

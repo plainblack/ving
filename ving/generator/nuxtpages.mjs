@@ -17,6 +17,14 @@ const columns = (schema) => {
                 </template>
             </Column>`;
         }
+        else if (['boolean', 'enum'].includes(prop.type)) {
+            out += `
+            <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
+                <template #body="slotProps">
+                    {{ enum2label(slotProps.data.props.${prop.name}, ${schema.tableName}.propOptions.${prop.name}) }}
+                </template>
+            </Column>`;
+        }
         else if (prop.type == 'date') {
             out += `
             <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
@@ -160,6 +168,11 @@ const viewProps = (schema) => {
             if (prop.type == 'date') {
                 out += `
             <div><b>${makeLabel(prop.name)}</b>: {{dt.formatDateTime(${schema.kind.toLowerCase()}.props?.${prop.name})}}</div>
+            `;
+            }
+            else if (['boolean', 'enum'].includes(prop.type)) {
+                out += `
+            <div><b>${makeLabel(prop.name)}</b>: {{enum2label(${schema.kind.toLowerCase()}.props?.${prop.name}, ${schema.kind.toLowerCase()}.options?.${prop.name})}}</div>
             `;
             }
             else if (prop.type != 'virtual') {
