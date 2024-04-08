@@ -21,7 +21,7 @@ const columns = (schema) => {
             out += `
             <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
                 <template #body="slotProps">
-                    {{ enum2label(slotProps.data.props.${prop.name}, ${schema.tableName}.propOptions.${prop.name}) }}
+                    {{ enum2label(slotProps.data.props.${prop.name}, ${schema.tableName}.propsOptions.${prop.name}) }}
                 </template>
             </Column>`;
         }
