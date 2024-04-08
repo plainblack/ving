@@ -112,7 +112,8 @@ export class VingRecord {
      * Usage: `await apikey.canEdit(session)`
      * 
      * @param {Object} currentUser A `User` or `Session`
-     * @returns Returns `true` or throws a `403` error
+     * @throws 403
+     * @returns {boolean} Returns `true`
      */
     async canEdit(currentUser) {
         if (await this.isOwner(currentUser)) {
