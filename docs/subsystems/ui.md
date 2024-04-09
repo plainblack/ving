@@ -11,7 +11,7 @@ ving is ultimately built on [Nuxt](https://nuxt.com/), so ving pages can do anyt
 You can automatically generate a set of pages for interacting with [ving records](ving-record) through the [Rest API](rest) by using the [CLI](cli) like this:
 
 ```bash
-./ving.ts record --web Foo
+./ving.mjs record --web Foo
 ```
 
 That will give you a place to start, and then you can use the [composables](#composables) and [components](#components) we provide to build out a complex app.
