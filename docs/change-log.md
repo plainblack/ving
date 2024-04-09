@@ -9,6 +9,7 @@ outline: deep
 * Added a whole new section to the Ving Schema documentation defining all the fields that go into ving schema props.
 * Added UserProfileLink component.
 * Automatically link id/name in generated index pages.
+* Update page generator to mark enum options as optional.
 
 ## 2024-04-07
 * Made the MenuBar in the default layout client only until PrimeVue fixes #5541.

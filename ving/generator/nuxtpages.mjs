@@ -253,7 +253,7 @@ const editProps = (schema) => {
             if (['enum', 'boolean'].includes(prop.type)) {
                 out += `
                     <div class="mb-4">
-                        <FormSelect name="${prop.name}" :options="${schema.kind.toLowerCase()}.options.${prop.name}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.update()" />
+                        <FormSelect name="${prop.name}" :options="${schema.kind.toLowerCase()}.options?.${prop.name}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.update()" />
                     </div>`;
             }
             else if (prop.type != 'virtual') {
