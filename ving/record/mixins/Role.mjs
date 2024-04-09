@@ -16,7 +16,7 @@ export function RoleMixin(Base) {
 
         /**
          * Determines whether an object instance has the specified role
-         * @param {string} role One of the roles defined in the `User` schema, or one of the reserved keywords of either `public` or `owner`
+         * @param {string} role One of the roles defined in the `User` schema, or the reseved keyword `public`
          * @returns A boolean indicating whether this object has the specified role
          */
         isRole(role) {
@@ -31,8 +31,8 @@ export function RoleMixin(Base) {
 
         /**
          * Similar to `isRole` but checks against a list of roles and returns `true` if any of the roles match
-         * @param {Array} roles A list of roles
-         * @returns boolean
+         * @param {string[]} roles A list of roles
+         * @returns {boolean}
          */
         isaRole(roles) {
             for (const role of roles) {
@@ -46,8 +46,9 @@ export function RoleMixin(Base) {
 
         /**
          * Like `isRole()` except will `throw` an error instead of returning `false`
+         * @param {string} role One of the roles defined in the `User` schema, or the reserved keyword `public`
          * @throws 403
-         * @returns `true`
+         * @returns {boolean} `true`
          */
         isRoleOrDie(role) {
             if (this.isRole(role)) {
@@ -59,7 +60,7 @@ export function RoleMixin(Base) {
         /**
          * Gets the value of a role related prop
          * @param {string} key 
-         * @returns `true` or `false`
+         * @returns {boolean} `true` or `false`
          */
         getRoleProp(key) {
             return this.get(key);
