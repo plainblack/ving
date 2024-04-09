@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 2024-04-09
+* Fixed: no type int example in ving schema #82
+
 ## 2024-04-08
 * Breaking change: Refactored VingRecord isOwner(), canEdit(), and propsOptions() to be async.
 * Added skipOwnerCheck as a ving schema prop relation option.

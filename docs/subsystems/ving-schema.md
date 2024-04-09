@@ -79,6 +79,23 @@ The `type` field determines how the prop will react to data it is given. Below y
 },
 ```
 
+###### Int Type Example
+
+```js
+{
+    type: "int",
+    name: "sizeInBytes",
+    filterRange: true,
+    filterQualifier: true,
+    required: false,
+    default: 0,
+    db: (prop) => dbInt(prop),
+    zod: (prop) => zodNumber(prop).positive(),
+    view: ['public'],
+    edit: [],
+},
+```
+
 ###### Date Type Example
 ```js
 {
