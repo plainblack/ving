@@ -11,6 +11,7 @@ outline: deep
 * Implemented: add clipboard button for copying an id to clipboard from view and edit pages #79
 * Fixed: displaying cache objects from CLI shows [object Object] instead of the actual object #78
 * Fixed: isRoleOrDie not documented correctly #77
+* Implemented: document Nuxt stuff #76
 
 ## 2024-04-08
 * Breaking change: Refactored VingRecord isOwner(), canEdit(), and propsOptions() to be async.

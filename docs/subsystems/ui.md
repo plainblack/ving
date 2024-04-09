@@ -4,6 +4,8 @@ outline: deep
 # Web UI
 The web user interface of ving allows you to build out complex applications using Vue 3. It starts with automatically generating pages for your ving records. We use a component library suite called [PrimeVue](https://primevue.org/) that provides all kinds of amazing functionality and a styling library called [PrimeFlex](https://www.primefaces.org/primeflex/) that gives you rich power over CSS. But we've also got a bunch of custom [components](#components) and [composables](#composables) to help you build your app.
 
+## Layouts
+The design of your site is created using [Nuxt Layouts](https://nuxt.com/docs/guide/directory-structure/layouts). You can find the default layout in `layouts/default.vue`.
 
 ## Pages
 ving is ultimately built on [Nuxt](https://nuxt.com/), so ving pages can do anything [Nuxt Pages](https://nuxt.com/docs/guide/directory-structure/pages) can do.
@@ -16,7 +18,18 @@ You can automatically generate a set of pages for interacting with [ving records
 
 That will give you a place to start, and then you can use the [composables](#composables) and [components](#components) we provide to build out a complex app.
 
+## Icons
+The Ving UI makes use if the Nuxt Icon module (which behind the scenes uses the Iconify library), which joins together many different icon libraries to give you [a big selection of icons](https://icon-sets.iconify.design).
+
+For example, the code for a gear icon could be: `mdi:gear`. And then to display that icon you could do:
+
+```html
+    <Icon name="mdi:gear" color="red" />
+```
+
 ## Components
+
+You can use [any of the built in Nuxt components](https://nuxt.com/docs/api/components/client-only), or [one of the 200 components from PrimeVue](https://primevue.org/autocomplete/) or these custom Ving components:
 
 ### AdminNav
 Displays the site-wide administrative navigation.
