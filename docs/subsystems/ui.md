@@ -27,6 +27,13 @@ Displays the site-wide administrative navigation.
 
 See `Crumbtrail` for more info about the `crumbs` prop.
 
+### CopyToClipboard
+Displays a button that allows you to copy a text string to the user's clipboard.
+
+```html
+<CopyToClipboard :text="foo"/>
+```
+
 ### Crumbtrail
 Displays a crumbtrail navigation.
 

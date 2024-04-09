@@ -31,16 +31,12 @@
                                         <Column field="props.name" header="Name" sortable></Column>
                                         <Column field="props.id" header="API Key">
                                             <template #body="slotProps">
-                                                <Button icon="pi pi-copy" class="mr-2" alt="copy to clipboard"
-                                                    title="Copy to Clipboard"
-                                                    @click="copyToClipboard(slotProps.data.props.id)" />
+                                                <CopyToClipboard :text="slotProps.data.props.id" />
                                             </template>
                                         </Column>
                                         <Column field="props.privateKey" header="Private Key">
                                             <template #body="slotProps">
-                                                <Button icon="pi pi-copy" class="mr-2" alt="copy to clipboard"
-                                                    title="Copy to Clipboard"
-                                                    @click="copyToClipboard(slotProps.data.props.privateKey)" />
+                                                <CopyToClipboard :text="slotProps.data.props.privateKey" />
                                             </template>
                                         </Column>
                                         <Column header="Manage">
@@ -125,8 +121,6 @@
 </template>
 
 <script setup>
-const notify = useNotifyStore();
-
 definePageMeta({
     middleware: ['auth']
 });
@@ -144,12 +138,4 @@ onBeforeRouteLeave(() => apikeys.dispose());
 
 const d = { visible: false, current: undefined };
 const dialog = ref(d);
-
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text);
-    notify.info('Copied key to Clipboard');
-}
-
-
-
 </script>
