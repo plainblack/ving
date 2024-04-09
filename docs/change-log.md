@@ -5,6 +5,7 @@ outline: deep
 
 ## 2024-04-09
 * Fixed: no type int example in ving schema #82
+* Fixed: record delete generator not generating correctly #81
 
 ## 2024-04-08
 * Breaking change: Refactored VingRecord isOwner(), canEdit(), and propsOptions() to be async.

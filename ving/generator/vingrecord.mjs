@@ -15,7 +15,7 @@ function addRelationshipDeletes({ schema }) {
     for (const prop of schema.props) {
         if (prop.relation && prop.relation?.type == 'child') {
             out += `
-            await this.${prop.relation.name}.deleteMany();
+            await (await this.children('${prop.relation.name}')).deleteMany();
             `;
         }
     }
@@ -38,6 +38,7 @@ function addRelationshipDelete({ schema }) {
              */
         async delete () {
             ${addRelationshipDeletes({ schema })}
+            await super.delete();
         }
         `;
     }
