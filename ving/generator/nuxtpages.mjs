@@ -6,7 +6,7 @@ const makeWords = (value) => splitByCase(value).join(' ');
 const makeLabel = (value) => upperFirst(splitByCase(value).join(' '));
 
 
-const columns = (schema) => {
+const columns = (name, schema) => {
     let out = '';
     for (const prop of schema.props) {
         if (prop.name == 'email') {
@@ -14,6 +14,16 @@ const columns = (schema) => {
             <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
                 <template #body="slotProps">
                     <a :href="\`mailto:\${slotProps.data.props.email}\`">{{ slotProps.data.props.email }}</a>
+                </template>
+            </Column>`;
+        }
+        else if (['name', 'id'].includes(prop.name)) {
+            out += `
+            <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
+                <template #body="slotProps">
+                    <NuxtLink :to="\`/${name.toLowerCase()}/\${slotProps.data.props.id}\`" v-ripple>
+                        {{ slotProps.data.props.${prop.name} }}
+                    </NuxtLink>
                 </template>
             </Column>`;
         }
@@ -120,7 +130,7 @@ const indexTemplate = ({ name, schema }) =>
         </InputGroup>
 
         <DataTable :value="${schema.tableName}.records" stripedRows @sort="(e) => ${schema.tableName}.sortDataTable(e)">
-            ${columns(schema)}
+            ${columns(name, schema)}
             <Column header="Manage">
                 <template #body="slotProps">
                     <NuxtLink :to="\`/${name.toLowerCase()}/\${slotProps.data.props.id}\`" class="mr-2 no-underline">
