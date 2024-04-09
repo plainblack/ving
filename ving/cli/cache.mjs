@@ -51,7 +51,7 @@ export default defineCommand({
         }
         if (args.get) {
             const value = await ving.useCache().get(args.get);
-            ving.log('cli').info(`Value of ${args.get} is: ${value}`);
+            ving.log('cli').info(`Value of ${args.get} is ${JSON.stringify(value)}`);
         }
         if (args.delete) {
             await ving.useCache().delete(args.delete);

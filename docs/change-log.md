@@ -9,6 +9,7 @@ outline: deep
 * Fixed: if you misspell a schema when running record -w or record -r it should say no schema, not create an error #80
 * Added CopyToClipboard component.
 * Implemented: add clipboard button for copying an id to clipboard from view and edit pages #79
+* Fixed: displaying cache objects from CLI shows [object Object] instead of the actual object #78
 
 ## 2024-04-08
 * Breaking change: Refactored VingRecord isOwner(), canEdit(), and propsOptions() to be async.
