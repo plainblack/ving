@@ -198,6 +198,11 @@ const viewProps = (schema) => {
             <div><b>${makeLabel(prop.name)}</b>: <UserProfileLink :user="${schema.kind.toLowerCase()}.related?.user" /></div>
             `;
             }
+            else if (prop.type == 'id') {
+                out += `
+            <div><b>${makeLabel(prop.name)}</b>: {{${schema.kind.toLowerCase()}.props?.${prop.name}}} <CopyToClipboard :text="${schema.kind.toLowerCase()}.props?.${prop.name}" /></div>
+            `;
+            }
             else if (prop.type != 'virtual') {
                 out += `
             <div><b>${makeLabel(prop.name)}</b>: {{${schema.kind.toLowerCase()}.props?.${prop.name}}}</div>
@@ -275,6 +280,11 @@ const statProps = (schema) => {
                 out += `
             <div class="mb-4"><b>${makeLabel(prop.name)}</b>: {{dt.formatDateTime(${schema.kind.toLowerCase()}.props.${prop.name})}}</div>
             `;
+            }
+            else if (prop.type == 'id') {
+                out += `
+                <div class="mb-4"><b>${makeLabel(prop.name)}</b>: {{${schema.kind.toLowerCase()}.props?.${prop.name}}} <CopyToClipboard :text="${schema.kind.toLowerCase()}.props?.${prop.name}" /></div>
+                `;
             }
             else if (prop.type != 'virtual') {
                 out += `
