@@ -191,6 +191,13 @@ Place this in your layouts so the user has an indication that there are some bac
 </client-only>
 ```
 
+### UserProfileLink
+Creates a link to a user profile including the user's avatar.
+
+```html
+<UserProfileLink :user="user" />
+```
+
 ### UserSettingsNav
 Navigation for user settings.
 
@@ -201,14 +208,7 @@ Navigation for user settings.
 ## Composables
 Each of these also has documentation of how to use them in the form of JSDocs in the source code.
 
-### restVersion()
-Returns the current rest version number from `ving.json` for when you are manually specifying URLs to rest services. such as this:
-
-```
-useRest(`/api/${restVersion()}/user`);
-```
-
-### useCurrentUserStore()
+### currentUserStore()
 Gets you the currently logged in user. 
 
 ```js
@@ -229,6 +229,19 @@ It also triggers 2 window events for when the user logs in or out.
     });
 ```
 
+### enum2label()
+Converts an enum value into an emum label as defined in a ving schema.
+
+```js
+const label = enum2label(enum2label('archived', [{value: 'archived', label:'Is Archived'}, {value: 'not_archived', label:'Not Archived'}]))
+```
+
+### restVersion()
+Returns the current rest version number from `ving.json` for when you are manually specifying URLs to rest services. such as this:
+
+```
+useRest(`/api/${restVersion()}/user`);
+```
 
 ### useDateTime()
 Date formatting tools based upon [date-fns](https://date-fns.org/).

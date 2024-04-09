@@ -7,6 +7,7 @@ outline: deep
 * Breaking change: Refactored VingRecord isOwner(), canEdit(), and propsOptions() to be async.
 * Added skipOwnerCheck as a ving schema prop relation option.
 * Added a whole new section to the Ving Schema documentation defining all the fields that go into ving schema props.
+* Added UserProfileLink component.
 
 ## 2024-04-07
 * Made the MenuBar in the default layout client only until PrimeVue fixes #5541.
