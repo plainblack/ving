@@ -36,19 +36,24 @@ export default defineCommand({
         },
     },
     async run({ args }) {
-        if (args.new) {
-            await generateRecord({ name: args.new, schema: findVingSchema(args.new, 'kind') });
-        }
-        else if (args.rest) {
-            await generateRest({ name: args.rest, schema: findVingSchema(args.rest, 'kind') });
-        }
-        else if (args.web) {
-            await generateWeb({ name: args.web, schema: findVingSchema(args.web, 'kind') });
-        }
-        else if (args.missingRest) {
-            for (const schema of vingSchemas) {
-                await generateRest({ name: schema.kind, schema, skipExisting: true });
+        try {
+            if (args.new) {
+                await generateRecord({ name: args.new, schema: findVingSchema(args.new, 'kind') });
             }
+            else if (args.rest) {
+                await generateRest({ name: args.rest, schema: findVingSchema(args.rest, 'kind') });
+            }
+            else if (args.web) {
+                await generateWeb({ name: args.web, schema: findVingSchema(args.web, 'kind') });
+            }
+            else if (args.missingRest) {
+                for (const schema of vingSchemas) {
+                    await generateRest({ name: schema.kind, schema, skipExisting: true });
+                }
+            }
+        }
+        catch (e) {
+            ving.log('cli').error(e.message);
         }
         await ving.close();
     },

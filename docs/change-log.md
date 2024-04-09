@@ -6,6 +6,7 @@ outline: deep
 ## 2024-04-09
 * Fixed: no type int example in ving schema #82
 * Fixed: record delete generator not generating correctly #81
+* Fixed: if you misspell a schema when running record -w or record -r it should say no schema, not create an error #80
 
 ## 2024-04-08
 * Breaking change: Refactored VingRecord isOwner(), canEdit(), and propsOptions() to be async.
