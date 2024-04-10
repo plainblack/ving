@@ -5,6 +5,7 @@ outline: deep
 
 ## 2024-04-10
 * Implemented: filterQualifier: true should be in the examples for all relation ids #96
+* Implemented: add documentation to ving schema about filterQuery #87
 
 ## 2024-04-09
 * Fixed: no type int example in ving schema #82

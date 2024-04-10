@@ -316,6 +316,19 @@ The `length` field is required when the prop is of type `string`, `enum`, and `i
 
 The `unique` field is an optional boolean. When set to `true` a unique index will be created on this prop in the database, and the record will test that the data being set to the prop is unqiue. 
 
+##### filterQuery
+
+An optional boolean that if true will allow searching via the [rest api](rest) for keyword matches against this field. This is an alternative to overriding the `describeListFilter()` method in [VingRecord](ving-record).
+
+##### filterQualifier
+
+An optional boolean that if true will allow searching via the [rest api](rest) for exact match filtering against this field. This is an alternative to overriding the `describeListFilter()` method in [VingRecord](ving-record).
+
+##### filterRange
+
+An optional boolean that if true will allow searching via the [rest api](rest) for range matching against this field. This is an alternative to overriding the `describeListFilter()` method in [VingRecord](ving-record).
+
+
 ##### autoUpdate
 
 The `autoUpdate` field is an optional boolean that is only used on a prop with type `date`. If `true` the date will automatically get set every time `update()` is called on the record. This is generally never needed by anything other than the built in `dateUpdated` record that every record already has.
