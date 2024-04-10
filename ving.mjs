@@ -6,7 +6,6 @@ const main = defineCommand({
     name: "ving.mjs",
     description: "ving CLI",
   },
-  cleanup: ving.close,
   subCommands: {
     alert: () => import('#ving/cli/alert.mjs').then((r) => r.default),
     cache: () => import('#ving/cli/cache.mjs').then((r) => r.default),
