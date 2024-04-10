@@ -45,48 +45,39 @@ function addRelationshipDelete({ schema }) {
     return '';
 }
 
-const recordTemplate = ({ name, schema }) =>
-    `import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
-import {eq} from '#ving/drizzle/orm.mjs';
-
-/** Management of individual ${name}s.
- * @class
- */
-export class ${name}Record extends VingRecord {
-    // add custom Record code here
-
-    /**
-     * Extends \`describe()\` in \`VingRecord\` to add \`meta\` property \`bar\`
-     *  and the \`extra\` property \`foo\`.
-     * 
-     * Note, these don't do anything, this is just here to explain how to extend
-     * the describe method.
-     * 
-     * @see VingRecord.describe()
-     */
-    async describe(params = {}) {
-        const out = await super.describe(params);
-        if (params?.include?.meta && out.meta) {
-            out.meta.bar = 'bar';
-        }
-        if (params?.include?.extra.includes('foo')) {
-            if (out.extra === undefined) {
-                out.extra = {};
-            }
-            out.extra.foo = 'foo';
-        }
-        return out;
-    }
-
-    ${addRelationshipDelete({ schema })}
+const describeExample = ({ bare }) => {
+    if (bare)
+        return '';
+    return `
+  /**
+   * Extends \`describe()\` in \`VingRecord\` to add \`meta\` property \`bar\`
+   *  and the \`extra\` property \`foo\`.
+   * 
+   * Note, these don't do anything, this is just here to explain how to extend
+   * the describe method.
+   * 
+   * @see VingRecord.describe()
+   */
+  async describe(params = {}) {
+      const out = await super.describe(params);
+      if (params?.include?.meta && out.meta) {
+          out.meta.bar = 'bar';
+      }
+      if (params?.include?.extra.includes('foo')) {
+          if (out.extra === undefined) {
+              out.extra = {};
+          }
+          out.extra.foo = 'foo';
+      }
+      return out;
+  }
+  `;
 }
 
-/** Management of all ${name}s.
- * @class
- */
-export class ${name}Kind extends VingKind  {
-    // add custom Kind code here
-
+const shortcutQueryExample = ({ bare, name }) => {
+    if (bare)
+        return '';
+    return `
     /**
      * An example of a shortcut for a common query you might want to make.
      * 
@@ -95,6 +86,28 @@ export class ${name}Kind extends VingKind  {
     async findCool() {
         return this.select.findMany(eq(this.table.isCool, true));
     }
+    `;
+}
+
+const recordTemplate = ({ name, bare, schema }) =>
+    `import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
+${bare ? '' : "import {eq} from '#ving/drizzle/orm.mjs';"}
+
+/** Management of individual ${name}s.
+ * @class
+ */
+export class ${name}Record extends VingRecord {
+    // add custom Record code here
+    ${describeExample({ bare })}
+    ${addRelationshipDelete({ schema })}
+}
+
+/** Management of all ${name}s.
+ * @class
+ */
+export class ${name}Kind extends VingKind  {
+    // add custom Kind code here
+    ${shortcutQueryExample({ bare, name })}
 }`;
 
 export const generateRecord = (params) => {

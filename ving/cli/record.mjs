@@ -34,11 +34,16 @@ export default defineCommand({
             valueHint: "ClassName",
             alias: "w",
         },
+        bare: {
+            type: "boolean",
+            description: "Generate without any extra examples, just the skeleton.",
+            alias: "b",
+        },
     },
     async run({ args }) {
         try {
             if (args.new) {
-                await generateRecord({ name: args.new, schema: findVingSchema(args.new, 'kind') });
+                await generateRecord({ name: args.new, bare: args.bare, schema: findVingSchema(args.new, 'kind') });
             }
             else if (args.rest) {
                 await generateRest({ name: args.rest, schema: findVingSchema(args.rest, 'kind') });
