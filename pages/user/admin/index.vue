@@ -14,30 +14,28 @@
             <Button label="Search" @click="users.search()" />
         </InputGroup>
 
-        <client-only>
-            <DataTable :value="users.records" stripedRows @sort="users.sortDataTable">
-                <Column field="props.username" header="Username" sortable></Column>
-                <Column field="props.realName" header="Real Name" sortable></Column>
-                <Column field="props.email" header="Email Address" sortable>
-                    <template #body="slotProps">
-                        <a :href="`mailto:${slotProps.data.props.email}`">{{ slotProps.data.props.email }}</a>
-                    </template>
-                </Column>
-                <Column field="props.createdAt" header="Created" sortable>
-                    <template #body="slotProps">
-                        {{ dt.formatDateTime(slotProps.data.props.createdAt) }}
-                    </template>
-                </Column>
-                <Column header="Manage">
-                    <template #body="slotProps">
-                        <NuxtLink :to="`/user/admin/${slotProps.data.props.id}`" class="mr-2 no-underline">
-                            <Button icon="pi pi-pencil" severity="success" />
-                        </NuxtLink>
-                        <Button icon="pi pi-trash" severity="danger" @click="slotProps.data.delete()" />
-                    </template>
-                </Column>
-            </DataTable>
-        </client-only>
+        <DataTable :value="users.records" stripedRows @sort="users.sortDataTable">
+            <Column field="props.username" header="Username" sortable></Column>
+            <Column field="props.realName" header="Real Name" sortable></Column>
+            <Column field="props.email" header="Email Address" sortable>
+                <template #body="slotProps">
+                    <a :href="`mailto:${slotProps.data.props.email}`">{{ slotProps.data.props.email }}</a>
+                </template>
+            </Column>
+            <Column field="props.createdAt" header="Created" sortable>
+                <template #body="slotProps">
+                    {{ dt.formatDateTime(slotProps.data.props.createdAt) }}
+                </template>
+            </Column>
+            <Column header="Manage">
+                <template #body="slotProps">
+                    <NuxtLink :to="`/user/admin/${slotProps.data.props.id}`" class="mr-2 no-underline">
+                        <Button icon="pi pi-pencil" severity="success" />
+                    </NuxtLink>
+                    <Button icon="pi pi-trash" severity="danger" @click="slotProps.data.delete()" />
+                </template>
+            </Column>
+        </DataTable>
 
         <Pager :kind="users" />
 

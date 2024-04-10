@@ -15,6 +15,7 @@ outline: deep
 * Implemented: add --bare as an option in generators that gets rid of the boiler plate #75
 * Implemented: cli improvements #83
 * Implemented: document the ving structure #84
+* Removed <client-only> wrapper from <Datatable>s because the upgrade to PrimeVue 3.51.0 fixed the problem it was masking.
 
 ## 2024-04-08
 * Breaking change: Refactored VingRecord isOwner(), canEdit(), and propsOptions() to be async.

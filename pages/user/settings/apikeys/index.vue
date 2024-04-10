@@ -20,35 +20,33 @@
                                     <Button label="Search" @click="apikeys.search()" />
                                 </InputGroup>
 
-                                <client-only>
-                                    <DataTable :value="apikeys.records" stripedRows
-                                        @sort="(event) => apikeys.sortDataTable(event)">
-                                        <Column field="props.createdAt" header="Created" sortable>
-                                            <template #body="slotProps">
-                                                {{ dt.formatDate(slotProps.data.props.createdAt) }}
-                                            </template>
-                                        </Column>
-                                        <Column field="props.name" header="Name" sortable></Column>
-                                        <Column field="props.id" header="API Key">
-                                            <template #body="slotProps">
-                                                <CopyToClipboard :text="slotProps.data.props.id" />
-                                            </template>
-                                        </Column>
-                                        <Column field="props.privateKey" header="Private Key">
-                                            <template #body="slotProps">
-                                                <CopyToClipboard :text="slotProps.data.props.privateKey" />
-                                            </template>
-                                        </Column>
-                                        <Column header="Manage">
-                                            <template #body="slotProps">
-                                                <Button icon="pi pi-pencil" class="mr-2" severity="success"
-                                                    @click="dialog.current = slotProps.data; dialog.visible = true" />
-                                                <Button icon="pi pi-trash" severity="danger"
-                                                    @click=" slotProps.data.delete()" />
-                                            </template>
-                                        </Column>
-                                    </DataTable>
-                                </client-only>
+                                <DataTable :value="apikeys.records" stripedRows
+                                    @sort="(event) => apikeys.sortDataTable(event)">
+                                    <Column field="props.createdAt" header="Created" sortable>
+                                        <template #body="slotProps">
+                                            {{ dt.formatDate(slotProps.data.props.createdAt) }}
+                                        </template>
+                                    </Column>
+                                    <Column field="props.name" header="Name" sortable></Column>
+                                    <Column field="props.id" header="API Key">
+                                        <template #body="slotProps">
+                                            <CopyToClipboard :text="slotProps.data.props.id" />
+                                        </template>
+                                    </Column>
+                                    <Column field="props.privateKey" header="Private Key">
+                                        <template #body="slotProps">
+                                            <CopyToClipboard :text="slotProps.data.props.privateKey" />
+                                        </template>
+                                    </Column>
+                                    <Column header="Manage">
+                                        <template #body="slotProps">
+                                            <Button icon="pi pi-pencil" class="mr-2" severity="success"
+                                                @click="dialog.current = slotProps.data; dialog.visible = true" />
+                                            <Button icon="pi pi-trash" severity="danger"
+                                                @click=" slotProps.data.delete()" />
+                                        </template>
+                                    </Column>
+                                </DataTable>
 
                                 <Pager :kind="apikeys" />
 
