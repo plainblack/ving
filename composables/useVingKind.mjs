@@ -381,6 +381,23 @@ class VingKind {
     }
 
     /**
+     * Turns the list of records into an array compatible with various components such as FormSelect and Autocomplete
+     * Usage: `users.recordsAsOptions('meta','displayName')`
+     * 
+     * @param {'props'|'meta'|'extra'} section One of the describe section names such as `props`, or `meta`, or `extra`.
+     * @param {string} field The name of the field within the `section` that will serve as the labelf for this option list.
+     * @returns {Object[]} An array of objects with `label` and `value` attributes.
+     */
+    recordsAsOptions(section, field) {
+        return this.records.map(u => {
+            return {
+                value: u.props?.id,
+                label: u[section][field]
+            }
+        })
+    }
+
+    /**
      * Remove a record from `records` locally, but not delete it from the server.
      * 
      * Usage: `users.remove('xxx')`
