@@ -28,7 +28,7 @@ At the very heart of Ving are [Ving Schemas](subsystems/ving-schema). From the v
 
 ## Application
 
-At the application layer are [the various subsystems that make up Ving](subsystems/cache). It starts with the [Drizzle ORM](subsystems/drizzle), but extends out to a [caching system](susbsystems/cache), and ultimately culminates in the storage of all business logic in ving through the [Ving Records](subsystems/ving-record).
+At the application layer are [the various subsystems that make up Ving](subsystems/cache). It starts with the [Drizzle ORM](subsystems/drizzle), but extends out to a [caching system](subsystems/cache), and ultimately culminates in the storage of all business logic in ving through the [Ving Records](subsystems/ving-record).
 
 ## Server
 
