@@ -1,4 +1,4 @@
-import { defineCommand } from "citty";
+import { defineCommand, showUsage } from "citty";
 import { generateRecord } from '#ving/generator/vingrecord.mjs';
 import { generateRest } from '#ving/generator/nuxtapis.mjs';
 import { generateWeb } from '#ving/generator/nuxtpages.mjs';
@@ -7,9 +7,10 @@ import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
-        name: "Ving Record",
+        name: "record",
         description: "Ving Record code generation",
     },
+    cleanup: ving.close,
     args: {
         new: {
             type: "string",
@@ -40,7 +41,7 @@ export default defineCommand({
             alias: "b",
         },
     },
-    async run({ args }) {
+    async run({ args, cmd }) {
         try {
             if (args.new) {
                 await generateRecord({ name: args.new, bare: args.bare, schema: findVingSchema(args.new, 'kind') });
@@ -56,10 +57,12 @@ export default defineCommand({
                     await generateRest({ name: schema.kind, schema, skipExisting: true });
                 }
             }
+            else {
+                await showUsage(cmd, { meta: { name: 'ving.mjs' } });
+            }
         }
         catch (e) {
             ving.log('cli').error(e.message);
         }
-        await ving.close();
     },
 });

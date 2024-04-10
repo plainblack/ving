@@ -1,12 +1,13 @@
-import { defineCommand } from "citty";
+import { defineCommand, showUsage } from "citty";
 import { generateTemplates } from '#ving/generator/emailtemplate.mjs';
 import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
-        name: "Email",
+        name: "email",
         description: "Useful for testing email",
     },
+    cleanup: ving.close,
     args: {
         to: {
             type: "string",
@@ -32,16 +33,23 @@ export default defineCommand({
             alias: 'c',
         },
     },
-    async run({ args }) {
-        if (args.to) {
-            ving.sendMail(args.template, {
-                options: { to: args.to, from: 'info@thegamecrafter.com', preview: args.preview },
-            });
-            ving.log('cli').info(`Email sent to ${args.to}`);
+    async run({ args, cmd }) {
+        try {
+            if (args.to) {
+                ving.sendMail(args.template, {
+                    options: { to: args.to, from: 'info@thegamecrafter.com', preview: args.preview },
+                });
+                ving.log('cli').info(`Email sent to ${args.to}`);
+            }
+            else if (args.create) {
+                await generateTemplates({ name: args.create });
+            }
+            else {
+                await showUsage(cmd, { meta: { name: 'ving.mjs' } });
+            }
         }
-        else if (args.create) {
-            await generateTemplates({ name: args.create });
+        catch (e) {
+            ving.log('cli').error(e.message);
         }
-        await ving.close();
     },
 });

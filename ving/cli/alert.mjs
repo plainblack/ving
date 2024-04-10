@@ -1,11 +1,12 @@
-import { defineCommand } from "citty";
+import { defineCommand, showUsage } from "citty";
 import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
-        name: "System Wide Alert",
+        name: "alert",
         description: "Manage system wide alerts from the command line",
     },
+    cleanup: ving.close,
     args: {
         message: {
             type: "string",
@@ -40,20 +41,30 @@ export default defineCommand({
             alias: "g",
         },
     },
-    async run({ args }) {
-        if (args.message) {
-            await ving.useCache().set('system-wide-alert', {
-                message: args.message,
-                severity: args.severity,
-                ttl: 60 * 60 * 1000 * args.ttl,
-            }, 60 * 60 * 1000 * args.ttl);
+    async run({ args, cmd }) {
+        try {
+            if (args.message) {
+                const ttl = 60 * 60 * 1000 * args.ttl;
+                await ving.useCache().set('system-wide-alert', {
+                    message: args.message,
+                    severity: args.severity,
+                    ttl,
+                }, ttl);
+                ving.log('cli').info(`Message set: "${args.message}"`);
+            }
+            else if (args.get) {
+                ving.log('cli').info(await ving.useCache().get('system-wide-alert'));
+            }
+            else if (args.delete) {
+                await ving.useCache().delete('system-wide-alert');
+                ving.log('cli').info('Message deleted.');
+            }
+            else {
+                await showUsage(cmd, { meta: { name: 'ving.mjs' } });
+            }
         }
-        if (args.get) {
-            ving.log('cli').info(await ving.useCache().get('system-wide-alert'));
+        catch (e) {
+            ving.log('cli').error(e.message);
         }
-        if (args.delete) {
-            await ving.useCache().delete('system-wide-alert');
-        }
-        await ving.close();
     },
 });

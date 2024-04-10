@@ -1,12 +1,13 @@
-import { defineCommand } from "citty";
+import { defineCommand, showUsage } from "citty";
 import crypto from 'crypto';
 import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
-        name: "Token Generator",
+        name: "token",
         description: "Sometimes you need to generate a random token",
     },
+    cleanup: ving.close,
     args: {
         new: {
             type: "boolean",
@@ -20,10 +21,17 @@ export default defineCommand({
             alias: "b",
         },
     },
-    async run({ args }) {
-        if (args.new) {
-            console.log(crypto.randomBytes(Number(args.bytes)).toString('hex'))
+    async run({ args, cmd }) {
+        try {
+            if (args.new) {
+                console.log(crypto.randomBytes(Number(args.bytes)).toString('hex'))
+            }
+            else {
+                await showUsage(cmd, { meta: { name: 'ving.mjs' } });
+            }
         }
-        await ving.close();
+        catch (e) {
+            ving.log('cli').error(e.message);
+        }
     },
 });

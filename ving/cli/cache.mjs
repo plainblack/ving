@@ -1,11 +1,12 @@
-import { defineCommand } from "citty";
+import { defineCommand, showUsage } from "citty";
 import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
-        name: "Cache",
+        name: "cache",
         description: "CRUD cache entries",
     },
+    cleanup: ving.close,
     args: {
         clear: {
             type: "boolean",
@@ -44,23 +45,30 @@ export default defineCommand({
             alias: "t",
         },
     },
-    async run({ args }) {
-        if (args.clear) {
-            await ving.useCache().clear();
-            ving.log('cli').info('Cache cleared');
+    async run({ args, cmd }) {
+        try {
+            if (args.clear) {
+                await ving.useCache().clear();
+                ving.log('cli').info('Cache cleared');
+            }
+            else if (args.get) {
+                const value = await ving.useCache().get(args.get);
+                ving.log('cli').info(`Value of ${args.get} is ${JSON.stringify(value)}`);
+            }
+            else if (args.delete) {
+                await ving.useCache().delete(args.delete);
+                ving.log('cli').info(`${args.delete} deleted`);
+            }
+            else if (args.set) {
+                await ving.useCache().set(args.set, args.value, Number(args.ttl));
+                ving.log('cli').info(`${args.set} set to ${args.value} for ${args.ttl}ms`);
+            }
+            else {
+                await showUsage(cmd, { meta: { name: 'ving.mjs' } });
+            }
         }
-        if (args.get) {
-            const value = await ving.useCache().get(args.get);
-            ving.log('cli').info(`Value of ${args.get} is ${JSON.stringify(value)}`);
+        catch (e) {
+            ving.log('cli').error(e.message);
         }
-        if (args.delete) {
-            await ving.useCache().delete(args.delete);
-            ving.log('cli').info(`${args.delete} deleted`);
-        }
-        if (args.set) {
-            await ving.useCache().set(args.set, args.value, Number(args.ttl));
-            ving.log('cli').info(`${args.set} set to ${args.value} for ${args.ttl}ms`);
-        }
-        await ving.close();
     },
 });

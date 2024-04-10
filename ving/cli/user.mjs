@@ -1,12 +1,13 @@
-import { defineCommand } from "citty";
+import { defineCommand, showUsage } from "citty";
 import { like, or, eq } from '#ving/drizzle/orm.mjs';
 import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
-        name: "User Administration",
+        name: "user",
         description: "Basic CRUD for users, use web UI for more",
     },
+    cleanup: ving.close,
     args: {
         list: {
             type: "boolean",
@@ -52,48 +53,57 @@ export default defineCommand({
             description: "Should user NOT be admin",
         },
     },
-    async run({ args }) {
-        const users = await ving.useKind('User');
-        if (args.list) {
-            formatList(await users.findMany());
-        }
-        else if (args.admins) {
-            formatList(await users.findMany(eq(users.table.admin, true)));
-        }
-        else if (args.search) {
-            formatList(await users.findMany(or(like(users.table.username, `%${args.search}%`), like(users.table.realName, `%${args.search}%`), like(users.table.email, `%${args.search}%`))));
-        }
-        else if (args.add) {
-            const user = users.mint({
-                username: args.add,
-                realName: args.add,
-                email: args.email,
-                admin: args.admin,
-            });
-            await user.insert();
-            await user.setPassword(args.password);
-            await user.update();
-            formatList([user]);
-        }
-        else if (args.modify) {
-            const user = await users.findOne(eq(users.table.username, args.modify));
-            if (user) {
-                if (args.email)
-                    user.set('email', args.email);
-                if (args.password)
-                    await user.setPassword(args.password);
-                if (args.admin)
-                    user.set('admin', true);
-                if (args.notAdmin)
-                    user.set('admin', false);
+    async run({ args, cmd }) {
+        try {
+            const users = await ving.useKind('User');
+            if (args.list) {
+                formatList(await users.findMany());
+            }
+            else if (args.admins) {
+                formatList(await users.findMany(eq(users.table.admin, true)));
+            }
+            else if (args.search) {
+                formatList(await users.findMany(or(like(users.table.username, `%${args.search}%`), like(users.table.realName, `%${args.search}%`), like(users.table.email, `%${args.search}%`))));
+            }
+            else if (args.add) {
+                if (!args.email)
+                    throw ving.ouch(441, 'Email address required');
+                const user = users.mint({
+                    username: args.add,
+                    realName: args.add,
+                    email: args.email,
+                    admin: args.admin,
+                });
+                await user.insert();
+                await user.setPassword(args.password);
                 await user.update();
                 formatList([user]);
             }
+            else if (args.modify) {
+                const user = await users.findOne(eq(users.table.username, args.modify));
+                if (user) {
+                    if (args.email)
+                        user.set('email', args.email);
+                    if (args.password)
+                        await user.setPassword(args.password);
+                    if (args.admin)
+                        user.set('admin', true);
+                    if (args.notAdmin)
+                        user.set('admin', false);
+                    await user.update();
+                    formatList([user]);
+                }
+                else {
+                    ving.log('cli').error(`Could not find user: ${args.modify}`);
+                }
+            }
             else {
-                ving.log('cli').error(`Could not find user: ${args.modify}`);
+                await showUsage(cmd, { meta: { name: 'ving.mjs' } });
             }
         }
-        ving.close();
+        catch (e) {
+            ving.log('cli').error(e.message);
+        }
     },
 });
 

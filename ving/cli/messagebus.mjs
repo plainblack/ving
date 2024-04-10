@@ -1,19 +1,21 @@
-import { defineCommand } from "citty";
+import { defineCommand, showUsage } from "citty";
 import { publishUserToast } from '#ving/messagebus.mjs';
 import { eq } from '#ving/drizzle/orm.mjs';
 import ving from '#ving/index.mjs';
 
 export default defineCommand({
     meta: {
-        name: "Message Bus",
+        name: "messagebus",
         description: "Useful for testing the message bus",
     },
+    cleanup: ving.close,
     args: {
         user: {
             type: "string",
             description: "Who to send it to",
             valueHint: "username",
             alias: "u",
+            required: true,
         },
         message: {
             type: "string",
@@ -28,22 +30,26 @@ export default defineCommand({
             alias: "s",
         },
     },
-    async run({ args }) {
-        if (args.user) {
-            const users = await ving.useKind('User');
-            const user = await users.findOne(eq(users.table.username, args.user));
-            if (user) {
-                const severity = args.severity == 'info' || 'danger' || 'success' || 'warning' ? args.type : 'info';
-                const pub = await publishUserToast(user.get('id'), args.message, severity);
-                await pub.quit();
+    async run({ args, cmd }) {
+        try {
+            if (args.user) {
+                const users = await ving.useKind('User');
+                const user = await users.findOne(eq(users.table.username, args.user));
+                if (user) {
+                    const severity = args.severity == 'info' || 'danger' || 'success' || 'warning' ? args.type : 'info';
+                    const pub = await publishUserToast(user.get('id'), args.message, severity);
+                    await pub.quit();
+                }
+                else {
+                    ving.log('cli').error('user not found');
+                }
             }
             else {
-                ving.log('cli').error('user not found');
+                await showUsage(cmd, { meta: { name: 'ving.mjs' } });
             }
         }
-        else {
-            ving.log('cli').error('user is required');
+        catch (e) {
+            ving.log('cli').error(e.message);
         }
-        await ving.close();
     },
 });
