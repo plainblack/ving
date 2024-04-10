@@ -165,7 +165,9 @@ Props:
 A form select list.
 
 ```html
-<FormSelect>
+<FormSelect @change="currentUser.update()" v-model="currentUser.props.useAsDisplayName"
+                                :options="currentUser.options?.useAsDisplayName" name="useAsDisplayName"
+                                label="Use As Display Name" />
 ```
 
 Props:
@@ -177,6 +179,19 @@ Props:
 - **options** - An array of objects:
     - **label** - The human readable label for the value.
     - **value** - The value to select. Can be string, number, or boolean.
+
+Slots:
+
+- **prepend** - Add an option to the top of the list.
+- **append** - Add an option to the bottom of the list.
+
+```html
+<FormSelect>
+    <template v-slot="prepend">
+        <option value="foo">Foo</option>
+    </template>
+</FormSelect>
+```
 
 ### Notify
 Place this in your layouts so that users can receive toasts that will be triggered via the `useNotifyStore()` composable.

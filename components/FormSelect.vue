@@ -1,9 +1,11 @@
 <template>
     <FormLabel :label="label" :id="computedId" />
     <select v-model="selected" :id="computedId" :name="name" class="p-inputtext w-full">
+        <slot name="prepend"></slot>
         <option v-for="option in options" :selected="selected === option.value" :value="option.value">
             {{ option.label }}
         </option>
+        <slot name="append"></slot>
     </select>
 </template>
 
