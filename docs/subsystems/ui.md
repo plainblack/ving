@@ -187,7 +187,7 @@ Slots:
 
 ```html
 <FormSelect>
-    <template v-slot="prepend">
+    <template #prepend>
         <option value="foo">Foo</option>
     </template>
 </FormSelect>
