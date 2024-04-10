@@ -14,6 +14,8 @@ You can use the [CLI](cli) to automatically generate a new record file for you f
 ./ving.mjs record --new Foo
 ```
 
+> Note that you will need a [Ving Schema](ving-schema) for `Foo` before the record can function.
+
 That will generate the file `#ving/record/records/Foo.mjs`. And in there you could add any custom functionality you may need. Or if you don't need any custom functionality, then it may work just as it is.
 
 Once you're done adding functionality you can then generate a Rest API for it by invoing the CLI again like this:

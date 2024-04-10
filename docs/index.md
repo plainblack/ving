@@ -11,6 +11,9 @@ hero:
       text: Installation
       link: /installation
     - theme: alt
+      text: Architecture
+      link: /architecture
+    - theme: alt
       text: Subsystems
       link: /subsystems/cache
     - theme: alt

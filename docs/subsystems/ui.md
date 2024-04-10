@@ -16,6 +16,8 @@ You can automatically generate a set of pages for interacting with [ving records
 ./ving.mjs record --web Foo
 ```
 
+> Note that you will need a [Ving Schema](ving-schema), [Ving Record](ving-record), and [Rest](rest) for `Foo` before the web interface can function.
+
 That will give you a place to start, and then you can use the [composables](#composables) and [components](#components) we provide to build out a complex app.
 
 ## Icons

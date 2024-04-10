@@ -18,6 +18,7 @@ export default defineConfig({
         items: [
           { text: 'Installation', link: '/installation' },
           { text: 'Environment Variables', link: '/env' },
+          { text: 'Architecture', link: '/architecture' },
           { text: 'Error Codes', link: '/error-codes' },
           { text: 'Change Log', link: '/change-log' },
         ]

@@ -13,6 +13,8 @@ Your Rest endpoints will be generated from your [Ving Schema](ving-schema) by us
 ./ving.mjs record --rest Foo
 ```
 
+> Note that you will need a [Ving Schema](ving-schema) and [Ving Record](ving-record) for `Foo` before the rest interface can function.
+
 These will be placed in the `server/api/v1/foo` folder and can be modified by you after the fact.
 
 

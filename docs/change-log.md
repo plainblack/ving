@@ -14,6 +14,7 @@ outline: deep
 * Implemented: document Nuxt stuff #76
 * Implemented: add --bare as an option in generators that gets rid of the boiler plate #75
 * Implemented: cli improvements #83
+* Implemented: document the ving structure #84
 
 ## 2024-04-08
 * Breaking change: Refactored VingRecord isOwner(), canEdit(), and propsOptions() to be async.
