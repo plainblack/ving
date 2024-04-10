@@ -63,7 +63,7 @@ export default (behavior) => {
              */
 
             async create(props, options) {
-                const newProps = _.defaultsDeep({}, this.props, props);
+                const newProps = _.defaultsDeep({}, props, this.props);
                 const response = await useRest(this.getCreateApi(), {
                     query: this.query,
                     method: 'post',

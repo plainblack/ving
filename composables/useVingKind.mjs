@@ -193,7 +193,7 @@ class VingKind {
      */
     create(props = {}, options = {}) {
         const self = this;
-        const newProps = _.defaultsDeep({}, self.new, props);
+        const newProps = _.defaultsDeep({}, props, self.new);
         const newRecord = self.mint({ props: newProps });
         const addIt = function () {
             if (options?.unshift || self.#behavior?.unshift) {
