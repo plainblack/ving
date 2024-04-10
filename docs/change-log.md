@@ -9,6 +9,7 @@ outline: deep
 * Added recordsAsOptions() method to the useVingKind() composable.
 * Fixed a bug in the create() method of useVingKind & useVingRecord where props passed in to the function would be overridden by the defaults.
 * Added prepend and append slots to FormSelect component.
+* Fix: int prop didn't generate number form field #92
 
 ## 2024-04-09
 * Fixed: no type int example in ving schema #82

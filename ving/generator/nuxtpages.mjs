@@ -63,10 +63,10 @@ const prop2type = (prop) => {
     if (prop.name == 'email') {
         return 'email';
     }
-    if (prop.type == 'number') {
+    if (prop.type == 'int') {
         return 'number';
     }
-    if (prop.type == 'string' && prop.length > 256) {
+    if (prop.type == 'string' && (prop.length > 256 || prop.length == undefined)) {
         return 'textarea';
     }
     else {
