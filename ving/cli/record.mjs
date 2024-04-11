@@ -4,6 +4,7 @@ import { generateRest } from '#ving/generator/nuxtapis.mjs';
 import { generateWeb } from '#ving/generator/nuxtpages.mjs';
 import { vingSchemas, findVingSchema } from '#ving/schema/map.mjs';
 import ving from '#ving/index.mjs';
+import { isFile, isDir } from '#ving/utils/fs.mjs';
 
 export default defineCommand({
     meta: {
@@ -48,9 +49,14 @@ export default defineCommand({
             }
             else if (args.rest) {
                 await generateRest({ name: args.rest, schema: findVingSchema(args.rest, 'kind') });
+                if (!isFile(`./ving/record/records/${args.rest}.mjs`))
+                    ving.log('cli').warn(`You have not generated a record for ${args.rest} yet.`);
             }
             else if (args.web) {
                 await generateWeb({ name: args.web, schema: findVingSchema(args.web, 'kind') });
+                const config = await ving.getConfig();
+                if (!isDir(`./server/api/${config.rest.version}/${args.web.toLowerCase()}`))
+                    ving.log('cli').warn(`You have not generated rest for ${args.web} yet.`);
             }
             else if (args.missingRest) {
                 for (const schema of vingSchemas) {
