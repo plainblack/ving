@@ -10,6 +10,20 @@ export const ${camelCase(name)}Schema = {
     owner: ['$userId', 'admin'],
     props: [
         ...baseSchemaProps,
+        // name field
+        {
+            type: "string",
+            name: "name",
+            required: true,
+            unique: false,
+            length: 60,
+            default: '',
+            filterQuery: true,
+            db: (prop) => dbString(prop),
+            zod: (prop) => zodString(prop),
+            view: [],
+            edit: ['owner'],
+        },
         // unique email field
         {
             type: "string",
@@ -83,7 +97,7 @@ export const ${camelCase(name)}Schema = {
             default: 0,
             filterRange: true,
             db: (prop) => dbInt(prop),
-            zod: (prop) => zodNumber(prop).positive(),
+            zod: (prop) => zodNumber(prop).nonnegative(),
             view: ['public'],
             edit: [],
         },
@@ -110,6 +124,17 @@ export const ${camelCase(name)}Schema = {
             enumLabels: ['Not Cool', 'Very Cool'],
             view: [],
             edit: ['owner'],
+        },
+        // date field
+        {
+            type: "date",
+            name: "startedAt",
+            required: true,
+            filterRange: true,
+            default: () => new Date(),
+            db: (prop) => dbDateTime(prop),
+            view: ['public'],
+            edit: [],
         },
         // 1:N relationship - aka a relationship to my children
        /* {
@@ -157,17 +182,6 @@ export const ${camelCase(name)}Schema = {
             default: undefined,
             view: ['public'],
             edit: ['owner'],
-        },
-        // date field
-        {
-            type: "date",
-            name: "startedAt",
-            required: true,
-            filterRange: true,
-            default: () => new Date(),
-            db: (prop) => dbDateTime(prop),
-            view: ['public'],
-            edit: [],
         },
     ],
 };`;
