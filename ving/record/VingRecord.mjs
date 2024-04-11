@@ -158,7 +158,7 @@ export class VingRecord {
         let out = { props: {} };
         out.props.id = this.get('id');
         if (include !== undefined && include.links) {
-            const vingConfig = ving.getConfig();
+            const vingConfig = await ving.getConfig();
             out.links = { base: { href: `/api/${vingConfig.rest.version}/${schema.kind?.toLowerCase()}`, methods: ['GET', 'POST'] } };
             out.links.self = { href: `${out.links.base.href}/${this.#props.id}`, methods: ['GET', 'PUT', 'DELETE'] };
         }

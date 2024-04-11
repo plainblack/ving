@@ -1,17 +1,13 @@
-import { readFileSync } from 'fs';
+import { readJSON } from '#ving/utils/fs.mjs';
 
 let config = undefined;
 /**
  * Reads `ving.json`
  * @returns An object with the contents of `ving.json`
  */
-export const getConfig = () => {
+export const getConfig = async () => {
     if (config !== undefined)
         return config;
-    config = JSON.parse(
-        readFileSync(
-            new URL('../ving.json', import.meta.url)
-        )
-    );
+    config = await readJSON('./ving.json');
     return config;
 }

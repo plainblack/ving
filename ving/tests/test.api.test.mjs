@@ -2,7 +2,7 @@ import { describe, test, expect } from "vitest";
 import axios from 'axios'
 import { getConfig } from '#ving/config.mjs';
 
-const vingConfig = getConfig();
+const vingConfig = await getConfig();
 const base = `http://localhost:3000/api/${vingConfig.rest.version}/`;
 describe('Test API', async () => {
 

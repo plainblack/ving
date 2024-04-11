@@ -5,7 +5,7 @@ import { like, eq, asc, desc, and } from '#ving/drizzle/orm.mjs';
 import { getConfig } from '#ving/config.mjs';
 
 const Users = await useKind('User');
-const vingConfig = getConfig();
+const vingConfig = await getConfig();
 const base = `http://localhost:3000/api/${vingConfig.rest.version}/`;
 
 describe('Session API', async () => {

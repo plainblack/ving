@@ -4,7 +4,7 @@ import { like, eq, asc, desc, and, inArray, SQL } from '#ving/drizzle/orm.mjs';
 import { getConfig } from '#ving/config.mjs';
 
 const Users = await useKind('User');
-const vingConfig = getConfig();
+const vingConfig = await getConfig();
 
 await Users.delete.where(inArray(Users.table.username, ['warden', 'captain', 'guard']));
 const warden = await Users.create({ username: 'warden', email: 'warden@shawshank.jail', realName: 'Samuel Norton' });

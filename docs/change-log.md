@@ -8,6 +8,8 @@ outline: deep
 * Implemented: add required to FormSelect #95
 * Implemented: unify the use if [id] in urls #101
 * NOTE: Due to the above change, you should move [id].get.mjs, [id].put.mjs, and [id].delete.mjs in your server/api/v1/record folders to [id]/index.get.mjs, [id]/index.put.mjs, and [id]/index.delete.mjs.
+* Added filesystem utils.
+* Updated existing code to use filesystem utils.
 
 ## 2024-04-10
 * Implemented: filterQualifier: true should be in the examples for all relation ids #96

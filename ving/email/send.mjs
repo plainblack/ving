@@ -59,7 +59,7 @@ export const customTransporter = (options) => {
  * @param {Object} props.transporter A custom `nodemailer` transport
  */
 export const sendMail = async (template, props) => {
-    const vingConfig = ving.getConfig();
+    const vingConfig = await ving.getConfig();
     vingConfig.site.url = process.env.VING_SITE_URL;
     const options = props.options;
     options.from = options.from ?? vingConfig.site.email;

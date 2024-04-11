@@ -118,9 +118,9 @@ export default defineEventHandler(async (event) => {
     return await ${prop.relation.name.toLowerCase()}.describe(describeParams(event));
 });`;
 
-export const generateRest = (params) => {
+export const generateRest = async (params) => {
     const context = { ...getContext({}), ...params };
-    const folderName = `server/api/${ving.getConfig().rest.version}/${context.name.toLowerCase()}`;
+    const folderName = `server/api/${await ving.getConfig().rest.version}/${context.name.toLowerCase()}`;
     let gen = Promise.resolve(context);
     let filePath = `${folderName}/[id]/index.delete.mjs`;
     if (!(params.skipExisting && fs.existsSync(filePath)))
