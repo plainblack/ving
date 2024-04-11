@@ -3,9 +3,9 @@
         <FormLabel :label="label" :id="computedId" />
         <div class="p-inputgroup flex-1">
             <span v-if="prepend" class="p-inputgroup-addon"> {{ prepend }} </span>
-            <InputNumber v-if="type == 'number' && (_.isNumber(val) || _.isNull(val) || _.isUndefined(val))" v-model="val"
-                showButtons :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
-                :required="required" :inputClass="fieldClass" :step="step"
+            <InputNumber v-if="type == 'number' && (_.isNumber(val) || _.isNull(val) || _.isUndefined(val))"
+                v-model="val" showButtons :placeholder="placeholder" :name="name" :id="computedId"
+                :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" :step="step"
                 :incrementButtonClass="append ? 'border-noround' : ''"
                 :decrementButtonClass="append ? 'border-noround' : ''" />
             <Password v-else-if="type == 'password' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
@@ -52,7 +52,6 @@ const props = defineProps({
         default: () => 'off',
     },
     modelValue: {
-        type: [String, Number, undefined, null],
         required: true,
     },
     placeholder: String,
