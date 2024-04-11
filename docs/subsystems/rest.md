@@ -414,7 +414,7 @@ You can then in-turn call the URI provided by each relationship to fetch the ite
 Likewise you can request related objects (those with relationship type of parent) be included directly in the result by adding the name of the related record relationship like `includeRelated=user as a parameter:
 
 ```
-GET /article/xxx?includeRelated=user&includeMeta=true
+GET /article/xxx?includeRelated=user
 ```
 
 Response:
@@ -431,10 +431,6 @@ Response:
      "user" : {
         "props" : {
             "id" : "xxx",
-            ...
-        },
-        "meta" : {
-            "displayName" : "Andy Dufresne",
             ...
         }
      }
