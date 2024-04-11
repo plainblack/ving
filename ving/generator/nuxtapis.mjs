@@ -122,13 +122,13 @@ export const generateRest = (params) => {
     const context = { ...getContext({}), ...params };
     const folderName = `server/api/${ving.getConfig().rest.version}/${context.name.toLowerCase()}`;
     let gen = Promise.resolve(context);
-    let filePath = `${folderName}/[id].delete.mjs`;
+    let filePath = `${folderName}/[id]/index.delete.mjs`;
     if (!(params.skipExisting && fs.existsSync(filePath)))
         gen = gen.then(renderTemplate(idDeleteTemplate, toFile(filePath)));
-    filePath = `${folderName}/[id].get.mjs`;
+    filePath = `${folderName}/[id]/index.get.mjs`;
     if (!(params.skipExisting && fs.existsSync(filePath)))
         gen = gen.then(renderTemplate(idGetTemplate, toFile(filePath)));
-    filePath = `${folderName}/[id].put.mjs`;
+    filePath = `${folderName}/[id]/index.put.mjs`;
     if (!(params.skipExisting && fs.existsSync(filePath)))
         gen = gen.then(renderTemplate(idPutTemplate, toFile(filePath)));
     filePath = `${folderName}/index.get.mjs`;
