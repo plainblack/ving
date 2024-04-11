@@ -21,10 +21,10 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         setState(data) {
-            this.props = data.props || {};
-            this.meta = data.meta || {};
-            this.options = data.options || {};
-            this.links = data.links || {};
+            this.props = data?.props || {};
+            this.meta = data?.meta || {};
+            this.options = data?.options || {};
+            this.links = data?.links || {};
         },
         async login(login, password) {
             const response = await useRest(`/api/${restVersion()}/session`, {
@@ -64,7 +64,8 @@ export const useCurrentUserStore = defineStore('currentUser', {
                 body: this.props,
                 query,
             });
-            this.setState(response.data)
+            if (response.data)
+                this.setState(response.data);
             return response;
         },
         async create(newUser) {
