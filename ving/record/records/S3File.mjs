@@ -191,6 +191,8 @@ export class S3FileRecord extends VingRecord {
          */
     async postProcessFile() {
         const self = this;
+        if (self.get('status') == 'ready')
+            return self.get('metadata');
         let response = null;
         let metadata = {};
         try {
