@@ -6,6 +6,7 @@ import { vingSchemas } from '#ving/schema/map.mjs';
 import ving from '#ving/index.mjs';
 import crypto from "node:crypto";
 import fs from "node:fs";
+import { spawn } from 'child_process';
 
 export default defineCommand({
     meta: {
@@ -74,17 +75,7 @@ export default defineCommand({
                 runMigrations();
             }
             else if (args.prepare) {
-                exec("npx drizzle-kit generate:mysql --out ./ving/drizzle/migrations --schema ving/drizzle/schema", (error, stdout, stderr) => {
-                    if (error) {
-                        ving.log('cli').error(error.message);
-                        return;
-                    }
-                    if (stderr) {
-                        ving.log('cli').error(stderr);
-                        return;
-                    }
-                    ving.log('cli').info(stdout);
-                });
+                spawn('npx drizzle-kit generate:mysql --out ./ving/drizzle/migrations --schema ving/drizzle/schema', [], { stdio: 'inherit', shell: true });
             }
             else {
                 await showUsage(cmd, { meta: { name: 'ving.mjs' } });

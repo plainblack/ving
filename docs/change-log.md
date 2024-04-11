@@ -14,6 +14,7 @@ outline: deep
 * Implemented: user id in statistics and add clipboard copy #88
 * Fixed: documentation for Related Records is broken #86
 * Implemented: write docs for utils #89
+* Fixed: drizzle kit is now interactive #93
 
 ## 2024-04-10
 * Implemented: filterQualifier: true should be in the examples for all relation ids #96
