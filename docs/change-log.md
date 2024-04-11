@@ -16,6 +16,7 @@ outline: deep
 * Implemented: write docs for utils #89
 * Fixed: drizzle kit is now interactive #93
 * Fixed: cannot dispose useVingRecord on edit page #102
+* Added UserAvatar component.
 
 ## 2024-04-10
 * Implemented: filterQualifier: true should be in the examples for all relation ids #96
