@@ -17,6 +17,7 @@ outline: deep
 * Fixed: drizzle kit is now interactive #93
 * Fixed: cannot dispose useVingRecord on edit page #102
 * Added UserAvatar component.
+* Added min, max, sum, and avg methods to VingKind.
 
 ## 2024-04-10
 * Implemented: filterQualifier: true should be in the examples for all relation ids #96

@@ -1,7 +1,7 @@
 import { findVingSchema } from '#ving/schema/map.mjs';
 import ving from '#ving/index.mjs';
 import _ from 'lodash';
-import { eq, asc, desc, and, ne, sql, getTableName } from '#ving/drizzle/orm.mjs';
+import { eq, asc, desc, and, ne, sql, getTableName, count, sum, avg, min, max } from '#ving/drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving/schema/helpers.mjs';
 
 /**
@@ -652,10 +652,62 @@ export class VingKind {
      * Usage: `const numberOfUsers = await Users.count()`
      * 
      * @param {Object} where A drizzle where clause
-     * @returns A count of the records
+     * @returns {number} A count of the records
      */
     async count(where) {
-        return (await this.db.select({ count: sql`count(*)`.as('count') }).from(this.table).where(this.calcWhere(where)))[0].count;
+        return (await this.db.select({ value: count() }).from(this.table).where(this.calcWhere(where)))[0].value;
+    }
+
+    /**
+     * Sum the values of a field of this kind
+     * 
+     * Usage: `await S3Files.sum('sizeInBytes')`
+     * 
+     * @param {string} field The name of the column to sum
+     * @param {Object} where A drizzle where clause
+     * @returns {number} A count of the records
+     */
+    async sum(where) {
+        return (await this.db.select({ value: sum(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value;
+    }
+
+    /**
+     * Average the values of a field of this kind
+     * 
+     * Usage: `await S3Files.avg('sizeInBytes')`
+     * 
+     * @param {string} field The name of the column to average
+     * @param {Object} where A drizzle where clause
+     * @returns {number} A count of the records
+     */
+    async avg(where) {
+        return (await this.db.select({ value: avg(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value;
+    }
+
+    /**
+     * Get the minimum value for a field of this kind
+     * 
+     * Usage: `await S3Files.min('sizeInBytes')`
+     * 
+     * @param {string} field The name of the column to get the minimum
+     * @param {Object} where A drizzle where clause
+     * @returns {number} A count of the records
+     */
+    async min(where) {
+        return (await this.db.select({ value: min(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value;
+    }
+
+    /**
+    * Get the maximum value for a field of this kind. 
+    * 
+    * Usage: `await S3Files.max('sizeInBytes')`
+    * 
+    * @param {string} field The name of the column to get the maximum
+    * @param {Object} where A drizzle where clause
+    * @returns {number} A count of the records
+    */
+    async max(where) {
+        return (await this.db.select({ value: max(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value;
     }
 
     /**
