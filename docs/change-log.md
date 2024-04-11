@@ -3,6 +3,10 @@ outline: deep
 ---
 # Change Log
 
+## 2024-04-11
+* Made currentUserStore more fault tollerant.
+* Implemented: add required to FormSelect #95
+
 ## 2024-04-10
 * Implemented: filterQualifier: true should be in the examples for all relation ids #96
 * Implemented: add documentation to ving schema about filterQuery #87
