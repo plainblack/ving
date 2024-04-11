@@ -14,7 +14,8 @@
                         @change="user.update()" />
                 </div>
                 <div class="mb-4">
-                    <FormInput name="realName" v-model="user.props.realName" label="Real Name" @change="user.update()" />
+                    <FormInput name="realName" v-model="user.props.realName" label="Real Name"
+                        @change="user.update()" />
                 </div>
 
                 <div class="mb-4">
@@ -37,8 +38,8 @@
                 </div>
 
                 <div class="mb-4">
-                    <FormSelect @change="user.update()" v-model="user.props.developer" :options="user.options?.developer"
-                        label="Are you a software developer?" name="developer" />
+                    <FormSelect @change="user.update()" v-model="user.props.developer"
+                        :options="user.options?.developer" label="Are you a software developer?" name="developer" />
                 </div>
 
                 <div class="mb-4">
@@ -48,6 +49,10 @@
             </FieldsetItem>
 
             <FieldsetItem name="Statistics">
+                <div class="mb-4"><b>Id</b>: {{ user.props?.id }}
+                    <CopyToClipboard :text="user.props.id" />
+                </div>
+
                 <div class="mb-4">
                     Created at {{ dt.formatDateTime(user.props.createdAt) }}
                 </div>
@@ -67,7 +72,7 @@
         </FieldsetNav>
     </client-only>
 </template>
-  
+
 <script setup>
 definePageMeta({
     middleware: ['auth', 'admin']
