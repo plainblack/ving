@@ -20,8 +20,9 @@
                         </div>
                         <div v-if="currentUser.props.avatarType == 'uploaded'" class="mb-4">
                             <client-only>
-                                <Dropzone :acceptedFiles="['.png', '.jpg', '.gif']" :afterUpload="currentUser.importAvatar"
-                                    :maxFiles="1" :resizeHeight="300" :resizeWidth="300" resizeMethod="crop"></Dropzone>
+                                <Dropzone :acceptedFiles="['.png', '.jpg', '.gif']"
+                                    :afterUpload="currentUser.importAvatar" :maxFiles="1" :resizeHeight="300"
+                                    :resizeWidth="300" resizeMethod="crop"></Dropzone>
                             </client-only>
                         </div>
 
@@ -40,13 +41,10 @@
         </div>
     </div>
 </template>
-  
+
 <script setup>
 definePageMeta({
     middleware: ['auth']
 });
 const currentUser = useCurrentUserStore();
-const attachImageToUser = (s3file) => {
-    currentUser.call('POST', currentUser.links.self.href)
-}
 </script>
