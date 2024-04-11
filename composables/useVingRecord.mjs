@@ -25,16 +25,21 @@ export default (behavior) => {
             * 
             * Usage: `const result = user.call('post', user.links.self.href+'/send-reset-password', {os:'Windows'});`
             *
-             * @param method `put`, `post`, `get` or `delete`.
-             * @param url The endpoint to run this call on.
-             * @param query An object containing query parameters to pass to this call.
-             * @param options Modify the behavior of this call.
+             * @param {'put'|'post'|'get'|'delete'} method `put`, `post`, `get` or `delete`.
+             * @param {String} url The endpoint to run this call on.
+             * @param {Object} query An object containing query parameters to pass to this call. The same as behavior.query when you created this object.
+             * @param {Object} options Modify the behavior of this call.
+             * @param {Function} options.onError A function to be run when this call fail.
+             * @param {Function} options.onSuccess A function to be run when this call succeeds.
+             * @param {Object} options.body A fetch body param.
              * @returns A promise containing the response to the call.
              */
             async call(method, url, query = {}, options = {}) {
+
                 const response = await useRest(url, {
                     query: _.defaultsDeep({}, this.query, query),
                     method,
+                    body: options.body,
                     suppressErrorNotifications: behavior.suppressErrorNotifications,
                 });
                 if (response.error) {
@@ -230,6 +235,17 @@ export default (behavior) => {
                 }
                 notify.error('No links.self');
                 throw ouch(400, 'No links.self');
+            },
+
+            /**
+             * A wrapper around `call` that posts to an S3File import route
+             * @param {String} relationName The name of the S3File relationship on this record.
+             * @param {String} s3file The id of the S3File record you'd like to import.
+             * @see call()
+             * @returns {Object} A response object.
+             */
+            async importS3File(relationName, s3FileId) {
+                return await this.call('PUT', this.links.self.href + '/import-' + relationName, undefined, { body: { s3FileId } })
             },
 
             /**

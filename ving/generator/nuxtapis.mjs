@@ -2,6 +2,30 @@ import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
 import fs from 'fs';
 import ving from '#ving/index.mjs';
 
+const importFileTemplate = ({ name, prop }) =>
+    `import { useKind } from '#ving/record/utils.mjs';
+import { describeParams, obtainSession, getBody } from '#ving/utils/rest.mjs';
+import { defineEventHandler, getRouterParams } from 'h3';
+
+export default defineEventHandler(async (event) => {
+    const ${name.toLowerCase()}s = await useKind('${name}');
+    const { id } = getRouterParams(event);
+    const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
+    const oldFile = await ${name.toLowerCase()}.parent('${prop.relation.name}');
+    const session = obtainSession(event);
+    await ${name.toLowerCase()}.canEdit(session);
+    const body = await getBody(event);
+    const s3files = await useKind('S3File');
+    const s3file = await s3files.findOrDie(body.s3FileId);
+    await s3file.postProcessFile();
+    await s3file.verifyExtension(['png', 'jpeg', 'jpg', 'gif']);
+    await s3file.verifyExactDimensions(300, 300);
+    ${name.toLowerCase()}.set('${prop.name}', s3file.get('id'));
+    await ${name.toLowerCase()}.update();
+    await oldFile.delete();
+    return await ${name.toLowerCase()}.describe(describeParams(event, session));
+});`;
+
 const optionsTemplate = ({ name }) =>
     `import { useKind } from '#ving/record/utils.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
@@ -123,6 +147,10 @@ export const generateRest = (params) => {
             gen = gen.then(renderTemplate(childGetTemplate({ name: context.name, prop }), toFile(filePath)));
         else if (prop?.relation?.type == 'parent' && !(params.skipExisting && fs.existsSync(filePath)))
             gen = gen.then(renderTemplate(parentGetTemplate({ name: context.name, prop }), toFile(filePath)));
+        if (prop?.relation?.type == 'parent' && prop?.relation?.name && prop?.relation?.kind == 'S3File') {
+            filePath = `${folderName}/[id]/import-${prop.relation.name.toLowerCase()}.put.mjs`;
+            gen = gen.then(renderTemplate(importFileTemplate({ name: context.name, prop }), toFile(filePath)));
+        }
     }
     return gen;
 }
