@@ -667,7 +667,7 @@ export class VingKind {
      * @param {Object} where A drizzle where clause
      * @returns {number} A count of the records
      */
-    async sum(where) {
+    async sum(field, where) {
         return (await this.db.select({ value: sum(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value;
     }
 
@@ -680,7 +680,7 @@ export class VingKind {
      * @param {Object} where A drizzle where clause
      * @returns {number} A count of the records
      */
-    async avg(where) {
+    async avg(field, where) {
         return (await this.db.select({ value: avg(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value;
     }
 
@@ -693,7 +693,7 @@ export class VingKind {
      * @param {Object} where A drizzle where clause
      * @returns {number} A count of the records
      */
-    async min(where) {
+    async min(field, where) {
         return (await this.db.select({ value: min(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value;
     }
 
@@ -706,7 +706,7 @@ export class VingKind {
     * @param {Object} where A drizzle where clause
     * @returns {number} A count of the records
     */
-    async max(where) {
+    async max(field, where) {
         return (await this.db.select({ value: max(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value;
     }
 
