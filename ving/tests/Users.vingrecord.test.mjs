@@ -97,8 +97,9 @@ describe('Users', async () => {
         await warden.setPostedProps({ useAsDisplayName: 'email' }, warden);
         expect(warden.get('useAsDisplayName')).toBe('email');
     });
-    const guard = Users.copy(captain.getAll());
+    const guard = await captain.copy();
     test("clone a record", () => {
+        expect(guard.get('realName')).toBe('Byron Hadley');
         guard.setAll({
             username: 'guard',
             email: 'guard@shawshank.jail',

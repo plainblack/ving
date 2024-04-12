@@ -124,6 +124,22 @@ export class VingRecord {
     }
 
     /**
+     * Creates a new record based upon the props of an old one. Note that this doesn't save the new record to the database, you'll need to call `insert()` on it to do that.
+     * 
+     * Usage: `const newRecord = this.copy()`
+     * 
+     * @returns {Object} a newly minted record based upon the original props
+     */
+    async copy() {
+        const schema = findVingSchema(getTableName(this.table));
+        const kind = await ving.useKind(schema.kind);
+        let props = { ...this.getAll() };
+        delete props.id;
+        delete props.createdAt;
+        return kind.mint(props);
+    }
+
+    /**
      * Removes the record from the database
      * 
      * Usage: `await user.delete()`
@@ -629,21 +645,6 @@ export class VingKind {
             return defaults;
         }
         return undefined;
-    }
-
-    /**
-     * Creates a new record based upon the props of an old one. Note that this doesn't save the new record to the database, you'll need to call `insert()` on it to do that.
-     * 
-     * Usage: `const newRecord = Users.copy(user.getAll())`
-     * 
-     * @param {Object} originalProps a list of props to be copied
-     * @returns a newly minted record based upon the original props
-     */
-    copy(originalProps) {
-        let props = { ...originalProps };
-        delete props.id;
-        delete props.createdAt;
-        return this.mint(props);
     }
 
     /**

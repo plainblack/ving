@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 2024-04-12
+* Moved copy() from VingKind to VingRecord as its easier to use and less fragile.
+
 ## 2024-04-11
 * Made currentUserStore more fault tollerant.
 * Implemented: add required to FormSelect #95

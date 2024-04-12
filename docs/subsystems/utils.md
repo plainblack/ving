@@ -44,7 +44,7 @@ Combines a bunch of commonly used ving utilities into a single roll up package.
 
 Exports all of the useful functions from drizzle that are normally spread out across many different libraries. 
 
-### ving/record/VingRecord.mjs
+### ving/record/utils.mjs
 
 Exports a `useKind()` function that allows you to dynamically instanciate any VingKind.
 
