@@ -656,7 +656,7 @@ export class VingKind {
      * @returns {number} A count of the records
      */
     async count(where) {
-        return (await this.db.select({ value: count() }).from(this.table).where(this.calcWhere(where)))[0].value;
+        return (await this.db.select({ value: count() }).from(this.table).where(this.calcWhere(where)))[0].value * 1;
     }
 
     /**
@@ -669,7 +669,7 @@ export class VingKind {
      * @returns {number} A count of the records
      */
     async sum(field, where) {
-        return (await this.db.select({ value: sum(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value;
+        return (await this.db.select({ value: sum(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value * 1;
     }
 
     /**
@@ -682,7 +682,7 @@ export class VingKind {
      * @returns {number} A count of the records
      */
     async avg(field, where) {
-        return (await this.db.select({ value: avg(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value;
+        return (await this.db.select({ value: avg(this.table[field]) }).from(this.table).where(this.calcWhere(where)))[0].value * 1;
     }
 
     /**

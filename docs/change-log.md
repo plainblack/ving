@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 2024-04-18
+* Cast result of sum() and avg() to number.
+
 ## 2024-04-12
 * Moved copy() from VingKind to VingRecord as its easier to use and less fragile.
 
