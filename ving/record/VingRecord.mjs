@@ -656,7 +656,7 @@ export class VingKind {
      * @returns {number} A count of the records
      */
     async count(where) {
-        return (await this.db.select({ value: count() }).from(this.table).where(this.calcWhere(where)))[0].value * 1;
+        return (await this.db.select({ value: count() }).from(this.table).where(this.calcWhere(where)))[0].value;
     }
 
     /**

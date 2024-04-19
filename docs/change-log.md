@@ -8,6 +8,7 @@ outline: deep
 * Update lambda file upload function to handle CSV files and other file types by returning the file size.
 * Update S3File Record to allow SVG file uploads and sets the iconf type for files that aren't bitmaps.
 * Make useVingRecord aware of extra state.
+* Fix count() on VingRecord.
 
 ## 2024-04-18
 * Cast result of sum() and avg() to number.
