@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 2024-04-19
+* Fixed a problem where the default values set by a parent on child records wasn't being respected.
+
 ## 2024-04-18
 * Cast result of sum() and avg() to number.
 

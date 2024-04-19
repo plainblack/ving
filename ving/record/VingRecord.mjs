@@ -976,6 +976,8 @@ export class VingKind {
         for (const prop of findVingSchema(getTableName(this.table)).props) {
             if (props && props[prop.name] !== undefined)
                 output[prop.name] = props[prop.name]
+            else if (output[prop.name] !== undefined) // the value was set above
+                continue;
             else if (prop.type == 'string' || prop.type == 'enum')
                 output[prop.name] = stringDefault(prop)
             else if (prop.type == 'boolean')
