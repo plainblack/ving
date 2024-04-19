@@ -10,6 +10,7 @@ export default (behavior) => {
         state: () => ({
             props: behavior.props || {},
             meta: behavior.meta || {},
+            extra: behavior.extra || {},
             options: behavior.options || {},
             links: behavior.links || {},
             related: behavior.related || {},
@@ -312,6 +313,7 @@ export default (behavior) => {
                 this.props = result.props;
                 this.links = result.links;
                 this.meta = result.meta;
+                this.extra = result.extra;
                 this.options = result.options;
                 this.related = result.related;
                 this.warnings = result.warnings;
