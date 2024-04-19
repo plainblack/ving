@@ -221,6 +221,12 @@ export class S3FileRecord extends VingRecord {
             self.set('icon', 'thumbnail');
             delete metadata.thumbnail;
         }
+        else if (self.get('extension') == 'svg') {
+            self.set('icon', 'self');
+        }
+        else {
+            self.set('icon', 'extension');
+        }
         if (metadata.sizeInBytes) {
             self.set('sizeInBytes', metadata.sizeInBytes);
             delete metadata.sizeInBytes;

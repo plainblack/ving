@@ -6,6 +6,7 @@ outline: deep
 ## 2024-04-19
 * Fixed a problem where the default values set by a parent on child records wasn't being respected.
 * Update lambda file upload function to handle CSV files and other file types by returning the file size.
+* Update S3File Record to allow SVG file uploads and sets the iconf type for files that aren't bitmaps.
 
 ## 2024-04-18
 * Cast result of sum() and avg() to number.
