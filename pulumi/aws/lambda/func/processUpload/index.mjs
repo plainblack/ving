@@ -36,7 +36,7 @@ export const handler = async (event) => {
             out = formatResponse(await getZipInfo(url));
         }
         else {
-            out = formatError(`File type ${fileType} cannot be processed by this service.`);
+            out = formatResponse(await getOtherFileInfo(url));
         }
     }
     catch (e) {
@@ -82,6 +82,14 @@ async function getZipInfo(url) {
         });
     });
     fs.unlinkSync(filePath);
+    return out;
+}
+
+async function getOtherFileInfo(url) {
+    const filePath = await downloadFile(url);
+    if (!fs.existsSync(filePath))
+        return formatError(`Could not download file from ${url}`);
+    const out = { sizeInBytes: getFileSize(filePath) };
     return out;
 }
 
