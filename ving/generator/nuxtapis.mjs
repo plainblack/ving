@@ -96,13 +96,13 @@ export default defineEventHandler(async (event) => {
 
 const childGetTemplate = ({ name, prop }) =>
     `import { useKind } from '#ving/record/utils.mjs';
-import { describeListParams } from '#ving/utils/rest.mjs';
+import { describeListParams, describeListWhere } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name.toLowerCase()}s = await useKind('${name}');
     const { id } = getRouterParams(event);
     const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
-    const ${prop.relation.kind}s = await ${name.toLowerCase()}.children('${prop.relation.name.toLowerCase()}');
+    const ${prop.relation.kind.toLowerCase()}s = await ${name.toLowerCase()}.children('${prop.relation.name.toLowerCase()}');
     return await ${prop.relation.kind.toLowerCase()}s.describeList(describeListParams(event), describeListWhere(event, ${prop.relation.kind.toLowerCase()}s.describeListFilter()));
 });`;
 
