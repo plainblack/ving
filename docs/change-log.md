@@ -5,6 +5,7 @@ outline: deep
 
 ## 2024-04-20
 * Fixed a bug where the rest generator would incorrectly generate child relationship api.
+* Added an empty layout.
 
 ## 2024-04-19
 * Fixed a problem where the default values set by a parent on child records wasn't being respected.
