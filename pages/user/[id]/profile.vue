@@ -10,6 +10,9 @@
                     {{ user.props?.realName }}
 
                 </div>
+                <div class="mb-4">
+                    <MarkdownView :text="user.props?.bio" />
+                </div>
 
             </div>
             <div class="flex flex-column align-items-center flex-or">

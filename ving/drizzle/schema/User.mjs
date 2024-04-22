@@ -17,6 +17,7 @@ export const UserTable = mysqlTable('users',
 		admin: boolean('admin').notNull().default(false),
 		developer: boolean('developer').notNull().default(false),
 		avatarType: mysqlEnum('avatarType', ['robot','uploaded']).notNull().default('robot'),
+		bio: mediumText('bio').notNull(),
 		avatarId: varchar('avatarId', { length: 36 }).default(null)
     }, 
     (table) => ({

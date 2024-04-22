@@ -15,6 +15,9 @@
                                 label="Use As Display Name" />
                         </div>
                         <div class="mb-4">
+                            <FormInput type="markdown" @change="currentUser.update()"  v-model="currentUser.props.bio" name="bio"  />
+                        </div>
+                        <div class="mb-4">
                             <FormSelect @change="currentUser.update()" v-model="currentUser.props.avatarType"
                                 :options="currentUser.options?.avatarType" name="avatarType" label="Avatar Type" />
                         </div>

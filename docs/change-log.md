@@ -7,6 +7,8 @@ outline: deep
 * Added MarkdownInput form control component for editing markdown text.
 * Added MarkdownView component for viewing markdown text.
 * Integrated MarkdownInput into FormInput component so you can just set "type" equal to "markdown" and display the input.
+* Added a `bio` field to the User that can be edited in their profile settings and displayed on their profile page.
+* NOTE: Due to the above change you should regenerate your drizzle tables and run a migration.
 
 ## 2024-04-20
 * Fixed a bug where the rest generator would incorrectly generate child relationship api.

@@ -1,4 +1,4 @@
-import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbRelation } from '../helpers.mjs';
+import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbRelation, dbMediumText, zodMediumText } from '../helpers.mjs';
 
 export const userSchema = {
     kind: 'User',
@@ -123,6 +123,16 @@ export const userSchema = {
             enums: ['robot', 'uploaded'],
             enumLabels: ['Robot', 'Uploaded'],
             view: [],
+            edit: ['owner'],
+        },
+        {
+            type: "string",
+            name: "bio",
+            required: true,
+            default: '',
+            db: (prop) => dbMediumText(prop),
+            zod: (prop) => zodMediumText(prop),
+            view: ['public'],
             edit: ['owner'],
         },
         {
