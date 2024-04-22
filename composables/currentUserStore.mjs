@@ -50,7 +50,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         async importAvatar(s3file) {
-            const response = await useRest(this.links.self.href + '/import-avatar', {
+            const response = await useRest(this.links?.self?.href + '/import-avatar', {
                 method: 'put',
                 body: { s3FileId: s3file.props.id },
                 query,
@@ -59,7 +59,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         async update() {
-            const response = await useRest(this.links.self.href, {
+            const response = await useRest(this.links?.self?.href, {
                 method: 'put',
                 body: this.props,
                 query,
@@ -81,13 +81,13 @@ export const useCurrentUserStore = defineStore('currentUser', {
         },
         async sendVerifyEmail(redirectAfter) {
             const parser = new ua(navigator.userAgent);
-            const response = await useRest(this.links.self.href + '/send-verify-email', {
+            const response = await useRest(this.links?.self?.href + '/send-verify-email', {
                 method: 'post',
                 query: { includeOptions: true, redirectAfter, browser: parser.getBrowser().name, os: parser.getOS().name },
             });
         },
         async verifyEmail(verify) {
-            const response = await useRest(this.links.self.href + '/verify-email', {
+            const response = await useRest(this.links?.self?.href + '/verify-email', {
                 method: 'post',
                 query: { includeOptions: true, verify },
             });
