@@ -14,6 +14,9 @@
             <Textarea v-else-if="type == 'textarea' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
                 :class="fieldClass + ' border-round'" :required="required" autoResize />
+            <MarkdownInput v-else-if="type == 'markdown' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
+                v-model="val" :placeholder="placeholder" :id="computedId" @change="emit('change')"
+                />
             <InputText
                 v-else-if="['text', 'email'].includes(type) && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
@@ -37,7 +40,7 @@ const props = defineProps({
         type: String,
         default: () => 'text',
         validator(value, props) {
-            return ['textarea', 'text', 'password', 'number', 'email'].includes(value)
+            return ['textarea', 'text', 'password', 'number', 'email','markdown'].includes(value)
         }
     },
     name: {
@@ -72,7 +75,7 @@ const props = defineProps({
 
 const computedId = props.id || props.name;
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue','change']);
 
 let invalidReason = '';
 
@@ -107,10 +110,10 @@ const displayName = props.label || props.name;
 
 const val = computed({
     get() {
-        return props.modelValue
+        return props.modelValue;
     },
     set(val) {
-        emit('update:modelValue', val)
+        emit('update:modelValue', val);
     }
 });
 
