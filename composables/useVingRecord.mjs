@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import _ from 'lodash';
+import { defu } from "defu";
 import { v4 } from 'uuid';
 import { ouch } from '#ving/utils/ouch.mjs';
 
@@ -38,7 +38,7 @@ export default (behavior) => {
             async call(method, url, query = {}, options = {}) {
 
                 const response = await useRest(url, {
-                    query: _.defaultsDeep({}, this.query, query),
+                    query: defu({}, this.query, query),
                     method,
                     body: options.body,
                     suppressErrorNotifications: behavior.suppressErrorNotifications,
@@ -69,7 +69,7 @@ export default (behavior) => {
              */
 
             async create(props, options) {
-                const newProps = _.defaultsDeep({}, props, this.props);
+                const newProps = defu({}, props, this.props);
                 const response = await useRest(this.getCreateApi(), {
                     query: this.query,
                     method: 'post',

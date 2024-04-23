@@ -8,7 +8,9 @@ outline: deep
 * Updated CopyToClipboard in generator to use size xs.
 * Added a little better documentation for Pulumi.
 * Fix: bio on User is required.
-* Implemented: replace axios with ofetch for CLI and jobs #117
+* Implemented: replace axios with ofetch for CLI and jobs #117.
+* Implemented: replace lodash defaultsDeep with defu #118
+* NOTE: You will have to run npm i to get new modules.
 
 ## 2024-04-22
 * Added MarkdownInput form control component for editing markdown text.

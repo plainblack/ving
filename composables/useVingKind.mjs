@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { defu } from "defu";
 import { debounce } from 'perfect-debounce';
 import { ouch } from '#ving/utils/ouch.mjs';
 class VingKind {
@@ -85,7 +85,7 @@ class VingKind {
 
     constructor(behavior = {}) {
         this.#behavior = behavior;
-        this.query = _.defaultsDeep(this.query, this.#behavior.query);
+        this.query = defu(this.query, this.#behavior.query);
         this.resetNew();
     }
 
@@ -166,7 +166,7 @@ class VingKind {
      */
     async call(method, url, query = {}, options = {}) {
         const response = await useRest(url, {
-            query: _.defaultsDeep({}, this.query, query),
+            query: defu({}, this.query, query),
             method,
             suppressErrorNotifications: this.#behavior.suppressErrorNotifications,
         });
@@ -193,7 +193,7 @@ class VingKind {
      */
     create(props = {}, options = {}) {
         const self = this;
-        const newProps = _.defaultsDeep({}, props, self.new);
+        const newProps = defu({}, props, self.new);
         const newRecord = self.mint({ props: newProps });
         const addIt = function () {
             if (options?.unshift || self.#behavior?.unshift) {
@@ -433,7 +433,7 @@ class VingKind {
      */
 
     resetNew() {
-        this.new = _.defaultsDeep({}, this.#behavior.newDefaults || {});
+        this.new = defu({}, this.#behavior.newDefaults || {});
     }
 
     /**
@@ -449,7 +449,7 @@ class VingKind {
             page: options?.page || this.paging.page || 1,
             itemsPerPage: this.paging.itemsPerPage || 10,
         };
-        const query = _.defaultsDeep({}, pagination, options?.query, this.query);
+        const query = defu({}, pagination, options?.query, this.query);
 
         const response = await useRest(this.getListApi(), {
             query: query,
