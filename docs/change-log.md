@@ -8,6 +8,7 @@ outline: deep
 * Updated CopyToClipboard in generator to use size xs.
 * Added a little better documentation for Pulumi.
 * Fix: bio on User is required.
+* Implemented: replace axios with ofetch for CLI and jobs #117
 
 ## 2024-04-22
 * Added MarkdownInput form control component for editing markdown text.

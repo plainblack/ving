@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { ofetch } from "ofetch";
 import { useKind } from '#ving/record/utils.mjs';
 import { describe, test, expect, afterAll } from "vitest";
 import { like, eq, asc, desc, and } from '#ving/drizzle/orm.mjs';
@@ -10,61 +10,67 @@ const base = `http://localhost:3000/api/${vingConfig.rest.version}/`;
 
 describe('User API', async () => {
     await Users.delete.where(eq(Users.table.username, 'brooks'));
-    const user = (await axios.post(
+    const user = (await ofetch(
         base + 'user?includeMeta=true',
         {
-            "username": "brooks",
-            "realName": "Brooks Hatlen",
-            "email": "brooks@shawshank.jail",
-            "password": "Rock Hammer"
+            method: "POST",
+            body: {
+                "username": "brooks",
+                "realName": "Brooks Hatlen",
+                "email": "brooks@shawshank.jail",
+                "password": "Rock Hammer"
+            }
         }
-    )).data;
+    ));
 
     test('create user', () => {
         expect(user.meta.displayName).toBe('brooks');
     });
 
-    const session = (await axios.post(
+    const session = (await ofetch(
         base + 'session',
-        { login: 'brooks', password: 'Rock Hammer', sessionType: 'native' }
-    )).data;
+        { method: 'post', body: { login: 'brooks', password: 'Rock Hammer', sessionType: 'native' } }
+    ));
 
     test('login', () => {
         expect(session.props.userId).toBe(user.props.id);
     });
 
     test('get user', async () => {
-        const result = (await axios.get(
+        const result = (await ofetch(
             `${base}user/${user.props.id}?includeLinks=true&includeMeta=true&includeOptions=true`,
             { headers: { Cookie: `vingSessionId=${session.props.id}` } }
-        )).data;
+        ));
         expect(result.props.username).toBe('brooks');
         expect(result.links.base.href).toBe(`/api/${vingConfig.rest.version}/user`);
         expect(result.meta.displayName).toBe('brooks');
     });
 
     test('get options', async () => {
-        const result = (await axios.get(
+        const result = (await ofetch(
             `${base}user/options`,
             { headers: { Cookie: `vingSessionId=${session.props.id}` } }
-        )).data;
+        ));
         expect(result.useAsDisplayName.length).toBe(3);
     });
 
     test('put user', async () => {
-        const result = (await axios.put(
+        const result = (await ofetch(
             `${base}user/${user.props.id}?includeMeta=true`,
-            { useAsDisplayName: 'email' },
-            { headers: { Cookie: `vingSessionId=${session.props.id}` } }
-        )).data;
+            {
+                method: 'put',
+                body: { useAsDisplayName: 'email' },
+                headers: { Cookie: `vingSessionId=${session.props.id}` }
+            }
+        ));
         expect(result.meta.displayName).toBe('brooks@shawshank.jail');
     });
 
     test('delete user', async () => {
-        const result = (await axios.delete(
+        const result = (await ofetch(
             `${base}user/${user.props.id}?includeMeta=true`,
-            { headers: { Cookie: `vingSessionId=${session.props.id}` } }
-        )).data;
+            { method: 'delete', headers: { Cookie: `vingSessionId=${session.props.id}` } }
+        ));
         expect(result.meta.deleted).toBe(true);
     });
 
