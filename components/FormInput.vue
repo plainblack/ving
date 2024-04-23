@@ -17,6 +17,11 @@
             <MarkdownInput v-else-if="type == 'markdown' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :id="computedId" @change="emit('change')"
                 />
+            <SelectInput v-else-if="type == 'select' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
+                v-model="val" :name="name" :id="computedId" :options="options" :class="fieldClass" :required="required"
+                @change="emit('change')">
+                <template v-for="(_, name) in $slots" v-slot:[name]="slotData"><slot :name="name" v-bind="slotData" /></template>
+            </SelectInput>
             <InputText
                 v-else-if="['text', 'email'].includes(type) && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
@@ -40,7 +45,7 @@ const props = defineProps({
         type: String,
         default: () => 'text',
         validator(value, props) {
-            return ['textarea', 'text', 'password', 'number', 'email','markdown'].includes(value)
+            return ['textarea', 'text', 'password', 'number', 'email','markdown','select'].includes(value)
         }
     },
     name: {
@@ -70,6 +75,7 @@ const props = defineProps({
         type: [Object, undefined],
         default: () => undefined,
     },
+    options: [Array, undefined],
     class: String,
 });
 
@@ -103,7 +109,11 @@ const invalid = computed(() => {
     return false;
 });
 
-const fieldClass = computed(() => invalid.value && !empty.value ? 'p-invalid w-full' : 'w-full');
+const fieldClass = computed(() => {
+    if (props.type == 'select')
+        return invalid.value ? 'p-inputtext border-red-500 w-full' : 'p-inputtext w-full';
+    return invalid.value && !empty.value ? 'p-invalid w-full' : 'w-full' 
+});
 
 const displayName = props.label || props.name;
 
