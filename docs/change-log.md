@@ -4,6 +4,8 @@ outline: deep
 # Change Log
 * Created SelectInput component to replace FormSelect. However, you should use FormInput with type select instead of using this directly in most cases.
 * NOTE: The FormSelect component no longer exists. Anywhere you are using it use FormInput with type 'select' instead.
+* Added size prop to CopyToClipboard button.
+* Updated CopyToClipboard in generator to use size xs.
 
 ## 2024-04-22
 * Added MarkdownInput form control component for editing markdown text.

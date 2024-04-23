@@ -50,7 +50,7 @@
 
             <FieldsetItem name="Statistics">
                 <div class="mb-4"><b>Id</b>: {{ user.props?.id }}
-                    <CopyToClipboard :text="user.props.id" />
+                    <CopyToClipboard :text="user.props.id" size="xs" />
                 </div>
 
                 <div class="mb-4">

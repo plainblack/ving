@@ -49,6 +49,11 @@ Displays a button that allows you to copy a text string to the user's clipboard.
 <CopyToClipboard :text="foo"/>
 ```
 
+Props:
+
+- **text** - The text you wish to copy to the clipboard.
+- **size** - The size of the button. Defaults to the normal button size. Can also be `lg`, `sm`, or `xs`.
+
 ### Crumbtrail
 Displays a crumbtrail navigation.
 

@@ -292,7 +292,7 @@ const statProps = (schema) => {
             }
             else if (prop.type == 'id') {
                 out += `
-                <div class="mb-4"><b>${makeLabel(prop.name)}</b>: {{${schema.kind.toLowerCase()}.props?.${prop.name}}} <CopyToClipboard :text="${schema.kind.toLowerCase()}.props?.${prop.name}" /></div>
+                <div class="mb-4"><b>${makeLabel(prop.name)}</b>: {{${schema.kind.toLowerCase()}.props?.${prop.name}}} <CopyToClipboard :text="${schema.kind.toLowerCase()}.props?.${prop.name}" size="xs" /></div>
                 `;
             }
             else if (prop.type != 'virtual') {
