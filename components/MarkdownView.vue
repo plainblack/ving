@@ -1,5 +1,5 @@
 <template>
-    <MdPreview :modelValue="text" :editorId="id" class="m-0 p-0"></MdPreview>
+    <MdPreview :modelValue="text" :editorId="id" previewTheme="github"></MdPreview>
 </template>
 
 <script setup>
