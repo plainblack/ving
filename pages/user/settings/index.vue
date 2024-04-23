@@ -10,7 +10,7 @@
                 <div class="flex gap-5 flex-column-reverse md:flex-row">
                     <div class="flex-auto p-fluid">
                         <div class="mb-4">
-                            <FormSelect @change="currentUser.update()" v-model="currentUser.props.useAsDisplayName"
+                            <FormInput type="select" @change="currentUser.update()" v-model="currentUser.props.useAsDisplayName"
                                 :options="currentUser.options?.useAsDisplayName" name="useAsDisplayName"
                                 label="Use As Display Name" />
                         </div>
@@ -18,7 +18,7 @@
                             <FormInput type="markdown" @change="currentUser.update()"  v-model="currentUser.props.bio" name="bio"  />
                         </div>
                         <div class="mb-4">
-                            <FormSelect @change="currentUser.update()" v-model="currentUser.props.avatarType"
+                            <FormInput type="select" @change="currentUser.update()" v-model="currentUser.props.avatarType"
                                 :options="currentUser.options?.avatarType" name="avatarType" label="Avatar Type" />
                         </div>
                         <div v-if="currentUser.props.avatarType == 'uploaded'" class="mb-4">

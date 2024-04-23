@@ -10,7 +10,7 @@
                     <div class="flex gap-5 flex-column-reverse md:flex-row">
                         <div class="flex-auto p-fluid">
                             <div class="mb-4">
-                                <FormSelect @change="currentUser.update()" v-model="currentUser.props.developer"
+                                <FormInput type="select" @change="currentUser.update()" v-model="currentUser.props.developer"
                                     :options="currentUser.options?.developer" label="Are you a software developer?"
                                     name="developer" />
                             </div>

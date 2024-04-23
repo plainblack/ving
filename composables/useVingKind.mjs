@@ -381,7 +381,7 @@ class VingKind {
     }
 
     /**
-     * Turns the list of records into an array compatible with various components such as FormSelect and Autocomplete
+     * Turns the list of records into an array compatible with various components such as SelectInput and Autocomplete
      * Usage: `users.recordsAsOptions('meta','displayName')`
      * 
      * @param {'props'|'meta'|'extra'} section One of the describe section names such as `props`, or `meta`, or `extra`.

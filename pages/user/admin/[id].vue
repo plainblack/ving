@@ -26,19 +26,19 @@
 
             <FieldsetItem name="Privileges">
                 <div class="mb-4">
-                    <FormSelect @change="user.update()" v-model="user.props.admin" :options="user.options?.admin"
+                    <FormInput type="select" @change="user.update()" v-model="user.props.admin" :options="user.options?.admin"
                         name="admin" label="Admin" />
                 </div>
             </FieldsetItem>
 
             <FieldsetItem name="Preferences">
                 <div class="mb-4">
-                    <FormSelect @change="user.update()" v-model="user.props.useAsDisplayName"
+                    <FormInput type="select" @change="user.update()" v-model="user.props.useAsDisplayName"
                         :options="user.options?.useAsDisplayName" name="useAsDisplayName" label="Use As Display Name" />
                 </div>
 
                 <div class="mb-4">
-                    <FormSelect @change="user.update()" v-model="user.props.developer"
+                    <FormInput type="select" @change="user.update()" v-model="user.props.developer"
                         :options="user.options?.developer" label="Are you a software developer?" name="developer" />
                 </div>
 

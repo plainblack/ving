@@ -11,13 +11,12 @@
         </div>
 
         <div class="mb-4">
-            <FormSelect name="ttl" v-model="swa.ttl" :options="ttlOptions" label="Time To Live" />
+            <FormInput type="select" name="ttl" v-model="swa.ttl" :options="ttlOptions" label="Time To Live" />
         </div>
 
         <div class="mb-4">
             <FormLabel label="Severity" />
             <div class="flex">
-                <client-only>
                     <Message severity="success" :closable="false" class="mr-3">
                         <RadioButton v-model="swa.severity" inputId="success" name="severity" value="success" />
                         <label for="success" class="ml-2">Success</label>
@@ -34,7 +33,6 @@
                         <RadioButton v-model="swa.severity" inputId="error" name="severity" value="error" />
                         <label for="error" class="ml-2">Error</label>
                     </Message>
-                </client-only>
             </div>
         </div>
 

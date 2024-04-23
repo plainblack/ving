@@ -17,7 +17,7 @@
             <MarkdownInput v-else-if="type == 'markdown' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :id="computedId" @change="emit('change')"
                 />
-            <SelectInput v-else-if="type == 'select' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
+            <SelectInput v-else-if="type == 'select'"
                 v-model="val" :name="name" :id="computedId" :options="options" :class="fieldClass" :required="required"
                 @change="emit('change')">
                 <template v-for="(_, name) in $slots" v-slot:[name]="slotData"><slot :name="name" v-bind="slotData" /></template>
