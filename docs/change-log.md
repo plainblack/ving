@@ -6,6 +6,7 @@ outline: deep
 * NOTE: The FormSelect component no longer exists. Anywhere you are using it use FormInput with type 'select' instead.
 * Added size prop to CopyToClipboard button.
 * Updated CopyToClipboard in generator to use size xs.
+* Added a little better documentation for Pulumi.
 
 ## 2024-04-22
 * Added MarkdownInput form control component for editing markdown text.
