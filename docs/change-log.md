@@ -7,6 +7,7 @@ outline: deep
 * Added size prop to CopyToClipboard button.
 * Updated CopyToClipboard in generator to use size xs.
 * Added a little better documentation for Pulumi.
+* Fix: bio on User is required.
 
 ## 2024-04-22
 * Added MarkdownInput form control component for editing markdown text.
