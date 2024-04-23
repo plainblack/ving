@@ -1,5 +1,5 @@
 <template>
-    <MdEditor v-model="val" @onChange="changed" :placeholder="placeholder" :showCodeRowNumber="true" :editorId="id" language="en-US" :toolbars="toolbars" noUploadImg />
+    <MdEditor v-model="val" @onChange="changed" :placeholder="placeholder" :showCodeRowNumber="true" :editorId="id" language="en-US" :toolbars="toolbars" noUploadImg previewTheme="github" />
 </template>
 
 <script setup>
