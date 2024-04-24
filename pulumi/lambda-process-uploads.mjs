@@ -1,16 +1,12 @@
 import * as aws from "@pulumi/aws";
-import { local } from "@pulumi/command";
 import { prefix } from './utils.mjs';
 import * as pulumi from "@pulumi/pulumi";
+import { execSync } from 'child_process';
 
 
 export const createLambdaProcessUploads = (thumbnailsBucket) => {
 
-    const createNodeModsZip = new local.Command(prefix('createNodeModsZip'), {
-        create: './create.nodemods.layer.sh',
-        dir: './pulumi/aws/lambda/layer/nodemods',
-        assetPaths: ['./pulumi/aws/lambda/layer/nodemods/nodemods.zip'],
-    });
+    execSync('./create.nodemods.layer.sh', { cwd: './pulumi/aws/lambda/layer/nodemods' });
 
     const nodeModsLayer = new aws.lambda.LayerVersion(prefix('nodeModsLayer'), {
         layerName: prefix('nodemods'),
