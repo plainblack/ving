@@ -36,7 +36,7 @@ const columns = (name, schema) => {
                 </template>
             </Column>`;
         }
-        else if (prop.relation?.kind == 'User') {
+        else if (prop.relation?.kind == 'User' && prop.relation.type == 'parent') {
             out += `
         <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
             <template #body="slotProps">
@@ -44,7 +44,7 @@ const columns = (name, schema) => {
             </template>
         </Column>`;
         }
-        else if (prop.relation?.kind == 'S3File') {
+        else if (prop.relation?.kind == 'S3File' && prop.relation.type == 'parent') {
             out += `
         <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
             <template #body="slotProps">
@@ -202,12 +202,12 @@ const viewProps = (schema) => {
             <div><b>${makeLabel(prop.name)}</b>: {{enum2label(${schema.kind.toLowerCase()}.props?.${prop.name}, ${schema.kind.toLowerCase()}.options?.${prop.name})}}</div>
             `;
             }
-            else if (prop.name == 'userId') {
+            else if (prop.relation?.kind == 'User' && prop.relation.type == 'parent') {
                 out += `
-            <div><b>${makeLabel(prop.name)}</b>: <UserProfileLink :user="${schema.kind.toLowerCase()}.related?.user" /></div>
+            <div><b>${makeLabel(prop.name)}</b>: <UserProfileLink :user="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}" /></div>
             `;
             }
-            else if (prop.relation?.kind == 'S3File') {
+            else if (prop.relation?.kind == 'S3File' && prop.relation.type == 'parent') {
                 out += `
             <div><b>${makeLabel(prop.name)}</b>: 
                 <Image size="100" :src="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.meta?.thumbnailUrl" alt="thumbnail" :title="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.props?.filename + ' thumbnail'">
