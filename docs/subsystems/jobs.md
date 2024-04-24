@@ -59,3 +59,9 @@ export default async function (job) {
 
 The handler's job is to do whatever needs to be done with `job.data` to complete the job. It should return `true` when done, or `throw` an [ouch](utils) if it fails. 
 
+To create a new job run:
+
+```bash
+./ving.mjs jobs -n MyNewHandler
+```
+

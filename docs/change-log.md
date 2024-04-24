@@ -15,6 +15,7 @@ outline: deep
 * Implemented: add a display of an s3file thumbnail to the page generator #105
 * Fixed: pulumi doesn't create the nodmods.zip file as it should #110
 * Added a priority option to jobs.
+* Added a job handler generator to the CLI.
 
 ## 2024-04-23
 * Created SelectInput component to replace FormSelect. However, you should use FormInput with type select instead of using this directly in most cases.

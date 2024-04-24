@@ -1,5 +1,6 @@
 import { defineCommand, showUsage } from "citty";
 import { VingJobWorker } from '#ving/jobs/worker.mjs';
+import { generateJobHandler } from '#ving/generator/jobhandler.mjs';
 import ving from '#ving/index.mjs';
 
 export default defineCommand({
@@ -39,6 +40,12 @@ export default defineCommand({
             default: '{}',
             alias: 'd',
         },
+        handler: {
+            type: 'string',
+            description: 'Generate a new job handler with the specified name.',
+            alias: 'n',
+            valueHint: 'SomeThing',
+        },
     },
     async run({ args, cmd }) {
         try {
@@ -50,6 +57,10 @@ export default defineCommand({
                         await worker.end();
                     }, 1000 * args.ttl);
                 }
+            }
+            else if (args.handler) {
+                await generateJobHandler({ name: args.handler });
+                ving.close();
             }
             else if (args.addJob) {
                 await ving.addJob(args.addJob, JSON.parse(args.jobData), {
