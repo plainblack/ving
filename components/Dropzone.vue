@@ -62,7 +62,7 @@ export default {
         },
         acceptedFiles: {
             type: Array,
-            default: () => ['.png', '.jpg'],
+            default: () => ['png', 'jpg'],
             validator(value, props) {
                 for (const type of value) {
                     if (!type.match(/^\./))
@@ -89,7 +89,7 @@ export default {
             },
 
             // apply props for some settings
-            acceptedFiles: vm.acceptedFiles.join(', '),
+            acceptedFiles: '.'+vm.acceptedFiles.join(', .'),
             maxFiles: vm.maxFiles,
             maxFilesize: vm.maxFilesize,
             resizeWidth: vm.resizeWidth,

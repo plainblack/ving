@@ -266,7 +266,7 @@ const editProps = (schema) => {
                 out += `
                     <div class="mb-4">
                         <client-only>
-                            <Dropzone :acceptedFiles="['.png', '.jpg', '.gif']" :afterUpload="(s3file) => ${schema.kind.toLowerCase()}.importS3File('${prop?.relation?.name}', s3file.props?.id)"
+                            <Dropzone :acceptedFiles="['png', 'jpg', 'gif']" :afterUpload="(s3file) => ${schema.kind.toLowerCase()}.importS3File('${prop?.relation?.name}', s3file.props?.id)"
                                 :maxFiles="1" :resizeHeight="300" :resizeWidth="300" resizeMethod="crop"></Dropzone>
                         </client-only>
                     </div>`;

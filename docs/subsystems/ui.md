@@ -75,13 +75,13 @@ Note that you should always wrap this in a `<client-only>` tag.
 
 ```html
 <client-only>
-    <Dropzone :acceptedFiles="['.pdf','.zip']" :afterUpload="doThisFunc"></Dropzone>
+    <Dropzone :acceptedFiles="['pdf','zip']" :afterUpload="doThisFunc"></Dropzone>
 </client-only>
 ```
       
 Props:
 
-- **acceptedFiles** - An array of file extensions that S3File should accept. Note that these should be prepended with a `.` like `.jpg` not `jpg`. Defaults to `['.png','.jpg']`.
+- **acceptedFiles** - An array of file extensions that S3File should accept. Defaults to `['png','jpg']`.
 - **afterUpload** - Required. A function that will be executed after upload. This function should then call the appropriate import endpoint to post process and verify the file.
 - **info** - A string that will be displayed inside the dropzone box. Useful to give the user some insights about the nature of the files you will allow such as size or dimension contstraints. 
 - **maxFiles** - An integer of the maximum number of files the user is allowed to select for upload. Defaults to unlimited.

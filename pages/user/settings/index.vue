@@ -20,7 +20,7 @@
                         </div>
                         <div v-if="currentUser.props.avatarType == 'uploaded'" class="mb-4">
                             <client-only>
-                                <Dropzone :acceptedFiles="['.png', '.jpg', '.gif']"
+                                <Dropzone :acceptedFiles="['png', 'jpg', 'gif']"
                                     :afterUpload="currentUser.importAvatar" :maxFiles="1" :resizeHeight="300"
                                     :resizeWidth="300" resizeMethod="crop"></Dropzone>
                             </client-only>
