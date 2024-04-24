@@ -1,6 +1,7 @@
 import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
 import { splitByCase, upperFirst } from 'scule';
 import { stringDefault, booleanDefault, numberDefault } from '#ving/schema/helpers.mjs';
+import { isUndefined } from '#ving/utils/identify.mjs';
 
 const makeWords = (value) => splitByCase(value).join(' ');
 const makeLabel = (value) => upperFirst(splitByCase(value).join(' '));
@@ -66,7 +67,7 @@ const prop2type = (prop) => {
     if (prop.type == 'int') {
         return 'number';
     }
-    if (prop.type == 'string' && (prop.length > 256 || prop.length == undefined)) {
+    if (prop.type == 'string' && (prop.length > 256 || isUndefined(prop.length))) {
         return 'textarea';
     }
     else {

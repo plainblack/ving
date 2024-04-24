@@ -1,4 +1,5 @@
 import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
+import { isNil } from '#ving/utils/identify.mjs';
 
 /** Management of individual API Keys for developer access to the API.
  * @class
@@ -16,7 +17,7 @@ export class APIKeyRecord extends VingRecord {
      * @returns `true`
      */
     async testSecret(secret) {
-        if (secret == undefined || secret == '')
+        if (isNil(secret))
             throw ouch(441, 'You must specify a secret.');
         if (this.get('privateKey') != secret)
             throw ouch(454, 'Secret does not match.');

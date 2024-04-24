@@ -64,7 +64,7 @@ const describeExample = ({ bare }) => {
           out.meta.bar = 'bar';
       }
       if (params?.include?.extra.includes('foo')) {
-          if (out.extra === undefined) {
+          if (isUndefined(out.extra)) {
               out.extra = {};
           }
           out.extra.foo = 'foo';
@@ -92,6 +92,7 @@ const shortcutQueryExample = ({ bare, name }) => {
 const recordTemplate = ({ name, bare, schema }) =>
     `import { VingRecord, VingKind } from "#ving/record/VingRecord.mjs";
 ${bare ? '' : "import {eq} from '#ving/drizzle/orm.mjs';"}
+${bare ? '' : "import { isUndefined } from '#ving/utils/identify.mjs';"}
 
 /** Management of individual ${name}s.
  * @class

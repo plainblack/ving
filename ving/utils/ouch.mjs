@@ -1,5 +1,5 @@
 import { createError } from 'h3';
-import _ from 'lodash';
+import { isObject, isString } from '#ving/utils/identify.mjs';
 
 /**
  * The list of error codes matching a basic message that `ouch` supports to give an HTTP status message. An unknown code will result in a `500` status message
@@ -34,10 +34,10 @@ const errorCodes = {
  */
 export const ouch = (code, error, data) => {
     let message = '';
-    if (_.isString(error)) {
+    if (isString(error)) {
         message = error;
     }
-    else if (_.isObject(error) && 'message' in error && _.isString(error.message)) {
+    else if (isObject(error) && 'message' in error && isString(error.message)) {
         message = error.message;
     }
     else {

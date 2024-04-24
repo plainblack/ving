@@ -46,10 +46,10 @@ describe('Users', async () => {
         const description = await captain.describe({ currentUser: captain, include: { links: true, options: true, meta: true } });
         expect(description.meta?.displayName).toBe('captain');
         expect(description.props.username).toBe('captain');
-        if (description.links !== undefined) {
+        if (description?.links) {
             expect(description.links.base.href).toBe(`/api/${vingConfig.rest.version}/user`);
         }
-        if (description.options !== undefined) {
+        if (description?.options) {
             expect(description.options.useAsDisplayName).toBeTypeOf('object');
             expect(Object.keys(description.options).length).toBe(5);
         }
@@ -64,10 +64,10 @@ describe('Users', async () => {
         expect(description.meta?.displayName).toBe('captain');
         expect(description.props.username).toBe('captain');
         expect(description.props.admin).toBe(false);
-        if (description.links !== undefined) {
+        if (description?.links) {
             expect(description.links.base.href).toBe(`/api/${vingConfig.rest.version}/user`);
         }
-        if (description.options !== undefined) {
+        if (description?.options) {
             expect(description.options.useAsDisplayName).toBeTypeOf('object');
             expect(Object.keys(description.options).length).toBe(5);
         }
@@ -77,11 +77,11 @@ describe('Users', async () => {
         expect(description.meta?.displayName).toBe('warden');
         expect(description.props.username).toBe(undefined);
         expect(description.props.admin).toBe(undefined);
-        if (description.links !== undefined) {
+        if (description?.links) {
             expect(description.links.base.href).toBe(`/api/${vingConfig.rest.version}/user`);
         }
         expect(description.options).toEqual({});
-        if (description.options !== undefined) {
+        if (description?.options) {
             expect(Object.keys(description.options).length).toBe(0);
         }
     });

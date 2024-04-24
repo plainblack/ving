@@ -16,6 +16,10 @@ Provides light wrappers around the javascript `find()` function that throws an e
 
 A bunch of wrappers around node's `fs` library to give you easy to use and terse filesystem functions for checking if a file/folder exists, or reading/writing JSON files, or sanitizing filenames, and more.
 
+### identify
+
+A bunch of utilites to identify whether a variable is an array, or an object or undefined, etc. You can do all this in javascript, but this ensures we do the same tests consistently through-out ving and its shorter to write too.
+
 ### miniHash
 
 Provides a function to give something similar to an MD5 hash, or a SHA1 hash, but returns a shorter string (around 8 characters). This is very useful when you need to be able to disambiguate files or other content, but you also need the resulting string to be shorter than a normal file hash. Note that because it's shorter there is a greater chance of collision, but if you know the risks you can work around them.

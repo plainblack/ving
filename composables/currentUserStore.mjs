@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import ua from 'ua-parser-js';
+import { isObject, isUndefined } from '#ving/utils/identify.mjs';
 
 const query = { includeOptions: true, includeMeta: true, includeLinks: true };
 
@@ -15,7 +16,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
             const response = await useRest(`/api/${restVersion()}/user/whoami`, {
                 query,
             });
-            if (response.data && typeof response.data == 'object') {
+            if (isObject(response.data)) {
                 this.setState(response.data);
             }
             return response;
@@ -95,10 +96,10 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         async isAuthenticated() {
-            if (this.props?.id === undefined) {
+            if (isUndefined(this.props?.id)) {
                 await this.fetch();
             }
-            return this.props?.id !== undefined;
+            return !isUndefined(this.props?.id);
         },
     },
 });

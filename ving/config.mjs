@@ -1,4 +1,5 @@
 import { readJSON } from '#ving/utils/fs.mjs';
+import { isUndefined } from '#ving/utils/identify.mjs';
 
 let config = undefined;
 /**
@@ -6,7 +7,7 @@ let config = undefined;
  * @returns An object with the contents of `ving.json`
  */
 export const getConfig = async () => {
-    if (config !== undefined)
+    if (!isUndefined(config))
         return config;
     config = await readJSON('./ving.json');
     return config;

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { defu } from "defu";
 import { v4 } from 'uuid';
 import { ouch } from '#ving/utils/ouch.mjs';
+import { isObject, isUndefined } from '#ving/utils/identify.mjs';
 
 export default (behavior) => {
     const notify = useNotifyStore();
@@ -104,7 +105,7 @@ export default (behavior) => {
              */
             async delete(options = {}) {
                 let message = "Are you sure?";
-                if (this.props && typeof this.props == 'object' && "name" in this.props) {
+                if (isObject(this.props) && "name" in this.props) {
                     message = "Are you sure you want to delete " + this.props.name + "?";
                 }
                 if (options.skipConfirm || confirm(message)) {
@@ -293,10 +294,10 @@ export default (behavior) => {
              */
             save: function (name, value) {
                 const update = {};
-                if (this.props && value === undefined) {
+                if (this.props && isUndefined(value)) {
                     update[name] = this.props[name];
                 }
-                else if (value !== undefined) {
+                else if (!isUndefined(value)) {
                     update[name] = value;
                 }
                 return this.partialUpdate(update);

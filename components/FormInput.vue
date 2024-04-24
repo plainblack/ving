@@ -3,18 +3,18 @@
         <FormLabel :label="label" :id="computedId" />
         <div class="p-inputgroup flex-1">
             <span v-if="prepend" class="p-inputgroup-addon"> {{ prepend }} </span>
-            <InputNumber v-if="type == 'number' && (_.isNumber(val) || _.isNull(val) || _.isUndefined(val))"
+            <InputNumber v-if="type == 'number' && (isNumber(val) || isNull(val) || isUndefined(val))"
                 v-model="val" showButtons :placeholder="placeholder" :name="name" :id="computedId"
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" :step="step"
                 :incrementButtonClass="append ? 'border-noround' : ''"
                 :decrementButtonClass="append ? 'border-noround' : ''" />
-            <Password v-else-if="type == 'password' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
+            <Password v-else-if="type == 'password' && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" toggleMask :placeholder="placeholder" :name="name" :id="computedId" :feedback="false"
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" class="w-full" />
-            <Textarea v-else-if="type == 'textarea' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
+            <Textarea v-else-if="type == 'textarea' && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
                 :class="fieldClass + ' border-round'" :required="required" autoResize />
-            <MarkdownInput v-else-if="type == 'markdown' && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
+            <MarkdownInput v-else-if="type == 'markdown' && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :id="computedId" @change="emit('change')"
                 />
             <SelectInput v-else-if="type == 'select'"
@@ -23,7 +23,7 @@
                 <template v-for="(_, name) in $slots" v-slot:[name]="slotData"><slot :name="name" v-bind="slotData" /></template>
             </SelectInput>
             <InputText
-                v-else-if="['text', 'email'].includes(type) && (_.isString(val) || _.isNull(val) || _.isUndefined(val))"
+                v-else-if="['text', 'email'].includes(type) && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
                 :class="fieldClass" :required="required" />
             <Message v-else severity="error" :closable="false">
@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import _ from 'lodash';
+import {isNumber, isString, isNull, isUndefined, isNil} from '#ving/utils/identify.mjs';
 
 
 const props = defineProps({
@@ -87,7 +87,7 @@ let invalidReason = '';
 
 const invalidForm = inject('invalidForm', (a) => { });
 
-const empty = computed(() => _.isNil(props.modelValue) || props.modelValue === '');
+const empty = computed(() => isNil(props.modelValue));
 
 const invalid = computed(() => {
     if (props.required && empty.value) {
@@ -95,12 +95,12 @@ const invalid = computed(() => {
         invalidForm([props.name, true, invalidReason]);
         return true;
     }
-    else if (props.mustMatch !== undefined && props.mustMatch.value !== props.modelValue) {
+    else if (!isUndefined(props.mustMatch) && props.mustMatch.value !== props.modelValue) {
         invalidReason = `${displayName} must match ${props.mustMatch.field}.`;
         invalidForm([props.name, true, invalidReason]);
         return true;
     }
-    else if (props.type == 'email' && !_.isNil(props.modelValue) && !(props.modelValue.toString().match(/.+@.+\..+/))) {
+    else if (props.type == 'email' && !isNil(props.modelValue) && !(props.modelValue.toString().match(/.+@.+\..+/))) {
         invalidReason = `${displayName} doesn't look like an email address.`;
         invalidForm([props.name, true, invalidReason]);
         return true;

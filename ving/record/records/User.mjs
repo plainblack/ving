@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { useCache } from '#ving/cache.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { eq } from '#ving/drizzle/orm.mjs';
+import { isUndefined, isNil } from '#ving/utils/identify.mjs';
 
 /** Management of individual Users.
  * @class
@@ -88,9 +89,9 @@ export class UserRecord extends RoleMixin(VingRecord) {
      * @returns `true` if it passes, or `false` if it fails to pass
      */
     async testPassword(password) {
-        if (this.get('password') == undefined)
+        if (isNil(this.get('password')))
             throw ouch(400, 'User has no password, you must log in via another provider.');
-        if (password == undefined || password == '')
+        if (isNil(password))
             throw ouch(441, 'You must specify a password.');
         let passed = false;
         if (this.get('passwordType') == 'bcrypt')
@@ -141,7 +142,7 @@ export class UserRecord extends RoleMixin(VingRecord) {
        * @see VingRecord.setPostedProps()
        */
     async setPostedProps(params, currentUser) {
-        if (params.password && (currentUser === undefined || await this.isOwner(currentUser))) {
+        if (params.password && (isUndefined(currentUser) || await this.isOwner(currentUser))) {
             await this.setPassword(params.password);
         }
         if (params.email != this.get('email')) {

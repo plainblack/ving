@@ -1,5 +1,7 @@
 import { format, parseISO, parseJSON, parse, getUnixTime } from 'date-fns';
 import { ouch } from '#ving/utils/ouch.mjs';
+import { isArray, isString } from '#ving/utils/identify.mjs';
+
 const dt = {
 
     /**
@@ -11,17 +13,17 @@ const dt = {
      * @returns A javascript Date object
      */
     determineDate(input) {
-        if (Array.isArray(input) && typeof input[0] === "string") {
+        if (isArray(input) && isString(input[0])) {
             // date + input pattern
             return parse(input[0], input[1], new Date());
         }
         else if (input instanceof Date) {
             return input;
         }
-        else if (typeof input === 'string' && input.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/)) {
+        else if (isString(input) && input.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/)) {
             return parseISO(input);
         }
-        else if (typeof input === 'string' && input.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+/)) {
+        else if (isString(input) && input.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+/)) {
             return parseJSON(input);
         }
         console.error('Have no idea what type this date is: ', input);

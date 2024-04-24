@@ -3,6 +3,7 @@ import { ouch } from '#ving/utils/ouch.mjs';
 import { RoleMixin, RoleOptions } from '#ving/record/mixins/Role.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { v4 } from 'uuid';
+import { isUndefined } from '#ving/utils/identify.mjs';
 
 const version = 2;
 
@@ -66,10 +67,10 @@ class ProtoSession {
      * @returns a `APIKeyRecord` instance
      */
     async apiKey(apiKeyObj) {
-        if (apiKeyObj !== undefined) {
+        if (!isUndefined(apiKeyObj)) {
             return this.#apiKeyObj = apiKeyObj;
         }
-        if (this.#apiKeyObj !== undefined) {
+        if (!isUndefined(this.#apiKeyObj)) {
             return this.#apiKeyObj;
         }
         const apikeys = await useKind('APIKey');
@@ -83,15 +84,15 @@ class ProtoSession {
      * @returns a `UserRecord` instance
      */
     async user(userObj) {
-        if (userObj !== undefined) {
+        if (!isUndefined(userObj)) {
             return this.#userObj = userObj;
         }
-        if (this.#userObj !== undefined) {
+        if (!isUndefined(this.#userObj)) {
             return this.#userObj;
         }
         const users = await useKind('User');
         this.#userObj = await users.find(this.#props.id);
-        if (this.#userObj == undefined) {
+        if (isUndefined(this.#userObj)) {
             await this.end();
             throw ouch(404, `The user ${this.#props.id} no longer exists.`);
         }
@@ -138,7 +139,7 @@ class ProtoSession {
                 userId: this.get('id'),
             }
         };
-        if ('include' in params && params.include !== undefined) {
+        if ('include' in params && !isUndefined(params.include)) {
             if (params.include.related && params.include.related.length) {
                 out.related = {
                     user: await (await this.user()).describe(params)
@@ -192,7 +193,7 @@ class ProtoSession {
      */
     static async fetch(id) {
         const data = await useCache().get('session-' + id);
-        if (data !== undefined && data.version == version) {
+        if (data?.version == version) {
             return new Session(data.props, data.type, data.apiKeyId, id);
         }
         throw ouch(401, 'Session expired.');
@@ -211,7 +212,7 @@ export class Session extends RoleMixin(ProtoSession) { }
  * @throws 401 if the session does not exist
  */
 export const testSession = (session) => {
-    if (session === undefined) {
+    if (isUndefined(session)) {
         throw ouch(401, 'Session expired.');
     }
 }

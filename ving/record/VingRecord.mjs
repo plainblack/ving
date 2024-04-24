@@ -1,6 +1,6 @@
 import { findVingSchema } from '#ving/schema/map.mjs';
 import ving from '#ving/index.mjs';
-import _ from 'lodash';
+import { isObject, isUndefined, isNil, isNull } from '#ving/utils/identify.mjs';
 import { eq, asc, desc, and, ne, sql, getTableName, count, sum, avg, min, max } from '#ving/drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving/schema/helpers.mjs';
 
@@ -17,7 +17,7 @@ export const enum2options = (enums, labels) => {
     const options = [];
     let i = 0
     for (let value of enums) {
-        const label = (labels !== undefined && labels[i] !== undefined) ? labels[i] : value.toString();
+        const label = (!isUndefined(labels) && !isUndefined(labels[i])) ? labels[i] : value.toString();
         options.push({
             value,
             label,
@@ -169,19 +169,19 @@ export class VingRecord {
     async describe(params = {}) {
         const currentUser = params.currentUser;
         const include = params.include || {};
-        const isOwner = currentUser !== undefined && await this.isOwner(currentUser);
+        const isOwner = !isUndefined(currentUser) && await this.isOwner(currentUser);
         const schema = findVingSchema(getTableName(this.table));
         let out = { props: {} };
         out.props.id = this.get('id');
-        if (include !== undefined && include.links) {
+        if (include?.links) {
             const vingConfig = await ving.getConfig();
             out.links = { base: { href: `/api/${vingConfig.rest.version}/${schema.kind?.toLowerCase()}`, methods: ['GET', 'POST'] } };
             out.links.self = { href: `${out.links.base.href}/${this.#props.id}`, methods: ['GET', 'PUT', 'DELETE'] };
         }
-        if (include !== undefined && include.options) {
+        if (include?.options) {
             out.options = await this.propOptions(params);
         }
-        if (include !== undefined && include.meta) {
+        if (include?.meta) {
             out.meta = {
                 kind: schema.kind,
                 isOwner,
@@ -190,7 +190,7 @@ export class VingRecord {
                 out.meta.deleted = true;
             }
         }
-        if (include !== undefined && include.related && include.related.length) {
+        if (include?.related?.length) {
             out.related = {};
         }
         if (this.warnings?.length) {
@@ -202,9 +202,9 @@ export class VingRecord {
             // determine field visibility
             const roles = [...field.view, ...field.edit];
             const visible = roles.includes('public')
-                || (include !== undefined && include.private)
+                || (include?.private)
                 || (roles.includes('owner') && isOwner)
-                || (currentUser !== undefined && currentUser.isaRole(roles));
+                || (currentUser?.isaRole(roles));
             if (!visible) continue;
 
             const fieldName = field.name.toString();
@@ -213,18 +213,18 @@ export class VingRecord {
             out.props[field.name] = this.#props[field.name];
 
             // links 
-            if (typeof out.links === 'object'
+            if (isObject(out.links)
                 && include.links
                 && field.relation
-                && typeof out.links.self === 'object'
+                && isObject(out.links.self)
             ) {
                 let lower = field.relation.name.toLowerCase();
                 out.links[lower] = { href: `${out.links.self.href}/${lower}`, methods: ['GET'] };
             }
 
             // related
-            if (typeof out.related === 'object'
-                && include.related !== undefined
+            if (isObject(out.related)
+                && !isUndefined(include.related)
                 && field.relation
                 && ['parent', 'sibling'].includes(field.relation.type)
                 && include.related.includes(field.relation.name)
@@ -285,7 +285,7 @@ export class VingRecord {
      * @returns Whether or not the passed in user owns this record or not
      */
     async isOwner(currentUser) {
-        if (currentUser === undefined)
+        if (isUndefined(currentUser))
             return false;
         const schema = findVingSchema(getTableName(this.table));
         for (let owner of schema.owner) {
@@ -354,7 +354,7 @@ export class VingRecord {
         const schema = findVingSchema(getTableName(this.table));
         const prop = ving.findObject(schema.props, obj => obj.relation?.name == name);
         const kind = await ving.useKind(prop.relation.kind);
-        if (kind.table[prop.name] == undefined)
+        if (isUndefined(kind.table[prop.name]))
             ving.log('VingRecord').error(`${schema.kind} has an invalid virtual prop name called ${name}`);
         kind.propDefaults.push({
             prop: prop.name,
@@ -385,13 +385,13 @@ export class VingRecord {
         const options = {};
         const currentUser = params.currentUser;
         const include = params.include || {};
-        const isOwner = currentUser !== undefined && await this.isOwner(currentUser);
+        const isOwner = !isUndefined(currentUser) && await this.isOwner(currentUser);
         for (const prop of findVingSchema(getTableName(this.table)).props) {
             const roles = [...prop.view, ...prop.edit];
             const visible = roles.includes('public')
-                || (include !== undefined && include.private)
+                || (include?.private)
                 || (roles.includes('owner') && (isOwner || all))
-                || (currentUser !== undefined && currentUser.isaRole(roles));
+                || (currentUser?.isaRole(roles));
             if (!visible)
                 continue;
             if ((prop.type == 'enum' || prop.type == 'boolean') && prop.enums && prop.enums.length > 0) {
@@ -474,24 +474,23 @@ export class VingRecord {
      */
     async setPostedProps(params, currentUser) {
         const schema = findVingSchema(getTableName(this.table));
-        const isOwner = currentUser !== undefined && await this.isOwner(currentUser);
+        const isOwner = !isUndefined(currentUser) && await this.isOwner(currentUser);
 
         for (const field of schema.props) {
             const fieldName = field.name.toString();
             const param = params[field.name];
             const roles = [...field.edit];
-            const editable = (roles.includes('owner') && (isOwner || !this.isInserted))
-                || (currentUser !== undefined && currentUser.isaRole(roles));
+            const editable = (roles.includes('owner') && (isOwner || !this.isInserted)) || (currentUser?.isaRole(roles));
             if (!editable) {
                 continue;
             }
-            if (param === undefined || (field.relation && field.relation.type != 'parent')) {
+            if (isUndefined(param) || (field.relation && field.relation.type != 'parent')) {
                 continue;
             }
             if (param === '' && field.required) {
                 throw ving.ouch(441, `${fieldName} is required.`, fieldName);
             }
-            if (field.name !== undefined && param !== undefined) {
+            if (!isUndefined(field.name) && !isUndefined(param)) {
                 if (field.unique) {
                     const query = this.db.select({ count: sql`count(*)`.as('count') }).from(this.table);
                     let where = eq(this.table[field.name], params[field.name]);
@@ -504,7 +503,7 @@ export class VingRecord {
                         throw ving.ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
                     }
                 }
-                if (param !== null) {
+                if (!isNull(param)) {
                     this.set(field.name, param);
                     if (field.relation && field.relation.type == 'parent') {
                         const parent = await this.parent(field.relation.name);
@@ -530,9 +529,9 @@ export class VingRecord {
     testCreationProps(params) {
         const schema = findVingSchema(getTableName(this.table));
         for (const prop of schema.props) {
-            if (!prop.required || prop.type == 'virtual' || (prop.default !== undefined && prop.default !== '') || prop.relation)
+            if (!prop.required || prop.type == 'virtual' || !isNil(prop.default) || prop.relation)
                 continue;
-            if (params[prop.name] !== undefined && params[prop.name] != '')
+            if (!isNil(params[prop.name]))
                 continue;
             const fieldName = prop.name.toString();
             throw ving.ouch(441, `${fieldName} is required.`, fieldName);
@@ -778,7 +777,7 @@ export class VingKind {
             }
             orderBy = cols;
         }
-        const itemsPerPage = params.itemsPerPage === undefined || params.itemsPerPage > 100 || params.itemsPerPage < 1 ? 10 : params.itemsPerPage;
+        const itemsPerPage = isUndefined(params?.itemsPerPage) || params?.itemsPerPage > 100 || params?.itemsPerPage < 1 ? 10 : params.itemsPerPage;
         const page = params.page || 1;
         const maxItems = params.maxItems || 100000000000;
         const itemsUpToThisPage = itemsPerPage * page;
@@ -974,9 +973,9 @@ export class VingKind {
             output[item.prop] = item.value;
         }
         for (const prop of findVingSchema(getTableName(this.table)).props) {
-            if (props && props[prop.name] !== undefined)
+            if (props && !isUndefined(props[prop.name]))
                 output[prop.name] = props[prop.name]
-            else if (output[prop.name] !== undefined) // the value was set above
+            else if (!isUndefined(output[prop.name])) // the value was set above
                 continue;
             else if (prop.type == 'string' || prop.type == 'enum')
                 output[prop.name] = stringDefault(prop)

@@ -53,6 +53,7 @@
 </template>
 
 <script setup>
+import { isString } from '#ving/utils/identify.mjs';
 let login = ref('');
 let password = ref('');
 const config = useRuntimeConfig();
@@ -62,7 +63,7 @@ async function tryLogin() {
     const response = await currentUser.login(login.value, password.value);
     const query = useRoute().query;
     if (!response.error)
-        if (query.redirectAfter && typeof query.redirectAfter == 'string')
+        if (isString(query.redirectAfter))
             await navigateTo(query.redirectAfter)
         else
             await navigateTo('/');

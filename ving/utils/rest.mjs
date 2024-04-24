@@ -1,7 +1,7 @@
 import { like, eq, and, or, gt, lt, gte, lte, ne } from '#ving/drizzle/orm.mjs';
 import { getQuery, readBody } from 'h3';
 import { ouch } from '#ving/utils/ouch.mjs';
-import _ from 'lodash';
+import { isObject, isArray, isString, isUndefined, isNil } from '#ving/utils/identify.mjs';
 
 /**
  * Formatting of ingested data to make it match the SQL data where it will be stored. It 
@@ -39,7 +39,7 @@ export const describeListWhere = (event, filter) => {
     const query = getQuery(event);
     if (query.search) {
         for (const column of filter.queryable) {
-            if (where === undefined) {
+            if (isUndefined(where)) {
                 where = like(column, `%${query.search}%`);
             }
             else {
@@ -98,7 +98,7 @@ export const describeListWhere = (event, filter) => {
         }
     }
     for (const item of ands) {
-        if (where === undefined) {
+        if (isUndefined(where)) {
             where = item;
         }
         else {
@@ -116,11 +116,11 @@ export const describeListWhere = (event, filter) => {
  * @throws 441 if a field is required and is undefined or empty
  */
 export const testRequired = (list, params) => {
-    if (params === undefined) {
+    if (isUndefined(params)) {
         throw ouch(400, 'No params detected.');
     }
     for (const field of list) {
-        if (!(field in params) || params[field] === undefined || params[field] == '') {
+        if (!(field in params) || isNil(params[field])) {
             throw ouch(441, `${field} is required.`, field);
         }
     }
@@ -162,28 +162,28 @@ export const obtainSessionIfRole = (event, role) => {
 export const includeParams = (event) => {
     const params = getQuery(event);
     const include = { options: false, links: false, related: [], extra: [], meta: false };
-    if ('includeOptions' in params && params.includeOptions !== undefined && params.includeOptions !== null && !Array.isArray(params.includeOptions)) {
+    if ('includeOptions' in params && !isNil(params.includeOptions) && !isArray(params.includeOptions)) {
         include.options = /^true$/i.test(params.includeOptions);
     }
-    if ('includeLinks' in params && params.includeLinks !== undefined && params.includeLinks !== null && !Array.isArray(params.includeLinks)) {
+    if ('includeLinks' in params && !isNil(params.includeLinks) && !isArray(params.includeLinks)) {
         include.links = true;
     }
-    if ('includeMeta' in params && params.includeMeta !== undefined && params.includeMeta !== null && !Array.isArray(params.includeMeta)) {
+    if ('includeMeta' in params && !isNil(params.includeMeta) && !isArray(params.includeMeta)) {
         include.meta = true;
     }
-    if ('includeRelated' in params && params.includeRelated !== undefined && params.includeRelated !== null) {
-        if (Array.isArray(params.includeRelated)) {
+    if ('includeRelated' in params && !isNil(params.includeRelated)) {
+        if (isArray(params.includeRelated)) {
             include.related = params.includeRelated;
         }
-        else if (include.related !== undefined) {
+        else if (!isUndefined(include.related)) {
             include.related.push(params.includeRelated);
         }
     }
-    if ('includeExtra' in params && params.includeExtra !== undefined && params.includeExtra !== null) {
-        if (Array.isArray(params.includeExtra)) {
+    if ('includeExtra' in params && !isNil(params.includeExtra)) {
+        if (isArray(params.includeExtra)) {
             include.extra = params.includeExtra;
         }
-        else if (include.extra !== undefined) {
+        else if (!isUndefined(include.extra)) {
             include.extra.push(params.includeExtra);
         }
     }
@@ -213,16 +213,16 @@ export const describeListParams = (event, session) => {
 export const pagingParams = (event) => {
     const params = getQuery(event);
     const paging = { itemsPerPage: 10, page: 1, sortBy: ['createdAt'], sortOrder: 'asc' };
-    if (params !== undefined) {
+    if (!isUndefined(params)) {
         if (params.itemsPerPage)
             paging.itemsPerPage = Number(params.itemsPerPage);
         if (params.page)
             paging.page = Number(params.page);
-        if (params.sortBy && _.isString(params.sortBy))
+        if (params.sortBy && isString(params.sortBy))
             paging.sortBy = [params.sortBy];
-        if (params.sortBy && _.isArray(params.sortBy))
+        if (params.sortBy && isArray(params.sortBy))
             paging.sortBy = params.sortBy;
-        if (params.sortOrder && _.isString(params.sortOrder) && ['asc', 'desc'].includes(params.sortOrder))
+        if (params.sortOrder && isString(params.sortOrder) && ['asc', 'desc'].includes(params.sortOrder))
             paging.sortOrder = params.sortOrder;
     }
     return paging;
@@ -236,7 +236,7 @@ export const pagingParams = (event) => {
  */
 export const getBody = async (event) => {
     const body = await readBody(event);
-    if (body === undefined || (body && _.isObjectLike(body)))
+    if (isUndefined(body) || (body && isObject(body)))
         return body;
     throw ouch(400, 'Malformed body JSON. Perhaps you have a dangling comma.');
 }
