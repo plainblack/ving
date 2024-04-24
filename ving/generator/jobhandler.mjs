@@ -15,6 +15,7 @@ export default async function (job) {
     const records = await ving.useKind('SomeRecord');
     const record = await records.findOrDie(job.data.id);
     // do something
+    // throw ving.ouch(500, 'Some error');
     ving.log('jobs').info(\`SomeRecord \${job.data.id} did something.\`);
     return true;
 }`;
