@@ -11,7 +11,9 @@ export default defineEventHandler(async (event) => {
     const ${name.toLowerCase()}s = await useKind('${name}');
     const { id } = getRouterParams(event);
     const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
-    const oldFile = await ${name.toLowerCase()}.parent('${prop.relation.name}');
+    let oldFile = undefined;
+    if (${name.toLowerCase()}.get('${prop.name}'))
+        oldFile = await ${name.toLowerCase()}.parent('${prop.relation.name}');
     const session = obtainSession(event);
     await ${name.toLowerCase()}.canEdit(session);
     const body = await getBody(event);
@@ -22,7 +24,8 @@ export default defineEventHandler(async (event) => {
     await s3file.verifyExactDimensions(300, 300);
     ${name.toLowerCase()}.set('${prop.name}', s3file.get('id'));
     await ${name.toLowerCase()}.update();
-    await oldFile.delete();
+    if (oldFile)
+        await oldFile.delete();
     return await ${name.toLowerCase()}.describe(describeParams(event, session));
 });`;
 
