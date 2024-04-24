@@ -26,6 +26,7 @@ export const getQueue = (options = {}) => {
  * @param {number} options.priority A number ranging from `1` to `2097152` where `1` is the highest possible priority. Defaults to `2097152`.
  * @param {number} options.repeat Specify a number of milliseconds to wait before this job is executed again. Leave blank for no repeat.
  * @param {string} options.cron Specify a cron string for how often this job should be executed. Leave blank for no repeat.
+ * @returns {Job} Returns the created job.
  * @example
  * await addJob('Test', {foo:'bar'});
  */
@@ -53,6 +54,7 @@ export const addJob = async (type, data = {}, options = { queueName: 'jobs' }) =
     const job = await queue.add(type, data, jobOptions);
     ving.log('jobs').info(`Job ${job.id} ${job.name} enqueued.`);
     await queue.close();
+    return job;
 }
 
 /**
@@ -65,7 +67,7 @@ export const addJob = async (type, data = {}, options = { queueName: 'jobs' }) =
 export const pause = async (options = {}) => {
     const queue = getQueue(options);
     await queue.pause();
-    queue.disconnect();
+    await queue.close();
     ving.log('jobs').info(`Queue ${queue.name} paused.`);
 }
 
@@ -79,20 +81,60 @@ export const pause = async (options = {}) => {
 export const resume = async (options = {}) => {
     const queue = getQueue(options);
     await queue.resume();
-    queue.disconnect();
+    await queue.close();
     ving.log('jobs').info(`Queue ${queue.name} resumed.`);
 }
 
 /**
- * Delete all waiting and delayed jobs in the queue.
+ * Delete the queue and everything in it.
  * @param {Object} options An object with optional properties.
  * @param {string} options.queueName The name of the queue. Defaults to `jobs`.
  * @example 
- * await drain();
+ * await obliterate();
  */
-export const drain = async (options = {}) => {
+export const obliterate = async (options = {}) => {
     const queue = getQueue(options);
-    await queue.drain();
-    queue.disconnect();
-    ving.log('jobs').info(`Queue ${queue.name} drained.`);
+    await queue.obliterate();
+    await queue.close();
+    ving.log('jobs').info(`Queue ${queue.name} obliterated.`);
+}
+
+/**
+ * Get a list of all the jobs in the queue.
+ * @param {Object} options An object with optional properties.
+ * @param {string} options.queueName The name of the queue. Defaults to `jobs`.
+ * @param { string[]} options.status An array of statuses to fetch. Can be any of `active`, `prioritized`, `delayed`, `failed`, `paused` or `completed`. Defaults to `['active','prioritized','delayed']`.
+ * @example 
+ * await getJobs();
+ */
+export const getJobs = async (options = {}) => {
+    const queue = getQueue(options);
+    const jobs = await queue.getJobs(options?.status || ['active', 'prioritized', 'delayed'], 0, 100, true);
+    await queue.close();
+    return jobs;
+}
+
+/**
+ * Remove a job from the queue.
+ * @param {Object} options An object with optional properties.
+ * @param {string} options.queueName The name of the queue. Defaults to `jobs`.
+ * @returns {boolean} `true` on success, `false` on fail.
+ * @example 
+ * await killJob('14');
+ */
+export const killJob = async (jobId, options = {}) => {
+    const queue = getQueue(options);
+    const job = await queue.getJob(jobId);
+    let out = true;
+    if (job) {
+        await job.remove();
+        ving.log('jobs').info(`Job ${jobId} removed.`);
+
+    }
+    else {
+        ving.log('jobs').error(`Job ${jobId} not found`);
+        out = false;
+    }
+    await queue.close();
+    return out;
 }

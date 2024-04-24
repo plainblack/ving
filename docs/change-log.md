@@ -16,7 +16,8 @@ outline: deep
 * Fixed: pulumi doesn't create the nodmods.zip file as it should #110
 * Added job options for priority, repeat, and cron.
 * Added a job handler generator to the CLI.
-* Added CLI functions to drain, pause, and unpause queues.
+* Added CLI functions to obliterate, pause, and unpause queues.
+* Added CLI functions to list jobs in a queue and kill them.
 
 ## 2024-04-23
 * Created SelectInput component to replace FormSelect. However, you should use FormInput with type select instead of using this directly in most cases.

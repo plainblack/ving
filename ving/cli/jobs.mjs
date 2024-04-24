@@ -1,6 +1,6 @@
 import { defineCommand, showUsage } from "citty";
 import { VingJobWorker } from '#ving/jobs/worker.mjs';
-import { pause, resume, drain } from '#ving/jobs/queue.mjs';
+import { pause, resume, getJobs, obliterate, killJob } from '#ving/jobs/queue.mjs';
 import { generateJobHandler } from '#ving/generator/jobhandler.mjs';
 import ving from '#ving/index.mjs';
 
@@ -17,10 +17,10 @@ export default defineCommand({
             default: 'jobs',
             alias: 'q',
         },
-        drain: {
+        obliterate: {
             type: "boolean",
-            description: "Delete all waiting and delayed jobs in the queue.",
-            alias: "D",
+            description: "Delete the queue and everything in it.",
+            alias: "O",
             default: false,
         },
         pause: {
@@ -34,6 +34,18 @@ export default defineCommand({
             description: "Resume workers executing jobs in the queue.",
             alias: "R",
             default: false,
+        },
+        list: {
+            type: "boolean",
+            description: "List jobs in the queue.",
+            alias: "L",
+            default: false,
+        },
+        kill: {
+            type: "string",
+            description: "Remove a job by ID.",
+            alias: "K",
+            valueHint: '10'
         },
         worker: {
             type: "boolean",
@@ -49,8 +61,8 @@ export default defineCommand({
         },
         addJob: {
             type: 'string',
-            description: 'Specify the type of job you wish to add. Defaults to `Test`',
-            default: 'Test',
+            description: 'Specify the type of job you wish to add.',
+            valueHint: 'Test',
             alias: 'a',
         },
         jobData: {
@@ -92,8 +104,8 @@ export default defineCommand({
     },
     async run({ args, cmd }) {
         try {
-            if (args.drain) {
-                await drain({ queueName: args.queueName });
+            if (args.obliterate) {
+                await obliterate({ queueName: args.queueName });
                 ving.close();
             }
             else if (args.pause) {
@@ -102,6 +114,15 @@ export default defineCommand({
             }
             else if (args.resume) {
                 await resume({ queueName: args.queueName });
+                ving.close();
+            }
+            else if (args.list) {
+                const jobs = await getJobs({ queueName: args.queueName });
+                ving.close();
+                formatList(jobs);
+            }
+            else if (args.kill) {
+                await killJob(args.kill, { queueName: args.queueName });
                 ving.close();
             }
             else if (args.worker) {
@@ -140,3 +161,23 @@ export default defineCommand({
         }
     },
 });
+
+function formatList(jobs) {
+    console.log(
+        'Id'.padEnd(10),
+        'Handler'.padEnd(20),
+        'Data',
+    )
+
+    for (const job of jobs) {
+        delete job.queue;
+        delete job.scripts;
+        //console.log(job);
+        console.log(
+            job.id.padEnd(10),
+            job.name.padEnd(20),
+            JSON.stringify(job.data).slice(0, 60),
+        );
+    }
+    ving.log('cli').info(`There are ${jobs.length} jobs waiting.`);
+}
