@@ -14,8 +14,9 @@ outline: deep
 * NOTE: Because of the above you may want to check out the new acceptedFileExtensions attribute in ving schemas and migrate your S3File integrations to use it.
 * Implemented: add a display of an s3file thumbnail to the page generator #105
 * Fixed: pulumi doesn't create the nodmods.zip file as it should #110
-* Added a priority option to jobs.
+* Added job options for priority, repeat, and cron.
 * Added a job handler generator to the CLI.
+* Added CLI functions to drain, pause, and unpause queues.
 
 ## 2024-04-23
 * Created SelectInput component to replace FormSelect. However, you should use FormInput with type select instead of using this directly in most cases.
