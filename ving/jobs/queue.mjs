@@ -10,10 +10,11 @@ import { useRedis } from '#ving/redis.mjs';
  * @param {Object} options An object with optional properties.
  * @param {string} options.queueName The name of the queue to add this job to. Defaults to `jobs`.
  * @param {number} options.delay The number of milliseconds to wait before executing this job. Defaults to running as soon as possible.
+ * @param {number} options.priority A number ranging from `1` to `2097152` where `1` is the highest possible priority. Defaults to `2097152`.
  */
 export const addJob = async (type, data = {}, options = { queueName: 'jobs ' }) => {
     const queue = new Queue(options?.queueName || 'jobs');
-    const job = await queue.add(type, data, {
+    const jobOptions = {
         connection: useRedis(),
         removeOnComplete: {
             age: 3600, // keep up to 1 hour
@@ -22,8 +23,13 @@ export const addJob = async (type, data = {}, options = { queueName: 'jobs ' }) 
         removeOnFail: {
             age: 24 * 3600, // keep up to 24 hours
         },
-        delay: options?.delay,
-    });
+        priority: 2097152
+    }
+    if (options?.delay)
+        jobOptions.delay = options?.delay;
+    if (options?.priority)
+        jobOptions.priority = options?.priority;
+    const job = await queue.add(type, data, jobOptions);
     ving.log('jobs').info(`Job ${job.id} ${job.name} enqueued.`);
     await queue.close();
 }
