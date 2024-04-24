@@ -36,11 +36,19 @@ const columns = (name, schema) => {
                 </template>
             </Column>`;
         }
-        else if (prop.name == 'userId') {
+        else if (prop.relation?.kind == 'User') {
             out += `
-        <Column field="props.userId" header="User Id" sortable>
+        <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
             <template #body="slotProps">
-                <UserProfileLink :user="slotProps.data.related?.user" />
+                <UserProfileLink :user="slotProps.data.related?.${prop.relation?.name}" />
+            </template>
+        </Column>`;
+        }
+        else if (prop.relation?.kind == 'S3File') {
+            out += `
+        <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
+            <template #body="slotProps">
+                <Image size="50" :src="slotProps.data.related?.${prop.relation?.name}?.meta?.thumbnailUrl" alt="thumbnail" :title="slotProps.data.related?.${prop.relation?.name}?.props?.filename + ' thumbnail'"/>
             </template>
         </Column>`;
         }
@@ -170,7 +178,7 @@ const dt = useDateTime();
 const ${schema.tableName} = useVingKind({
     listApi: \`/api/\${restVersion()}/${name.toLowerCase()}\`,
     createApi: \`/api/\${restVersion()}/${name.toLowerCase()}\`,
-    query: { includeMeta: true, sortBy: 'createdAt', sortOrder: 'desc' },
+    query: { includeMeta: true, sortBy: 'createdAt', sortOrder: 'desc' ${includeRelatedTemplate(schema)} },
     newDefaults: { ${newDefaults(schema)} },
 });
 await Promise.all([
@@ -199,6 +207,17 @@ const viewProps = (schema) => {
             <div><b>${makeLabel(prop.name)}</b>: <UserProfileLink :user="${schema.kind.toLowerCase()}.related?.user" /></div>
             `;
             }
+            else if (prop.relation?.kind == 'S3File') {
+                out += `
+            <div><b>${makeLabel(prop.name)}</b>: 
+                <Image size="100" :src="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.meta?.thumbnailUrl" alt="thumbnail" :title="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.props?.filename + ' thumbnail'">
+                    <template v-if="['png','jpg','gif'].includes(${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.props?.extension)" #image>
+                        <img :src="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.meta?.fileUrl" alt="file" :title="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.props?.filename + ' full size image'" />
+                    </template>
+                </Image>
+            </div>
+            `;
+            }
             else if (prop.type == 'id') {
                 out += `
             <div><b>${makeLabel(prop.name)}</b>: {{${schema.kind.toLowerCase()}.props?.${prop.name}}} <CopyToClipboard :text="${schema.kind.toLowerCase()}.props?.${prop.name}" /></div>
@@ -212,6 +231,20 @@ const viewProps = (schema) => {
         }
     }
     return out;
+};
+
+const includeRelatedTemplate = (schema) => {
+    const related = [];
+    for (const prop of schema.props) {
+        if (prop.view.length > 0 || prop.edit.length > 0) {
+            if (prop.relation?.kind == 'S3File') {
+                related.push(prop.relation.name);
+            }
+        }
+    }
+    if (related.length)
+        return `, includeRelated: ['${related.join(',')}']`;
+    return '';
 };
 
 const nameOrId = (schema) => schema.props.find((prop) => prop.name == 'name') ? 'name' : 'id';
@@ -238,7 +271,7 @@ const id = route.params.id.toString();
 const ${name.toLowerCase()} = useVingRecord({
     id,
     fetchApi: \`/api/\${restVersion()}/${name.toLowerCase()}/\${id}\`,
-    query: { includeMeta: true, includeOptions: true },
+    query: { includeMeta: true, includeOptions: true ${includeRelatedTemplate(schema)} },
     async onDelete() {
         await navigateTo('/${name.toLowerCase()}');
     },
@@ -342,7 +375,7 @@ const ${name.toLowerCase()} = useVingRecord({
     id,
     fetchApi: \`/api/\${restVersion()}/${name.toLowerCase()}/\${id}\`,
     createApi: \`/api/\${restVersion()}/${name.toLowerCase()}\`,
-    query: { includeMeta: true, includeOptions: true },
+    query: { includeMeta: true, includeOptions: true ${includeRelatedTemplate(schema)} },
     onUpdate() {
         notify.success('Updated ${makeWords(name)}.');
     },
