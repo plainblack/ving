@@ -1,6 +1,4 @@
 import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
-import fs from 'fs';
-import ving from '#ving/index.mjs';
 
 const jobHandlerTemplate = ({ name, prop }) =>
     `import ving from '#ving/index.mjs';
