@@ -7,10 +7,10 @@ const dt = {
     /**
      * Figures out what kind of date it was passed and returns a javascript date object
      * 
-     * Usage: `const date = dt.determineDate("2012-04-23T18:25:43.511Z")`
-     * 
      * @param input Usually a Javascript Date object, or a JSON Date string. But it can also be an array containing a date string of any type along with a [parse pattern](https://date-fns.org/v2.30.0/docs/parse) as the second element of the array. Or even an ISO date string (MySQL date). 
      * @returns A javascript Date object
+     * @example
+     * const date = dt.determineDate("2012-04-23T18:25:43.511Z")
      */
     determineDate(input) {
         if (isArray(input) && isString(input[0])) {
@@ -33,11 +33,12 @@ const dt = {
     /**
      * Formats a date to a human readable string with an American time format. 
      * 
-     * Usage: `const formatted = dt.formatDate("2012-04-23T18:25:43.511Z")`
-     * 
      * @param input Anything that `determineDate()` understands. 
      * @param pattern Optional, defaults to `LLLL d, y h:mm a`. A [format pattern](https://date-fns.org/v2.30.0/docs/format)
      * @returns A formatted string. Example: `April 23, 2012 6:25pm`
+     * @example
+     * const formatted = dt.formatDate("2012-04-23T18:25:43.511Z")
+
      */
 
     formatDateTime(input, pattern = "LLLL d, y h:mm a") {
@@ -53,11 +54,11 @@ const dt = {
     /**
      * Formats a date to a human readable string. 
      * 
-     * Usage: `const formatted = dt.formatDate("2012-04-23T18:25:43.511Z")`
-     * 
      * @param input Anything that `determineDate()` understands. 
      * @param pattern Optional, defaults to `"LLLL d, y"`. A [format pattern](https://date-fns.org/v2.30.0/docs/format)
      * @returns A formatted string. Example: `April 23, 2012`
+     * @example
+     * const formatted = dt.formatDate("2012-04-23T18:25:43.511Z")
      */
     formatDate(input, pattern = "LLLL d, y") {
         return this.formatDateTime(input, pattern);
@@ -66,10 +67,10 @@ const dt = {
     /**
      * Turns a date into a duration in the past or the future.
      * 
-     * Usage: `const formatted = dt.formatTimeAgo("2012-04-23T18:25:43.511Z")`
-     * 
      * @param input Anything that `determineDate()` understands. 
      * @returns An ago formatted string. Example: `13 years ago`
+     * @example
+     * const formatted = dt.formatTimeAgo("2012-04-23T18:25:43.511Z")
      */
     formatTimeAgo(input) {
         const duration = getUnixTime(new Date()) - getUnixTime(this.determineDate(input));

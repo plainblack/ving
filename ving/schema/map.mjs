@@ -16,11 +16,12 @@ export const vingSchemas = [
 /**
  * Get the schema for a specific kind within the ving schema list.
  * 
- * Usage: `const schema = findVingSchema('users')`
- * 
  * @param {string} nameToFind The table name or kind name to find.
  * @param {string} by Can be `kind` or `tableName`. Defaults to `tableName`.
- * @returns A ving kind schema.
+ * @throws 404 if schema not found
+ * @returns {VingSchema} A ving kind schema.
+ * @example
+ * const schema = findVingSchema('users')
  */
 export const findVingSchema = (nameToFind = '-unknown-', by = 'tableName') => {
     try {

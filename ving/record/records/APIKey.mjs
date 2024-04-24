@@ -9,12 +9,12 @@ export class APIKeyRecord extends VingRecord {
     /**
      * Tests a potential secret to see if it matches the private key stored in the api key.
      * 
-     * Usage: `const result = await testSecret('totaly going to work');`
-     * 
      * @throws 441 if no secret is passsed
      * @throws 454 secrete doesn't match private key
      * @param {string} secret the secret you'd like to test against the apikeys private key
-     * @returns `true`
+     * @returns {boolean} `true`
+     * @example
+     * const result = await testSecret('totaly going to work');
      */
     async testSecret(secret) {
         if (isNil(secret))

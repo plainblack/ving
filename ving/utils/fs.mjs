@@ -3,9 +3,10 @@ import sanitizeFilename from 'sanitize-filename';
 
 /**
  * Detects whether a path is a directory.
- * Usage: `isDir('./ving.json')`
- * @param {String} path 
- * @returns {Boolean}
+ * @param {string} path 
+ * @returns {boolean}
+ * @example
+ * isDir('./ving.json')
  */
 export const isDir = (path) => {
     return fs.existsSync(path) && fs.lstatSync(path).isDirectory();
@@ -13,9 +14,10 @@ export const isDir = (path) => {
 
 /**
  * Detects whether a path is a file.
- * Usage: `isFile('./ving.json')`
- * @param {String} path 
- * @returns {Boolean}
+ * @param {string} path 
+ * @returns {boolean}
+ * @example
+ * isFile('./ving.json')
  */
 export const isFile = (path) => {
     return fs.existsSync(path) && fs.lstatSync(path).isFile();
@@ -23,9 +25,10 @@ export const isFile = (path) => {
 
 /**
  * Removes problematic characters from a filename.
- * Usage: `sanitize('foo %$@*!bar')`
- * @param {String} filename 
- * @returns {String}
+ * @param {string} filename 
+ * @returns {string}
+ * @example
+ * sanitize('foo %$@*!bar')
  */
 export const sanitize = (filename) => {
     const fixed = filename.replace(/\s+/g, '_');
@@ -34,9 +37,10 @@ export const sanitize = (filename) => {
 
 /**
  * Reads in a JSON file and returns an object.
- * Usage: `async readJSON('./ving.json')`
  * @param {String} path 
  * @returns {object}
+ * @example
+ * async readJSON('./ving.json')
  */
 export const readJSON = async (path) => {
     return JSON.parse(await fs.promises.readFile(path));
@@ -44,10 +48,10 @@ export const readJSON = async (path) => {
 
 /**
  * Writes an object out to a JSON file.
- * Usage: `async writeJSON('./ving.json')`
  * @param {string} path 
  * @param {object} data 
- *
+ * @example
+ * async writeJSON('./ving.json')
  */
 export const writeJSON = async (path, data) => {
     await fs.promises.writeFile(path, JSON.stringify(data, undefined, 2));
@@ -55,8 +59,9 @@ export const writeJSON = async (path, data) => {
 
 /**
  * Makes a directory in the filesystem.
- * Usage: `await mkdir('./path/to/dir')`
- * @param {*} path 
+ * @param {string} path 
+ * @example
+ * await mkdir('./path/to/dir')
  */
 export const mkdir = async (path) => {
     if (!fs.existsSync(path))

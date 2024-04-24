@@ -78,7 +78,7 @@ class VingKind {
 
     /**
      * Constructor.
-     * @param behavior An object configuring the endpoints and other info about this kind.
+     * @param {object} behavior An object configuring the endpoints and other info about this kind.
      */
 
     #behavior = {};
@@ -92,11 +92,11 @@ class VingKind {
     /**
      * Recursively retreieves all the records for the given configuration.
      * 
-     * Usage: `await Users.all();`
-     * 
-     * @param options An object for modifying the the method's functionality.
-     * @param iterations For internal use only.
-     * @returns A promise that resolves when all the requests have been processed.
+     * @param {Object} options An object for modifying the the method's functionality.
+     * @param {Number} iterations For internal use only.
+     * @returns {Promise<boolean>} A promise that resolves when all the requests have been processed.
+     * @example
+     * await Users.all();
      */
 
     all(options = {}, iterations = 1) {
@@ -136,9 +136,9 @@ class VingKind {
     /**
      * Adds a record to the end of the `records` property. You should never call this method directly unless you know what you're doing.
      * 
-     * @param record An object containing a series of other objects that you get back when call the `describe` method of a record server side.
-     * @param options Optional.
-     * @returns 
+     * @param {Object} record An object containing a series of other objects that you get back when call the `describe` method of a record server side.
+     * @param {Object} options Optional.
+     * @return {Object} A new record
      */
     append(record, options) {
         const newRecord = this.mint(record);
@@ -156,13 +156,13 @@ class VingKind {
     /**
      * A quick way to call an endpoint without directly setting up your own `useRest()` composable.
      * 
-     * Usage: `const result = Users.call('post', '/user/xxx/send-reset-password', {os:'Windows'});`
-     * 
-     * @param method `put`, `post`, `get` or `delete`.
-     * @param url The endpoint to run this call on.
-     * @param query An object containing query parameters to pass to this call.
-     * @param options Modify the behavior of this call.
-     * @returns A promise containing the response to the call.
+     * @param {string} method `put`, `post`, `get` or `delete`.
+     * @param {string} url The endpoint to run this call on.
+     * @param {object} query An object containing query parameters to pass to this call.
+     * @param {object} options Modify the behavior of this call.
+     * @returns {Promise<object>} A promise containing the response to the call.
+     * @example
+     * const result = Users.call('post', '/user/xxx/send-reset-password', {os:'Windows'});
      */
     async call(method, url, query = {}, options = {}) {
         const response = await useRest(url, {
@@ -185,11 +185,11 @@ class VingKind {
     /**
      * Creates a new record on the server and appends it to the list of `records`.
      * 
-     * Usage: `await Users.create()`
-     * 
-     * @param props A list of props for this kind.
-     * @param options An object that changes the behavior of this method.
-     * @returns A promise containing the response.
+     * @param {object} props A list of props for this kind.
+     * @param {object} options An object that changes the behavior of this method.
+     * @returns {Promise<object>} A promise containing the response.
+     * @example
+     * await Users.create()
      */
     create(props = {}, options = {}) {
         const self = this;
@@ -219,11 +219,11 @@ class VingKind {
     /**
      * Removes a record from the server and the local list of `records`.
      * 
-     * Usage: `await Users.delete(0)`
-     * 
-     * @param index An index on the `records` list you wish to delete.
-     * @param options An object to change the behavior of this method.
-     * @returns A promise that contains the response.
+     * @param {number} index An index on the `records` list you wish to delete.
+     * @param {object} options An object to change the behavior of this method.
+     * @returns {Promise<object>} A promise that contains the response.
+     * @example
+     * await Users.delete(0)
      */
 
     delete(index, options) {
@@ -232,8 +232,8 @@ class VingKind {
 
     /**
      * Frees the memory associated with the list of records
-     * 
-     * Usage: `onBeforeRouteLeave(() => users.dispose());`
+     * @example
+     * onBeforeRouteLeave(() => users.dispose());
      */
     dispose() {
         for (const record of this.records) {
@@ -245,10 +245,10 @@ class VingKind {
     /**
      * Fetches the list of enum options for this kind, which can be helpful when creating a new record.
      * 
-     * Usage: `await Users.fetchPropsOptions()`
-     * 
-     * @param options An object that changes the behavior of this method.
-     * @returns A promise that contains the response.
+     * @param {object} options An object that changes the behavior of this method.
+     * @returns {Promise<object>} A promise that contains the response.
+     * @example
+     * await Users.fetchPropsOptions()
      */
     async fetchPropsOptions(options = {}) {
         const response = await useRest(this.getPropsOptionsApi(), {
@@ -270,10 +270,10 @@ class VingKind {
     /**
      * Returns a specific record by id from the list of local `records`.
      * 
-     * Usage: `const user = Users.find('xxx');`
-     * 
-     * @param id The unique id of a record on the `records` list that you which to get a reference to.
-     * @returns A record.
+     * @param {string} id The unique id of a record on the `records` list that you which to get a reference to.
+     * @returns {object} A record.
+     * @example
+     * const user = Users.find('xxx');
      */
     find(id) {
         const index = this.findIndex(id);
@@ -289,10 +289,10 @@ class VingKind {
     /**
      * Returns the index of a specific record in the local `records` list.
      * 
-     * Usage: `const idx = Users.findIndex(id);`
-     * 
-     * @param id The unique id of the record.
-     * @returns A record array index.
+     * @param {string} id The unique id of the record.
+     * @returns {number} A record array index.
+     * @example
+     * const idx = Users.findIndex(id);
      */
     findIndex(id) {
         return this.records.findIndex((obj) => obj.props.id == id);
@@ -300,9 +300,9 @@ class VingKind {
 
     /**
      * Returns the configured endpoint for creating records of this kind or throws an error if it cannot.
-     * 
-     * Usage: `const url = Users.getCreateApi()`
-     * @returns An endpoint url
+     * @returns {string} An endpoint url
+     * @example
+     * const url = Users.getCreateApi()
      */
     getCreateApi() {
         if (this.#behavior.createApi) {
@@ -315,9 +315,9 @@ class VingKind {
     /**
      * Returns the configured endpoint for fetching the list of records of this kind or throws an error if it cannot.
      * 
-     * Usage: `const url = Users.getListApi()`
-     * 
-     * @returns An endpoint url
+     * @returns {string} An endpoint url
+     * @example
+     * const url = Users.getListApi()
      */
     getListApi() {
         if (this.#behavior.listApi) {
@@ -330,9 +330,9 @@ class VingKind {
     /**
      * Returns the configured endpoint for fetching the enumerated props options for this kind or throws an error if it cannot.
      * 
-     * Usage: `const url = Users.getPropsOptionsApi()`
-     * 
-     * @returns An endpoint url
+     * @returns {string} An endpoint url
+     * @example
+     * const url = Users.getPropsOptionsApi()
      */
     getPropsOptionsApi() {
         if (this.#behavior.optionsApi != null) {
@@ -344,10 +344,10 @@ class VingKind {
     /**
      * Creates a local record in the `records` list without creating it on the server.
      * 
-     * Usage: `const newRecord = Users.mind({props : 'username'})`
-     * 
-     * @param params A describe object for the user that must at minimum have a list of props you want to use for the user
-     * @returns A newly minted record.
+     * @param {object} params A describe object for the user that must at minimum have a list of props you want to use for the user
+     * @returns {object} A newly minted record.
+     * @example
+     * const newRecord = Users.mind({props : 'username'})
      */
     mint(params) {
         const self = this;
@@ -369,12 +369,12 @@ class VingKind {
     /**
      * Updates just a defined segment of a specified record.
      * 
-     * Usage: `await users.partialUpdate(0, {realName : 'George'});
-     * 
-     * @param index An index number on the `records` list
-     * @param props The props you wish to update
-     * @param options An object that modifies the behavior of this method
-     * @returns A promise containing a response.
+     * @param {number} index An index number on the `records` list
+     * @param {object} props The props you wish to update
+     * @param {object} options An object that modifies the behavior of this method
+     * @returns {Promise<object>} A promise containing a response.
+     * @example
+     * await users.partialUpdate(0, {realName : 'George'});
      */
     partialUpdate(index, props, options) {
         return this.records[index].partialUpdate(props, options);
@@ -382,11 +382,12 @@ class VingKind {
 
     /**
      * Turns the list of records into an array compatible with various components such as SelectInput and Autocomplete
-     * Usage: `users.recordsAsOptions('meta','displayName')`
      * 
      * @param {'props'|'meta'|'extra'} section One of the describe section names such as `props`, or `meta`, or `extra`.
      * @param {string} field The name of the field within the `section` that will serve as the labelf for this option list.
-     * @returns {Object[]} An array of objects with `label` and `value` attributes.
+     * @returns {object[]} An array of objects with `label` and `value` attributes.
+     * @example
+     * users.recordsAsOptions('meta','displayName')
      */
     recordsAsOptions(section, field) {
         return this.records.map(u => {
@@ -400,9 +401,9 @@ class VingKind {
     /**
      * Remove a record from `records` locally, but not delete it from the server.
      * 
-     * Usage: `users.remove('xxx')`
-     * 
-     * @param id The uniqiue id of a record you'd like to remove from `records`
+     * @param {string} id The uniqiue id of a record you'd like to remove from `records`
+     * @example
+     * users.remove('xxx')
      */
     remove(id) {
         const index = this.findIndex(id);
@@ -417,9 +418,9 @@ class VingKind {
     /**
      * Locally empties the `records` array.
      * 
-     * Usage: `users.reset()`
-     * 
-     * @returns A reference to this object for chaining
+     * @returns {object} A reference to this object for chaining
+     * @example
+     * users.reset()
      */
     reset() {
         this.records.splice(0);
@@ -428,8 +429,8 @@ class VingKind {
 
     /**
      * Sets the `new` property back to its default state. Something you usually want to do after you create a new record.
-     * 
-     * Usage: `Users.resetNew()`
+     * @example
+     * Users.resetNew()
      */
 
     resetNew() {
@@ -439,10 +440,10 @@ class VingKind {
     /**
      * Fetches a single page of records.
      * 
-     * Usage: `await Users.search()`
-     * 
-     * @param options An object that modifies the behavior of this method
-     * @returns A promise containing the response
+     * @param {object} options An object that modifies the behavior of this method
+     * @returns {Promise<object>} A promise containing the response
+     * @example
+     * await Users.search()
      */
     async search(options = {}) {
         let pagination = {
@@ -477,10 +478,10 @@ class VingKind {
     /**
      * Fetches a single page of records after a 500ms debounce. This is useful if you have an input tied to keyboard inputs for typeahead so that you're not submitting a search after every single keystroke.
      * 
-     * Usage: `await Users.searchDebounced()`
-     * 
-     * @param options An object that modifies the behavior of this method
-     * @returns A promise containing the response
+     * @param {object} options An object that modifies the behavior of this method
+     * @returns {Promise<object>} A promise containing the response
+     * @example
+     * await Users.searchDebounced()
      */
     searchDebounced = debounce(async (options) => {
         return this.search(options);
@@ -489,9 +490,9 @@ class VingKind {
     /**
      * Sorts the local `records`. This can be bound to the PrimeVue DataTable component for client side sorting.
      * 
-     * Usage: `<DataTable :value="apikeys.records" @sort="(event: Event) => apikeys.sortDataTable(event)">`
-     * 
-     * @param event An event that was triggered by a sort request from the user
+     * @param {Event} event An event that was triggered by a sort request from the user
+     * @example
+     * <DataTable :value="apikeys.records" @sort="(event: Event) => apikeys.sortDataTable(event)">
      */
     async sortDataTable(event) {
         this.query.sortOrder = event.sortOrder > 0 ? 'asc' : 'desc';
@@ -502,11 +503,11 @@ class VingKind {
     /**
      * Save a specific named prop back to the server.
      * 
-     * Usage: `await Users.save(0, 'username')`
-     * 
-     * @param index The index of a record on the `records` list
-     * @param prop The name of a prop you wish to ave
-     * @returns A promise containing a response
+     * @param {number} index The index of a record on the `records` list
+     * @param {string} prop The name of a prop you wish to ave
+     * @returns {Promise<object>} A promise containing a response
+     * @example
+     * await Users.save(0, 'username')
      */
     save(index, prop) {
         return this.records[index].save(prop);
@@ -515,11 +516,11 @@ class VingKind {
     /**
      * Put the current set of props of a specific record back to the server.
      * 
-     * Usage: `await Users.update(0)`
-     * 
-     * @param index The index of a record on the `records` list
-     * @param options An object that changes the behavior of this method
-     * @returns A promise containing a response
+     * @param {number} index The index of a record on the `records` list
+     * @param {object} options An object that changes the behavior of this method
+     * @returns {Promise<object>} A promise containing a response
+     * @example
+     * await Users.update(0)
      */
     update(index, options) {
         return this.records[index].update(options);
@@ -529,8 +530,8 @@ class VingKind {
 /**
  * Creates an instance of VingKind in the form of a composable
  * 
- * @param behavior An object that defines the behavior of the kind
- * @returns A VingKind instance
+ * @param {object} behavior An object that defines the behavior of the kind
+ * @returns {object} A VingKind instance
  */
 export const useVingKind = (behavior = {}) => {
     return new VingKind(behavior);

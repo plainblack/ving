@@ -13,6 +13,8 @@ outline: deep
 * NOTE: You will have to run npm i to get new modules.
 * Added ving/utils/indentify.mjs to help identify various data structures in a more consistent way.
 * Refactored entire code base to use ving/utils/indentify.mjs.
+* Implemented: replace Usage: with @example in jsdoc #121
+* Added more types to JSDoc.
 
 ## 2024-04-22
 * Added MarkdownInput form control component for editing markdown text.

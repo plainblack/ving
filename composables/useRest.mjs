@@ -1,9 +1,6 @@
 /**
  * A wrapper around the Nuxt composable `$fetch()` that allows for streamlined fetches, but integrate's with ving's subsystems.
  * 
- * Usage: `const response = await useRest('/api/v1/user/xxx')`
- * 
-  * 
  * @param url An endpoint that you wish to interact with like `/api/v1/user`.
  * @param behavior An object that modifies the behavior of this function.
  * @returns It ultimately returns an object that looks like:
@@ -16,6 +13,8 @@
  *```
  *
  * The `error` is `null` unless there is an error, and the `data` contains an object response from the endpoint.
+ * @example
+ * const response = await useRest('/api/v1/user/xxx')
  */
 export default async function (url, behavior = {}) {
     const notify = useNotifyStore();

@@ -15,9 +15,9 @@ export class UserRecord extends RoleMixin(VingRecord) {
     /**
      * Generates the name that the user would like to be known as on the site based upon their `useAsDisplayName` preference.
      * 
-     * Usage: `const name = user.displayName()`
-     * 
-     * @returns a string
+     * @returns {string} a string
+     * @example
+     * const name = user.displayName()
      */
     displayName() {
         switch (this.get('useAsDisplayName')) {
@@ -33,9 +33,9 @@ export class UserRecord extends RoleMixin(VingRecord) {
     /**
      * Returns a URL to an image that represents the identity of this user. Note that it could be a fully qualified URL or a partial URL.
      * 
-     * Usage `const url = await user.avatarUrl()`;
-     * 
-     * @returns A URL to an image. 
+     * @returns {string} A URL to an image. 
+     * @example
+     * const url = await user.avatarUrl();
      */
     async avatarUrl() {
         switch (this.get('avatarType')) {
@@ -80,13 +80,13 @@ export class UserRecord extends RoleMixin(VingRecord) {
     /**
      * Tests a potential password to see if it matches the password stored in the user's account.
      * 
-     * Usage: `const result = await testPassword('totaly going to work');`
-     * 
      * @throws 400 if the user doesn't have a password set
      * @throws 441 if no password is passed into the function
      * @throws 404 if the user has a `passwordType` other than those allowed
      * @param {string} password the password you'd like to test against the user's set password
-     * @returns `true` if it passes, or `false` if it fails to pass
+     * @returns {boolean} `true` if it passes, or `false` if it fails to pass
+     * @example
+     * const result = await testPassword('totaly going to work');
      */
     async testPassword(password) {
         if (isNil(this.get('password')))
@@ -111,9 +111,9 @@ export class UserRecord extends RoleMixin(VingRecord) {
     /**
      * Sets a password for this user. Note that passwords cannot be set through the normal `set()` function.
      * 
-     * Usage: `await user.setPassword('my new cool password');`
-     * 
      * @param {string} password A string that will act as the user's password.
+     * @example
+     * await user.setPassword('my new cool password');
      */
     async setPassword(password) {
         const hashedPass = bcrypt.hashSync(password, 10);
@@ -193,7 +193,7 @@ export class UserKind extends VingKind {
     /**
      * Find users with a matching role.
      * @param {string} role A role name as defined in `#ving/schema/schemas/User.mjs`
-     * @returns a list of `UserRecord`s where the specified role is true
+     * @returns {UserRecord[]} a list of `UserRecord`s where the specified role is true
      */
     async findWithRole(role) {
         return await this.select.findMany(eq(this.table[role], true));

@@ -2,12 +2,12 @@
  * Connects to the ving server via Server Sent Events to allow the server 
  * to push messages to the browser. By default it handles toasts via the
  * 
- * Usage: `const bus = useMessageBus()`
- * 
  * Currently it handles only toasts through the user notification system. 
  * Everything else gets logged to the console. 
  * 
  * @returns An EventSource that connects to the ving message bus server
+ * @example
+ * const bus = useMessageBus()
  */
 export default async function useMessageBus() {
     const notify = useNotifyStore();

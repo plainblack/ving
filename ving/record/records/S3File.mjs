@@ -66,10 +66,10 @@ export const extensionMap = {
 /**
      * Gets a file extension.
      * 
-     * Usage: `const extension = getExtension('myimage.jpg')`
-     * 
      * @param {string} filename A filename.
-     * @returns A file extension
+     * @returns {string} A file extension
+     * @example
+     * const extension = getExtension('myimage.jpg')
      */
 export const getExtension = (filename) => {
     const match = filename.toLowerCase().match(/^.*\.(\w*)$/);
@@ -81,11 +81,11 @@ export const getExtension = (filename) => {
      * include /, ?, <, >, \, :, *, |, and " among others. Also checks
      * the filename against `extensionMap`.
      * 
-     * Usage: `const filename = sanitizeFilename('myimage.jpg')`
-     * 
      * @throws 415 if the file doesn't have an extension or has a disallowed extension
      * @param {string} filename A filename.
-     * @returns A file extension
+     * @returns {string} A file extension
+     * @example
+     * const filename = sanitizeFilename('myimage.jpg')
      */
 export const sanitizeFilename = (nameIn) => {
     const nameOut = sanitize(nameIn);
@@ -101,10 +101,10 @@ export const sanitizeFilename = (nameIn) => {
 /**
      * Formats a UUID as series of folders to be used as an S3 key.
      * 
-     * Usage: `const folder = formatS3FolderName('0467810a-5d75-4a91-a868-4f87281fbab9')`
-     * 
      * @param {string} input A v4 UUID.
-     * @returns A string with slashes splitting the first few characters and all dashes replaced with slashes.
+     * @returns {string} A string with slashes splitting the first few characters and all dashes replaced with slashes.
+     * @example
+     * const folder = formatS3FolderName('0467810a-5d75-4a91-a868-4f87281fbab9')
      */
 export const formatS3FolderName = (input) => {
     return input.replace(/-/g, '/').replace(/^(.{4})(.+)$/, '$1/$2');
@@ -113,9 +113,9 @@ export const formatS3FolderName = (input) => {
 /**
      * Generates a UUID and then formats it using `formatS3FolderName`.
      * 
-     * Usage: `const folder = makeS3FolderName()`
-     * 
-     * @returns A string with slashes splitting the first few characters and all dashes replaced with slashes.
+     * @returns {string} A string with slashes splitting the first few characters and all dashes replaced with slashes.
+     * @example
+     * const folder = makeS3FolderName()
      */
 export const makeS3FolderName = () => {
     return formatS3FolderName(v4());
@@ -129,9 +129,9 @@ export class S3FileRecord extends VingRecord {
     /**
          * Generates the URL to the s3 storage location where this file exists.
          * 
-         * Usage: `const url = s3file.fileUrl()`
-         * 
-         * @returns A URL to an S3 key.
+         * @returns {string} A URL to an S3 key.
+         * @example
+         * const url = s3file.fileUrl()
          */
 
     fileUrl() {
@@ -141,9 +141,9 @@ export class S3FileRecord extends VingRecord {
     /**
          * Generates the URL to the thumbnail for a file or an icon that represents the file.
          * 
-         * Usage: `const url = s3file.thumbnailUrl()`
-         * 
-         * @returns A URL to an image or icon representing this file.
+         * @returns {string} A URL to an image or icon representing this file.
+         * @example
+         * const url = s3file.thumbnailUrl()
          */
     thumbnailUrl() {
         switch (this.get('icon')) {
@@ -164,11 +164,11 @@ export class S3FileRecord extends VingRecord {
      * Generates a description of this S3File beyond the normal VingRecord
      * description. This includes the `meta` fields `fileUrl` and `thumbnailUrl`.
      * 
-     * Usage: `const description = await s3file.describe()`
-     * 
      * @see VingRecord.describe()
      * @param {Object} params See VingRecord describe for details.
-     * @returns An object with the description. See VingRecord for details.
+     * @returns {object} An object with the description. See VingRecord for details.
+     * @example
+     * const description = await s3file.describe()
      */
     async describe(params = {}) {
         const out = await super.describe(params);
@@ -185,9 +185,9 @@ export class S3FileRecord extends VingRecord {
          * Makes a call out to an AWS Lambda function to do post processing 
          * of the file after upload. It includes collecting metadata, verifying
          * file size, and generating thumbnails as necessary.
-         * 
-         * Usage: `await s3file.postProcessFile()`
          * @throws 500 or other codes depending upon what the Lambda function returns.
+         * @example
+         * await s3file.postProcessFile()
          */
     async postProcessFile() {
         const self = this;
@@ -241,8 +241,6 @@ export class S3FileRecord extends VingRecord {
          * Checks the dimensions of the image from the metadata and returns 
          * true if they do or calls `markVerifiyFailed()` if they don't.
          * 
-         * Usage: `await s3file.verifyExactDimensions(width, height)`
-         * 
          * @param {number} width The width in pixels this image should be.
          * @param {number} height The height in pxiels this image should be.
          * @param {boolean} errorOnly A boolean that if true will skip marking the file as 
@@ -250,7 +248,9 @@ export class S3FileRecord extends VingRecord {
          * reuse of files and don't wish to delete files just due to failing verification
          * in one use case. Defaults to `false`.
          * @throws 442 if the dimensions do not match
-         * @returns `true` if successful.
+         * @returns {boolean} `true` if successful.
+         * @example
+         * await s3file.verifyExactDimensions(width, height)
          */
     async verifyExactDimensions(width, height, errorOnly = false) {
         const metadata = this.get('metadata');
@@ -263,15 +263,15 @@ export class S3FileRecord extends VingRecord {
          * Checks the extension of the file against a whitelist and returns 
          * true if they do or calls `markVerifiyFailed()` if they don't.
          * 
-         * Usage: `await s3file.verifyExtension(['png','gif','jpeg','jpg'])`
-         * 
          * @param {string[]} whitelist An array of allowed file extensions
          * @param {boolean} errorOnly A boolean that if true will skip marking the file as 
          * failing verified and will also skip deletion. Useful when you are allowing
          * reuse of files and don't wish to delete files just due to failing verification
          * in one use case. Defaults to `false`.
          * @throws 442 if the extension is not in the whitelist
-         * @returns `true` if successful.
+         * @returns {boolean} `true` if successful.
+         * @example
+         * await s3file.verifyExtension(['png','gif','jpeg','jpg'])
          */
     async verifyExtension(whitelist, errorOnly = false) {
         if (!whitelist.includes(this.get('extension')))
@@ -287,15 +287,15 @@ export class S3FileRecord extends VingRecord {
          * logs the failure, kicks off a background process to delete
          * the file, then throws a `442`.
          * 
-         * Usage: `await s3file.markVerifiyFailed('This file sucks!')`
-         * 
          * @param {string} error A message about why the file is being marked as a failure.
          * @param {boolean} errorOnly A boolean that if true will skip marking the file as 
          * failing verified and will also skip deletion. Useful when you are allowing
          * reuse of files and don't wish to delete files just due to failing verification
          * in one use case. Defaults to `false`.
          * @throws 442
-         * @returns `true` if successful.
+         * @returns {boolean} `true` if successful.
+         * @example
+         * await s3file.markVerifiyFailed('This file sucks!')
          */
     async markVerifiyFailed(error, errorOnly = false) {
         if (!errorOnly) {

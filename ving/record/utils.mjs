@@ -4,10 +4,10 @@ const kindCache = {};
 /**
  * Instanciates a VingKind by name. 
  * 
- * Usage: `const users = useKind('User');`
- * 
  * @param {string} kind The name of the kind to instanciate. eg: `User`
- * @returns a `VingKind` subclass
+ * @returns {VingKind} a `VingKind` subclass
+ * @example
+ * const users = useKind('User');
  */
 export const useKind = async (kind) => {
     if (kind in kindCache)
