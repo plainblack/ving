@@ -81,7 +81,7 @@ Note that you should always wrap this in a `<client-only>` tag.
       
 Props:
 
-- **acceptedFiles** - An array of file extensions that S3File should accept. Defaults to `['png','jpg']`. This can and should be automatically filled by a `meta.acceptedFileExtensions` property from a [Ving Record](subsystems/ving-record) when dealing with S3Files. It is set by the `relation.acceptedFileExtensions` attribute in a [Ving Schema](subsystems/ving-schema). For example:
+- **acceptedFiles** - An array of file extensions that S3File should accept. Defaults to `['png','jpg']`. This can and should be automatically filled by a `meta.acceptedFileExtensions` property from a [Ving Record](ving-record) when dealing with S3Files. It is set by the `relation.acceptedFileExtensions` attribute in a [Ving Schema](ving-schema). For example:
 
 ```html
 <Dropzone :acceptedFiles="user.meta?.acceptedFileExtensions?.avatar" />
