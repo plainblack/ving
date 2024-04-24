@@ -64,9 +64,6 @@ const describeExample = ({ bare }) => {
           out.meta.bar = 'bar';
       }
       if (params?.include?.extra.includes('foo')) {
-          if (isUndefined(out.extra)) {
-              out.extra = {};
-          }
           out.extra.foo = 'foo';
       }
       return out;

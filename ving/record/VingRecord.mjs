@@ -192,6 +192,9 @@ export class VingRecord {
         if (include?.related?.length) {
             out.related = {};
         }
+        if (include?.extra?.length) {
+            out.extra = {};
+        }
         if (this.warnings?.length) {
             out.warnings = this.warnings;
         }
