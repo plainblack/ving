@@ -10,6 +10,8 @@ outline: deep
 * Added a message for developers that they need to edit the extensionMap if they wish to support a new file type.
 * Updated the Dropzone component to use file extensions without a dot, the same way as S3File uses it internally.
 * NOTE: Any dropzones you have in use need to be updated to not use a dot in the array of file extensions.
+* Implemented: figure out a way to share file extensions for s3files from schema #104
+* NOTE: Because of the above you may want to check out the new acceptedFileExtensions attribute in ving schemas and migrate your S3File integrations to use it.
 
 ## 2024-04-23
 * Created SelectInput component to replace FormSelect. However, you should use FormInput with type select instead of using this directly in most cases.

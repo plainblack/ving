@@ -81,7 +81,11 @@ Note that you should always wrap this in a `<client-only>` tag.
       
 Props:
 
-- **acceptedFiles** - An array of file extensions that S3File should accept. Defaults to `['png','jpg']`.
+- **acceptedFiles** - An array of file extensions that S3File should accept. Defaults to `['png','jpg']`. This can and should be automatically filled by a `meta.acceptedFileExtensions` property from a [Ving Record](subsystems/ving-record) when dealing with S3Files. It is set by the `relation.acceptedFileExtensions` attribute in a [Ving Schema](subsystems/ving-schema). For example:
+
+```html
+<Dropzone :acceptedFiles="user.meta?.acceptedFileExtensions?.avatar" />
+```
 - **afterUpload** - Required. A function that will be executed after upload. This function should then call the appropriate import endpoint to post process and verify the file.
 - **info** - A string that will be displayed inside the dropzone box. Useful to give the user some insights about the nature of the files you will allow such as size or dimension contstraints. 
 - **maxFiles** - An integer of the maximum number of files the user is allowed to select for upload. Defaults to unlimited.

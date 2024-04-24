@@ -142,6 +142,7 @@ export const userSchema = {
             length: 36,
             db: (prop) => dbRelation(prop),
             relation: {
+                acceptedFileExtensions: ['png', 'jpeg', 'jpg', 'gif'],
                 type: 'parent',
                 name: 'avatar',
                 kind: 'S3File',

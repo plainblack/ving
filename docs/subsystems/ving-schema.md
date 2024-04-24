@@ -300,6 +300,14 @@ The `kind` attribute is required and should be the name of a VingKind such as `U
 
 The `skipOwnerCheck` attribute is an optional boolean. It tells VingRecord's `setPostedProps()` method that it does not need to check whether the user linking a record to this relationship `isOwner()` on that record.
 
+###### acceptedFileExtensions
+
+If the relation `type` is `parent` and the `kind` is an `S3File` then you can also set this attribute to an array of file types that are to be accepted by this relationship. For example
+
+```js
+    acceptedFileExtensions : ['jpg','gif','png']
+```
+
 ##### enums
 
 The `enums` field is reqiured only if the prop type is `boolean` or `enum`. It is an array containing the values that are possible for this prop to have. In the case of `boolean` that is `true` or `false`, but in the case of `enum` it can be an array of any strings. The order the values appear in the array is the order they will be displayed to the user.

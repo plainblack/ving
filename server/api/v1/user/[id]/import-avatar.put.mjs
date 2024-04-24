@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     const S3Files = await useKind('S3File');
     const s3file = await S3Files.findOrDie(body.s3FileId);
     await s3file.postProcessFile();
-    await s3file.verifyExtension(['png', 'jpeg', 'jpg', 'gif']);
+    await s3file.verifyExtension(user.parentPropSchema('avatar').relation.acceptedFileExtensions);
     await s3file.verifyExactDimensions(300, 300);
     user.set('avatarId', s3file.get('id'));
     await user.update();

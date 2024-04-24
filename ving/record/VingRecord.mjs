@@ -224,15 +224,19 @@ export class VingRecord {
                 out.links[lower] = { href: `${out.links.self.href}/${lower}`, methods: ['GET'] };
             }
 
-            // related
-            if (isObject(out.related)
-                && !isUndefined(include.related)
-                && field.relation
+            // relations
+            if (field.relation
                 && ['parent', 'sibling'].includes(field.relation.type)
-                && include.related.includes(field.relation.name)
             ) {
-                const parent = await this.parent(field.relation.name);
-                out.related[field.relation.name] = await parent.describe(params);
+                if (isObject(out.related) && include.related?.includes(field.relation.name)) {
+                    const parent = await this.parent(field.relation.name);
+                    out.related[field.relation.name] = await parent.describe(params);
+                }
+                if (isObject(out.meta) && 'acceptedFileExtensions' in field.relation) {
+                    if (!('acceptedFileExtensions' in out.meta))
+                        out.meta.acceptedFileExtensions = {};
+                    out.meta.acceptedFileExtensions[field.relation.name] = field.relation.acceptedFileExtensions;
+                }
             }
 
         }
@@ -327,9 +331,20 @@ export class VingRecord {
     async parent(name) {
         if (name in this.#parentCache)
             return this.#parentCache[name];
-        const schema = findVingSchema(getTableName(this.table));
-        const prop = ving.findObject(schema.props, obj => obj.relation?.name == name);
+        const prop = this.parentPropSchema(name);
         return this.#parentCache[name] = await (await ving.useKind(prop.relation.kind)).findOrDie(this.get(prop.name));
+    }
+
+    /**
+     * Returns the schema of the named parent prop, which can be useful for looking up special attributes.
+     * @param {string} name The name of the parent prop to find.
+     * @returns {object} A ving schema prop schema.
+     * @example
+     * user.parentPropSchema('avatar')
+     */
+    parentPropSchema(name) {
+        const schema = findVingSchema(getTableName(this.table));
+        return ving.findObject(schema.props, obj => obj.relation?.name == name);
     }
 
     /**
