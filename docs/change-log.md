@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 20224-04-24
+* Fixed a bug where an error when making calls on currentUserStore would destroy existing data.
+
 ## 2024-04-23
 * Created SelectInput component to replace FormSelect. However, you should use FormInput with type select instead of using this directly in most cases.
 * NOTE: The FormSelect component no longer exists. Anywhere you are using it use FormInput with type 'select' instead.

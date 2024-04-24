@@ -22,10 +22,12 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         setState(data) {
-            this.props = data?.props || {};
-            this.meta = data?.meta || {};
-            this.options = data?.options || {};
-            this.links = data?.links || {};
+            if (data) {
+                this.props = data?.props || {};
+                this.meta = data?.meta || {};
+                this.options = data?.options || {};
+                this.links = data?.links || {};
+            }
         },
         async login(login, password) {
             const response = await useRest(`/api/${restVersion()}/session`, {
