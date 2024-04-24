@@ -1,9 +1,9 @@
 import ving from '#ving/index.mjs';
 
 /**
- * This handler does nothing other that write to the log with whatever data was passed in. 
+ * This handler deletes a S3File if it does not achieve a ready state by the time this job runs. 
  * @param {Object} A `BullMQ` job.
- * @returns `true`
+ * @returns {boolean} `true`
  */
 export default async function (job) {
     ving.log('jobs').info(`Instanciating S3File ${job.data.id}`);
