@@ -47,6 +47,7 @@ export const extensionMap = {
     ods: 'spreadsheet',
     md: 'text',
     txt: 'text',
+    dxf: 'vector',
     svg: 'vector',
     ai: 'vector',
     ps: 'vector',
@@ -94,7 +95,7 @@ export const sanitizeFilename = (nameIn) => {
     if (!ext)
         throw ving.ouch(415, 'The file does not appear to have a file extension.');
     else if (!(allowedExtensions.includes(ext)))
-        throw ving.ouch(415, `The extension ${ext} is not one of the allowed file extensions.`, allowedExtensions);
+        throw ving.ouch(415, `Dear Developer: The extension ${ext} is not one of the allowed file extensions supported by Ving's S3File. Edit the extensionMap to add this file type.`, allowedExtensions);
     return nameOut;
 };
 

@@ -6,6 +6,8 @@ outline: deep
 ## 20224-04-24
 * Fixed a bug where an error when making calls on currentUserStore would destroy existing data.
 * Fixed a bug where you couldn't upload an avatar if you didn't already have one.
+* Added dxf to the known extension types.
+* Added a message for developers that they need to edit the extensionMap if they wish to support a new file type.
 
 ## 2024-04-23
 * Created SelectInput component to replace FormSelect. However, you should use FormInput with type select instead of using this directly in most cases.
