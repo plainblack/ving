@@ -140,9 +140,11 @@ export const dbDateTime = (prop) => {
  * @param {Object} prop An object containing the properties of this prop
  * @returns a drizzle field schema definition
  */
-export const dbString = (prop) => {
+export const dbVarChar = (prop) => {
     return `varchar('${prop.name}', { length: ${prop.length} }).notNull().default('${stringDefault(prop, true)}')`;
 }
+
+export const dbString = dbVarChar;
 
 /**
  * Generates a drizzle schema field definition for a text prop setting it to not null
