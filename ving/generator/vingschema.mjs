@@ -2,7 +2,7 @@ import { getContext, renderTemplate, toFile, after, inject } from '@feathersclou
 import { camelCase } from 'scule';
 
 const schemaTemplate = ({ name }) =>
-    `import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject, dbMediumText, zodMediumText } from '../helpers.mjs';
+    `import { baseSchemaProps, dbVarChar, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject, dbMediumText, zodMediumText } from '../helpers.mjs';
 
 export const ${camelCase(name)}Schema = {
     kind: '${name}',
@@ -19,7 +19,7 @@ export const ${camelCase(name)}Schema = {
             length: 60,
             default: '',
             filterQuery: true,
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             zod: (prop) => zodString(prop),
             view: [],
             edit: ['owner'],
@@ -33,7 +33,7 @@ export const ${camelCase(name)}Schema = {
             length: 256,
             default: '',
             filterQuery: true,
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             zod: (prop) => zodString(prop).email(),
             view: [],
             edit: ['owner'],
@@ -58,7 +58,7 @@ export const ${camelCase(name)}Schema = {
             length: 60,
             default: '',
             filterQuery: true,
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             zod: (prop) => zodString(prop),
             view: [],
             edit: ['owner'],

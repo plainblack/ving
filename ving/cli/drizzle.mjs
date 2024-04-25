@@ -7,6 +7,7 @@ import ving from '#ving/index.mjs';
 import crypto from "node:crypto";
 import fs from "node:fs";
 import { spawn } from 'child_process';
+import { validateAllSchemas } from '#ving/schema/validator.mjs';
 
 export default defineCommand({
     meta: {
@@ -39,6 +40,7 @@ export default defineCommand({
     async run({ args, cmd }) {
         try {
             if (args.tables) {
+                validateAllSchemas();
                 for (const schema of vingSchemas) {
                     await makeTableFile({ schema });
                 }

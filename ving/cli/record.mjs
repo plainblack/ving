@@ -5,6 +5,7 @@ import { generateWeb } from '#ving/generator/nuxtpages.mjs';
 import { vingSchemas, findVingSchema } from '#ving/schema/map.mjs';
 import ving from '#ving/index.mjs';
 import { isFile, isDir } from '#ving/utils/fs.mjs';
+import { validateSchema } from '#ving/schema/validator.mjs';
 
 export default defineCommand({
     meta: {
@@ -45,6 +46,7 @@ export default defineCommand({
     async run({ args, cmd }) {
         try {
             if (args.new) {
+                validateSchema(args.new);
                 await generateRecord({ name: args.new, bare: args.bare, schema: findVingSchema(args.new, 'kind') });
             }
             else if (args.rest) {
