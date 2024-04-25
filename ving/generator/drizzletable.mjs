@@ -8,7 +8,15 @@ export const makeBaseTable = (schema) => {
         if (prop.type != 'virtual') {
             columns.push(`${prop.name}: ${prop.db(prop)}`)
             if (prop.unique) {
-                specialConstraints.push(`${prop.name}Index: uniqueIndex('${prop.name}Index').on(table.${prop.name})`);
+                if (prop.uniqueQualifiers && prop.uniqueQualifiers.length) {
+                    const fields = [prop.name, ...prop.uniqueQualifiers];
+                    const composite = fields.join('_');
+                    const key = composite.substring(0, 48) + '_' + miniHash(composite) + '_uq';
+                    specialConstraints.push(`${key}: unique('${key}').on(table.${fields.join(', table.')})`);
+                }
+                else {
+                    specialConstraints.push(`${prop.name}Index: uniqueIndex('${prop.name}Index').on(table.${prop.name})`);
+                }
             }
             if (prop.relation && ['parent', 'sibling'].includes(prop.relation.type)) {
                 const composite = [schema.tableName, prop.relation.name].join('_');

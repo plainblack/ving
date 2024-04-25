@@ -324,6 +324,27 @@ The `length` field is required when the prop is of type `string`, `enum`, and `i
 
 The `unique` field is an optional boolean. When set to `true` a unique index will be created on this prop in the database, and the record will test that the data being set to the prop is unqiue. 
 
+##### uniqueQualifiers
+
+The `uniqueQualifiers` field is an optional array of other prop names. It can be used with the `unique` field is set to `true`. Then instead of this prop being unique across the entire table, must be unique amongst the qualifiers. For example, if you had a schema with props that looked like:
+
+```js
+{
+    type: 'string',
+    name: 'name',
+    unique: true,
+    uniqueQualifiers: ['category'],
+},
+{
+    type: 'enum',
+    name: 'category',
+    default: 'Food',
+    enums: ['Food','Weapons','Armor'],
+},
+```
+
+Then each `name` would have to be unique within the specified `category`. 
+
 ##### filterQuery
 
 An optional boolean that if true will allow searching via the [rest api](rest) for keyword matches against this field. This is an alternative to overriding the `describeListFilter()` method in [VingRecord](ving-record).

@@ -512,7 +512,11 @@ export class VingRecord {
                     let where = eq(this.table[field.name], params[field.name]);
                     if (this.isInserted)
                         where = and(where, ne(this.table.id, this.get('id')));
-
+                    if (field.uniqueQualifiiers) {
+                        for (const qualifier of field.uniqueQualifiiers) {
+                            where = and(where, eq(this.table[qualifier], params[qualifier] || this.get(qualifier)));
+                        }
+                    }
                     let count = (await query.where(where))[0].count
                     if (count > 0) {
                         ving.log('VingRecord').warning(`${this.get('id')} unique check failed on ${field.name.toString()}`)

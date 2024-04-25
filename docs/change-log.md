@@ -18,6 +18,7 @@ outline: deep
 * Added a job handler generator to the CLI.
 * Added CLI functions to obliterate, pause, and unpause queues.
 * Added CLI functions to list jobs in a queue and kill them.
+* Added uniqueQualifiers field to ving schema props to implement: allow unique indexes within set #114
 
 ## 2024-04-23
 * Created SelectInput component to replace FormSelect. However, you should use FormInput with type select instead of using this directly in most cases.
