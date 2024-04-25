@@ -26,7 +26,7 @@
     "@pulumi/pulumi": "^3.0.0",
     "drizzle-kit": "^0.20.13",
     "env-file-rw": "^1.0.0",
-    "nuxt": "^3.10.0",
+    "nuxt": "^3.11.2",
     "nuxt-icon": "^0.3.3",
     "nuxt-primevue": "^0.2.2",
     "nuxt-security": "^1.1.0",
