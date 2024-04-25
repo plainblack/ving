@@ -148,8 +148,9 @@ These are used to add a parent relationship.
 },
 ```
 
-###### String Type Example
+###### String Type Examples
 
+**VarChar**
 ```js
 {
     type: "string",
@@ -161,6 +162,38 @@ These are used to add a parent relationship.
     default: '',
     db: (prop) => dbString(prop),
     zod: (prop) => zodString(prop).email(),
+    view: [],
+    edit: ['owner'],
+},
+
+```
+
+**Text**
+```js
+{
+    type: "string",
+    name: "memo",
+    required: true,
+    length: 256,
+    filterQuery: true,
+    default: '',
+    db: (prop) => dbText(prop),
+    zod: (prop) => zodText(prop),
+    view: [],
+    edit: ['owner'],
+},
+
+```
+
+**MediumText**
+```js
+{
+    type: "string",
+    name: "description",
+    required: true,
+    default: '',
+    db: (prop) => dbMediumText(prop),
+    zod: (prop) => zodMediumText(prop),
     view: [],
     edit: ['owner'],
 },
@@ -179,40 +212,6 @@ These are used to add a parent relationship.
     view: ['public'],
     edit: [],
 },
-```
-
-###### Text Type Example
-
-```js
-{
-    type: "string",
-    name: "memo",
-    required: true,
-    length: 256,
-    filterQuery: true,
-    default: '',
-    db: (prop) => dbText(prop),
-    zod: (prop) => zodText(prop),
-    view: [],
-    edit: ['owner'],
-},
-
-```
-
-###### MediumText Type Example
-
-```js
-{
-    type: "string",
-    name: "description",
-    required: true,
-    default: '',
-    db: (prop) => dbMediumText(prop),
-    zod: (prop) => zodMediumText(prop),
-    view: [],
-    edit: ['owner'],
-},
-
 ```
 
 ###### Virtual Type Example

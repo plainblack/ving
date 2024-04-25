@@ -8,6 +8,7 @@ outline: deep
 * Removed unnecessary validation on Dropzone.
 * Upgraded to Nuxt 3.11.2 from 3.10.0.
 * NOTE: run "npm i"
+* Merged VarChar, Text, and MediumText examples in docs into a String Examples section.
 
 ## 2024-04-24
 * Fixed a bug where an error when making calls on currentUserStore would destroy existing data.
