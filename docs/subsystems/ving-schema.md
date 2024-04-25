@@ -324,6 +324,8 @@ If the relation `type` is `parent` and the `kind` is an `S3File` then you can al
     acceptedFileExtensions : ['jpg','gif','png']
 ```
 
+The listed extensions must be in the S3File `extensionMap`.
+
 ##### enums
 
 The `enums` field is reqiured only if the prop type is `boolean` or `enum`. It is an array containing the values that are possible for this prop to have. In the case of `boolean` that is `true` or `false`, but in the case of `enum` it can be an array of any strings. The order the values appear in the array is the order they will be displayed to the user.
@@ -363,15 +365,15 @@ Then each `name` would have to be unique within the specified `category`.
 
 ##### filterQuery
 
-An optional boolean that if true will allow searching via the [rest api](rest) for keyword matches against this field. This is an alternative to overriding the `describeListFilter()` method in [VingRecord](ving-record).
+An optional boolean that if true will allow searching via the [rest api](rest) for keyword matches against this field. This is an alternative to overriding the `describeListFilter()` method in [VingRecord](ving-record). Only use on `enum` and `string` type props.
 
 ##### filterQualifier
 
-An optional boolean that if true will allow searching via the [rest api](rest) for exact match filtering against this field. This is an alternative to overriding the `describeListFilter()` method in [VingRecord](ving-record).
+An optional boolean that if true will allow searching via the [rest api](rest) for exact match filtering against this field. This is an alternative to overriding the `describeListFilter()` method in [VingRecord](ving-record). Only use on `id`, `int`, `boolean`, `enum` and `string` type props.
 
 ##### filterRange
 
-An optional boolean that if true will allow searching via the [rest api](rest) for range matching against this field. This is an alternative to overriding the `describeListFilter()` method in [VingRecord](ving-record).
+An optional boolean that if true will allow searching via the [rest api](rest) for range matching against this field. This is an alternative to overriding the `describeListFilter()` method in [VingRecord](ving-record). Only use on `int` and `date` type props.
 
 
 ##### autoUpdate

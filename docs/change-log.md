@@ -12,6 +12,7 @@ outline: deep
 * Renamed dbString to dbVarChar, but kept an alias as dbString.
 * Built ving schema validation system.
 * Fixed a bunch of bugs in the ving schema documentation.
+* Moved extensionMap from ving/record/records/S3File.mjs to ving/schema/schemas/S3File.mjs.
 
 ## 2024-04-24
 * Fixed a bug where an error when making calls on currentUserStore would destroy existing data.
