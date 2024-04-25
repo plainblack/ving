@@ -605,6 +605,8 @@ export const validateOwner = (schema) => {
         }
         else if (/\$/.test(owner)) {
             const found = owner.match(/^\$(.*)$/);
+            if (!isArray(found) || found.length < 2)
+                throw ving.ouch(442, `Schema ${schema.kind} owner ${owner} is malformed.`);
             const prop = schema.props.find(p => p.name == found[1]);
             if (isUndefined(prop))
                 throw ving.ouch(442, `Schema ${schema.kind} owner ${owner} is not in the props.`);
@@ -616,7 +618,9 @@ export const validateOwner = (schema) => {
                 throw ving.ouch(442, `Schema ${schema.kind} owner ${owner} must reference a User.`);
         }
         else if (/\^/.test(owner)) {
-            const found = owner.match(/^\$(.*)$/);
+            const found = owner.match(/^\^(.*)$/);
+            if (!isArray(found) || found.length < 2)
+                throw ving.ouch(442, `Schema ${schema.kind} owner ${owner} is malformed.`);
             const prop = schema.props.find(p => p.relation?.name == found[1]);
             if (isUndefined(prop))
                 throw ving.ouch(442, `Schema ${schema.kind} owner ${owner} is not in the props.`);
