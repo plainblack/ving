@@ -1,4 +1,4 @@
-import { baseSchemaProps, dbString, zodString, dbText, zodText, dbRelation } from '../helpers.mjs';
+import { baseSchemaProps, dbVarChar, zodString, dbText, zodText, dbRelation } from '../helpers.mjs';
 import crypto from 'crypto';
 
 export const apikeySchema = {
@@ -13,7 +13,7 @@ export const apikeySchema = {
             filterQuery: true,
             required: true,
             length: 60,
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             zod: (prop) => zodString(prop),
             default: '',
             view: ['public'],
@@ -47,7 +47,7 @@ export const apikeySchema = {
             required: false,
             length: 39,
             default: () => 'pk_' + crypto.randomBytes(18).toString('hex'),
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             view: [],
             edit: ['owner'],
         },

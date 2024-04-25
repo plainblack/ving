@@ -1,4 +1,4 @@
-import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbRelation, dbMediumText, zodMediumText } from '../helpers.mjs';
+import { baseSchemaProps, dbVarChar, zodString, dbEnum, dbBoolean, dbRelation, dbMediumText, zodMediumText } from '../helpers.mjs';
 
 export const userSchema = {
     kind: 'User',
@@ -14,7 +14,7 @@ export const userSchema = {
             unique: true,
             length: 60,
             default: '',
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             zod: (prop) => zodString(prop),
             view: [],
             edit: ['owner'],
@@ -27,7 +27,7 @@ export const userSchema = {
             unique: true,
             length: 256,
             default: '',
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             zod: (prop) => zodString(prop).email(),
             view: [],
             edit: ['owner'],
@@ -39,7 +39,7 @@ export const userSchema = {
             filterQuery: true,
             length: 60,
             default: '',
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             zod: (prop) => zodString(prop),
             view: [],
             edit: ['owner'],
@@ -50,7 +50,7 @@ export const userSchema = {
             length: 256,
             required: false,
             default: 'no-password-specified',
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             view: [],
             edit: [],
         },
@@ -130,6 +130,7 @@ export const userSchema = {
             name: "bio",
             required: false,
             default: '',
+            length: 16777215,
             db: (prop) => dbMediumText(prop),
             zod: (prop) => zodMediumText(prop),
             view: ['public'],

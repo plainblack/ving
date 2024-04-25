@@ -1,4 +1,4 @@
-import { baseSchemaProps, dbString, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject } from '../helpers.mjs';
+import { baseSchemaProps, dbVarChar, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject } from '../helpers.mjs';
 
 export const s3fileSchema = {
     kind: 'S3File',
@@ -13,7 +13,7 @@ export const s3fileSchema = {
             required: true,
             length: 256,
             default: '',
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             zod: (prop) => zodString(prop),
             view: ['public'],
             edit: [],
@@ -25,7 +25,7 @@ export const s3fileSchema = {
             length: 10,
             filterQualifier: true,
             default: '',
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             zod: (prop) => zodString(prop),
             view: ['public'],
             edit: [],
@@ -36,7 +36,7 @@ export const s3fileSchema = {
             required: true,
             length: 256,
             default: '',
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             zod: (prop) => zodString(prop),
             view: ['public'],
             edit: [],
@@ -47,7 +47,7 @@ export const s3fileSchema = {
             required: true,
             length: 256,
             default: '',
-            db: (prop) => dbString(prop),
+            db: (prop) => dbVarChar(prop),
             zod: (prop) => zodString(prop),
             view: ['admin'],
             edit: [],

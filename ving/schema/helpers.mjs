@@ -136,7 +136,7 @@ export const dbDateTime = (prop) => {
 }
 
 /**
- * Generates a drizzle schema field definition for a string prop setting it to a varchar of length defined in props and a default value from prop
+ * Generates a drizzle schema field definition for a string prop setting it to a varchar of length defined in props and a default value from prop. `dbString()` is an alias for this function.
  * @param {Object} prop An object containing the properties of this prop
  * @returns a drizzle field schema definition
  */
