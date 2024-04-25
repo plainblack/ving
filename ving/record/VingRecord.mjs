@@ -1004,7 +1004,7 @@ export class VingKind {
                 output[prop.name] = stringDefault(prop)
             else if (prop.type == 'boolean')
                 output[prop.name] = booleanDefault(prop)
-            else if (prop.type == 'number')
+            else if (prop.type == 'int')
                 output[prop.name] = numberDefault(prop)
             else if (prop.type == 'date')
                 output[prop.name] = dateDefault(prop)

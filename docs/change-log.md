@@ -3,7 +3,10 @@ outline: deep
 ---
 # Change Log
 
-## 20224-04-24
+## 2024-04-25
+* Fixed a bug where ving record fields of type 'int' were not being initialized properly.
+
+## 2024-04-24
 * Fixed a bug where an error when making calls on currentUserStore would destroy existing data.
 * Fixed a bug where you couldn't upload an avatar if you didn't already have one.
 * Added dxf to the known extension types.
