@@ -5,6 +5,7 @@ outline: deep
 
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.
+* Removed unnecessary validation on Dropzone.
 
 ## 2024-04-24
 * Fixed a bug where an error when making calls on currentUserStore would destroy existing data.

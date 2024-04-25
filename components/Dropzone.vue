@@ -63,13 +63,6 @@ export default {
         acceptedFiles: {
             type: Array,
             default: () => ['png', 'jpg'],
-            validator(value, props) {
-                for (const type of value) {
-                    if (!type.match(/^\./))
-                        return false;
-                }
-                return true;
-            },
         },
     },
     mounted() {
