@@ -13,7 +13,7 @@
 
                                 <InputGroup>
                                     <InputGroupAddon>
-                                        <i class="pi pi-search" />
+                                        <Icon name="ion:search" />
                                     </InputGroupAddon>
                                     <InputText type="text" placeholder="Search API Keys" class="w-full"
                                         v-model="apikeys.query.search" @keydown.enter="apikeys.search()" />
@@ -104,7 +104,7 @@
 
                                 <div>
                                     <Button type="submit" class="w-auto" severity="success">
-                                        <i class="pi pi-plus mr-1"></i> Create API Key
+                                        <Icon name="ph:plus" class="mr-1"/> Create API Key
                                     </Button>
                                 </div>
                             </div>

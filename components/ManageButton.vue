@@ -1,30 +1,30 @@
 <template>
-    <Button v-if="items.length == 1 && firstItem.action" @click="firstItem.action" :severity="severity">
-        <Icon :name="firstItem.icon" class="mr-2" />
-        {{ firstItem.label }}
+    <Button v-if="items.length == 1 && firstItem.action" @click="firstItem.action" :severity="severity" class="w-min white-space-nowrap">
+        <Icon :name="firstItem.icon" class="mr-1 vertical-align-middle" />
+        <span class="vertical-align-middle">{{ firstItem.label }}</span>
     </Button>
     <NuxtLink v-else-if="items.length == 1 && firstItem.to" :to="firstItem.to" v-ripple class="flex no-underline align-items-center">
-        <Button :severity="severity">
-            <Icon :name="firstItem.icon" class="mr-2" />
-            {{ firstItem.label }}
+        <Button :severity="severity" class="w-min white-space-nowrap">
+            <Icon :name="firstItem.icon" class="mr-1 vertical-align-middle" />
+            <span class="vertical-align-middle">{{ firstItem.label }}</span>
         </Button>
     </NuxtLink>
-    <SplitButton v-else-if="items.length > 1" :severity="severity" :model="otherItems" @click="firstItem.action">
-        <span v-if="firstItem.action" >
-            <Icon :name="firstItem.icon" :title="firstItem.label" class="mr-2" />
-            {{ firstItem.label }}
+    <SplitButton v-else-if="items.length > 1" :severity="severity" :model="otherItems" @click="firstItem.action" class="w-min white-space-nowrap">
+        <span v-if="firstItem.action">
+            <Icon :name="firstItem.icon" :title="firstItem.label" class="mr-1 vertical-align-middle" />
+            <span class="vertical-align-middle">{{ firstItem.label }}</span>
         </span>
         <NuxtLink v-else :to="firstItem.to" v-ripple class="flex no-underline text-white align-items-center" :title="firstItem.label">
-            <Icon :name="firstItem.icon" class="mr-2" />
-            {{ firstItem.label }}
+            <Icon :name="firstItem.icon" class="mr-1 vertical-align-middle" />
+            <span class="vertical-align-middle">{{ firstItem.label }}</span>
         </NuxtLink>
         <template #item="{ item }">
             <span v-if="item.action" @click="item.action" class="flex p-2 align-items-center" :title="item.label">
-                <Icon :name="item.icon" class="mr-2" />
+                <Icon :name="item.icon" class="mr-1" />
                 {{ item.label }}
             </span>
             <NuxtLink v-else :to="item.to" v-ripple class="flex p-2 align-items-center" :title="item.label">
-                <Icon :name="item.icon" class="mr-2" />
+                <Icon :name="item.icon" class="mr-1" />
                     {{ item.label }}
             </NuxtLink>
         </template>

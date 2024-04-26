@@ -10,7 +10,7 @@
                         class="flex px-6 p-3 lg:px-3 lg:py-2 align-items-center bg-gray-900 font-medium border-round cursor-pointer text-gray-400 hover:text-white hover:bg-gray-800">
                         <Icon :name="item.icon" class="mr-2" />
                         <span class="ml-2">{{ item.label }}</span>
-                        <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down ml-2" />
+                        <Icon v-if="hasSubmenu" name="pepicons-pop:angle-down" class="ml-2"/>
                     </a>
                     <NuxtLink v-else :to="item.to" v-ripple
                         class="flex px-6 p-3 lg:px-3 lg:py-2 bg-gray-900 align-items-center text-gray-400 hover:text-white hover:bg-gray-800 font-medium border-round cursor-pointer">
@@ -23,7 +23,7 @@
                     <div class="flex align-items-center gap-2">
                         <InputGroup class="border-secondary">
                             <InputGroupAddon class="bg-gray-900 border-primary">
-                                <i class="pi pi-search" />
+                                <Icon name="ion:search"/>
                             </InputGroupAddon>
                             <InputText placeholder="Search (non-functional)" type="text"
                                 class="w-8rem sm:w-auto bg-gray-900 text-white border-primary" />

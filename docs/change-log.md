@@ -17,6 +17,7 @@ outline: deep
 * Fixed /api/v1/user/:id/s3files
 * Added ManageButton component.
 * Added link to user in user admin panel.
+* Removed all references to PrimeVue icons as they don't size well with the Iconify icons.
 
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.

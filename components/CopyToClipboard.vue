@@ -1,6 +1,7 @@
 <template>
-    <Button icon="pi pi-copy" :class="buttonClass" alt="copy to clipboard" title="Copy to Clipboard"
-        @click="copyToClipboard(text)" />
+    <Button :class="buttonClass" alt="copy to clipboard" title="Copy to Clipboard" @click="copyToClipboard(text)">
+        <Icon name="fa-regular:copy" />
+    </Button>
 </template>
 
 <script setup>
@@ -14,7 +15,7 @@ const props = defineProps({
 });
 
 const buttonClass = computed(() => {
-    let out = [''];
+    let out = ['w-min'];
     if (props.size == 'sm') {
         return 'p-button-sm'
     }

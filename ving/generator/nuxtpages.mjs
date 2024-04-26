@@ -131,7 +131,7 @@ const indexTemplate = ({ name, schema }) =>
 
         <InputGroup>
             <InputGroupAddon>
-                <i class="pi pi-search" />
+                <Icon name="ion:search" />
             </InputGroupAddon>
             <InputText type="text" placeholder="${makeWords(name)}s" class="w-full"
                 v-model="${schema.tableName}.query.search" @keydown.enter="${schema.tableName}.search()" />
@@ -161,7 +161,7 @@ const indexTemplate = ({ name, schema }) =>
                     ${createProps(schema)}
                     <div>
                         <Button type="submit" class="w-auto" severity="success">
-                        <i class="pi pi-plus mr-1"></i> Create ${makeWords(name)}
+                            <Icon name="ph:plus" class="mr-1"/> Create ${makeWords(name)}
                         </Button>
                     </div>
                 </div>
@@ -257,9 +257,9 @@ const viewTemplate = ({ name, schema }) =>
     </div>
     <div class="mt-3" v-if="${name.toLowerCase()}.meta?.isOwner">
         <NuxtLink :to="\`/${name.toLowerCase()}/\${${name.toLowerCase()}.props?.id}/edit\`" class="no-underline mr-2 mb-2">
-            <Button severity="success" title="Edit" alt="Edit ${makeWords(name)}"><i class="pi pi-pencil mr-1"></i> Edit</Button>
+            <Button severity="success" title="Edit" alt="Edit ${makeWords(name)}"><Icon name="ph:pencil" class="mr-1"/> Edit</Button>
         </NuxtLink>
-        <Button @click="${name.toLowerCase()}.delete()" severity="danger" title="Delete" alt="Delete ${makeWords(name)}"><i class="pi pi-trash mr-1"></i> Delete</Button>
+        <Button @click="${name.toLowerCase()}.delete()" severity="danger" title="Delete" alt="Delete ${makeWords(name)}"><Icon name="ph:trash" class="mr-1"/> Delete</Button>
     </div>
 </template>
   
@@ -351,9 +351,9 @@ const editTemplate = ({ name, schema }) =>
 
         <FieldsetItem name="Actions">
             <NuxtLink :to="\`/${name.toLowerCase()}/\${${name.toLowerCase()}.props?.id}\`" class="no-underline">
-                <Button title="View" alt="View ${makeWords(name)}" class="mr-2 mb-2"><i class="pi pi-eye mr-1"></i> View</Button>
+                <Button title="View" alt="View ${makeWords(name)}" class="mr-2 mb-2"><Icon name="ph:eye" class="mr-1"/> View</Button>
             </NuxtLink>
-            <Button @click="${name.toLowerCase()}.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete ${makeWords(name)}"><i class="pi pi-trash mr-1"></i> Delete</Button>
+            <Button @click="${name.toLowerCase()}.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete ${makeWords(name)}"><Icon name="ph:trash" class="mr-1"/> Delete</Button>
         </FieldsetItem>
 
     </FieldsetNav>

@@ -16,7 +16,7 @@
                 <FormInput name="password" v-model="password" required label="Password" autocomplete="current-password"
                     type="password" class="mb-3" />
 
-                <Button type="submit" icon="pi pi-user" class="w-full">Sign In with Password</Button>
+                    <Button type="submit" class="w-full"><span class="text-center w-full"><Icon name="ph:user" class="mr-1"/><span class="vertical-align-middle">Sign in with Password</span></span></Button>
             </Form>
 
             <div class="mt-3">

@@ -27,7 +27,7 @@
                     autocomplete="new-password" type="password" :mustMatch="{ field: 'Password', value: newUser.password }"
                     class="mb-3" />
 
-                <Button type="submit" icon="pi pi-user" class="w-full">Create account</Button>
+                    <Button type="submit" class="w-full"><span class="text-center w-full"><Icon name="ph:user" class="mr-1"/><span class="vertical-align-middle">Create Account</span></span></Button>
             </Form>
 
             <Divider align="center" class="my-4">

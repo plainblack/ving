@@ -7,7 +7,7 @@
 
         <InputGroup>
             <InputGroupAddon>
-                <i class="pi pi-search" />
+                <Icon name="ion:search" />
             </InputGroupAddon>
             <InputText type="text" placeholder="Search Users" class="w-full" v-model="users.query.search"
                 @keydown.enter="users.search()" />
@@ -69,7 +69,7 @@
 
                     <div>
                         <Button type="submit" class="w-auto" severity="success">
-                            <i class="pi pi-plus mr-1"></i> Create User
+                            <Icon name="ph:plus" class="mr-1"/> Create User
                         </Button>
                     </div>
                 </div>

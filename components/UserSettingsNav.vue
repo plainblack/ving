@@ -7,8 +7,8 @@
                 <NuxtLink :to="item.href" v-ripple
                     :class="[route.path == item.href ? 'bg-ground text-primary hover:bg-primary-reverse hover:text-primary' : 'text-color-secondary hover:bg-primary-reverse hover:text-color', 'flex align-items-center cursor-pointer p-3 border-round text-800 hover:surface-hover transition-duration-150 transition-colors p-ripple']"
                     :aria-current="route.path == item.href ? 'page' : undefined">
-                    <i aria-hidden="true"
-                        :class="[route.path == item.href ? 'text-primary group-hover:text-primary' : 'text-color-secondary group-hover:text-color', item.icon, 'md:mr-2']" />
+                    <Icon :name="item.icon" aria-hidden="true"
+                        :class="[route.path == item.href ? 'text-primary group-hover:text-primary' : 'text-color-secondary group-hover:text-color', 'md:mr-2']" />
                     <span class="font-medium hidden md:block">{{ item.name }}</span>
                 </NuxtLink>
             </li>
@@ -29,10 +29,10 @@ const route = useRoute();
 const currentUser = useCurrentUserStore();
 
 const navigation = [
-    { name: 'Profile', href: '/user/settings', icon: 'pi pi-user' },
-    { name: 'Account', href: '/user/settings/account', icon: 'pi pi-key' },
-    { name: 'Preferences', href: '/user/settings/preferences', icon: 'pi pi-sliders-h' },
-    { name: 'API Keys', href: '/user/settings/apikeys', icon: 'pi pi-unlock', condition: 'developer' },
-    { name: 'Admin', href: '/user/admin', icon: 'pi pi-users', condition: 'admin' },
+    { name: 'Profile', href: '/user/settings', icon: 'ph:user' },
+    { name: 'Account', href: '/user/settings/account', icon: 'ph:key' },
+    { name: 'Preferences', href: '/user/settings/preferences', icon: 'ph:sliders' },
+    { name: 'API Keys', href: '/user/settings/apikeys', icon: 'ph:lock', condition: 'developer' },
+    { name: 'Admin', href: '/user/admin', icon: 'ph:users', condition: 'admin' },
 ]
 </script>
