@@ -3,7 +3,7 @@
         <div class="p-fluid flex flex-column lg:flex-row">
             <UserSettingsNav />
             <div v-if="currentUser.props" class="surface-card p-5 border-1 surface-border border-round flex-auto">
-                <div class="text-900 font-semibold text-lg mt-3">Profile</div>
+                <div class="text-900 font-semibold text-lg">Profile</div>
                 <p class="mt-1 mb-4 text-sm text-gray-500">This information will be displayed publicly so be careful
                     what you share.</p>
 
