@@ -55,7 +55,6 @@ export const apikeySchema = {
             type: "id",
             name: 'userId',
             required: true,
-            length: 36,
             db: (prop) => dbRelation(prop),
             relation: {
                 type: 'parent',
