@@ -1,7 +1,6 @@
 <template>
     <div>
-        <client-only>
-            <Menubar :model="topNav" class="bg-gray-900">
+            <Menubar id="topnav" :model="topNav" class="bg-gray-900">
                 <template #start>
                     <img :src="config.public.site.logoUrl" :alt="config.public.site.name" height="40"
                         class="mr-0 lg:mr-6">
@@ -51,21 +50,16 @@
                     </div>
                 </template>
             </Menubar>
-        </client-only>
 
-        <client-only>
-            <SystemWideAlert />
-        </client-only>
+        <SystemWideAlert />
         <div class="px-0 py-4 md:px-4">
             <div style="min-height: 20rem">
                 <slot />
             </div>
         </div>
     </div>
-    <client-only>
         <Notify />
         <Throbber />
-    </client-only>
 </template>
 
 <script setup>

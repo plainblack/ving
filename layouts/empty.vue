@@ -1,12 +1,8 @@
 <template>
-    <client-only>
-        <SystemWideAlert />
-    </client-only>
+    <SystemWideAlert />
     <slot />
-    <client-only>
-        <Notify />
-        <Throbber />
-    </client-only>
+    <Notify />
+    <Throbber />
 </template>
 
 <script setup>

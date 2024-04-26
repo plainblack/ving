@@ -71,12 +71,8 @@ Props:
 ### Dropzone
 Creates a user interface for uploading [S3Files](/rest/S3File). It handles the resizing of images on the client side, restriction of file types on the client side, requesting the presigned upload URL, uploading the file to S3. The only thing you need to do is specify via `afterUpload` what happens to the file after the user uploads it.
 
-Note that you should always wrap this in a `<client-only>` tag.
-
 ```html
-<client-only>
-    <Dropzone :acceptedFiles="['pdf','zip']" :afterUpload="doThisFunc"></Dropzone>
-</client-only>
+<Dropzone :acceptedFiles="['pdf','zip']" :afterUpload="doThisFunc"></Dropzone>
 ```
       
 Props:
@@ -203,9 +199,7 @@ Props:
 ### Notify
 Place this in your layouts so that users can receive toasts that will be triggered via the `useNotifyStore()` composable.
 ```html
-<client-only>
-    <Notify/>
-</client-only>
+<Notify/>
 ```
 
 ### Pager
@@ -252,17 +246,13 @@ Slots:
 ### SystemWideAlert
 Place this in your layouts where you would like the system wide alert to be displayed when an admin has configured one. It is triggered by the `useSystemWideAlertStore()` composable.
 ```html
-<client-only>
-    <SystemWideAlert/>
-</client-only>
+<SystemWideAlert/>
 ```
 
 ### Throbber
 Place this in your layouts so the user has an indication that there are some background activites such as rest calls happening. It is triggered by the `useThrobberStore()` composable.
 ```html
-<client-only>
-    <Throbber />
-</client-only>
+<Throbber />
 ```
 
 
@@ -356,9 +346,7 @@ Allows you to notify the user via toasts.
 ```
 You would then use the Notify Component in your layout.
 ```html
-<client-only>
-    <Notify />
-</client-only>
+<Notify />
 ```
 
 ### useRest()

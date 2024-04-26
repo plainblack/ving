@@ -19,11 +19,9 @@
                                 :options="currentUser.options?.avatarType" name="avatarType" label="Avatar Type" />
                         </div>
                         <div v-if="currentUser.props.avatarType == 'uploaded'" class="mb-4">
-                            <client-only>
-                                <Dropzone :acceptedFiles="currentUser.meta?.acceptedFileExtensions?.avatar"
-                                    :afterUpload="currentUser.importAvatar" :maxFiles="1" :resizeHeight="300"
-                                    :resizeWidth="300" resizeMethod="crop"></Dropzone>
-                            </client-only>
+                            <Dropzone id="avatar" :acceptedFiles="currentUser.meta?.acceptedFileExtensions?.avatar"
+                                :afterUpload="currentUser.importAvatar" :maxFiles="1" :resizeHeight="300"
+                                :resizeWidth="300" resizeMethod="crop"></Dropzone>
                         </div>
                         <div class="mb-4">
                             <FormInput type="markdown" @change="currentUser.update()" label="Bio"  v-model="currentUser.props.bio" name="bio"  />

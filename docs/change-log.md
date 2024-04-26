@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 2024-04-26
+* Removed all the client-only component tags as the hydration mismatches have been fixed.
+
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.
 * Removed unnecessary validation on Dropzone.
