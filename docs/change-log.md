@@ -14,6 +14,7 @@ outline: deep
 * Added validation for the length attribute on dbVarChar, dbText, and dbMediumText.
 * zodText() and zodMediumText() have become deprecated aliases for zodString().
 * Implemented: make default a required field in a prop definition #127
+* Fixed /api/v1/user/:id/s3files
 
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.
