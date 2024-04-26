@@ -16,6 +16,7 @@ outline: deep
 * Implemented: make default a required field in a prop definition #127
 * Fixed /api/v1/user/:id/s3files
 * Added ManageButton component.
+* Added link to user in user admin panel.
 
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.

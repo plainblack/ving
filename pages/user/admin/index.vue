@@ -15,7 +15,14 @@
         </InputGroup>
 
         <DataTable :value="users.records" stripedRows @sort="users.sortDataTable">
-            <Column field="props.username" header="Username" sortable></Column>
+            <Column field="props.username" header="Username" sortable>
+                <template #body="slotProps">
+                    <NuxtLink :to="`/user/admin/${slotProps.data.props.id}`" v-ripple>
+                        {{ slotProps.data.props.username }}
+                    </NuxtLink>
+                </template>
+            </Column>
+            
             <Column field="props.realName" header="Real Name" sortable></Column>
             <Column field="props.email" header="Email Address" sortable>
                 <template #body="slotProps">
