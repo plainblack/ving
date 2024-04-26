@@ -13,4 +13,4 @@ dist
 ving/drizzle/migrations
 docs/.vitepress/cache
 docs/.vitepress/dist
-package-lock.json
+/package-lock.json
