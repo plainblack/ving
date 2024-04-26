@@ -188,7 +188,7 @@ These are used to add a parent relationship.
     type: "string",
     name: "memo",
     required: true,
-    length: 256,
+    length: 65535,
     filterQuery: true,
     default: '',
     db: (prop) => dbText(prop),
