@@ -12,6 +12,7 @@ outline: deep
 * Implemented: in schema validator, disambiguate virtual columns #129
 * id type fields in ving schema no longer need a length.
 * Added validation for the length attribute on dbVarChar, dbText, and dbMediumText.
+* zodText() and zodMediumText() have become deprecated aliases for zodString().
 
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.

@@ -1,4 +1,4 @@
-import { baseSchemaProps, dbVarChar, zodString, dbEnum, dbBoolean, dbRelation, dbMediumText, zodMediumText } from '../helpers.mjs';
+import { baseSchemaProps, dbVarChar, zodString, dbEnum, dbBoolean, dbRelation, dbMediumText } from '../helpers.mjs';
 
 export const userSchema = {
     kind: 'User',
@@ -129,7 +129,7 @@ export const userSchema = {
             default: '',
             length: 16777215,
             db: (prop) => dbMediumText(prop),
-            zod: (prop) => zodMediumText(prop),
+            zod: (prop) => zodString(prop),
             view: ['public'],
             edit: ['owner'],
         },

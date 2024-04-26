@@ -74,13 +74,16 @@ export const dateDefault = (prop, skipFunc = false) => {
 }
 
 /**
- * Generates a zod rule for a string prop which must be a string that is at least 1 character long and a length of prop length. 
+ * Generates a zod rule for a string prop which must be a string that is at least 1 character long and a length of prop length. There are also aliases called `zodVarChar`, `zodText` and `zodMediumText` that can be used for parity with the `dbVarChar`, `dbText` and `dbMediumText` functions.
  * @param {Object} prop An object containing the properties of this prop
  * @returns a zod rule
  */
 export const zodString = (prop) => {
     return z.string().min(0).max(prop.length);
 }
+export const zodVarChar = zodString;
+export const zodText = zodString;
+export const zodMediumText = zodString;
 
 /**
  * Generates a zod rule for a number prop which must be a number
@@ -98,24 +101,6 @@ export const zodNumber = (prop) => {
  */
 export const zodJsonObject = (prop) => {
     return z.object({});
-}
-
-/**
- * Generates a zod rule for a text prop which must be a string with at least 1 character and not more than prop length.
- * @param {Object} prop An object containing the properties of this prop
- * @returns a zod rule
- */
-export const zodText = (prop) => {
-    return z.string().min(0).max(prop.length);
-}
-
-/**
- * Generates a zod rule for a text prop which must be a string with at least 1 character and not more than prop length.
- * @param {Object} prop An object containing the properties of this prop
- * @returns a zod rule
- */
-export const zodMediumText = (prop) => {
-    return z.string().min(0).max(prop.length);
 }
 
 /**

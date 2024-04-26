@@ -2,7 +2,7 @@ import { getContext, renderTemplate, toFile, after, inject } from '@feathersclou
 import { camelCase } from 'scule';
 
 const schemaTemplate = ({ name }) =>
-    `import { baseSchemaProps, dbVarChar, zodString, dbEnum, dbBoolean, dbText, zodText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject, dbMediumText, zodMediumText } from '../helpers.mjs';
+    `import { baseSchemaProps, dbVarChar, zodString, dbEnum, dbBoolean, dbText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject, dbMediumText } from '../helpers.mjs';
 
 export const ${camelCase(name)}Schema = {
     kind: '${name}',
@@ -45,7 +45,7 @@ export const ${camelCase(name)}Schema = {
             length: 65535,
             required: true,
             db: (prop) => dbText(prop),
-            zod: (prop) => zodText(prop).url(),
+            zod: (prop) => zodString(prop).url(),
             default: '',
             view: [],
             edit: ['owner'],
@@ -71,7 +71,7 @@ export const ${camelCase(name)}Schema = {
             length: 65535,
             default: '',
             db: (prop) => dbText(prop),
-            zod: (prop) => zodText(prop),
+            zod: (prop) => zodString(prop),
             view: [],
             edit: ['owner'],
         },
