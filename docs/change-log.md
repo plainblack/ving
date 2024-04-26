@@ -12,7 +12,6 @@ outline: deep
 * Built ving schema validation system.
 * Fixed a bunch of bugs in the ving schema documentation.
 * Moved extensionMap from ving/record/records/S3File.mjs to ving/schema/schemas/S3File.mjs.
-* Removed package-lock.json from git repo as it causes upstream conflicts like crazy.
 * Upgraded from mysql2 3.3.4 to 3.9.7.
 * NOTE: run "npm i"
 

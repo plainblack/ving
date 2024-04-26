@@ -27,9 +27,6 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./docs/
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,7 +39,6 @@ jobs:
         with:
           node-version: 20
           cache: npm # or pnpm / yarn
-          cache-dependency-path: 'package-lock.json'
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Install dependencies
@@ -50,11 +46,11 @@ jobs:
       - name: Build with VitePress
         run: |
           npm run docs:build # or pnpm docs:build / yarn docs:build / bun run docs:build
-          touch .vitepress/dist/.nojekyll
+          touch docs/.vitepress/dist/.nojekyll
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .vitepress/dist
+          path: docs/.vitepress/dist
 
   # Deployment job
   deploy:
