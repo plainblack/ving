@@ -9,6 +9,7 @@ outline: deep
 * Implemented: CLI should let you search for jobs by handler name #125
 * Fixed a bug in job worker where it could not error properly from a job handler that didn't exist.
 * Fixed: enum should not have a length field in the schema validator #130
+* Implemented: in schema validator, disambiguate virtual columns #129
 
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.
