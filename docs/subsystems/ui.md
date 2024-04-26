@@ -172,6 +172,27 @@ Props:
 - **label** - The text to display to the user.
 - **id** - The unique id of the form field this label refers to.
 
+
+### ManageButton
+Sometimes you need to list a bunch of management functions in a tight space, like in a DataTable. This component does exactly that. 
+
+```html
+<ManageButton severity="primary" :items="[
+    { icon:'ph:eye', label:'View', to:`/foo`},
+    { icon:'ph:pencil', label:'Edit', to:`/foo/edit`},
+    { icon:'ph:trash', label:'Delete', action: () => { console.log('delete me')}}
+    ]" /> 
+```
+
+Props:
+- **items** - An array of objects. The first item in the list will be used as the primary button, where subsequent items will be used as submenu items.
+    - **icon** - Required. A Iconify icon code.
+    - **label** - Required. The text to display to the user.
+    - **to** - Optional. A URL to link to.
+    - **action** - Optiona. A function that will trigger on click.
+
+
+
 ### MarkdownInput
 An input control for a markdown editor. In general you shouldn't use this directly, but rather use the `FormInput` control with type of `markdown`.
 

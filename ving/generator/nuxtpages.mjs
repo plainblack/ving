@@ -142,13 +142,11 @@ const indexTemplate = ({ name, schema }) =>
             ${columns(name, schema)}
             <Column header="Manage">
                 <template #body="slotProps">
-                    <NuxtLink :to="\`/${name.toLowerCase()}/\${slotProps.data.props.id}\`" class="mr-2 no-underline">
-                        <Button icon="pi pi-eye"  title="View" alt="View ${makeWords(name)}" />
-                    </NuxtLink>
-                    <NuxtLink v-if="slotProps.data.meta?.isOwner" :to="\`/${name.toLowerCase()}/\${slotProps.data.props.id}/edit\`" class="mr-2 no-underline">
-                        <Button icon="pi pi-pencil" severity="success" title="Edit" alt="Edit ${makeWords(name)}" />
-                    </NuxtLink>
-                    <Button v-if="slotProps.data.meta?.isOwner"  title="Delete" alt="Delete ${makeWords(name)}" icon="pi pi-trash" severity="danger" @click="slotProps.data.delete()" />
+                    <ManageButton severity="primary" :items="[
+                        { icon:'ph:eye', label:'View', to:\`/${name.toLowerCase()}/\${slotProps.data.props.id}\`},
+                        { icon:'ph:pencil', label:'Edit', to:\`/${name.toLowerCase()}/\${slotProps.data.props.id}/edit\`},
+                        { icon:'ph:trash', label:'Delete', action:slotProps.data.delete}
+                        ]" /> 
                 </template>
             </Column>
         </DataTable>

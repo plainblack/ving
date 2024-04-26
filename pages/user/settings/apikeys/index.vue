@@ -40,10 +40,10 @@
                                     </Column>
                                     <Column header="Manage">
                                         <template #body="slotProps">
-                                            <Button icon="pi pi-pencil" class="mr-2" severity="success"
-                                                @click="dialog.current = slotProps.data; dialog.visible = true" />
-                                            <Button icon="pi pi-trash" severity="danger"
-                                                @click=" slotProps.data.delete()" />
+                                            <ManageButton severity="success" :items="[
+                                                { icon:'ph:pencil', label:'Edit', action:() => {dialog.current = slotProps.data; dialog.visible = true}},
+                                                { icon:'ph:trash', label:'Delete', action:slotProps.data.delete}
+                                                ]" /> 
                                         </template>
                                     </Column>
                                 </DataTable>
@@ -128,7 +128,7 @@ const currentUser = useCurrentUserStore();
 const apikeys = useVingKind({
     listApi: currentUser.links?.apikeys.href,
     createApi: `/api/${restVersion()}/apikey`,
-    query: { includeMeta: true },
+    query: { includeMeta: true, sortBy: 'name', sortOrder: 'asc' },
     newDefaults: { name: '', reason: '', url: 'http://', userId: currentUser.props?.id },
 });
 await apikeys.search();

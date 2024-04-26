@@ -29,10 +29,10 @@
             </Column>
             <Column header="Manage">
                 <template #body="slotProps">
-                    <NuxtLink :to="`/user/admin/${slotProps.data.props.id}`" class="mr-2 no-underline">
-                        <Button icon="pi pi-pencil" severity="success" />
-                    </NuxtLink>
-                    <Button icon="pi pi-trash" severity="danger" @click="slotProps.data.delete()" />
+                    <ManageButton severity="success" :items="[
+                        { icon:'ph:pencil', label:'Edit', to:`/user/admin/${slotProps.data.props.id}`},
+                        { icon:'ph:trash', label:'Delete', action:slotProps.data.delete}
+                        ]" /> 
                 </template>
             </Column>
         </DataTable>
