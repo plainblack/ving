@@ -242,7 +242,6 @@ export const baseSchemaProps = [
         type: "id",
         name: "id",
         required: true,
-        length: 36,
         default: () => uuid(),
         db: (prop) => dbPk(prop),
         view: ['public'],

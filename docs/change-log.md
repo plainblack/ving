@@ -10,6 +10,7 @@ outline: deep
 * Fixed a bug in job worker where it could not error properly from a job handler that didn't exist.
 * Fixed: enum should not have a length field in the schema validator #130
 * Implemented: in schema validator, disambiguate virtual columns #129
+* id type fields in ving schema no longer need a length.
 
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.

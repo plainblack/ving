@@ -278,7 +278,7 @@ export const validatePropUnique = (prop, schema) => {
  * validatePropLength(prop, schema)
  */
 export const validatePropLength = (prop, schema) => {
-    if (!['id', 'string'].includes(prop.type)) {
+    if (!['string'].includes(prop.type)) {
         if ('length' in prop)
             throw ving.ouch(442, `${formatPropPath(prop, schema)}.length should not exist.`);
         return;
