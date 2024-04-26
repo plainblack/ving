@@ -1,6 +1,7 @@
 import { Queue } from 'bullmq';
 import ving from '#ving/index.mjs';
 import { useRedis } from '#ving/redis.mjs';
+import fs from 'fs';
 
 /**
  * Get BullMQ queue object.
@@ -13,6 +14,24 @@ import { useRedis } from '#ving/redis.mjs';
 export const getQueue = (options = {}) => {
     const queue = new Queue(options?.queueName || 'jobs');
     return queue;
+}
+
+const handlerNames = [];
+/**
+ * Get a list of handler names
+ * @returns {string[]} A queue object.
+ * @example
+ * getHandlerNames();
+ */
+export const getHandlerNames = () => {
+    if (handlerNames.length)
+        return handlerNames;
+    const sourcePath = './ving/jobs/handlers';
+    const files = fs.readdirSync(sourcePath);
+    for (const file of files) {
+        handlerNames.push(file.replace(/^.*?(\w+)\.mjs$/, '$1'));
+    }
+    return handlerNames;
 }
 
 /**
@@ -31,6 +50,8 @@ export const getQueue = (options = {}) => {
  * await addJob('Test', {foo:'bar'});
  */
 export const addJob = async (type, data = {}, options = { queueName: 'jobs' }) => {
+    if (!(getHandlerNames().includes(type)))
+        throw ving.ouch(404, `Job handler ${type} is not available.`);
     const queue = getQueue(options);
     const jobOptions = {
         connection: useRedis(),
@@ -112,6 +133,33 @@ export const getJobs = async (options = {}) => {
     const jobs = await queue.getJobs(options?.status || ['active', 'prioritized', 'delayed'], 0, 100, true);
     await queue.close();
     return jobs;
+}
+
+/**
+ * Get a list of jobs in the queue with a specific handler name.
+ * @param {string} handler The name of the handler to search for.
+ * @param {Object} options An object with optional properties.
+ * @param {string} options.queueName The name of the queue. Defaults to `jobs`.
+ * @param { string[]} options.status An array of statuses to fetch. Can be any of `active`, `prioritized`, `delayed`, `failed`, `paused` or `completed`. Defaults to `['active','prioritized','delayed']`.
+ * @example 
+ * await getJobsForHandler();
+ */
+export const getJobsForHandler = async (handler, options = {}) => {
+    const queue = getQueue(options);
+    let iterator = 1;
+    const out = [];
+    while (out.length < 100) {
+        const jobs = await queue.getJobs(options?.status || ['active', 'prioritized', 'delayed'], (iterator * 100) - 100, iterator * 100, true);
+        for (const job of jobs) {
+            if (job.name == handler)
+                out.push(job);
+        }
+        if (jobs.length == 0)
+            break;
+        iterator++;
+    }
+    await queue.close();
+    return out;
 }
 
 /**

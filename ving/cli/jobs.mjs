@@ -1,6 +1,6 @@
 import { defineCommand, showUsage } from "citty";
 import { VingJobWorker } from '#ving/jobs/worker.mjs';
-import { pause, resume, getJobs, obliterate, killJob } from '#ving/jobs/queue.mjs';
+import { pause, resume, getJobs, obliterate, killJob, getJobsForHandler } from '#ving/jobs/queue.mjs';
 import { generateJobHandler } from '#ving/generator/jobhandler.mjs';
 import ving from '#ving/index.mjs';
 
@@ -37,9 +37,15 @@ export default defineCommand({
         },
         list: {
             type: "boolean",
-            description: "List jobs in the queue.",
+            description: "List the 100 oldest jobs in the queue.",
             alias: "L",
             default: false,
+        },
+        listByHandler: {
+            type: "string",
+            description: "List jobs that match the specified handler name.",
+            alias: "H",
+            valueHint: 'HandlerName',
         },
         kill: {
             type: "string",
@@ -121,6 +127,11 @@ export default defineCommand({
                 ving.close();
                 formatList(jobs);
             }
+            else if (args.listByHandler) {
+                const jobs = await getJobsForHandler(args.listByHandler, { queueName: args.queueName });
+                ving.close();
+                formatList(jobs);
+            }
             else if (args.kill) {
                 await killJob(args.kill, { queueName: args.queueName });
                 ving.close();
@@ -158,6 +169,7 @@ export default defineCommand({
         }
         catch (e) {
             ving.log('cli').error(e.message);
+            ving.close();
         }
     },
 });
