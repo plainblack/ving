@@ -117,6 +117,7 @@ export const s3fileSchema = {
             required: false,
             view: ['public'],
             edit: [],
+            default: undefined,
             relation: {
                 type: 'child',
                 name: 'avatarUsers',

@@ -237,6 +237,7 @@ These are used to add a child relationship. They are virtual because they make n
     type: "virtual",
     name: 'userId',  // the name of the column in the child table that connects it to this table
     required: false,
+    default: undefined,
     view: ['public'],
     edit: [],
     relation: {
@@ -257,7 +258,7 @@ The `required` field whether the prop is required to create an instance of the r
 
 ##### default
 
-The `default` field set the default value that this prop should be set to both in code and as the default in the database schema. It is required for any prop that has the field `required` set to `true`. It is also just generally a good idea to set it in all cases, even if you explictly define it as `undefined`. 
+The `default` field sets the default value that this prop should be set to both in code and as the default in the database schema. It is required. It can be a function or whatever the appropriate type is for this field, including explicitly `undefined` in some cases.
 
 ##### db
 

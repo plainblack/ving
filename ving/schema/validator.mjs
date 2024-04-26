@@ -432,14 +432,17 @@ export const validatePropDb = (prop, schema) => {
  * validatePropDefault(prop, schema)
  */
 export const validatePropDefault = (prop, schema) => {
-    if (['virtual'].includes(prop.type) && prop.default && !isString(prop.default))
-        throw ving.ouch(442, `${formatPropPath(prop, schema)}.default must be a string.`);
-    if (!prop.required)
-        return;
-    if (!('default' in prop))
-        throw ving.ouch(442, `${formatPropPath(prop, schema)}.default must be set.`);
-    if (['string', 'id', 'json'].includes(prop.type) && !(isString(prop.default) || isFunction(prop.default) || isUndefined(prop.default)))
-        throw ving.ouch(442, `${formatPropPath(prop, schema)}.default must be a string or a function or undefined.`);
+    const notSet = !('default' in prop);
+    if (['string', 'json', 'enum'].includes(prop.type) && (notSet || !(isString(prop.default) || isFunction(prop.default))))
+        throw ving.ouch(442, `${formatPropPath(prop, schema)}.default must be a string or a function.`);
+    if (['id', 'virtual'].includes(prop.type) && (notSet || !(isString(prop.default) || isFunction(prop.default) || isUndefined(prop.default))))
+        throw ving.ouch(442, `${formatPropPath(prop, schema)}.default must be a string or a function or explicitly undefined.`);
+    if (['int'].includes(prop.type) && (notSet || !(isNumber(prop.default) || isFunction(prop.default))))
+        throw ving.ouch(442, `${formatPropPath(prop, schema)}.default must be a number or a function.`);
+    if (['date'].includes(prop.type) && (notSet || !(isFunction(prop.default))))
+        throw ving.ouch(442, `${formatPropPath(prop, schema)}.default must be a function.`);
+    if (['boolean'].includes(prop.type) && (notSet || !(isFunction(prop.default) || isBoolean(prop.default))))
+        throw ving.ouch(442, `${formatPropPath(prop, schema)}.default must be a function or a boolean.`);
 }
 
 /**

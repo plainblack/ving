@@ -13,6 +13,7 @@ outline: deep
 * id type fields in ving schema no longer need a length.
 * Added validation for the length attribute on dbVarChar, dbText, and dbMediumText.
 * zodText() and zodMediumText() have become deprecated aliases for zodString().
+* Implemented: make default a required field in a prop definition #127
 
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.

@@ -144,7 +144,7 @@ export const userSchema = {
                 name: 'avatar',
                 kind: 'S3File',
             },
-            default: null,
+            default: undefined,
             view: ['public'],
             edit: ['owner'],
         },
@@ -154,6 +154,7 @@ export const userSchema = {
             required: false,
             view: ['public'],
             edit: [],
+            default: undefined,
             relation: {
                 type: 'child',
                 name: 'apikeys',
@@ -166,6 +167,7 @@ export const userSchema = {
             required: false,
             view: ['public'],
             edit: [],
+            default: undefined,
             relation: {
                 type: 'child',
                 name: 's3files',
