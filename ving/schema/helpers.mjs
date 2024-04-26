@@ -127,8 +127,8 @@ export const dbDateTime = (prop) => {
  * @returns a drizzle field schema definition
  */
 export const dbVarChar = (prop) => {
-    if (prop.length > 255)
-        throw ouch(442, `${prop.name}, a varchar field, cannot have a length greater than 255.`);
+    if (prop.length > 256)
+        throw ouch(442, `${prop.name}, a varchar field, cannot have a length greater than 256.`);
     return `varchar('${prop.name}', { length: ${prop.length} }).notNull().default('${stringDefault(prop, true)}')`;
 }
 
