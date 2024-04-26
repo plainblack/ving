@@ -628,7 +628,7 @@ export const validateOwner = (schema) => {
                 throw ving.ouch(442, `Schema ${schema.kind} owner ${owner} must reference a prop that has a relation type of 'parent'.`);
         }
         else {
-            throw ving.ouch(442, `Schema ${schema.kind} owner ${owner} doesn't match any known rules.`);
+            throw ving.ouch(442, `Schema ${schema.kind} owner ${owner} doesn't match any known roles.`);
         }
     }
 }
