@@ -7,6 +7,7 @@ outline: deep
 * Removed all the client-only component tags as the hydration mismatches have been fixed.
 * Check to make sure a job handler exists before allowing a job to be created.
 * Implemented: CLI should let you search for jobs by handler name #125
+* Fixed a bug in job worker where it could not error properly from a job handler that didn't exist.
 
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.

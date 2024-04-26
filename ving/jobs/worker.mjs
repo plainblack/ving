@@ -53,7 +53,7 @@ export class VingJobWorker {
                 else {
                     const message = `No job handler for job ${job.id} ${job.name}`;
                     ving.log('jobs').error(message);
-                    throw ouch(501, message);
+                    throw ving.ouch(501, message);
                 }
             },
             {
