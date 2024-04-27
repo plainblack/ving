@@ -245,10 +245,17 @@ Build a mobile first UI with this layout mechanism combined with `PanelNav`.
         <PanelNav :links="links" :buttons="buttons" />
     </template>
     <template #content>
-        <div> content goes here </div>
+        <PanelZone title="Foo">
+            Bar
+        </PanelZone>
     </template>
 </PanelFrame>
 ```
+
+Slots:
+- **left** - A space on the left (or top in mobile) for a nav.
+- **right** - A space on the right (or bottom in mobile) for a nav.
+- **content** - A space in the middle for your content.
 
 
 ### PanelNav
@@ -278,6 +285,25 @@ Props:
     - **severity** - Required. Must be one of `primary`, `secondary`, `success`, `warning`, `danger`, `info`, `help`, or `contrast`.
     - **to** - Optional. A URL to link to.
     - **action** - Optional. A function that will trigger on click.
+
+### PanelZone
+A content area for a `PanelFrame`.
+
+```html
+<PanelZone title="Foo" info="Stuff about foo.">
+    <div>
+       Content goes here
+    </div>
+</PanelZone>
+```
+
+Slots:
+- **default** - Content.
+- **header** - Replace the entire header.
+
+Props:
+- **title** - Display a title in the header.
+- **info** - Give the header a little subtext.
 
 
 ### SelectInput

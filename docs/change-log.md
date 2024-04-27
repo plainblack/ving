@@ -21,6 +21,7 @@ outline: deep
 * Replaced UserSettingsNav with PanelNav and userSettingsLinks() and userSettingsButtons().
 * Made the profile editing page mobile friendly.
 * Added PanelFrame component which dovetails nicely with PanelNav for building UIs.
+* Added PanelZone as a content area for PanelFrame.
 
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.

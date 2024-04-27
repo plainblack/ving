@@ -4,55 +4,44 @@
             <PanelNav :links="links" :buttons="buttons" />
         </template>
         <template #content v-if="currentUser.props">
-                <div class="surface-card p-5 border-1 surface-border border-round">
-                    <div class="text-900 font-semibold text-lg">Account Information</div>
-                    <p class="mt-1 mb-4 text-sm text-gray-500">Your private login details.</p>
-
+            <PanelZone title="Account Information" info="Your private login details.">
+                <div class="mb-4">
+                    <FormInput name="username" v-model="currentUser.props.username" required label="Username"
+                        autocomplete="username" @change="currentUser.update()" />
+                </div>
+                <div class="mb-4">
+                    <FormInput type="email" name="email" v-model="currentUser.props.email" label="Email"
+                        required autocomplete="email" @change="currentUser.update()" />
+                </div>
+                <div class="mb-4">
+                    <FormInput name="realName" v-model="currentUser.props.realName" label="Real Name"
+                        autocomplete="name" @change="currentUser.update()" />
+                </div>
+            </PanelZone>
+            <PanelZone title="Change Password" info="Alter your credentials.">
+                <Form :send="changePassword">
                     <div class="flex gap-5 flex-column-reverse md:flex-row">
                         <div class="flex-auto p-fluid">
                             <div class="mb-4">
-                                <FormInput name="username" v-model="currentUser.props.username" required label="Username"
-                                    autocomplete="username" @change="currentUser.update()" />
+                                <FormInput name="password" type="password" v-model="newPassword.password" required
+                                    label="New Password" autocomplete="new-password" />
                             </div>
                             <div class="mb-4">
-                                <FormInput type="email" name="email" v-model="currentUser.props.email" label="Email"
-                                    required autocomplete="email" @change="currentUser.update()" />
+                                <FormInput name="password" type="password" v-model="newPassword.password2" required
+                                    :mustMatch="{ field: 'New Password', value: newPassword.password }"
+                                    label="Confirm New Password" autocomplete="new-password" />
                             </div>
-                            <div class="mb-4">
-                                <FormInput name="realName" v-model="currentUser.props.realName" label="Real Name"
-                                    autocomplete="name" @change="currentUser.update()" />
+
+                            <div>
+                                <Button type="submit" label="Update Profile" class="w-auto">
+                                    Change Password
+                                </Button>
                             </div>
                         </div>
 
                     </div>
-                </div>
-                <div class="mt-5 surface-card p-5 border-1 surface-border border-round">
-                    <div class="text-900 font-semibold text-lg">Change Password</div>
-                    <p class="mt-1 mb-4 text-sm text-gray-500">Alter your credentials.</p>
-
-                    <Form :send="changePassword">
-                        <div class="flex gap-5 flex-column-reverse md:flex-row">
-                            <div class="flex-auto p-fluid">
-                                <div class="mb-4">
-                                    <FormInput name="password" type="password" v-model="newPassword.password" required
-                                        label="New Password" autocomplete="new-password" />
-                                </div>
-                                <div class="mb-4">
-                                    <FormInput name="password" type="password" v-model="newPassword.password2" required
-                                        :mustMatch="{ field: 'New Password', value: newPassword.password }"
-                                        label="Confirm New Password" autocomplete="new-password" />
-                                </div>
-
-                                <div>
-                                    <Button type="submit" label="Update Profile" class="w-auto">
-                                        Change Password
-                                    </Button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </Form>
-                </div>
+                </Form>
+            </PanelZone>
 
         </template>
     </PanelFrame>
