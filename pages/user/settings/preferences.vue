@@ -1,5 +1,5 @@
 <template>
-    <div class="surface-ground px-4 md:px-6 lg:px-8">
+    <div class="surface-ground">
         <div class="p-fluid flex flex-column lg:flex-row">
             <PanelNav :links="links" :buttons="buttons" />
             <div v-if="currentUser.props" class="flex-auto">
