@@ -236,6 +236,21 @@ Props:
 - **kind** - A [useVingKind() object](#usevingkind).
 
 
+### PanelFrame
+Build a mobile first UI with this layout mechanism combined with `PanelNav`.
+
+```html
+<PanelFrame>
+    <template #left>
+        <PanelNav :links="links" :buttons="buttons" />
+    </template>
+    <template #content>
+        <div> content goes here </div>
+    </template>
+</PanelFrame>
+```
+
+
 ### PanelNav
 Generates a vertical panel on large screens and a horizontal one on small screens to be used as navigation in an application group.
 

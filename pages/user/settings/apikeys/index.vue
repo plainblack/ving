@@ -1,8 +1,9 @@
 <template>
-    <div class="surface-ground">
-        <div class="p-fluid flex flex-column lg:flex-row">
+    <PanelFrame>
+        <template #left>
             <PanelNav :links="links" :buttons="buttons" />
-            <div v-if="currentUser.props" class="flex-auto">
+        </template>
+        <template #content v-if="currentUser.props">
                 <div class="surface-card p-5 border-1 surface-border border-round">
                     <div class="text-900 font-semibold text-lg">API Keys</div>
                     <p class="mt-1 mb-4 text-sm text-gray-500">You can use API Keys to interact with the API.</p>
@@ -112,10 +113,8 @@
                         </div>
                     </Form>
                 </div>
-            </div>
-
-        </div>
-    </div>
+            </template>
+    </PanelFrame>
 </template>
 
 <script setup>

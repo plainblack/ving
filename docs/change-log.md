@@ -20,6 +20,7 @@ outline: deep
 * Removed all references to PrimeVue icons as they don't size well with the Iconify icons.
 * Replaced UserSettingsNav with PanelNav and userSettingsLinks() and userSettingsButtons().
 * Made the profile editing page mobile friendly.
+* Added PanelFrame component which dovetails nicely with PanelNav for building UIs.
 
 ## 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.
