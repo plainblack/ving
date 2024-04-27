@@ -185,11 +185,12 @@ Sometimes you need to list a bunch of management functions in a tight space, lik
 ```
 
 Props:
+- **severity** - Required. Must be one of `primary`, `secondary`, `success`, `warning`, `danger`, `info`, `help`, or `contrast`.
 - **items** - An array of objects. The first item in the list will be used as the primary button, where subsequent items will be used as submenu items.
     - **icon** - Required. A Iconify icon code.
     - **label** - Required. The text to display to the user.
     - **to** - Optional. A URL to link to.
-    - **action** - Optiona. A function that will trigger on click.
+    - **action** - Optional. A function that will trigger on click.
 
 
 
@@ -233,6 +234,36 @@ Displays a pagination bar for a [useVingKind() result set](#usevingkind).
 Props:
 
 - **kind** - A [useVingKind() object](#usevingkind).
+
+
+### PanelNav
+Generates a vertical panel on large screens and a horizontal one on small screens to be used as navigation in an application group.
+
+```html
+<PanelNav
+    :links="[
+        { icon:'ph:eye', label:'Foo', to:`/foo`},
+        { icon:'ph:pencil', label:'Bar', to:`/bar`},
+    ]" 
+    :buttons="[
+        { icon:'ph:door', label:'Log Out', to:`/out` severity:'primary'},
+        { icon:'ph:trash', label:'Delete', action: () => { console.log('delete me')}, severity:'danger' }
+    ]" 
+    /> 
+```
+
+Props:
+- **links** - An array of objects to be displayed as links. 
+    - **icon** - Required. A Iconify icon code.
+    - **label** - Required. The text to display to the user.
+    - **to** - Optional. A URL to link to.
+- **buttons** - An array of objects to be displayed as buttons.
+    - **icon** - Required. A Iconify icon code.
+    - **label** - Required. The text to display to the user.
+    - **severity** - Required. Must be one of `primary`, `secondary`, `success`, `warning`, `danger`, `info`, `help`, or `contrast`.
+    - **to** - Optional. A URL to link to.
+    - **action** - Optional. A function that will trigger on click.
+
 
 ### SelectInput
 A form select list. Generally you won't use this directly, but rather use `FormInput` with type `select`.
@@ -289,13 +320,6 @@ Wraps the `UserAvatar` component in a `NuxtLink` pointing to the user's profile 
 
 ```html
 <UserProfileLink :user="user" />
-```
-
-### UserSettingsNav
-Navigation for user settings.
-
-```html
-<UserSettingsNav />
 ```
 
 ## Composables
@@ -375,6 +399,20 @@ A wrapper around the Nuxt composable `$fetch()` that allows for streamlined fetc
 
 ```js
 const response = useFetch(`/api/${restVersion()}/user`);
+```
+
+### userSettingsButtons()
+Returns a data structure for use with the `PanelNav` component.
+
+```js
+const buttons = userSettingsButtons();
+```
+
+### userSettingsLinks()
+Returns a data structure for use with the `PanelNav` component.
+
+```js
+const links = userSettingsLinks();
 ```
 
 ### useSystemWideAlertStore()

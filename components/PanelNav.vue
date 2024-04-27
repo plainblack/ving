@@ -1,0 +1,38 @@
+<template>
+    <ul class="list-none m-0 p-0 flex flex-wrap lg:flex-column justify-content-evenly md:justify-content-between lg:justify-content-start mb-1 lg:pr-8 lg:mb-0">
+        <li v-for="item in links" :key="item.label" :title="item.label">
+            <NuxtLink :to="item.to" v-ripple
+                :class="[route.path == item.to ? 'bg-ground text-primary hover:bg-primary-reverse hover:text-primary' : 'text-color-secondary hover:bg-primary-reverse hover:text-color', 'flex align-items-center cursor-pointer p-3 border-round text-800 hover:surface-hover transition-duration-150 transition-colors p-ripple']"
+                :aria-current="route.path == item.to ? 'page' : undefined">
+                <Icon :name="item.icon" aria-hidden="true" 
+                    :class="[route.path == item.to ? 'text-primary group-hover:text-primary' : 'text-color-secondary group-hover:text-color', 'md:mr-2']" />
+                <span class="font-medium hidden md:block">{{ item.label }}</span>
+            </NuxtLink>
+        </li>
+        <li v-if="links.length && buttons.length"><hr class="mt-1 mb-4 border-50 hidden md:block"></li>
+        <li v-for="item in buttons" :key="item.label" class="lg:mb-2">
+                <Button v-if="item.action" :severity="item.severity" :title="item.label">
+                    <Icon :name="item.icon" class="mr-1" /> <span class="hidden md:block">{{ item.label }}</span>
+                </Button>
+                <NuxtLink v-else :to="item.to" v-ripple>
+                    <Button :severity="item.severity" class="sm:w-auto md:w-full" :title="item.label">
+                        <Icon :name="item.icon" class="mr-1" /> <span class="hidden md:block">{{ item.label }}</span>
+                    </Button>
+                </NuxtLink>
+        </li>
+    </ul>
+</template>
+
+<script setup>
+const route = useRoute();
+const props = defineProps({
+    links: {
+        type: Array,
+        default : () => [],
+    },
+    buttons: {
+        type: Array,
+        default : () => [],
+    },
+});
+</script>

@@ -1,7 +1,7 @@
 <template>
     <div class="surface-ground px-4 md:px-6 lg:px-8">
         <div class="p-fluid flex flex-column lg:flex-row">
-            <UserSettingsNav />
+            <PanelNav :links="links" :buttons="buttons" />
             <div v-if="currentUser.props" class="flex-auto">
                 <div class="surface-card p-5 border-1 surface-border border-round">
                     <div class="text-900 font-semibold text-lg">API Keys</div>
@@ -125,6 +125,8 @@ definePageMeta({
 
 const dt = useDateTime();
 const currentUser = useCurrentUserStore();
+const links = userSettingsLinks();
+const buttons = userSettingsButtons();
 const apikeys = useVingKind({
     listApi: currentUser.links?.apikeys.href,
     createApi: `/api/${restVersion()}/apikey`,
@@ -133,7 +135,5 @@ const apikeys = useVingKind({
 });
 await apikeys.search();
 onBeforeRouteLeave(() => apikeys.dispose());
-
-const d = { visible: false, current: undefined };
-const dialog = ref(d);
+const dialog = ref({ visible: false, current: undefined });
 </script>
