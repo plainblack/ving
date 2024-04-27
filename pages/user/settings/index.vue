@@ -7,33 +7,34 @@
                 <p class="mt-1 mb-4 text-sm text-gray-500">This information will be displayed publicly so be careful
                     what you share.</p>
 
-                <div class="flex gap-5 flex-column-reverse md:flex-row">
-                    <div class="flex-auto p-fluid">
+               
                         <div class="mb-4">
                             <FormInput type="select" @change="currentUser.update()" v-model="currentUser.props.useAsDisplayName"
                                 :options="currentUser.options?.useAsDisplayName" name="useAsDisplayName"
                                 label="Use As Display Name" />
                         </div>
-                        <div class="mb-4">
-                            <FormInput type="select" @change="currentUser.update()" v-model="currentUser.props.avatarType"
-                                :options="currentUser.options?.avatarType" name="avatarType" label="Avatar Type" />
+
+                        <div class="grid">
+                            <div class="col">
+                                <div class="mb-4">
+                                    <FormInput type="select" @change="currentUser.update()" v-model="currentUser.props.avatarType"
+                                        :options="currentUser.options?.avatarType" name="avatarType" label="Avatar" />
+                                </div>
+                                <div v-if="currentUser.props.avatarType == 'uploaded'" class="mb-4">
+                                    <Dropzone id="avatar" :acceptedFiles="currentUser.meta?.acceptedFileExtensions?.avatar"
+                                        :afterUpload="currentUser.importAvatar" :maxFiles="1" :resizeHeight="300"
+                                        :resizeWidth="300" resizeMethod="crop"></Dropzone>
+                                </div>
+                            </div>
+                            <div class="col text-center">
+                                <Avatar :image="currentUser.meta?.avatarUrl" alt="user avatar" class="h-10rem w-10rem" shape="circle" />
+                            </div>
                         </div>
-                        <div v-if="currentUser.props.avatarType == 'uploaded'" class="mb-4">
-                            <Dropzone id="avatar" :acceptedFiles="currentUser.meta?.acceptedFileExtensions?.avatar"
-                                :afterUpload="currentUser.importAvatar" :maxFiles="1" :resizeHeight="300"
-                                :resizeWidth="300" resizeMethod="crop"></Dropzone>
-                        </div>
+                        
                         <div class="mb-4">
                             <FormInput type="markdown" @change="currentUser.update()" label="Bio"  v-model="currentUser.props.bio" name="bio"  />
                         </div>
 
-                    </div>
-                    <div class="flex flex-column align-items-center flex-or">
-                        <span class="font-medium text-900 mb-2">Avatar</span>
-                        <Avatar :image="currentUser.meta?.avatarUrl" alt="user avatar" class="h-10rem w-10rem"
-                            shape="circle" />
-                    </div>
-                </div>
 
                 <NuxtLink :to="'/user/' + currentUser.props.id + '/profile'" v-ripple>
                     View your profile as others see it
