@@ -24,15 +24,28 @@
 </template>
 
 <script setup>
+import {z} from 'zod';
 const route = useRoute();
 const props = defineProps({
     links: {
         type: Array,
         default : () => [],
+        validator : (value) => z.object({
+                    label: z.string().min(1),
+                    to: z.string().min(1),
+                    icon: z.string().min(1),
+                }).strict().array().safeParse(value).success,
     },
     buttons: {
         type: Array,
         default : () => [],
+        validator : (value) => z.object({
+                    label: z.string().min(1),
+                    to: z.string().min(1).optional(),
+                    action: z.function().optional(),
+                    icon: z.string().min(1),
+                    severity: z.enum(['primary', 'secondary', 'success', 'warning', 'danger', 'info', 'help', 'contrast'])
+                }).strict().array().safeParse(value).success,
     },
 });
 </script>

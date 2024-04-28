@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 2024-04-28
+* Added zod based validation to PanelNav, ManageButton, Crumbtrail components.
+
 ## 2024-04-26
 * Removed all the client-only component tags as the hydration mismatches have been fixed.
 * Check to make sure a job handler exists before allowing a job to be created.

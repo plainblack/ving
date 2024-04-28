@@ -33,11 +33,24 @@
 </template>
 
 <script setup>
+import {z} from 'zod';
+
     const props = defineProps({
-        severity: String,
+        severity: {
+            type: String,
+            default: 'primary',
+            validator : (value) => z.enum(['primary', 'secondary', 'success', 'warning', 'danger', 'info', 'help', 'contrast'])
+                .safeParse(value).success
+        },
         items: {
             type: Array,
             required: true,
+            validator : (value) => z.object({
+                    label: z.string().min(1),
+                    to: z.string().min(1).optional(),
+                    action: z.function().optional(),
+                    icon: z.string().min(1),
+                }).strict().array().safeParse(value).success
         },
     });
     const firstItem = computed(() => props.items[0] || {});
