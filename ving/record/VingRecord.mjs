@@ -47,6 +47,7 @@ export class VingRecord {
 
     #deleted = false;
     #props = {};
+    #dirty = [];
     #inserted = false;
 
     /** 
@@ -278,6 +279,7 @@ export class VingRecord {
             throw ving.ouch(409, `${schema.kind} already inserted`);
         }
         this.#inserted = true;
+        this.#dirty = [];
         await this.db.insert(this.table).values(this.#props);
     }
 
@@ -456,6 +458,8 @@ export class VingRecord {
         else {
             throw ving.ouch(400, key.toString() + ' is not a prop', key);
         }
+        if (value != this.#props[key] && !this.#dirty.includes(key))
+            this.#dirty.push(key);
         return this.#props[key] = value;
     }
 
@@ -560,7 +564,7 @@ export class VingRecord {
     }
 
     /**
-     * Overwrites the record in the database with the values currently in memory
+     * Updates the record in the database with only the changed values currently in memory
      * @example
      * await user.update()
      */
@@ -572,7 +576,13 @@ export class VingRecord {
                 this.#props[field.name] = new Date();
             }
         }
-        await this.db.update(this.table).set(this.#props).where(eq(this.table.id, this.#props.id));
+        const propsToUpdate = Object.fromEntries(
+            Object.entries(this.#props).filter(
+                ([key, val]) => this.#dirty.includes(key)
+            )
+        );
+        this.#dirty = [];
+        await this.db.update(this.table).set(propsToUpdate).where(eq(this.table.id, this.#props.id));
     }
 
     /**
