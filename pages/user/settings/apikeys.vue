@@ -59,7 +59,7 @@
                     <div class="mb-4">
                         <FormInput name="reason" type="textarea"
                             v-model="dialog.current.props.reason" label="Reason"
-                            @change="console.log('a');dialog.current.update();console.log('b');" />
+                            @change="dialog.current.update();" />
                     </div>
 
                 </Dialog>
