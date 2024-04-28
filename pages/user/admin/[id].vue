@@ -6,38 +6,38 @@
         <FieldsetItem name="Account">
             <div class="mb-4">
                 <FormInput name="username" v-model="user.props.username" required label="Username"
-                    @change="user.update()" />
+                    @change="user.save('username')" />
             </div>
             <div class="mb-4">
                 <FormInput type="email" name="email" v-model="user.props.email" label="Email" required
-                    @change="user.update()" />
+                    @change="user.save('email')" />
             </div>
             <div class="mb-4">
                 <FormInput name="realName" v-model="user.props.realName" label="Real Name"
-                    @change="user.update()" />
+                    @change="user.save('realName')" />
             </div>
 
             <div class="mb-4">
                 <FormInput name="password" v-model="password" label="Password"
-                    @change="user.partialUpdate({ password: password })" />
+                    @change="user.save('password')" />
             </div>
         </FieldsetItem>
 
         <FieldsetItem name="Privileges">
             <div class="mb-4">
-                <FormInput type="select" @change="user.update()" v-model="user.props.admin" :options="user.options?.admin"
+                <FormInput type="select" @change="user.save('admin')" v-model="user.props.admin" :options="user.options?.admin"
                     name="admin" label="Admin" />
             </div>
         </FieldsetItem>
 
         <FieldsetItem name="Preferences">
             <div class="mb-4">
-                <FormInput type="select" @change="user.update()" v-model="user.props.useAsDisplayName"
+                <FormInput type="select" @change="user.save('useAsDisplayName')" v-model="user.props.useAsDisplayName"
                     :options="user.options?.useAsDisplayName" name="useAsDisplayName" label="Use As Display Name" />
             </div>
 
             <div class="mb-4">
-                <FormInput type="select" @change="user.update()" v-model="user.props.developer"
+                <FormInput type="select" @change="user.save('developer')" v-model="user.props.developer"
                     :options="user.options?.developer" label="Are you a software developer?" name="developer" />
             </div>
 

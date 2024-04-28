@@ -6,7 +6,7 @@
             <template #content v-if="currentUser.props">
                 <PanelZone title="Preferences" info="These settings will change your experience on the site.">
                     <div class="mb-4">
-                        <FormInput type="select" @change="currentUser.update()" v-model="currentUser.props.developer"
+                        <FormInput type="select" @change="currentUser.save('developer')" v-model="currentUser.props.developer"
                             :options="currentUser.options?.developer" label="Are you a software developer?"
                             name="developer" />
                     </div>

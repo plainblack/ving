@@ -50,16 +50,16 @@
                     
                     <div class="mb-4">
                         <FormInput name="name" type="text" v-model="dialog.current.props.name"
-                            required label="Name" @change="dialog.current.update()" />
+                            required label="Name" @change="dialog.current.save('name')" />
                     </div>
                     <div class="mb-4">
                         <FormInput name="url" type="text" v-model="dialog.current.props.url"
-                            label="URL" @change="dialog.current.update()" />
+                            label="URL" @change="dialog.current.save('url')" />
                     </div>
                     <div class="mb-4">
                         <FormInput name="reason" type="textarea"
                             v-model="dialog.current.props.reason" label="Reason"
-                            @change="dialog.current.update();" />
+                            @change="dialog.current.save('reason');" />
                     </div>
 
                 </Dialog>

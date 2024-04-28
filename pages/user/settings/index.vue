@@ -7,7 +7,7 @@
                 <PanelZone title="Profile" info="This information will be displayed publicly so be careful what you share.">
                     
                     <div class="mb-4">
-                        <FormInput type="select" @change="currentUser.update()" v-model="currentUser.props.useAsDisplayName"
+                        <FormInput type="select" @change="currentUser.save('useAsDisplayName')" v-model="currentUser.props.useAsDisplayName"
                             :options="currentUser.options?.useAsDisplayName" name="useAsDisplayName"
                             label="Use As Display Name" />
                     </div>
@@ -15,7 +15,7 @@
                     <div class="grid">
                         <div class="col">
                             <div class="mb-4">
-                                <FormInput type="select" @change="currentUser.update()" v-model="currentUser.props.avatarType"
+                                <FormInput type="select" @change="currentUser.save('avatarType')" v-model="currentUser.props.avatarType"
                                     :options="currentUser.options?.avatarType" name="avatarType" label="Avatar" />
                             </div>
                             <div v-if="currentUser.props.avatarType == 'uploaded'" class="mb-4">
@@ -30,7 +30,7 @@
                     </div>
                     
                     <div class="mb-4">
-                        <FormInput type="markdown" @change="currentUser.update()" label="Bio"  v-model="currentUser.props.bio" name="bio"  />
+                        <FormInput type="markdown" @change="currentUser.save('bio')" label="Bio"  v-model="currentUser.props.bio" name="bio"  />
                     </div>
 
                     <NuxtLink :to="'/user/' + currentUser.props.id + '/profile'" v-ripple>

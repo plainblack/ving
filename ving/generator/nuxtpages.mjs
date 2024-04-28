@@ -290,7 +290,7 @@ const editProps = (schema) => {
             if (['enum', 'boolean'].includes(prop.type)) {
                 out += `
                     <div class="mb-4">
-                        <FormInput type="select" name="${prop.name}" :options="${schema.kind.toLowerCase()}.options?.${prop.name}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.update()" />
+                        <FormInput type="select" name="${prop.name}" :options="${schema.kind.toLowerCase()}.options?.${prop.name}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.save('${prop.name}')" />
                     </div>`;
             }
             else if (prop.type == 'id' && prop?.relation?.type == 'parent' && prop.relation?.kind == 'S3File') {
@@ -303,7 +303,7 @@ const editProps = (schema) => {
             else if (prop.type != 'virtual') {
                 out += `
                     <div class="mb-4">
-                        <FormInput name="${prop.name}" type="${prop2type(prop)}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" ${prop.required ? 'required' : ''} label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.update()" />
+                        <FormInput name="${prop.name}" type="${prop2type(prop)}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" ${prop.required ? 'required' : ''} label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.save('${prop.name}')" />
                     </div>`;
             }
         }

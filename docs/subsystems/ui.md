@@ -310,7 +310,7 @@ Props:
 A form select list. Generally you won't use this directly, but rather use `FormInput` with type `select`.
 
 ```html
-<SelectInput @change="currentUser.update()" v-model="currentUser.props.useAsDisplayName"
+<SelectInput @change="currentUser.save('useAsDisplayName')" v-model="currentUser.props.useAsDisplayName"
                                 :options="currentUser.options?.useAsDisplayName" id="useAsDisplayName"
                                  />
 ```

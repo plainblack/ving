@@ -7,6 +7,8 @@ outline: deep
 * Added zod based validation to PanelNav, ManageButton, Crumbtrail components.
 * Implemented: Track and update dirty columns only #132
 * Fixed a problem where updating an api key wasn't saving.
+* Implemented: change @change .update() to .save() #137
+* NOTE: Recommend updating your UI components to use .save('propname') instead of .update() on @change events to reduce wire traffic.
 
 ## 2024-04-26
 * Removed all the client-only component tags as the hydration mismatches have been fixed.
