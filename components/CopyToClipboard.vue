@@ -15,7 +15,7 @@ const props = defineProps({
 });
 
 const buttonClass = computed(() => {
-    let out = ['w-min'];
+    let out = [];
     if (props.size == 'sm') {
         return 'p-button-sm'
     }

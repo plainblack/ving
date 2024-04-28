@@ -1,5 +1,5 @@
 <template>
-    <div class="p-fluid flex flex-column lg:flex-row">
+    <div class="flex flex-column lg:flex-row">
         <div v-if="$slots.left" class="lg:pr-5">        
             <slot name="left"></slot>
         </div>

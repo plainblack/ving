@@ -7,7 +7,7 @@
             <h1 class="mt-0">Reset Passsword</h1>
             <Form :send="resetPassword">
                 <div class="flex gap-5 flex-column-reverse md:flex-row">
-                    <div class="flex-auto p-fluid">
+                    <div class="flex-auto">
                         <div class="mb-4">
                             <FormInput name="code" type="text" v-model="newPassword.code" required readonly
                                 label="Reset Code" />

@@ -9,6 +9,8 @@ outline: deep
 * Fixed a problem where updating an api key wasn't saving.
 * Implemented: change @change .update() to .save() #137
 * NOTE: Recommend updating your UI components to use .save('propname') instead of .update() on @change events to reduce wire traffic.
+* Eliminated p-fluid from all pages as it wasn't necessary and was causing weird button stretching.
+* NOTE: Delete p-fluid from all generated pages in your apps.
 
 ## 2024-04-26
 * Removed all the client-only component tags as the hydration mismatches have been fixed.

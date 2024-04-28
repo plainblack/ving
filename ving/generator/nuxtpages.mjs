@@ -157,7 +157,7 @@ const indexTemplate = ({ name, schema }) =>
 
         <Form :send="() => ${schema.tableName}.create()">
             <div class="flex gap-5 flex-column-reverse md:flex-row">
-                <div class="flex-auto p-fluid">
+                <div class="flex-auto">
                     ${createProps(schema)}
                     <div>
                         <Button type="submit" class="w-auto" severity="success">

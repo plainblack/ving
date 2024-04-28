@@ -1,74 +1,80 @@
 <template>
-    <AdminNav :crumbs="breadcrumbs" />
-    <h1>Edit User {{ user.props?.username }}</h1>
+    <PanelFrame>
+        <template #left>
+            <PanelNav :links="[]" :buttons="[]" />
+        </template>
+        <template #content>
+            <AdminNav :crumbs="breadcrumbs" />
+            <h1>Edit User {{ user.props?.username }}</h1>
+            <FieldsetNav v-if="user.props?.id">
+                <FieldsetItem name="Account">
+                    <div class="mb-4">
+                        <FormInput name="username" v-model="user.props.username" required label="Username"
+                            @change="user.save('username')" />
+                    </div>
+                    <div class="mb-4">
+                        <FormInput type="email" name="email" v-model="user.props.email" label="Email" required
+                            @change="user.save('email')" />
+                    </div>
+                    <div class="mb-4">
+                        <FormInput name="realName" v-model="user.props.realName" label="Real Name"
+                            @change="user.save('realName')" />
+                    </div>
 
-    <FieldsetNav v-if="user.props?.id">
-        <FieldsetItem name="Account">
-            <div class="mb-4">
-                <FormInput name="username" v-model="user.props.username" required label="Username"
-                    @change="user.save('username')" />
-            </div>
-            <div class="mb-4">
-                <FormInput type="email" name="email" v-model="user.props.email" label="Email" required
-                    @change="user.save('email')" />
-            </div>
-            <div class="mb-4">
-                <FormInput name="realName" v-model="user.props.realName" label="Real Name"
-                    @change="user.save('realName')" />
-            </div>
+                    <div class="mb-4">
+                        <FormInput name="password" v-model="password" label="Password"
+                            @change="user.save('password')" />
+                    </div>
+                </FieldsetItem>
 
-            <div class="mb-4">
-                <FormInput name="password" v-model="password" label="Password"
-                    @change="user.save('password')" />
-            </div>
-        </FieldsetItem>
+                <FieldsetItem name="Privileges">
+                    <div class="mb-4">
+                        <FormInput type="select" @change="user.save('admin')" v-model="user.props.admin" :options="user.options?.admin"
+                            name="admin" label="Admin" />
+                    </div>
+                </FieldsetItem>
 
-        <FieldsetItem name="Privileges">
-            <div class="mb-4">
-                <FormInput type="select" @change="user.save('admin')" v-model="user.props.admin" :options="user.options?.admin"
-                    name="admin" label="Admin" />
-            </div>
-        </FieldsetItem>
+                <FieldsetItem name="Preferences">
+                    <div class="mb-4">
+                        <FormInput type="select" @change="user.save('useAsDisplayName')" v-model="user.props.useAsDisplayName"
+                            :options="user.options?.useAsDisplayName" name="useAsDisplayName" label="Use As Display Name" />
+                    </div>
 
-        <FieldsetItem name="Preferences">
-            <div class="mb-4">
-                <FormInput type="select" @change="user.save('useAsDisplayName')" v-model="user.props.useAsDisplayName"
-                    :options="user.options?.useAsDisplayName" name="useAsDisplayName" label="Use As Display Name" />
-            </div>
+                    <div class="mb-4">
+                        <FormInput type="select" @change="user.save('developer')" v-model="user.props.developer"
+                            :options="user.options?.developer" label="Are you a software developer?" name="developer" />
+                    </div>
 
-            <div class="mb-4">
-                <FormInput type="select" @change="user.save('developer')" v-model="user.props.developer"
-                    :options="user.options?.developer" label="Are you a software developer?" name="developer" />
-            </div>
+                    <div class="mb-4">
+                        <span class="font-medium text-900 mb-2">Profile Picture</span><br>
+                        <Avatar :image="user.meta?.avatarUrl" alt="user avatar" class="h-10rem w-10rem" shape="circle" />
+                    </div>
+                </FieldsetItem>
 
-            <div class="mb-4">
-                <span class="font-medium text-900 mb-2">Profile Picture</span><br>
-                <Avatar :image="user.meta?.avatarUrl" alt="user avatar" class="h-10rem w-10rem" shape="circle" />
-            </div>
-        </FieldsetItem>
+                <FieldsetItem name="Statistics">
+                    <div class="mb-4"><b>Id</b>: {{ user.props?.id }}
+                        <CopyToClipboard :text="user.props.id" size="xs" />
+                    </div>
 
-        <FieldsetItem name="Statistics">
-            <div class="mb-4"><b>Id</b>: {{ user.props?.id }}
-                <CopyToClipboard :text="user.props.id" size="xs" />
-            </div>
+                    <div class="mb-4">
+                        Created at {{ dt.formatDateTime(user.props.createdAt) }}
+                    </div>
 
-            <div class="mb-4">
-                Created at {{ dt.formatDateTime(user.props.createdAt) }}
-            </div>
+                    <div class="mb-4">
+                        Updated at {{ dt.formatDateTime(user.props.updatedAt) }}
+                    </div>
+                </FieldsetItem>
 
-            <div class="mb-4">
-                Updated at {{ dt.formatDateTime(user.props.updatedAt) }}
-            </div>
-        </FieldsetItem>
+                <FieldsetItem name="Actions">
+                    <Button @click="user.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete User"><Icon
+                            name="ph:trash" class="mr-1"/> Delete</Button>
+                    <Button @click="become" severity="warn" class="mr-2 mb-2" title="Become" alt="Become User">
+                        <Icon name="bi:arrow-left-right" class="mr-1"/> Become</Button>
+                </FieldsetItem>
 
-        <FieldsetItem name="Actions">
-            <Button @click="user.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete User"><Icon
-                    name="ph:trash" class="mr-1"/> Delete</Button>
-            <Button @click="become" severity="warn" class="mr-2 mb-2" title="Become" alt="Become User">
-                <Icon name="bi:arrow-left-right" class="mr-1"/> Become</Button>
-        </FieldsetItem>
-
-    </FieldsetNav>
+            </FieldsetNav>
+        </template>
+    </PanelFrame>
 </template>
 
 <script setup>

@@ -8,7 +8,7 @@
             <p>Where should we send the password reset email?</p>
             <Form :send="sendPasswordReset">
                 <div class="flex gap-5 flex-column-reverse md:flex-row">
-                    <div class="flex-auto p-fluid">
+                    <div class="flex-auto">
                         <div class="mb-4">
                             <FormInput name="email" type="email" v-model="email" required label="Email Address" />
                         </div>

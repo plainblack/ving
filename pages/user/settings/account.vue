@@ -21,7 +21,7 @@
             <PanelZone title="Change Password" info="Alter your credentials.">
                 <Form :send="changePassword">
                     <div class="flex gap-5 flex-column-reverse md:flex-row">
-                        <div class="flex-auto p-fluid">
+                        <div class="flex-auto">
                             <div class="mb-4">
                                 <FormInput name="password" type="password" v-model="newPassword.password" required
                                     label="New Password" autocomplete="new-password" />

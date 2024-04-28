@@ -4,7 +4,7 @@
 
         Created on {{ dt.formatDate(user.props?.createdAt) }}
         <div class="flex gap-5 flex-column-reverse md:flex-row">
-            <div class="flex-auto p-fluid">
+            <div class="flex-auto">
                 <div class="mb-4">
 
                     {{ user.props?.realName }}

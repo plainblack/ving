@@ -1,15 +1,15 @@
 <template>
-    <Button v-if="items.length == 1 && firstItem.action" @click="firstItem.action" :severity="severity" class="w-min white-space-nowrap">
+    <Button v-if="items.length == 1 && firstItem.action" @click="firstItem.action" :severity="severity" class="white-space-nowrap">
         <Icon :name="firstItem.icon" class="mr-1 vertical-align-middle" />
         <span class="vertical-align-middle">{{ firstItem.label }}</span>
     </Button>
     <NuxtLink v-else-if="items.length == 1 && firstItem.to" :to="firstItem.to" v-ripple class="flex no-underline align-items-center">
-        <Button :severity="severity" class="w-min white-space-nowrap">
+        <Button :severity="severity" class="white-space-nowrap">
             <Icon :name="firstItem.icon" class="mr-1 vertical-align-middle" />
             <span class="vertical-align-middle">{{ firstItem.label }}</span>
         </Button>
     </NuxtLink>
-    <SplitButton v-else-if="items.length > 1" :severity="severity" :model="otherItems" @click="firstItem.action" class="w-min white-space-nowrap">
+    <SplitButton v-else-if="items.length > 1" :severity="severity" :model="otherItems" @click="firstItem.action" class="white-space-nowrap">
         <span v-if="firstItem.action">
             <Icon :name="firstItem.icon" :title="firstItem.label" class="mr-1 vertical-align-middle" />
             <span class="vertical-align-middle">{{ firstItem.label }}</span>
