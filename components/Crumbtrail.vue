@@ -9,6 +9,7 @@
 </template>
 
 <script setup>
+import {z} from 'zod';
 
 const props = defineProps({
     crumbs: {
