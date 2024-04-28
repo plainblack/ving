@@ -6,14 +6,14 @@
             <InputNumber v-if="type == 'number' && (isNumber(val) || isNull(val) || isUndefined(val))"
                 v-model="val" showButtons :placeholder="placeholder" :name="name" :id="computedId"
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" :step="step"
-                :incrementButtonClass="append ? 'border-noround' : ''"
+                :incrementButtonClass="append ? 'border-noround' : ''" @change="emit('change')"
                 :decrementButtonClass="append ? 'border-noround' : ''" />
-            <Password v-else-if="type == 'password' && (isString(val) || isNull(val) || isUndefined(val))"
+            <Password v-else-if="type == 'password' && (isString(val) || isNull(val) || isUndefined(val))" @change="emit('change')"
                 v-model="val" toggleMask :placeholder="placeholder" :name="name" :id="computedId" :feedback="false"
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" class="w-full" />
             <Textarea v-else-if="type == 'textarea' && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
-                :class="fieldClass + ' border-round'" :required="required" autoResize />
+                :class="fieldClass + ' border-round'" :required="required" autoResize @change="emit('change')" />
             <MarkdownInput v-else-if="type == 'markdown' && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :id="computedId" @change="emit('change')"
                 />
@@ -25,7 +25,7 @@
             <InputText
                 v-else-if="['text', 'email'].includes(type) && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
-                :class="fieldClass" :required="required" />
+                :class="fieldClass" :required="required" @change="emit('change')" />
             <Message v-else severity="error" :closable="false">
                 Can't display {{ displayName }} Form Input
             </Message>

@@ -47,24 +47,19 @@
                 <Dialog v-model:visible="dialog.visible" maximizable modal header="Header"
                     :style="{ width: '75vw' }">
 
-                    <div class="flex gap-5 flex-column-reverse md:flex-row" v-if="dialog.current">
-                        <div class="flex-auto p-fluid">
-                            <div class="mb-4">
-                                <FormInput name="name" type="text" v-model="dialog.current.props.name"
-                                    required label="Name" @change=" dialog.current.update()" />
-                            </div>
-                            <div class="mb-4">
-                                <FormInput name="url" type="text" v-model="dialog.current.props.url"
-                                    label="URL" @change=" dialog.current.update()" />
-                            </div>
-                            <div class="mb-4">
-                                <FormInput name="reason" type="textarea"
-                                    v-model="dialog.current.props.reason" label="Reason"
-                                    @change=" dialog.current.update()" />
-                            </div>
-
-                        </div>
-
+                    
+                    <div class="mb-4">
+                        <FormInput name="name" type="text" v-model="dialog.current.props.name"
+                            required label="Name" @change="dialog.current.update()" />
+                    </div>
+                    <div class="mb-4">
+                        <FormInput name="url" type="text" v-model="dialog.current.props.url"
+                            label="URL" @change="dialog.current.update()" />
+                    </div>
+                    <div class="mb-4">
+                        <FormInput name="reason" type="textarea"
+                            v-model="dialog.current.props.reason" label="Reason"
+                            @change="console.log('a');dialog.current.update();console.log('b');" />
                     </div>
 
                 </Dialog>
@@ -72,28 +67,25 @@
             
             <PanelZone title="Create API Key" info="Make a new API Key.">
                 <Form :send="() => apikeys.create()">
-                    <div class="flex gap-5 flex-column-reverse md:flex-row">
-                        <div class="flex-auto p-fluid">
-                            <div class="mb-4">
-                                <FormInput name="name" type="text" v-model="apikeys.new.name" required
-                                    label="Name" />
-                            </div>
-                            <div class="mb-4">
-                                <FormInput name="url" type="text" v-model="apikeys.new.url" label="URL" />
-                            </div>
-                            <div class="mb-4">
-                                <FormInput name="reason" type="textarea" v-model="apikeys.new.reason"
-                                    label="Reason" />
-                            </div>
-
-                            <div>
-                                <Button type="submit" class="w-auto" severity="success">
-                                    <Icon name="ph:plus" class="mr-1"/> Create API Key
-                                </Button>
-                            </div>
-                        </div>
-
+                  
+                    <div class="mb-4">
+                        <FormInput name="name" type="text" v-model="apikeys.new.name" required
+                            label="Name" />
                     </div>
+                    <div class="mb-4">
+                        <FormInput name="url" type="text" v-model="apikeys.new.url" label="URL" />
+                    </div>
+                    <div class="mb-4">
+                        <FormInput name="reason" type="textarea" v-model="apikeys.new.reason"
+                            label="Reason" />
+                    </div>
+
+                    <div>
+                        <Button type="submit" class="w-auto" severity="success">
+                            <Icon name="ph:plus" class="mr-1"/> Create API Key
+                        </Button>
+                    </div>
+                      
                 </Form>
             </PanelZone>
                
