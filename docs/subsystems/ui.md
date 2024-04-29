@@ -33,14 +33,6 @@ For example, the code for a gear icon could be: `mdi:gear`. And then to display 
 
 You can use [any of the built in Nuxt components](https://nuxt.com/docs/api/components/client-only), or [one of the 200 components from PrimeVue](https://primevue.org/autocomplete/) or these custom Ving components:
 
-### AdminNav
-Displays the site-wide administrative navigation.
-
-```html
-<AdminNav :crumbs="breadcrumbs" />
-```
-
-See `Crumbtrail` for more info about the `crumbs` prop.
 
 ### CopyToClipboard
 Displays a button that allows you to copy a text string to the user's clipboard.
@@ -257,6 +249,10 @@ Slots:
 - **right** - A space on the right (or bottom in mobile) for a nav.
 - **content** - A space in the middle for your content.
 
+Props:
+- **title** - Display a title.
+- **section** - Display a title over the left nav.
+
 
 ### PanelNav
 Generates a vertical panel on large screens and a horizontal one on small screens to be used as navigation in an application group.
@@ -365,6 +361,13 @@ Wraps the `UserAvatar` component in a `NuxtLink` pointing to the user's profile 
 
 ## Composables
 Each of these also has documentation of how to use them in the form of JSDocs in the source code.
+
+### adminLinks()
+Returns a data structure for use with the `PanelNav` component.
+
+```js
+const links = adminLinks();
+```
 
 ### currentUserStore()
 Gets you the currently logged in user. 

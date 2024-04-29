@@ -1,6 +1,6 @@
 <template>
     <div>
-            <Menubar id="topnav" :model="topNav" class="bg-gray-900">
+            <Menubar id="topnav" :model="topNav" class="bg-gray-900 border-noround py-0">
                 <template #start>
                     <img :src="config.public.site.logoUrl" :alt="config.public.site.name" height="40"
                         class="mr-0 lg:mr-6">
@@ -52,7 +52,7 @@
             </Menubar>
 
         <SystemWideAlert />
-        <div class="px-0 py-4 md:px-4">
+        <div class="px-0 py-1 md:px-4">
             <div style="min-height: 20rem">
                 <slot />
             </div>

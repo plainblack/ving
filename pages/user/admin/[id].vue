@@ -1,11 +1,9 @@
 <template>
-    <PanelFrame>
+    <PanelFrame section="Admin" :title="`Edit User ${user.props?.username}`">
         <template #left>
-            <PanelNav :links="[]" :buttons="[]" />
+            <PanelNav :links="links" />
         </template>
         <template #content>
-            <AdminNav :crumbs="breadcrumbs" />
-            <h1>Edit User {{ user.props?.username }}</h1>
             <FieldsetNav v-if="user.props?.id">
                 <FieldsetItem name="Account">
                     <div class="mb-4">
@@ -35,14 +33,27 @@
                 </FieldsetItem>
 
                 <FieldsetItem name="Preferences">
+
+                    <div class="mb-4">
+                        <FormInput type="select" @change="user.save('developer')" v-model="user.props.developer"
+                            :options="user.options?.developer" label="Are you a software developer?" name="developer" />
+                    </div>
+
+                </FieldsetItem>
+
+                <FieldsetItem name="Profile">
                     <div class="mb-4">
                         <FormInput type="select" @change="user.save('useAsDisplayName')" v-model="user.props.useAsDisplayName"
                             :options="user.options?.useAsDisplayName" name="useAsDisplayName" label="Use As Display Name" />
                     </div>
 
                     <div class="mb-4">
-                        <FormInput type="select" @change="user.save('developer')" v-model="user.props.developer"
-                            :options="user.options?.developer" label="Are you a software developer?" name="developer" />
+                        <FormInput type="markdown" @change="user.save('bio')" label="Bio"  v-model="user.props.bio" name="bio"  />
+                    </div>
+
+                    <div class="mb-4">
+                        <FormInput type="select" @change="user.save('avatarType')" v-model="user.props.avatarType"
+                            :options="user.options?.avatarType" name="avatarType" label="Avatar" />
                     </div>
 
                     <div class="mb-4">
@@ -68,8 +79,13 @@
                 <FieldsetItem name="Actions">
                     <Button @click="user.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete User"><Icon
                             name="ph:trash" class="mr-1"/> Delete</Button>
-                    <Button @click="become" severity="warn" class="mr-2 mb-2" title="Become" alt="Become User">
+                    <Button @click="become" severity="warning" class="mr-2 mb-2" title="Become" alt="Become User">
                         <Icon name="bi:arrow-left-right" class="mr-1"/> Become</Button>
+                    <NuxtLink :to="'/user/' + user.props.id + '/profile'" v-ripple>
+                        <Button  severity="primary" class="mr-2 mb-2" title="View Profile">
+                            <Icon name="ph:user" class="mr-1"/> View Profile
+                        </Button>
+                    </NuxtLink>
                 </FieldsetItem>
 
             </FieldsetNav>
@@ -114,10 +130,6 @@ async function become() {
 
 const password = ref('');
 
-const breadcrumbs = [
-    { label: 'Admin', to: '/admin' },
-    { label: 'Users', to: '/user/admin' },
-    { label: 'Edit User' },
-];
+const links = adminLinks();
 
 </script>

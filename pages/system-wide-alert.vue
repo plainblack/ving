@@ -1,10 +1,10 @@
 <template>
-    <AdminNav />
-
-    <h1>Admin</h1>
-
-    <div class="surface-card p-4 border-1 surface-border border-round">
-        <h2 class="mt-0">System Wide Alert</h2>
+   <PanelFrame section="Admin" title="System Wide Alert">
+        <template #left>
+            <PanelNav :links="links" />
+        </template>
+        <template #content>
+    <PanelZone title="Edit System Wide Alert" info="Add an announcement on every page in the site.">
 
         <div class="mb-4">
             <FormInput type="textarea" name="message" v-model="swa.message" label="Message" />
@@ -36,10 +36,12 @@
             </div>
         </div>
 
-        <Button @click="swa.post()" severity="success" class="mr-2">Save</Button>
-        <Button v-if="swa.message" @click="swa.delete()" severity="danger" class="mr-2">Delete</Button>
+        <Button @click="swa.post()" severity="success" class="mr-2">Save System Wide Alert</Button>
+        <Button v-if="swa.message" @click="swa.delete()" severity="danger" class="mr-2">Delete System Wide Alert</Button>
 
-    </div>
+    </PanelZone>
+        </template>
+   </PanelFrame>
 </template>
 
 <script setup>
@@ -58,5 +60,6 @@ const ttlOptions = [
 ];
 
 const swa = useSystemWideAlertStore();
+const links = adminLinks();
 
 </script>

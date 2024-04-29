@@ -12,7 +12,7 @@ export default () => {
             { label: 'Sign Out', to: '/user/logout', icon: 'ph:door', severity: 'primary' },
         ];
         if (currentUser.props?.admin)
-            out.push({ label: 'Admin', to: '/user/admin', icon: 'ph:users', severity: 'secondary' });
+            out.push({ label: 'Admin', to: '/admin', icon: 'ph:users', severity: 'secondary' });
         return out;
     });
     return links;

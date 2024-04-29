@@ -1,5 +1,5 @@
 <template>
-    <Message v-if="swa.message" :closable="false" :severity="swa.severity">{{ swa.message }}</Message>
+    <Message v-if="swa.message" :closable="false" :severity="swa.severity" class="m-0 border-1 border-noround">{{ swa.message }}</Message>
 </template>
 
 <script setup>
