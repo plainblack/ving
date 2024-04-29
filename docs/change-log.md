@@ -11,7 +11,7 @@ outline: deep
 * NOTE: Recommend updating your UI components to use .save('propname') instead of .update() on @change events to reduce wire traffic.
 * Eliminated p-fluid from all pages as it wasn't necessary and was causing weird button stretching.
 * NOTE: Delete p-fluid from all generated pages in your apps.
-* NOTE: AdminNav component has been removed.
+* NOTE: AdminNav component has been removed. Replaced with adminLinks() composable.
 * Implemented: reformat admin to use panel components #138
 
 ## 2024-04-26
