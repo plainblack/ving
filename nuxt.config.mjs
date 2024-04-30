@@ -12,6 +12,17 @@ export default defineNuxtConfig({
     primevue: {
         cssLayerOrder: 'reset,primevue'
     },
+    imports: {
+        dirs: [
+            'composables/**'
+        ],
+    },
+    components: [
+        {
+            path: '~/components',
+            pathPrefix: false,
+        },
+    ],
     app: {
         head: {
             link: [
