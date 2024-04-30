@@ -7,7 +7,7 @@
 
 export default () => {
     const currentUser = useCurrentUserStore();
-    const links = computed(() => {
+    const buttons = computed(() => {
         const out = [
             { label: 'Sign Out', to: '/user/logout', icon: 'ph:door', severity: 'primary' },
         ];
@@ -15,5 +15,5 @@ export default () => {
             out.push({ label: 'Admin', to: '/admin', icon: 'ph:users', severity: 'secondary' });
         return out;
     });
-    return links;
+    return buttons;
 }
