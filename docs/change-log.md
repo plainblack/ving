@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 2024-04-29
+* Implemented: reformat page generator to use panel components on view and edit #139
+
 ## 2024-04-28
 * Added zod based validation to PanelNav, ManageButton, Crumbtrail components.
 * Implemented: Track and update dirty columns only #132
