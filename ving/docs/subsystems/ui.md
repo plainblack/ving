@@ -130,9 +130,10 @@ Generate the appropritate form field based upon input types. This also handles l
 Props:
 
 - **label** - A form label for proper ARIA compliance.
-- **type** - Defaults to `text` but can also be `textarea`, `password`, `number`, `markdown`, `select` or `email`.
+- **type** - Defaults to `text` but can also be `textarea`, `password`, `number`, `markdown`, `select`, `switch` or `email`.
 - **name** - The field name for the form input. Required.
 - **id** - Defaults to whatever the `name` field is set to, but can be any string.
+- **subtext** - Add a small message beneath the field. Note, only shows if the field is not required, or is required and has a value, or isn't invalid. 
 - **append** - Appends an input group to the end of the field. Example: `.00`
 - **prepend** - Prepends an input group to the front of the field. Example `$`
 - **autocomplete** - Sets the browser's autocomplete settings for password fillers and whatnot. Defaults to `off`.
@@ -147,11 +148,6 @@ Props:
     - **field** - A label for a field or some other attribute such as `Password`. 
     - **value** - The value that this field must match.
 - **class** - A CSS class that should be applied to the field.
-
-Slots:
-
-- **prepend** - Add an option to the top of the list when type is `select`.
-- **append** - Add an option to the bottom of the list when type is `select`.
 
 ### FormLabel
 An ARIA compliant label for a form field. In general you wouldn't use this directly, but via the `label` prop of `FormInput`.
@@ -301,36 +297,6 @@ Props:
 - **title** - Display a title in the header.
 - **info** - Give the header a little subtext.
 
-
-### SelectInput
-A form select list. Generally you won't use this directly, but rather use `FormInput` with type `select`.
-
-```html
-<SelectInput @change="currentUser.save('useAsDisplayName')" v-model="currentUser.props.useAsDisplayName"
-                                :options="currentUser.options?.useAsDisplayName" id="useAsDisplayName"
-                                 />
-```
-
-Props:
-
-- **id** - The unique id of the form field. Required.
-- **v-model** - What Vue reactive variable should this be connected to? Required.
-- **options** - An array of objects:
-    - **label** - The human readable label for the value.
-    - **value** - The value to select. Can be string, number, or boolean.
-
-Slots:
-
-- **prepend** - Add an option to the top of the list.
-- **append** - Add an option to the bottom of the list.
-
-```html
-<SelectInput>
-    <template #prepend>
-        <option value="foo">Foo</option>
-    </template>
-</SelectInput>
-```
 
 ### SystemWideAlert
 Place this in your layouts where you would like the system wide alert to be displayed when an admin has configured one. It is triggered by the `useSystemWideAlert()` composable.

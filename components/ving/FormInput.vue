@@ -21,11 +21,9 @@
             <MarkdownInput v-else-if="type == 'markdown' && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :id="computedId" @change="emit('change')"
                 />
-            <SelectInput v-else-if="type == 'select'"
+            <Dropdown v-else-if="type == 'select'"
                 v-model="val" :name="name" :id="computedId" :options="options" :class="fieldClass" :required="required"
-                @change="emit('change')">
-                <template v-for="(_, name) in $slots" v-slot:[name]="slotData"><slot :name="name" v-bind="slotData" /></template>
-            </SelectInput>
+                @change="emit('change')" optionLabel="label" optionValue="value" />  
             <InputText
                 v-else-if="['text', 'email'].includes(type) && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
@@ -120,7 +118,7 @@ const invalid = computed(() => {
 
 const fieldClass = computed(() => {
     if (props.type == 'select')
-        return invalid.value ? 'p-inputtext border-red-500 w-full' : 'p-inputtext w-full';
+        return invalid.value ? 'border-red-500' : '';
     return invalid.value && !empty.value ? 'p-invalid w-full' : 'w-full' 
 });
 
