@@ -2,7 +2,7 @@ import { defu } from "defu";
 import { debounce } from 'perfect-debounce';
 import { ouch } from '#ving/utils/ouch.mjs';
 class VingKind {
-    #notify = useNotifyStore();
+    #notify = useNotify();
 
     #state = reactive({
         query: { includeLinks: true },

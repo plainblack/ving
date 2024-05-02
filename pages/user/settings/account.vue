@@ -51,7 +51,7 @@
 definePageMeta({
     middleware: ['auth']
 });
-const notify = useNotifyStore();
+const notify = useNotify();
 const currentUser = useCurrentUser();
 const links = userSettingsLinks();
 const buttons = userSettingsButtons();

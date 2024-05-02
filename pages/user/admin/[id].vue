@@ -98,7 +98,7 @@ definePageMeta({
     middleware: ['auth', 'admin']
 });
 const route = useRoute();
-const notify = useNotifyStore();
+const notify = useNotify();
 
 const id = route.params.id.toString();
 const user = useVingRecord({

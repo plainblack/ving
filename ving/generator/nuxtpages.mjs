@@ -363,7 +363,7 @@ definePageMeta({
     middleware: ['auth']
 });
 const route = useRoute();
-const notify = useNotifyStore();
+const notify = useNotify();
 const id = route.params.id.toString();
 const ${name.toLowerCase()} = useVingRecord({
     id,

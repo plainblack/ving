@@ -40,7 +40,7 @@ const route = useRoute();
 const query = route.query;
 const newPassword = reactive({ password: '', password2: '', code: query.code?.toString() || '' });
 const config = useRuntimeConfig();
-const notify = useNotifyStore();
+const notify = useNotify();
 async function resetPassword() {
     notify.info('Please wait while we reset your password...');
     const response = await useRest(`/api/${useRestVersion()}/user/${route.params.id}/reset-password`, {

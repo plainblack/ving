@@ -20,7 +20,7 @@
 <script setup>
 import { useToast } from "primevue/usetoast";
 
-const notify = useNotifyStore();
+const notify = useNotify();
 const toast = useToast();
 
 notify.$subscribe((mutation, state) => {

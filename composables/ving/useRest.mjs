@@ -17,7 +17,7 @@
  * const response = await useRest('/api/v1/user/xxx')
  */
 export default async function (url, behavior = {}) {
-    const notify = useNotifyStore();
+    const notify = useNotify();
     const throbber = useThrobberStore();
     let error = null
     const response = await $fetch(url, {

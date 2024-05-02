@@ -5,7 +5,7 @@ import { ouch } from '#ving/utils/ouch.mjs';
 import { isObject, isUndefined } from '#ving/utils/identify.mjs';
 
 export default (behavior) => {
-    const notify = useNotifyStore();
+    const notify = useNotify();
 
     const generate = defineStore(behavior.id || v4(), {
         state: () => ({

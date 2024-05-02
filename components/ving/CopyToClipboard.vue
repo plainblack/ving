@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-const notify = useNotifyStore();
+const notify = useNotify();
 
 const props = defineProps({
     text: String,

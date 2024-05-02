@@ -28,7 +28,7 @@ const props = defineProps({
 });
 
 
-const notify = useNotifyStore();
+const notify = useNotify();
 
 async function check(e) {
     if (invalid) {

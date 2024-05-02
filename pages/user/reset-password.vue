@@ -32,7 +32,7 @@ import ua from 'ua-parser-js';
 import { sleep } from '#ving/utils/sleep.mjs';
 const config = useRuntimeConfig();
 const email = ref('')
-const notify = useNotifyStore();
+const notify = useNotify();
 async function sendPasswordReset() {
     const parser = new ua(navigator.userAgent);
     const response = await useRest(`/api/${useRestVersion()}/user/send-password-reset`, {

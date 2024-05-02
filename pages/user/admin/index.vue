@@ -79,7 +79,7 @@
 </template>
 
 <script setup>
-const notify = useNotifyStore();
+const notify = useNotify();
 definePageMeta({
     middleware: ['auth', 'admin']
 });

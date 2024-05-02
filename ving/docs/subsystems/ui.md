@@ -211,7 +211,7 @@ Props:
 ```
 
 ### Notify
-Place this in your layouts so that users can receive toasts that will be triggered via the `useNotifyStore()` composable.
+Place this in your layouts so that users can receive toasts that will be triggered via the `useNotify()` composable.
 ```html
 <Notify/>
 ```
@@ -401,11 +401,11 @@ onMounted(() => {
 })
 ```
 
-### useNotifyStore()
+### useNotify()
 Allows you to notify the user via toasts. 
 
 ```js
-    const notify = useNotifyStore();
+    const notify = useNotify();
     notify.info('Just wanted to let you know');
     notify.warn('You might want to get concerned');
     notify.error('Be afraid');

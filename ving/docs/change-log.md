@@ -10,6 +10,7 @@ outline: deep
 * NOTE: restVersion() has been renamed to useRestVersion(), update your codebase appropriately.
 * NOTE: adminLinks() has been renamed to useAdminLinks(), update your codebase appropriately.
 * NOTE: useCurrentUserStore() has been renamed to useCurrentUser(), update your codebase appropriately.
+* NOTE: useNotifyStore() has been renamed to useNotify(), update your codebase appropriately.
 
 ## 2024-04-29
 * Implemented: reformat page generator to use panel components on view and edit #139
