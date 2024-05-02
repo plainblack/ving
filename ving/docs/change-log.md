@@ -17,6 +17,7 @@ outline: deep
 * NOTE: useThrobberStore() has been renamed to useThrobber(), update your codebase appropriately.
 * NOTE: userSettingsButtons() has been renamed to useUserSettingsButtons(), update your codebase appropriately.
 * NOTE: userSettingsLinks() has been renamed to useUserSettingsLinks(), update your codebase appropriately.
+* Implemented: add "subtext" to FormInput #143
 
 ## 2024-04-29
 * Implemented: reformat page generator to use panel components on view and edit #139

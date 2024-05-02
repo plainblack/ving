@@ -31,7 +31,7 @@
             </Message>
             <span v-if="append" class="p-inputgroup-addon"> {{ append }} </span>
         </div>
-        <small :class="invalid && !empty ? 'text-red-500' : ''" v-if="invalid">{{ invalidReason }}</small>
+        <small :class="invalid && !empty ? 'text-red-500' : ''" v-if="subtext">{{ subtext }}</small>
     </div>
 </template>
 
@@ -51,6 +51,9 @@ const props = defineProps({
     name: {
         type: String,
         required: true,
+    },
+    subtext: {
+        type: String,
     },
     id: String,
     append: String,
@@ -83,7 +86,7 @@ const computedId = props.id || props.name;
 
 const emit = defineEmits(['update:modelValue','change']);
 
-let invalidReason = '';
+let subtext = ref(props.subtext);
 
 const invalidForm = inject('invalidForm', (a) => { });
 
@@ -91,20 +94,22 @@ const empty = computed(() => isNil(props.modelValue));
 
 const invalid = computed(() => {
     if (props.required && empty.value) {
-        invalidReason = `${displayName} is required.`;
-        invalidForm([props.name, true, invalidReason]);
+        subtext.value = `${displayName} is required.`;
+        invalidForm([props.name, true, subtext.value]);
         return true;
     }
     else if (!isUndefined(props.mustMatch) && props.mustMatch.value !== props.modelValue) {
-        invalidReason = `${displayName} must match ${props.mustMatch.field}.`;
-        invalidForm([props.name, true, invalidReason]);
+        subtext.value = `${displayName} must match ${props.mustMatch.field}.`;
+        invalidForm([props.name, true, subtext.value]);
         return true;
     }
     else if (props.type == 'email' && !isNil(props.modelValue) && !(props.modelValue.toString().match(/.+@.+\..+/))) {
-        invalidReason = `${displayName} doesn't look like an email address.`;
-        invalidForm([props.name, true, invalidReason]);
+        subtext.value = `${displayName} doesn't look like an email address.`;
+        invalidForm([props.name, true, subtext.value]);
         return true;
     }
+    if (props.subtext)
+        subtext.value = props.subtext;
     invalidForm([props.name, false]);
     return false;
 });
