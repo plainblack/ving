@@ -301,6 +301,9 @@ Slots:
 Props:
 - **title** - Display a title in the header.
 - **info** - Give the header a little subtext.
+- **look** - Override the PanelZone class, which defaults to `surface-card border-1 surface-border border-round`.
+- **margin** - Override the PanelZone margin class which defaults to `mb-4`.
+- **padding** - Override the PanelZone margin class which defaults to `p-4 pt-3`.
 
 
 ### SystemWideAlert
