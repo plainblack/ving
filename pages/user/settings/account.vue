@@ -52,7 +52,7 @@ definePageMeta({
     middleware: ['auth']
 });
 const notify = useNotifyStore();
-const currentUser = useCurrentUserStore();
+const currentUser = useCurrentUser();
 const links = userSettingsLinks();
 const buttons = userSettingsButtons();
 const newPassword = ref({ password: '', password2: '' });

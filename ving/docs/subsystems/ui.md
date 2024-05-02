@@ -371,11 +371,11 @@ Returns a data structure for use with the `PanelNav` component.
 const links = useAdminLinks();
 ```
 
-### currentUserStore()
+### useCurrentUser()
 Gets you the currently logged in user. 
 
 ```js
-const user = useCurrentUserStore();
+const user = useCurrentUser();
 if (await user.isAuthenticated()) {
     // do logged in user stuff
 }

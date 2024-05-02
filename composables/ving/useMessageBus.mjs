@@ -11,7 +11,7 @@
  */
 export default async function useMessageBus() {
     const notify = useNotifyStore();
-    const currentUser = useCurrentUserStore();
+    const currentUser = useCurrentUser();
 
     let reconnectFrequencySeconds = 1;
     let bus = null;

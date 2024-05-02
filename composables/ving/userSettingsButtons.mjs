@@ -6,7 +6,7 @@
  */
 
 export default () => {
-    const currentUser = useCurrentUserStore();
+    const currentUser = useCurrentUser();
     const buttons = computed(() => {
         const out = [
             { label: 'Sign Out', to: '/user/logout', icon: 'ph:door', severity: 'primary' },

@@ -64,7 +64,7 @@
 
 <script setup>
 const config = useRuntimeConfig();
-const currentUser = useCurrentUserStore();
+const currentUser = useCurrentUser();
 await currentUser.isAuthenticated();
 onMounted(async () => {
     // subscribe to message bus

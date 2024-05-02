@@ -4,7 +4,7 @@ import { isObject, isUndefined } from '#ving/utils/identify.mjs';
 
 const query = { includeOptions: true, includeMeta: true, includeLinks: true };
 
-export const useCurrentUserStore = defineStore('currentUser', {
+export const useCurrentUser = defineStore('currentUser', {
     state: () => ({
         props: {},
         meta: {},
@@ -65,6 +65,18 @@ export const useCurrentUserStore = defineStore('currentUser', {
             const response = await useRest(this.links?.self?.href, {
                 method: 'put',
                 body: this.props,
+                query,
+            });
+            if (response.data)
+                this.setState(response.data);
+            return response;
+        },
+        async save(key) {
+            const valuesToSave = {};
+            valuesToSave[key] = this.props[key];
+            const response = await useRest(this.links?.self?.href, {
+                method: 'put',
+                body: valuesToSave,
                 query,
             });
             if (response.data)

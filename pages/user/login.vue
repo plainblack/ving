@@ -57,7 +57,7 @@ import { isString } from '#ving/utils/identify.mjs';
 let login = ref('');
 let password = ref('');
 const config = useRuntimeConfig();
-const currentUser = useCurrentUserStore();
+const currentUser = useCurrentUser();
 
 async function tryLogin() {
     const response = await currentUser.login(login.value, password.value);

@@ -13,7 +13,7 @@
 <script setup>
 const config = useRuntimeConfig();
 onMounted(async () => {
-    const currentUser = useCurrentUserStore();
+    const currentUser = useCurrentUser();
     const query = useRoute().query;
     await currentUser.sendVerifyEmail(query.redirectAfter?.toString());
 });

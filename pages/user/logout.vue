@@ -12,7 +12,7 @@ import { sleep } from '#ving/utils/sleep.mjs';
 definePageMeta({
     middleware: 'auth'
 });
-const currentUser = useCurrentUserStore();
+const currentUser = useCurrentUser();
 await currentUser.logout();
 await sleep(1000 * 5);
 await navigateTo('/');

@@ -40,7 +40,7 @@ await user.fetch()
 
 onBeforeRouteLeave(() => user.dispose());
 
-const currentUser = useCurrentUserStore();
+const currentUser = useCurrentUser();
 
 
 </script>

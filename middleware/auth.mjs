@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    const currentUser = useCurrentUserStore();
+    const currentUser = useCurrentUser();
     const isAuthenticated = await currentUser.isAuthenticated();
     if (!isAuthenticated) {
         return await navigateTo(`/user/login?redirectAfter=${to.fullPath}`);

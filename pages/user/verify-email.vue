@@ -12,7 +12,7 @@
 <script setup>
 const config = useRuntimeConfig();
 const message = ref('Please wait while we verify your email address.');
-const currentUser = useCurrentUserStore();
+const currentUser = useCurrentUser();
 const query = useRoute().query;
 await currentUser.verifyEmail(query.verify?.toString());
 if (currentUser.props?.verifiedEmail) {

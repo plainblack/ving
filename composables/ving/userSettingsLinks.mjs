@@ -6,7 +6,7 @@
  */
 
 export default () => {
-    const currentUser = useCurrentUserStore();
+    const currentUser = useCurrentUser();
     const links = computed(() => {
         const out = [
             { label: 'Profile', to: '/user/settings', icon: 'ph:user' },

@@ -58,7 +58,7 @@
 <script setup>
 let newUser = ref({ username: '', email: '', realName: '', password: '', password2: '' });
 const config = useRuntimeConfig();
-const currentUser = useCurrentUserStore();
+const currentUser = useCurrentUser();
 
 async function createAccount() {
     const response = await currentUser.create(newUser.value);
