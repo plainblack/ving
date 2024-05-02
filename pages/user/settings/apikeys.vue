@@ -98,7 +98,7 @@ definePageMeta({
     middleware: ['auth']
 });
 const currentUser = useCurrentUser();
-const links = userSettingsLinks();
+const links = useUserSettingsLinks();
 const buttons = useUserSettingsButtons();
 const apikeys = useVingKind({
     listApi: currentUser.links?.apikeys.href,

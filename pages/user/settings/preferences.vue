@@ -20,6 +20,6 @@ definePageMeta({
     middleware: ['auth']
 });
 const currentUser = useCurrentUser();
-const links = userSettingsLinks();
+const links = useUserSettingsLinks();
 const buttons = useUserSettingsButtons();
 </script>

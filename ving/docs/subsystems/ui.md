@@ -438,11 +438,11 @@ Returns a data structure for use with the `PanelNav` component.
 const buttons = useUserSettingsButtons();
 ```
 
-### userSettingsLinks()
+### useUserSettingsLinks()
 Returns a data structure for use with the `PanelNav` component.
 
 ```js
-const links = userSettingsLinks();
+const links = useUserSettingsLinks();
 ```
 
 ### useSystemWideAlert()

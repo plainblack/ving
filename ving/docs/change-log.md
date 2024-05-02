@@ -5,7 +5,8 @@ outline: deep
 
 ## 2024-05-02
 * Moved the docs folder from ./docs to ./ving/docs to avoid collisions with downstream projects.
-* useDateTime() was never a composable, so moved it to the utils folder, and now you can just use its functions directly.
+* Created a utils folder for UI utility functions and moved enum2labels() into it since it was never a composable.
+* Renamed all composables to start with "use" per Nuxt convention.
 * NOTE: useDateTime() no longer exists, just use formatDate(), formatDateTime(), and formatTimeAgo() directly.
 * NOTE: restVersion() has been renamed to useRestVersion(), update your codebase appropriately.
 * NOTE: adminLinks() has been renamed to useAdminLinks(), update your codebase appropriately.
@@ -14,6 +15,7 @@ outline: deep
 * NOTE: useSystemWideAlertStore() has been renamed to useSystemWideAlert(), update your codebase appropriately.
 * NOTE: useThrobberStore() has been renamed to useThrobber(), update your codebase appropriately.
 * NOTE: userSettingsButtons() has been renamed to useUserSettingsButtons(), update your codebase appropriately.
+* NOTE: userSettingsLinks() has been renamed to useUserSettingsLinks(), update your codebase appropriately.
 
 ## 2024-04-29
 * Implemented: reformat page generator to use panel components on view and edit #139
@@ -44,7 +46,7 @@ outline: deep
 * Added ManageButton component.
 * Added link to user in user admin panel.
 * Removed all references to PrimeVue icons as they don't size well with the Iconify icons.
-* Replaced UserSettingsNav with PanelNav and userSettingsLinks() and useUserSettingsButtons().
+* Replaced UserSettingsNav with PanelNav and useUserSettingsLinks() and useUserSettingsButtons().
 * Made the profile editing page mobile friendly.
 * Added PanelFrame component which dovetails nicely with PanelNav for building UIs.
 * Added PanelZone as a content area for PanelFrame.

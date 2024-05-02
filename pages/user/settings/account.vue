@@ -53,7 +53,7 @@ definePageMeta({
 });
 const notify = useNotify();
 const currentUser = useCurrentUser();
-const links = userSettingsLinks();
+const links = useUserSettingsLinks();
 const buttons = useUserSettingsButtons();
 const newPassword = ref({ password: '', password2: '' });
 async function changePassword() {

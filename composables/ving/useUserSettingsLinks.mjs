@@ -2,7 +2,7 @@
  * Creates a data structure for the current user's settings naivigation links.
  * @returns {object[]} An array of objects to be used with the PanelNav component.
  * @example
- * userSettingsLinks()
+ * useUserSettingsLinks()
  */
 
 export default () => {
