@@ -13,6 +13,7 @@ outline: deep
 * NOTE: useNotifyStore() has been renamed to useNotify(), update your codebase appropriately.
 * NOTE: useSystemWideAlertStore() has been renamed to useSystemWideAlert(), update your codebase appropriately.
 * NOTE: useThrobberStore() has been renamed to useThrobber(), update your codebase appropriately.
+* NOTE: userSettingsButtons() has been renamed to useUserSettingsButtons(), update your codebase appropriately.
 
 ## 2024-04-29
 * Implemented: reformat page generator to use panel components on view and edit #139
@@ -43,7 +44,7 @@ outline: deep
 * Added ManageButton component.
 * Added link to user in user admin panel.
 * Removed all references to PrimeVue icons as they don't size well with the Iconify icons.
-* Replaced UserSettingsNav with PanelNav and userSettingsLinks() and userSettingsButtons().
+* Replaced UserSettingsNav with PanelNav and userSettingsLinks() and useUserSettingsButtons().
 * Made the profile editing page mobile friendly.
 * Added PanelFrame component which dovetails nicely with PanelNav for building UIs.
 * Added PanelZone as a content area for PanelFrame.

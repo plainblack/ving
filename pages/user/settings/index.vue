@@ -47,5 +47,5 @@ definePageMeta({
 });
 const currentUser = useCurrentUser();
 const links = userSettingsLinks();
-const buttons = userSettingsButtons();
+const buttons = useUserSettingsButtons();
 </script>

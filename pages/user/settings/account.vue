@@ -54,7 +54,7 @@ definePageMeta({
 const notify = useNotify();
 const currentUser = useCurrentUser();
 const links = userSettingsLinks();
-const buttons = userSettingsButtons();
+const buttons = useUserSettingsButtons();
 const newPassword = ref({ password: '', password2: '' });
 async function changePassword() {
     if (currentUser.props?.id) {

@@ -431,11 +431,11 @@ Returns the current rest version number from `ving.json` for when you are manual
 useRest(`/api/${useRestVersion()}/user`);
 ```
 
-### userSettingsButtons()
+### useUserSettingsButtons()
 Returns a data structure for use with the `PanelNav` component.
 
 ```js
-const buttons = userSettingsButtons();
+const buttons = useUserSettingsButtons();
 ```
 
 ### userSettingsLinks()

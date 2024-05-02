@@ -99,7 +99,7 @@ definePageMeta({
 });
 const currentUser = useCurrentUser();
 const links = userSettingsLinks();
-const buttons = userSettingsButtons();
+const buttons = useUserSettingsButtons();
 const apikeys = useVingKind({
     listApi: currentUser.links?.apikeys.href,
     createApi: `/api/${useRestVersion()}/apikey`,
