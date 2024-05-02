@@ -392,12 +392,6 @@ It also triggers 2 window events for when the user logs in or out.
     });
 ```
 
-### enum2label()
-Converts an enum value into an emum label as defined in a ving schema.
-
-```js
-const label = enum2label(enum2label('archived', [{value: 'archived', label:'Is Archived'}, {value: 'not_archived', label:'Not Archived'}]))
-```
 
 ### restVersion()
 Returns the current rest version number from `ving.json` for when you are manually specifying URLs to rest services. such as this:
@@ -522,4 +516,11 @@ determineDate("2012-04-23T18:25:43.511Z") // a Date() object
 formatDateTime(new Date()) // August 2, 2023 at 4:03pm
 formatDate(new Date()) // August 2, 2023
 formatTimeAgo("2012-04-23T18:25:43.511Z") // 3 years ago
+```
+
+### enum2label()
+Converts an enum value into an emum label as defined in a ving schema.
+
+```js
+enum2label(enum2label('archived', [{value: 'archived', label:'Is Archived'}, {value: 'not_archived', label:'Not Archived'}]))
 ```
