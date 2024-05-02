@@ -13,9 +13,9 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "tests": "export $(cat .env | xargs)&& vitest",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:dev": "vitepress dev ving/docs",
+    "docs:build": "vitepress build ving/docs",
+    "docs:preview": "vitepress preview ving/docs"
   },
   "devDependencies": {
     "@featherscloud/pinion": "^0.5.3",

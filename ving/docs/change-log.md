@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 2024-05-02
+* Moved the docs folder from ./docs to ./ving/docs to avoid collisions with downstream projects.
+
 ## 2024-04-29
 * Implemented: reformat page generator to use panel components on view and edit #139
 
