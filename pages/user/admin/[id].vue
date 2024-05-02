@@ -129,6 +129,6 @@ async function become() {
 
 const password = ref('');
 
-const links = adminLinks();
+const links = useAdminLinks();
 
 </script>

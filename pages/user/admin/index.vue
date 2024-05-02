@@ -93,5 +93,5 @@ const users = useVingKind({
 await users.search();
 
 onBeforeRouteLeave(() => users.dispose());
-const links = adminLinks();
+const links = useAdminLinks();
 </script>

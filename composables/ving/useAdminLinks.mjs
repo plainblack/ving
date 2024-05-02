@@ -2,7 +2,7 @@
  * Creates a data structure for the admin naivigation links.
  * @returns {object[]} An array of objects to be used with the PanelNav component.
  * @example
- * adminLinks()
+ * useAdminLinks()
  */
 
 export default () => {

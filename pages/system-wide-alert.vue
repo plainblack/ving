@@ -60,6 +60,6 @@ const ttlOptions = [
 ];
 
 const swa = useSystemWideAlertStore();
-const links = adminLinks();
+const links = useAdminLinks();
 
 </script>

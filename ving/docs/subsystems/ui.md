@@ -364,11 +364,11 @@ Composables are reactive data functions that can only be used in script setup, o
 
 >Each of these also has documentation of how to use them in the form of JSDocs in the source code.
 
-### adminLinks()
+### useAdminLinks()
 Returns a data structure for use with the `PanelNav` component.
 
 ```js
-const links = adminLinks();
+const links = useAdminLinks();
 ```
 
 ### currentUserStore()
