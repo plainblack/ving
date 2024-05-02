@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-const swa = useSystemWideAlertStore();
+const swa = useSystemWideAlert();
 onMounted(async () => {
     await swa.check();
 })

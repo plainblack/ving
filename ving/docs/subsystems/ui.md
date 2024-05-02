@@ -333,7 +333,7 @@ Slots:
 ```
 
 ### SystemWideAlert
-Place this in your layouts where you would like the system wide alert to be displayed when an admin has configured one. It is triggered by the `useSystemWideAlertStore()` composable.
+Place this in your layouts where you would like the system wide alert to be displayed when an admin has configured one. It is triggered by the `useSystemWideAlert()` composable.
 ```html
 <SystemWideAlert/>
 ```
@@ -445,11 +445,11 @@ Returns a data structure for use with the `PanelNav` component.
 const links = userSettingsLinks();
 ```
 
-### useSystemWideAlertStore()
+### useSystemWideAlert()
 Generally not something you'd need to use, but you will interact with it through the admin UI for the system wide alert, but it is used by the `SystemWideAlert` component.
 
 ```js
-const swa = useSystemWideAlertStore();
+const swa = useSystemWideAlert();
 onMounted(async () => {
     swa.check();
 }

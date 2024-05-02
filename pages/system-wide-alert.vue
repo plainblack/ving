@@ -59,7 +59,7 @@ const ttlOptions = [
     { value: 1000 * 60 * 60 * 24 * 7, label: '1 week' },
 ];
 
-const swa = useSystemWideAlertStore();
+const swa = useSystemWideAlert();
 const links = useAdminLinks();
 
 </script>

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-export const useSystemWideAlertStore = defineStore('system-wide-alert', {
+export const useSystemWideAlert = defineStore('system-wide-alert', {
     state: () => ({
         message: '', ttl: 1000 * 60 * 60, severity: 'success'
     }),
