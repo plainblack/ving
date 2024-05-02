@@ -393,13 +393,6 @@ It also triggers 2 window events for when the user logs in or out.
 ```
 
 
-### restVersion()
-Returns the current rest version number from `ving.json` for when you are manually specifying URLs to rest services. such as this:
-
-```
-useRest(`/api/${restVersion()}/user`);
-```
-
 ### useMessageBus()
 Connects the browser to the server's [message bus](messagebus). It establishes a connection between your browser and the server, so it needs to be installed in an `onMounted()` handler in your layouts.
 ```js
@@ -428,7 +421,14 @@ You would then use the Notify Component in your layout.
 A wrapper around the Nuxt composable `$fetch()` that allows for streamlined fetches, but integrate's with ving's subsystems.
 
 ```js
-const response = useFetch(`/api/${restVersion()}/user`);
+const response = useFetch(`/api/${useRestVersion()}/user`);
+```
+
+### useRestVersion()
+Returns the current rest version number from `ving.json` for when you are manually specifying URLs to rest services. such as this:
+
+```
+useRest(`/api/${useRestVersion()}/user`);
 ```
 
 ### userSettingsButtons()
@@ -473,8 +473,8 @@ A client for interacting with [server-side ving kinds](ving-record#kind-api) thr
 
 ```js
 const users = useVingKind({
-    listApi : `/api/${restVersion()}/user`,
-    createApi : `/api/${restVersion()}/user`,
+    listApi : `/api/${useRestVersion()}/user`,
+    createApi : `/api/${useRestVersion()}/user`,
     query: { includeMeta: true, sortBy: 'username', sortOrder: 'asc' },
     newDefaults: { username: '', realName: '', email: '' },
 });
@@ -489,8 +489,8 @@ A client for interacting with [server-side ving records](ving-record#record-api)
 const id = route.params.id.toString();
 const user = useVingRecord<'User'>({
     id,
-    fetchApi: `/api/${restVersion()}/user/${id}`,
-    createApi: `/api/${restVersion()}/user`,
+    fetchApi: `/api/${useRestVersion()}/user/${id}`,
+    createApi: `/api/${useRestVersion()}/user`,
     query: { includeMeta: true, includeOptions: true },
     onUpdate() {
         notify.success('Updated user.');

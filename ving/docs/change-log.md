@@ -7,6 +7,7 @@ outline: deep
 * Moved the docs folder from ./docs to ./ving/docs to avoid collisions with downstream projects.
 * useDateTime() was never a composable, so moved it to the utils folder, and now you can just use its functions directly.
 * NOTE: useDateTime() no longer exists, just use formatDate(), formatDateTime(), and formatTimeAgo() directly.
+* NOTE: restVersion() has been renamed to useRestVersion(), update your codebase appropriately.
 
 ## 2024-04-29
 * Implemented: reformat page generator to use panel components on view and edit #139

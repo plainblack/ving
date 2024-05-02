@@ -102,7 +102,7 @@ const links = userSettingsLinks();
 const buttons = userSettingsButtons();
 const apikeys = useVingKind({
     listApi: currentUser.links?.apikeys.href,
-    createApi: `/api/${restVersion()}/apikey`,
+    createApi: `/api/${useRestVersion()}/apikey`,
     query: { includeMeta: true, sortBy: 'name', sortOrder: 'asc' },
     newDefaults: { name: '', reason: '', url: 'http://', userId: currentUser.props?.id },
 });

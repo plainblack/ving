@@ -13,7 +13,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
     }),
     actions: {
         async fetch() {
-            const response = await useRest(`/api/${restVersion()}/user/whoami`, {
+            const response = await useRest(`/api/${useRestVersion()}/user/whoami`, {
                 query,
             });
             if (isObject(response.data)) {
@@ -30,7 +30,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
             }
         },
         async login(login, password) {
-            const response = await useRest(`/api/${restVersion()}/session`, {
+            const response = await useRest(`/api/${useRestVersion()}/session`, {
                 method: 'post',
                 body: {
                     login,
@@ -45,7 +45,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         async logout() {
-            const response = await useRest(`/api/${restVersion()}/session`, {
+            const response = await useRest(`/api/${useRestVersion()}/session`, {
                 method: 'delete',
             });
             this.setState({});
@@ -72,7 +72,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
             return response;
         },
         async create(newUser) {
-            const response = await useRest(`/api/${restVersion()}/user`, {
+            const response = await useRest(`/api/${useRestVersion()}/user`, {
                 method: 'post',
                 body: newUser,
                 query: { includeOptions: true },
