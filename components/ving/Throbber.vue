@@ -7,5 +7,5 @@
 </template>
 
 <script setup>
-const throbber = useThrobberStore();
+const throbber = useThrobber();
 </script>

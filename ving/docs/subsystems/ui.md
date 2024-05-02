@@ -339,7 +339,7 @@ Place this in your layouts where you would like the system wide alert to be disp
 ```
 
 ### Throbber
-Place this in your layouts so the user has an indication that there are some background activites such as rest calls happening. It is triggered by the `useThrobberStore()` composable.
+Place this in your layouts so the user has an indication that there are some background activites such as rest calls happening. It is triggered by the `useThrobber()` composable.
 ```html
 <Throbber />
 ```
@@ -456,13 +456,13 @@ onMounted(async () => {
 ```
 
 
-### useThrobberStore()
+### useThrobber()
 Whenever there is an interaction with the API via the `useRest()` composable it will update the throbber store. It is then used by the `Throbber` component.
 
 You may also wish to trigger it for other background actions that are happening so that your user knows something is going on at the moment. Maybe if you're processing a file for export, or if you have some heavy calculations going on, or if you're waiting on a web worker.
 
 ```js
-    const throbber = useThrobberStore();
+    const throbber = useThrobber();
     throbber.working();
     throbber.done();
 ```

@@ -18,7 +18,7 @@
  */
 export default async function (url, behavior = {}) {
     const notify = useNotify();
-    const throbber = useThrobberStore();
+    const throbber = useThrobber();
     let error = null
     const response = await $fetch(url, {
         method: behavior.method || 'get',
