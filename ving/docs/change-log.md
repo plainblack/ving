@@ -7,6 +7,7 @@ outline: deep
 * Moved the docs folder from ./docs to ./ving/docs to avoid collisions with downstream projects.
 * Created a utils folder for UI utility functions and moved enum2labels() into it since it was never a composable.
 * Renamed all composables to start with "use" per Nuxt convention.
+* Removed a bunch of extra markup by formatting form controls with their own default bottom margins.
 * NOTE: useDateTime() no longer exists, just use formatDate(), formatDateTime(), and formatTimeAgo() directly.
 * NOTE: restVersion() has been renamed to useRestVersion(), update your codebase appropriately.
 * NOTE: adminLinks() has been renamed to useAdminLinks(), update your codebase appropriately.

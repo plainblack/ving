@@ -54,23 +54,17 @@
 
                 <Form :send="() => users.create()">
                 
-                            <div class="mb-4">
-                                <FormInput name="nausernameme" type="text" v-model="users.new.username" required
-                                    label="Username" />
-                            </div>
-                            <div class="mb-4">
-                                <FormInput name="realName" type="text" v-model="users.new.realName" required
-                                    label="Real Name" />
-                            </div>
-                            <div class="mb-4">
-                                <FormInput name="email" type="email" v-model="users.new.email" required label="Email" />
-                            </div>
+                    <FormInput name="nausernameme" type="text" v-model="users.new.username" required
+                        label="Username" class="mb-4" />
 
-                            <div>
-                                <Button type="submit" class="w-auto" severity="success">
-                                    <Icon name="ph:plus" class="mr-1"/> Create User
-                                </Button>
-                            </div>
+                    <FormInput name="realName" type="text" v-model="users.new.realName" required
+                    label="Real Name" class="mb-4" />
+
+                    <FormInput name="email" type="email" v-model="users.new.email" required label="Email" class="mb-4" />
+
+                    <Button type="submit" class="w-auto" severity="success">
+                        <Icon name="ph:plus" class="mr-1"/> Create User
+                    </Button>
                     
                 </Form>
             </PanelZone>

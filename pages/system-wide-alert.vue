@@ -6,13 +6,9 @@
         <template #content>
     <PanelZone title="Edit System Wide Alert" info="Add an announcement on every page in the site.">
 
-        <div class="mb-4">
-            <FormInput type="textarea" name="message" v-model="swa.message" label="Message" />
-        </div>
+        <FormInput type="textarea" name="message" v-model="swa.message" label="Message" class="mb-4" />
 
-        <div class="mb-4">
-            <FormInput type="select" name="ttl" v-model="swa.ttl" :options="ttlOptions" label="Time To Live" />
-        </div>
+        <FormInput type="select" name="ttl" v-model="swa.ttl" :options="ttlOptions" label="Time To Live" class="mb-4" />
 
         <div class="mb-4">
             <FormLabel label="Severity" />

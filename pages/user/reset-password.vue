@@ -9,15 +9,11 @@
             <Form :send="sendPasswordReset">
                 <div class="flex gap-5 flex-column-reverse md:flex-row">
                     <div class="flex-auto">
-                        <div class="mb-4">
-                            <FormInput name="email" type="email" v-model="email" required label="Email Address" />
-                        </div>
+                        <FormInput name="email" type="email" v-model="email" required label="Email Address" class="mb-4" />
 
-                        <div>
-                            <Button type="submit" label="Update Profile" class="w-auto">
-                                Send Reset Password Email
-                            </Button>
-                        </div>
+                        <Button type="submit" label="Update Profile" class="w-auto">
+                            Send Reset Password Email
+                        </Button>
                     </div>
 
                 </div>

@@ -88,15 +88,11 @@ const createProps = (schema) => {
         if (prop.required && prop.edit.length > 0) {
             if (['enum', 'boolean'].includes(prop.type)) {
                 out += `
-                    <div class="mb-4">
-                        <FormInput name="${prop.name}" type="select" :options="${schema.tableName}.propsOptions?.${prop.name}" v-model="${schema.tableName}.new.${prop.name}" label="${makeLabel(prop.name)}" />
-                    </div>`;
+                    <FormInput name="${prop.name}" type="select" :options="${schema.tableName}.propsOptions?.${prop.name}" v-model="${schema.tableName}.new.${prop.name}" label="${makeLabel(prop.name)}" class="mb-4" />`;
             }
             else if (prop.type != 'virtual') {
                 out += `
-                    <div class="mb-4">
-                        <FormInput name="${prop.name}" type="${prop2type(prop)}" v-model="${schema.tableName}.new.${prop.name}" required label="${makeLabel(prop.name)}" />
-                    </div>`;
+                    <FormInput name="${prop.name}" type="${prop2type(prop)}" v-model="${schema.tableName}.new.${prop.name}" required label="${makeLabel(prop.name)}" class="mb-4" />`;
             }
         }
     }
@@ -283,9 +279,7 @@ const editProps = (schema) => {
         if (prop.edit.length > 0) {
             if (['enum', 'boolean'].includes(prop.type)) {
                 out += `
-                    <div class="mb-4">
-                        <FormInput name="${prop.name}" type="select" :options="${schema.kind.toLowerCase()}.options?.${prop.name}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.save('${prop.name}')" />
-                    </div>`;
+                    <FormInput name="${prop.name}" type="select" :options="${schema.kind.toLowerCase()}.options?.${prop.name}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.save('${prop.name}')" class="mb-4" />`;
             }
             else if (prop.type == 'id' && prop?.relation?.type == 'parent' && prop.relation?.kind == 'S3File') {
                 out += `
@@ -296,9 +290,7 @@ const editProps = (schema) => {
             }
             else if (prop.type != 'virtual') {
                 out += `
-                    <div class="mb-4">
-                        <FormInput name="${prop.name}" type="${prop2type(prop)}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" ${prop.required ? 'required' : ''} label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.save('${prop.name}')" />
-                    </div>`;
+                    <FormInput name="${prop.name}" type="${prop2type(prop)}" v-model="${schema.kind.toLowerCase()}.props.${prop.name}" ${prop.required ? 'required' : ''} label="${makeLabel(prop.name)}" @change="${schema.kind.toLowerCase()}.save('${prop.name}')" class="mb-4" />`;
             }
         }
     }
