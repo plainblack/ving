@@ -18,6 +18,7 @@ outline: deep
 * NOTE: userSettingsButtons() has been renamed to useUserSettingsButtons(), update your codebase appropriately.
 * NOTE: userSettingsLinks() has been renamed to useUserSettingsLinks(), update your codebase appropriately.
 * Implemented: add "subtext" to FormInput #143
+* Implemented: add switch as a type to FormInput #145
 
 ## 2024-04-29
 * Implemented: reformat page generator to use panel components on view and edit #139

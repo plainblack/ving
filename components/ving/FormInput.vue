@@ -8,6 +8,10 @@
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" :step="step"
                 :incrementButtonClass="append ? 'border-noround' : ''" @change="emit('change')"
                 :decrementButtonClass="append ? 'border-noround' : ''" />
+            <InputSwitch v-if="type == 'switch' && (isBoolean(val) || isUndefined(val))"
+                v-model="val" :placeholder="placeholder" :name="name" :id="computedId"
+                :inputClass="fieldClass" @change="emit('change')"
+                 />
             <Password v-else-if="type == 'password' && (isString(val) || isNull(val) || isUndefined(val))" @change="emit('change')"
                 v-model="val" toggleMask :placeholder="placeholder" :name="name" :id="computedId" :feedback="false"
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" class="w-full" />
@@ -36,7 +40,7 @@
 </template>
 
 <script setup>
-import {isNumber, isString, isNull, isUndefined, isNil} from '#ving/utils/identify.mjs';
+import {isNumber, isString, isNull, isUndefined, isNil, isBoolean} from '#ving/utils/identify.mjs';
 
 
 const props = defineProps({
@@ -45,7 +49,7 @@ const props = defineProps({
         type: String,
         default: () => 'text',
         validator(value, props) {
-            return ['textarea', 'text', 'password', 'number', 'email','markdown','select'].includes(value)
+            return ['textarea', 'text', 'password', 'number', 'email','markdown','select','switch'].includes(value)
         }
     },
     name: {
