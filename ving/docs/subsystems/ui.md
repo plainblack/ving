@@ -149,6 +149,11 @@ Props:
     - **value** - The value that this field must match.
 - **class** - A CSS class that should be applied to the field.
 
+Slots:
+
+- **prepend** - Same thing as the prepend property above, but allows you to insert HTML not just text.
+- **append** - Same thing as the append property above, but allows you to insert HTML not just text.
+
 ### FormLabel
 An ARIA compliant label for a form field. In general you wouldn't use this directly, but via the `label` prop of `FormInput`.
 

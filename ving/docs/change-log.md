@@ -22,6 +22,7 @@ outline: deep
 * Implemented: eliminate SelectInput in favor of Dropdown #142
 * NOTE: Eliminated the prepend/append slots on FormInput. Use spread operator instead.
 * NOTE: Eliminated SelectInput. Use Dropdown or FormInput type="select" instead.
+* Added prepend/append slots to FormInput for inserting icons into input groups.
 
 ## 2024-04-29
 * Implemented: reformat page generator to use panel components on view and edit #139

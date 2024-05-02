@@ -1,8 +1,8 @@
 <template>
     <div :class="class">
         <FormLabel :label="label" :id="computedId" />
-        <div class="p-inputgroup flex-1">
-            <span v-if="prepend" class="p-inputgroup-addon"> {{ prepend }} </span>
+        <div :class="append || prepend || $slots.prepend || $slots.append ? 'p-inputgroup flex-1' : 'flex-1'">
+            <span v-if="$slots.prepend || prepend" class="p-inputgroup-addon"><slot name="prepend">{{ prepend }}</slot></span>
             <InputNumber v-if="type == 'number' && (isNumber(val) || isNull(val) || isUndefined(val))"
                 v-model="val" showButtons :placeholder="placeholder" :name="name" :id="computedId"
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" :step="step"
@@ -31,7 +31,7 @@
             <Message v-else severity="error" :closable="false">
                 Can't display {{ displayName }} Form Input
             </Message>
-            <span v-if="append" class="p-inputgroup-addon"> {{ append }} </span>
+            <span v-if="$slots.append || append" class="p-inputgroup-addon"><slot name="append">{{ append }}</slot></span>
         </div>
         <small :class="invalid && !empty ? 'text-red-500' : ''" v-if="subtext">{{ subtext }}</small>
     </div>
@@ -118,7 +118,7 @@ const invalid = computed(() => {
 
 const fieldClass = computed(() => {
     if (props.type == 'select')
-        return invalid.value ? 'border-red-500' : '';
+        return invalid.value ? 'border-red-500 w-full' : 'w-full';
     return invalid.value && !empty.value ? 'p-invalid w-full' : 'w-full' 
 });
 
