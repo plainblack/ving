@@ -2,7 +2,7 @@
     <div v-if="user.props?.id" class="surface-card p-4 border-1 surface-border border-round flex-auto">
         <div class="text-900 font-semibold text-lg mt-3">User profile for {{ user.meta?.displayName }}</div>
 
-        Created on {{ dt.formatDate(user.props?.createdAt) }}
+        Created on {{ formatDate(user.props?.createdAt) }}
         <div class="flex gap-5 flex-column-reverse md:flex-row">
             <div class="flex-auto">
                 <div class="mb-4">
@@ -30,7 +30,6 @@
   
 <script setup>
 const route = useRoute();
-const dt = useDateTime();
 
 const user = useVingRecord({
     fetchApi: `/api/${restVersion()}/user/${route.params.id}`,

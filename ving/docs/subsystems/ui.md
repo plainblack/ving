@@ -360,7 +360,9 @@ Wraps the `UserAvatar` component in a `NuxtLink` pointing to the user's profile 
 ```
 
 ## Composables
-Each of these also has documentation of how to use them in the form of JSDocs in the source code.
+Composables are reactive data functions that can only be used in script setup, other composables, or lifecycle hooks. 
+
+>Each of these also has documentation of how to use them in the form of JSDocs in the source code.
 
 ### adminLinks()
 Returns a data structure for use with the `PanelNav` component.
@@ -402,16 +404,6 @@ Returns the current rest version number from `ving.json` for when you are manual
 
 ```
 useRest(`/api/${restVersion()}/user`);
-```
-
-### useDateTime()
-Date formatting tools based upon [date-fns](https://date-fns.org/).
-```js
-const dt = useDateTime()
-const date = dt.determineDate("2012-04-23T18:25:43.511Z");
-const formattedDateTime = dt.formateDateTime(new Date());
-const formattedDate = dt.formateDate(new Date());
-const timeago = dt.formatTimeAgo("2012-04-23T18:25:43.511Z");
 ```
 
 ### useMessageBus()
@@ -515,4 +507,19 @@ const user = useVingRecord<'User'>({
 });
 await user.fetch()
 onBeforeRouteLeave(() => user.dispose());
+```
+
+## Utilities
+These are UI utility functions that will make your life easier.
+
+>Each of these also has documentation of how to use them in the form of JSDocs in the source code.
+
+
+### Date Formatting
+Date formatting tools based upon [date-fns](https://date-fns.org/).
+```js
+determineDate("2012-04-23T18:25:43.511Z") // a Date() object
+formatDateTime(new Date()) // August 2, 2023 at 4:03pm
+formatDate(new Date()) // August 2, 2023
+formatTimeAgo("2012-04-23T18:25:43.511Z") // 3 years ago
 ```

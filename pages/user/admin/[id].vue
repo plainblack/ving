@@ -68,11 +68,11 @@
                     </div>
 
                     <div class="mb-4">
-                        Created at {{ dt.formatDateTime(user.props.createdAt) }}
+                        Created at {{ formatDateTime(user.props.createdAt) }}
                     </div>
 
                     <div class="mb-4">
-                        Updated at {{ dt.formatDateTime(user.props.updatedAt) }}
+                        Updated at {{ formatDateTime(user.props.updatedAt) }}
                     </div>
                 </FieldsetItem>
 
@@ -98,7 +98,6 @@ definePageMeta({
     middleware: ['auth', 'admin']
 });
 const route = useRoute();
-const dt = useDateTime();
 const notify = useNotifyStore();
 
 const id = route.params.id.toString();

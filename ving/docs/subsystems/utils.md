@@ -40,6 +40,10 @@ A function for waiting for a few seconds or minutes.
 
 There are a bunch of other places in the codebase that have utility functions you might end up using all over, that just aren't located in the `ving/utils` folder.
 
+### utils
+
+Utillities that are specifically dedicated to [UI](ui#utilities) or presentation functions.
+
 ### ving/index.mjs
 
 Combines a bunch of commonly used ving utilities into a single roll up package.

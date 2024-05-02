@@ -18,7 +18,7 @@
                     @sort="(event) => apikeys.sortDataTable(event)">
                     <Column field="props.createdAt" header="Created" sortable>
                         <template #body="slotProps">
-                            {{ dt.formatDate(slotProps.data.props.createdAt) }}
+                            {{ formatDate(slotProps.data.props.createdAt) }}
                         </template>
                     </Column>
                     <Column field="props.name" header="Name" sortable></Column>
@@ -97,8 +97,6 @@
 definePageMeta({
     middleware: ['auth']
 });
-
-const dt = useDateTime();
 const currentUser = useCurrentUserStore();
 const links = userSettingsLinks();
 const buttons = userSettingsButtons();

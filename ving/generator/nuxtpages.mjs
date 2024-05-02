@@ -55,7 +55,7 @@ const columns = (name, schema) => {
             out += `
             <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
                 <template #body="slotProps">
-                    {{ dt.formatDateTime(slotProps.data.props.${prop.name}) }}
+                    {{ formatDateTime(slotProps.data.props.${prop.name}) }}
                 </template>
             </Column>`;
         }
@@ -165,7 +165,6 @@ const indexTemplate = ({ name, schema }) =>
 </template>
 
 <script setup>
-const dt = useDateTime();
 const ${schema.tableName} = useVingKind({
     listApi: \`/api/\${restVersion()}/${name.toLowerCase()}\`,
     createApi: \`/api/\${restVersion()}/${name.toLowerCase()}\`,
@@ -185,7 +184,7 @@ const viewProps = (schema) => {
         if (prop.view.length > 0 || prop.edit.length > 0) {
             if (prop.type == 'date') {
                 out += `
-            <div><b>${makeLabel(prop.name)}</b>: {{dt.formatDateTime(${schema.kind.toLowerCase()}.props?.${prop.name})}}</div>
+            <div><b>${makeLabel(prop.name)}</b>: {{formatDateTime(${schema.kind.toLowerCase()}.props?.${prop.name})}}</div>
             `;
             }
             else if (['boolean', 'enum'].includes(prop.type)) {
@@ -276,7 +275,6 @@ const ${name.toLowerCase()} = useVingRecord({
 });
 await ${name.toLowerCase()}.fetch();
 onBeforeRouteLeave(() => ${name.toLowerCase()}.dispose());
-const dt = useDateTime();
 </script>`;
 
 const editProps = (schema) => {
@@ -313,7 +311,7 @@ const statProps = (schema) => {
         if (prop.view.length > 0 && prop.edit.length == 0) {
             if (prop.type == 'date') {
                 out += `
-            <div class="mb-4"><b>${makeLabel(prop.name)}</b>: {{dt.formatDateTime(${schema.kind.toLowerCase()}.props.${prop.name})}}</div>
+            <div class="mb-4"><b>${makeLabel(prop.name)}</b>: {{formatDateTime(${schema.kind.toLowerCase()}.props.${prop.name})}}</div>
             `;
             }
             else if (prop.type == 'id') {
@@ -365,7 +363,6 @@ definePageMeta({
     middleware: ['auth']
 });
 const route = useRoute();
-const dt = useDateTime();
 const notify = useNotifyStore();
 const id = route.params.id.toString();
 const ${name.toLowerCase()} = useVingRecord({

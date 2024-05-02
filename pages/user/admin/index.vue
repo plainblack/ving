@@ -32,7 +32,7 @@
                     </Column>
                     <Column field="props.createdAt" header="Created" sortable>
                         <template #body="slotProps">
-                            {{ dt.formatDateTime(slotProps.data.props.createdAt) }}
+                            {{ formatDateTime(slotProps.data.props.createdAt) }}
                         </template>
                     </Column>
                     <Column header="Manage">
@@ -84,7 +84,6 @@ definePageMeta({
     middleware: ['auth', 'admin']
 });
 
-const dt = useDateTime();
 const users = useVingKind({
     listApi: `/api/${restVersion()}/user`,
     createApi: `/api/${restVersion()}/user`,
