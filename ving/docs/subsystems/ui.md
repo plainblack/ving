@@ -148,6 +148,7 @@ Props:
     - **field** - A label for a field or some other attribute such as `Password`. 
     - **value** - The value that this field must match.
 - **class** - A CSS class that should be applied to the field.
+- **coerce** - A function that accepts a the value of this field, manipulates it in some way, and returns it. By default it just returns the value as it is entered.
 
 Slots:
 

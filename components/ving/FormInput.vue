@@ -82,6 +82,10 @@ const props = defineProps({
     },
     options: [Array, undefined],
     class: String,
+    coerce : {
+        type: Function,
+        default: () => { return (v) => v }
+    }
 });
 
 const computedId = props.id || props.name;
@@ -130,6 +134,7 @@ const val = computed({
         return props.modelValue;
     },
     set(val) {
+        val = props.coerce(val);
         emit('update:modelValue', val);
     }
 });
