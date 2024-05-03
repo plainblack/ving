@@ -25,6 +25,7 @@ outline: deep
 * Added prepend/append slots to FormInput for inserting icons into input groups.
 * Exposed new props for modifying the classes associated with PanelZone.
 * Added a coerce attribute to the FormInput component.
+* Added ving util appendNumberToString().
 
 ## 2024-04-29
 * Implemented: reformat page generator to use panel components on view and edit #139

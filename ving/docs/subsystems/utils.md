@@ -8,6 +8,10 @@ There are a bunch of utilities libraries in `ving/utils` that solve common probl
 
 ## Utility Libraries
 
+### appendNumberToString
+
+Adds a number to the end of a string, or increments it if there's already one there.
+
 ### findObject
 
 Provides light wrappers around the javascript `find()` function that throws an error if the object you're looking for isn't found.
