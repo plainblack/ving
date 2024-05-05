@@ -30,6 +30,7 @@
                 :class="fieldClass" :required="required" @change="emit('change')" />
             <Message v-else severity="error" :closable="false">
                 Can't display {{ displayName }} Form Input
+                {{ val }}
             </Message>
             <span v-if="$slots.append || append" class="p-inputgroup-addon"><slot name="append">{{ append }}</slot></span>
         </div>
@@ -84,7 +85,7 @@ const props = defineProps({
     class: String,
     coerce : {
         type: Function,
-        default: () => { return (v) => v }
+        default: (v) => v,
     }
 });
 

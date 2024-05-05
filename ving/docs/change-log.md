@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## 2024-05-05
+* Fix a bug in the new coerce() logic in FormInput.
+
 ## 2024-05-02
 * Moved the docs folder from ./docs to ./ving/docs to avoid collisions with downstream projects.
 * Created a utils folder for UI utility functions and moved enum2labels() into it since it was never a composable.
