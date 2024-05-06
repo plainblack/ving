@@ -3,6 +3,11 @@ outline: deep
 ---
 # Change Log
 
+## 2024-05-06
+* Updated useVingRecord() to allow for extended actions.
+* Refactored useCurrentUser() to use useVingRecord()'s new extended actions feature.
+* Added some more docs to useVingRecord().
+
 ## 2024-05-05
 * Fix a bug in the new coerce() logic in FormInput.
 

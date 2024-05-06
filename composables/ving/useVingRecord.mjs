@@ -4,6 +4,42 @@ import { v4 } from 'uuid';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { isObject, isUndefined } from '#ving/utils/identify.mjs';
 
+/**
+ * Interact with the rest interface for a single VingRecord. It creates a Pinia store.
+ * @param {object} behavior - Contains all of the behavior parameters for this record.
+ * @param {string} behavior.id - The ID that will be used to store this data locally. Use the real ID of the record where possible. Defaults to `uuid()`.
+ * @param {string} behavior.createApi - Required. The URL to the rest endpoint to create records of this type.
+ * @param {string} behavior.fetchApi - Required. The URL to the rest endpoint to fetch this record.
+ * @param {object} behavior.query - An object of query modifiers when fetching data about this record.
+ * @param {boolean} behavior.query.includeMeta - Tells ving to include meta data. Defaults to `false`. 
+ * @param {array} behavior.query.includeRelated - An array of the related object relationship names to include if the record has any defined.
+ * @param {array} behavior.query.includeExtra - An array of the extra data names to include if the record has any defined.
+ * @param {function} behavior.onDelete - A function that will be called when this record is deleted.
+ * @param {function} behavior.onUpdate - A function that will be called when this record is update.
+ * @param {function} behavior.onCreate - A function that will be called when this record is created.
+ * @param {function} behavior.onFetch - A function that will be called when after this record is fetched.
+ * @param {function} behavior.onError - A function that will be called when interacting with the rest API for this record fails.
+ * @param {boolean} behavior.suppressErrorNotifications - Ving automatically generates error messages for the user via the `useNotify()` composable. Setting this to `true` will disable those. Defaults to `false`.
+ * @param {object} behavior.extendedActions - An object containing extra actions (functions) to apply to this Pinia store when generating it.
+ * @param {object} behavior.props - Any default prop values. Defaults to `{}`. Usually no reason to ever specify this.
+ * @param {object} behavior.extra - Any default extra values. Defaults to `{}`. Usually no reason to ever specify this.
+ * @param {object} behavior.meta - Any default meta values. Defaults to `{}`. Usually no reason to ever specify this.
+ * @param {object} behavior.options - Any default options values. Defaults to `{}`. Usually no reason to ever specify this.
+ * @param {object} behavior.links - Any default link objects. Defaults to `{}`. Usually no reason to ever specify this.
+ * @param {object} behavior.related - Any default related objects. Defaults to `{}`. Usually no reason to ever specify this.
+ * @param {object[]} behavior.warnings - An array of warning objects. Defaults to `[]`. Usually no reason to ever specify this.
+ * @returns {VingRecordStore} - A Pinia store.
+ * @example
+ * const user = useVingRecord({
+ *  id : 'xxx',
+ *  fetchApi: '/api/v1/user/xxx',
+ *  createApi: '/api/v1/user',
+ *  query : { includeMeta : true },
+ * });
+ * await user.fetch();
+ * onBeforeRouteLeave(() => user.dispose());
+ */
+
 export default (behavior) => {
     const notify = useNotify();
 
@@ -21,6 +57,7 @@ export default (behavior) => {
             fetchApi: behavior.fetchApi,
         }),
         actions: {
+            ...behavior.extendedActions,
 
             /**
              * A quick way to call an endpoint without directly setting up your own `useRest()` composable. The result then updates the local object.
