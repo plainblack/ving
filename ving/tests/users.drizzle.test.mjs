@@ -8,17 +8,17 @@ describe('UserTable', async () => {
     await db.delete(UserTable).where(like(UserTable.email, '%@shawshank.prison'));
 
     test("can insert", async () => {
-        const result = await db.insert(UserTable).values({ id: 'a', username: 'warden', email: 'warden@shawshank.prison', realName: 'Warden' });
+        const result = await db.insert(UserTable).values({ username: 'warden', email: 'warden@shawshank.prison', realName: 'Warden' });
         expect(result[0].affectedRows).toBe(1);
     });
 
     test("can select", async () => {
-        const result = await db.select().from(UserTable).where(eq(UserTable.id, 'a'));
+        const result = await db.select().from(UserTable).where(eq(UserTable.username, 'warden'));
         expect(result[0].realName).toBe('Warden');
     });
 
     test("can count", async () => {
-        const result = await db.select({ count: sql`count(*)` }).from(UserTable).where(eq(UserTable.id, 'a'));
+        const result = await db.select({ count: sql`count(*)` }).from(UserTable).where(eq(UserTable.username, 'warden'));
         expect(result[0].count).toBe(1);
     });
 
@@ -26,13 +26,13 @@ describe('UserTable', async () => {
         const countWithColumn = (column) => {
             return sql`count(${column})`
         }
-        const result = await db.select({ count: countWithColumn(UserTable.username) }).from(UserTable).where(eq(UserTable.id, 'a'));
+        const result = await db.select({ count: countWithColumn(UserTable.username) }).from(UserTable).where(eq(UserTable.username, 'warden'));
         expect(result[0].count).toBe(1);
     });
 
     test("can pass where clause", async () => {
         const passWhere = async (where) => await db.select().from(UserTable).where(where);
-        const result = await passWhere(eq(UserTable.id, 'a'));
+        const result = await passWhere(eq(UserTable.username, 'warden'));
         expect(result[0].realName).toBe('Warden');
     });
 
@@ -83,19 +83,19 @@ describe('UserTable', async () => {
 
     test("can pass select query", async () => {
         const passSelect = async (qb) => await qb.limit(1);
-        const result = await passSelect(db.select().from(UserTable).where(eq(UserTable.id, 'a')));
+        const result = await passSelect(db.select().from(UserTable).where(eq(UserTable.username, 'warden')));
         expect(result[0].realName).toBe('Warden');
     });
 
     test("can update", async () => {
-        const result1 = await db.update(UserTable).set({ realName: 'Samuel Norton' }).where(eq(UserTable.id, 'a'));
+        const result1 = await db.update(UserTable).set({ realName: 'Samuel Norton' }).where(eq(UserTable.username, 'warden'));
         expect(result1[0].affectedRows).toBe(1);
-        const result2 = await db.select().from(UserTable).where(eq(UserTable.id, 'a'));
+        const result2 = await db.select().from(UserTable).where(eq(UserTable.username, 'warden'));
         expect(result2[0].realName).toBe('Samuel Norton');
     });
 
     test("can delete", async () => {
-        const result = await db.delete(UserTable).where(eq(UserTable.id, 'a'));
+        const result = await db.delete(UserTable).where(eq(UserTable.username, 'warden'));
         expect(result[0].affectedRows).toBe(1);
     });
 

@@ -40,25 +40,25 @@ export class UserRecord extends RoleMixin(VingRecord) {
     async avatarUrl() {
         switch (this.get('avatarType')) {
             case 'robot': {
-                const id = this.get('id');
+                const id = this.get('id').toString();
                 let url = `https://robohash.org/${id}/size_300x300`;
 
                 // foreground
-                if (this.get('id')?.match(/^[A-M]/)) {
+                if (id.match(/^[3-4]/)) {
                     url += '/set_set2'
                 }
-                else if (this.get('id')?.match(/^[a-m]/)) {
+                else if (id.match(/^[5-7]/)) {
                     url += '/set_set3'
                 }
-                else if (id.match(/^[N-Z]/)) {
+                else if (id.match(/^[6-9]/)) {
                     url += '/set_set4'
                 }
 
                 // background
-                if (id.match(/[A-Z]$/)) {
+                if (id.match(/[0-4]$/)) {
                     url += '/bgset_bg1'
                 }
-                else if (id.match(/[a-z]$/)) {
+                else if (id.match(/[5-9]$/)) {
                     url += '/bgset_bg2'
                 }
 

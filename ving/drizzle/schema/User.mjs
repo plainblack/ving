@@ -1,10 +1,10 @@
-import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, unique, varchar, text, int, json, mediumText, foreignKey } from '#ving/drizzle/orm.mjs';
+import { boolean, mysqlEnum, mysqlTable, timestamp, datetime, uniqueIndex, unique, char, varchar, text, int, bigint, json, mediumText, foreignKey } from '#ving/drizzle/orm.mjs';
 import {S3FileTable} from '#ving/drizzle/schema/S3File.mjs';
 
 
 export const UserTable = mysqlTable('users',
     {
-        id: varchar('id', { length: 36 }).notNull().default('uuid-will-be-generated').primaryKey(),
+        id: bigint('id', {mode:'number', unsigned: true}).notNull().autoincrement().primaryKey(),
 		createdAt: timestamp('createdAt').defaultNow().notNull(),
 		updatedAt: timestamp('updatedAt').defaultNow().notNull().onUpdateNow(),
 		username: varchar('username', { length: 60 }).notNull().default(''),
@@ -18,7 +18,7 @@ export const UserTable = mysqlTable('users',
 		developer: boolean('developer').notNull().default(false),
 		avatarType: mysqlEnum('avatarType', ['robot','uploaded']).notNull().default('robot'),
 		bio: mediumText('bio').notNull(),
-		avatarId: varchar('avatarId', { length: 36 }).default(null)
+		avatarId: bigint('avatarId', {mode:'number', unsigned: true}).default(null)
     }, 
     (table) => ({
         usernameIndex: uniqueIndex('usernameIndex').on(table.username),

@@ -4,6 +4,7 @@ import { RoleMixin, RoleOptions } from '#ving/record/mixins/Role.mjs';
 import { useCache } from '#ving/cache.mjs';
 import { v4 } from 'uuid';
 import { isUndefined } from '#ving/utils/identify.mjs';
+import { stringifyId } from '#ving/utils/int2str.mjs';
 
 const version = 2;
 
@@ -136,7 +137,7 @@ class ProtoSession {
         const out = {
             props: {
                 id: this.id,
-                userId: this.get('id'),
+                userId: stringifyId(this.get('id')),
             }
         };
         if ('include' in params && !isUndefined(params.include)) {

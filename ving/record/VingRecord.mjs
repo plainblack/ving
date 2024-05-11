@@ -1,8 +1,9 @@
 import { findVingSchema } from '#ving/schema/map.mjs';
 import ving from '#ving/index.mjs';
-import { isObject, isUndefined, isNil, isNull } from '#ving/utils/identify.mjs';
+import { isObject, isUndefined, isNil, isNull, isNumber } from '#ving/utils/identify.mjs';
 import { eq, asc, desc, and, ne, sql, getTableName, count, sum, avg, min, max } from '#ving/drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving/schema/helpers.mjs';
+import { parseId, stringifyId } from '#ving/utils/int2str.mjs';
 
 /**
  * Creates a select list options datastructure from the `enums` and `enumLabels` on a ving schema.
@@ -171,12 +172,11 @@ export class VingRecord {
         const include = params.include || {};
         const isOwner = !isUndefined(currentUser) && await this.isOwner(currentUser);
         const schema = findVingSchema(getTableName(this.table));
-        let out = { props: {} };
-        out.props.id = this.get('id');
+        let out = { props: { id: stringifyId(this.get('id')) } };
         if (include?.links) {
             const vingConfig = await ving.getConfig();
             out.links = { base: { href: `/api/${vingConfig.rest.version}/${schema.kind?.toLowerCase()}`, methods: ['GET', 'POST'] } };
-            out.links.self = { href: `${out.links.base.href}/${this.#props.id}`, methods: ['GET', 'PUT', 'DELETE'] };
+            out.links.self = { href: `${out.links.base.href}/${out.props.id}`, methods: ['GET', 'PUT', 'DELETE'] };
         }
         if (include?.options) {
             out.options = await this.propOptions(params);
@@ -201,6 +201,8 @@ export class VingRecord {
         }
 
         for (const field of schema.props) {
+            if (field.name == 'id') // already done
+                continue;
 
             // determine field visibility
             const roles = [...field.view, ...field.edit];
@@ -213,7 +215,10 @@ export class VingRecord {
             const fieldName = field.name.toString();
 
             // props
-            out.props[field.name] = this.#props[field.name];
+            if (field.type == 'id')
+                out.props[field.name] = stringifyId(this.#props[field.name]);
+            else
+                out.props[field.name] = this.#props[field.name];
 
             // links 
             if (isObject(out.links)
@@ -280,7 +285,8 @@ export class VingRecord {
         }
         this.#inserted = true;
         this.#dirty = [];
-        await this.db.insert(this.table).values(this.#props);
+        const result = await this.db.insert(this.table).values(this.#props);
+        this.#props.id = result[0].insertId;
     }
 
     /**
@@ -498,45 +504,47 @@ export class VingRecord {
 
         for (const field of schema.props) {
             const fieldName = field.name.toString();
-            const param = params[field.name];
+            const param = field.type == 'id' && !isNil(params[field.name]) ? parseId(params[field.name]) : params[field.name];
             const roles = [...field.edit];
             const editable = (roles.includes('owner') && (isOwner || !this.isInserted)) || (currentUser?.isaRole(roles));
-            if (!editable) {
+            if (!editable) { // skip it if the field isn't editable
                 continue;
             }
-            if (isUndefined(param) || (field.relation && field.relation.type != 'parent')) {
+            if (isUndefined(param)) { // skip it if the field is undefined 
                 continue;
             }
-            if (param === '' && field.required) {
+            if (field.relation && field.relation.type != 'parent') { // skip it if it is a relation that isn't a parent
+                continue;
+            }
+            if (param === '' && field.required) { // error if an empty value is assigned to a required field
                 throw ving.ouch(441, `${fieldName} is required.`, fieldName);
             }
-            if (!isUndefined(field.name) && !isUndefined(param)) {
-                if (field.unique) {
-                    const query = this.db.select({ count: sql`count(*)`.as('count') }).from(this.table);
-                    let where = eq(this.table[field.name], params[field.name]);
-                    if (this.isInserted)
-                        where = and(where, ne(this.table.id, this.get('id')));
-                    if (field.uniqueQualifiiers) {
-                        for (const qualifier of field.uniqueQualifiiers) {
-                            where = and(where, eq(this.table[qualifier], params[qualifier] || this.get(qualifier)));
-                        }
-                    }
-                    let count = (await query.where(where))[0].count
-                    if (count > 0) {
-                        ving.log('VingRecord').warning(`${this.get('id')} unique check failed on ${field.name.toString()}`)
-                        throw ving.ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
+            if (field.unique) { // do if field is marked unique
+                const query = this.db.select({ count: sql`count(*)`.as('count') }).from(this.table);
+                let where = eq(this.table[field.name], params[field.name]);
+                if (this.isInserted) // check against own id if it is already inserted
+                    where = and(where, ne(this.table.id, this.get('id')));
+                if (field.uniqueQualifiiers) { // add a clause for each uniqueQualifier
+                    for (const qualifier of field.uniqueQualifiiers) {
+                        where = and(where, eq(this.table[qualifier], params[qualifier] || this.get(qualifier)));
                     }
                 }
-                if (!isNull(param)) {
-                    this.set(field.name, param);
-                    if (field.relation && field.relation.type == 'parent') {
-                        const parent = await this.parent(field.relation.name);
-                        if (!field.relation.skipOwnerCheck)
-                            await parent.canEdit(currentUser);
-                    }
+                let count = (await query.where(where))[0].count
+                if (count > 0) { // error if we find any duplicates
+                    ving.log('VingRecord').warn(`${isNil(this.get('id')) ? 'new record' : this.get('id').toString()} unique check failed on ${field.name.toString()}`)
+                    throw ving.ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
                 }
-
             }
+            if (isNull(param)) { // skip it if the value is null
+                continue;
+            }
+            if (field.relation && field.relation.type == 'parent') { // is this a parent relation
+                const parent = await this.parent(field.relation.name);
+                if (!field.relation.skipOwnerCheck) // skip check if schema says so
+                    await parent.canEdit(currentUser); // error if not owner
+            }
+            else
+                this.set(field.name, param);
         }
         return true;
     }
@@ -885,9 +893,9 @@ export class VingKind {
     }
 
     /**
-     * Locates and returns a single record by it's `id`.
+     * Locates and returns a single record.
      * 
-     * @param {string} id The unique id of the record
+     * @param {string|number} id the unique `id` of the record
      * @returns {VingRecord|undefined} a record or `undefined` if no record is found
      * @example
      * const record = await Users.find('xxx');
@@ -978,14 +986,17 @@ export class VingKind {
     /**
      * Locates and returns a single record by it's `id`.
      * 
-     * @param {string} id the unique id of the record
+     * @param {string|number} id the unique `id` of the record
      * @throws 404 if no record is found
      * @returns {VingRecord} a record
      * @example
      * const record = await Users.findOrDie('xxx')
      */
     async findOrDie(id) {
-        const props = (await this.select.where(eq(this.table.id, id)))[0];
+        let field = this.table.id;
+        if (!isNumber(id))  // in case we are passed the stringified id
+            id = parseId(id);
+        const props = (await this.select.where(eq(field, id)))[0];
         if (props)
             return new this.recordClass(this.db, this.table, props);
         const schema = findVingSchema(getTableName(this.table));

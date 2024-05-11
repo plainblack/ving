@@ -3,6 +3,10 @@ outline: deep
 ---
 # Change Log
 
+## 2024-05-11
+* VingRecord id's are now integers for better database performance. They are translated to encrypted strings on the API for better security. 
+* NOTE: You will likely want to recreate your database from scratch as all primary and foreign keys are changing from strings to integers, and doing a migration for that is going to be challenging.
+
 ## 2024-05-06
 * Updated useVingRecord() to allow for extended actions.
 * Refactored useCurrentUser() to use useVingRecord()'s new extended actions feature.

@@ -6,7 +6,7 @@ import { getConfig } from '#ving/config.mjs';
 const Users = await useKind('User');
 const vingConfig = await getConfig();
 
-await Users.delete.where(inArray(Users.table.username, ['warden', 'captain', 'guard']));
+await Users.delete.where(inArray(Users.table.username, ['warden', 'captain', 'guard', 'rita']));
 const warden = await Users.create({ username: 'warden', email: 'warden@shawshank.jail', realName: 'Samuel Norton' });
 const captain = Users.mint({ username: 'captain', email: 'captain@shawshank.jail', realName: 'Byron Hadley' });
 describe('Users', async () => {

@@ -184,6 +184,15 @@ export const dbInt = (prop) => {
 }
 
 /**
+ * Generates a drizzle schema field definition for an unsigned bigint prop setting it to be not null with its default value
+ * @param {Object} prop An object containing the properties of this prop
+ * @returns a drizzle field schema definition
+ */
+export const dbBigInt = (prop) => {
+    return `bigint('${prop.name}', {mode:'number', unsigned: true}).notNull().default(${numberDefault(prop, true)})`;
+}
+
+/**
  * Generates a drizzle schema field definition for a json prop setting it to not null with its default value.
  * @param {Object} prop An object containing the properties of this prop
  * @returns a drizzle field schema definition
@@ -197,8 +206,8 @@ export const dbJson = (prop) => {
  * @param {Object} prop An object containing the properties of this prop
  * @returns a drizzle field schema definition
  */
-export const dbId = (prop) => {
-    let col = `varchar('${prop.name}', { length: 36 })`;
+export const dbUuid = (prop) => {
+    let col = `char('${prop.name}', { length: 36 })`;
     if (prop.required) {
         col += `.notNull()`;
     }
@@ -214,7 +223,7 @@ export const dbId = (prop) => {
  * @returns a drizzle field schema definition
  */
 export const dbPk = (prop) => {
-    return `${dbId(prop)}.default('uuid-will-be-generated').primaryKey()`;
+    return `bigint('${prop.name}', {mode:'number', unsigned: true}).notNull().autoincrement().primaryKey()`;
 }
 
 /**
@@ -223,7 +232,14 @@ export const dbPk = (prop) => {
  * @returns a drizzle field schema definition
  */
 export const dbRelation = (prop) => {
-    return `${dbId(prop)}`;
+    let col = `bigint('${prop.name}', {mode:'number', unsigned: true})`;
+    if (prop.required) {
+        col += `.notNull()`;
+    }
+    else {
+        col += `.default(null)`;
+    }
+    return col;
 }
 
 /**
@@ -233,8 +249,8 @@ export const baseSchemaProps = [
     {
         type: "id",
         name: "id",
-        required: true,
-        default: () => uuid(),
+        required: false,
+        default: undefined,
         db: (prop) => dbPk(prop),
         view: ['public'],
         edit: [],
