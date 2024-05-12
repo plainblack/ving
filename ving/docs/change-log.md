@@ -6,6 +6,8 @@ outline: deep
 ## 2024-05-11
 * VingRecord id's are now integers for better database performance. They are translated to encrypted strings on the API for better security. 
 * NOTE: You will likely want to recreate your database from scratch as all primary and foreign keys are changing from strings to integers, and doing a migration for that is going to be challenging.
+* NOTE: You should add a VING_SKIPJACK_KEY to your .env file that takes the format of between 1 and 10 random numbers separated by commas. 
+* NOTE: You should run `npm i` as we've added skip32 as a new required module.
 * Fixed some email verification corner case problems.
 
 ## 2024-05-06

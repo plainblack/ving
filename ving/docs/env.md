@@ -9,6 +9,15 @@ There are two types of variables that can end up in `.env`, editable and generat
 ## Editable Variables
 Editable Variables are variables that you, the developer or devops person, are required to provide.
 
+### VING_SKIPJACK_KEY
+This sets the encryption key for the algorithm that obsucates database IDs in URLs making them unguessable to the public. It should be a series of 1 to 10 random numbers separated by commas.
+
+```bash
+VING_SKIPJACK_KEY=3,493,19,1,5,7,11,9393,11,19429
+```
+
+Note that changing this after your site is in the wild will change all the keys that external users may have stored in their use of your Rest endpoints. Also, if you don't set this we'll just use our own set of numbers, but then anybody that has access to the Ving source code could figure out the values of your ids.
+
 ### VING_MYSQL
 ```bash
 VING_MYSQL="mysql://ving:fdsfdsfdsdsf@localhost:3380/ving"

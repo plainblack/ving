@@ -239,7 +239,7 @@ An object of database stored properties.
 
 ##### id
 
-A unique id that will never change. It is a 36 character GUID (global unique id).
+A unique id that will never change, which is an encrypted string based upon the integer value stored in the database. The ID's always begin with a `v` and are safe to use as CSS ID's or Javascript object property names.
 
 ##### createdAt
 
