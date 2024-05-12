@@ -122,6 +122,7 @@ export class VingRecord {
             return true;
         }
         const schema = findVingSchema(getTableName(this.table));
+        ving.log('VingRecord').warn(`${currentUser.get('id')} does not have the privileges to access ${schema.kind} id ${this.get('id')}.`);
         throw ving.ouch(403, `You do not have the privileges to access ${schema.kind}.`)
     }
 
@@ -291,6 +292,7 @@ export class VingRecord {
     async insert() {
         if (this.#inserted) {
             const schema = findVingSchema(getTableName(this.table));
+            ving.log('VingRecord').error(`${schema.kind} already inserted as ${this.get('id')}`)
             throw ving.ouch(409, `${schema.kind} already inserted`);
         }
         this.#inserted = true;
@@ -364,8 +366,10 @@ export class VingRecord {
     parentPropSchema(name) {
         const schema = findVingSchema(getTableName(this.table));
         const found = schema.props.find(obj => obj.relation?.name == name);
-        if (isUndefined(found))
+        if (isUndefined(found)) {
+            ving.log('VingRecord').error(`cannot find parent prop by ${name} in ving schema ${schema.kind}`);
             throw ving.ouch(404, `cannot find parent prop by ${name} in ving schema ${schema.kind}`);
+        }
         return found;
     }
 
@@ -471,6 +475,7 @@ export class VingRecord {
                 }
                 else {
                     const formatted = result.error.format();
+                    ving.log('VingRecord').error(key.toString() + ': ' + formatted._errors.join('.') + '.');
                     throw ving.ouch(442, key.toString() + ': ' + formatted._errors.join('.') + '.', key);
                 }
             }
@@ -478,6 +483,7 @@ export class VingRecord {
                 this.flushParentCache();
         }
         else {
+            ving.log('VingRecord').error(key.toString() + ' is not a prop');
             throw ving.ouch(400, key.toString() + ' is not a prop', key);
         }
         if (value != this.#props[key] && !this.#dirty.includes(key))
@@ -533,6 +539,7 @@ export class VingRecord {
                 continue;
             }
             if (param === '' && field.required) { // error if an empty value is assigned to a required field
+                ving.log('VingRecord').warn(`${fieldName} is required in ${schema.kind}.`);
                 throw ving.ouch(441, `${fieldName} is required.`, fieldName);
             }
             if (field.unique) { // do if field is marked unique
@@ -582,6 +589,7 @@ export class VingRecord {
             if (!isNil(params[prop.name]))
                 continue;
             const fieldName = prop.name.toString();
+            ving.log('VingRecord').warn(`${fieldName} is required in ${schema.kind}.`);
             throw ving.ouch(441, `${fieldName} is required.`, fieldName);
         }
         return true;
@@ -1016,6 +1024,7 @@ export class VingKind {
         if (props)
             return new this.recordClass(this.db, this.table, props);
         const schema = findVingSchema(getTableName(this.table));
+        ving.log('VingRecord').error(`${schema.kind} not found finding id ${id}.`);
         throw ving.ouch(404, `${schema.kind} not found.`, { id })
     }
 
