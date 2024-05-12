@@ -10,6 +10,8 @@ outline: deep
 * NOTE: You should run `npm i` as we've added skip32 as a new required module.
 * Fixed some email verification corner case problems.
 * Removed the findObject() utility as Array.prototype.find() essentially works the same way, and this forces better error handling.
+* Removed the token CLI command.
+* Added the id CLI command.
 
 ## 2024-05-06
 * Updated useVingRecord() to allow for extended actions.
