@@ -8,6 +8,7 @@ export default defineNuxtConfig({
         '@pinia/nuxt',
         'nuxt-icon',
         'nuxt-primevue',
+        '@vueuse/nuxt',
     ],
     primevue: {
         cssLayerOrder: 'reset,primevue'

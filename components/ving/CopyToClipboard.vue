@@ -1,5 +1,5 @@
 <template>
-    <Button :class="buttonClass" alt="copy to clipboard" title="Copy to Clipboard" @click="copyToClipboard(text)">
+    <Button v-if="isSupported" :class="buttonClass" alt="copy to clipboard" title="Copy to Clipboard" @click="copyToClipboard(text)">
         <Icon name="fa-regular:copy" />
     </Button>
 </template>
@@ -27,9 +27,10 @@ const buttonClass = computed(() => {
     }
     return out.join(' ');
 })
+const { copy, isSupported } = useClipboard()
 
 function copyToClipboard(text) {
-    navigator.clipboard.writeText(text);
+    copy(text);
     notify.info('Copied to Clipboard');
 }
 </script>

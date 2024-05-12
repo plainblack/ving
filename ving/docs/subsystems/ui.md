@@ -2,7 +2,7 @@
 outline: deep
 ---
 # Web UI
-The web user interface of ving allows you to build out complex applications using Vue 3. It starts with automatically generating pages for your ving records. We use a component library suite called [PrimeVue](https://primevue.org/) that provides all kinds of amazing functionality and a styling library called [PrimeFlex](https://www.primefaces.org/primeflex/) that gives you rich power over CSS. But we've also got a bunch of custom [components](#components) and [composables](#composables) to help you build your app.
+The web user interface of ving allows you to build out complex applications using Vue 3. It starts with automatically generating pages for your ving records. We use a component library suite called [PrimeVue](https://primevue.org/) that provides all kinds of amazing functionality and a styling library called [PrimeFlex](https://www.primefaces.org/primeflex/) that gives you rich power over CSS. We also provide access to all of the [VueUse composables](https://vueuse.org/functions.html) for things like reactivity within localStorage, mouse, keyboard, and other browser subsystems. But we've also got a bunch of custom [components](#components) and [composables](#composables) to help you build your app.
 
 ## Layouts
 The design of your site is created using [Nuxt Layouts](https://nuxt.com/docs/guide/directory-structure/layouts). You can find the default layout in `layouts/default.vue`.
