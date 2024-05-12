@@ -146,10 +146,10 @@ To make full use of all of Ving's features, there are other things you'll need t
 
 For developement we recommend [Visual Studio Code](https://code.visualstudio.com/download).
 
-And for the best possible experience, we also recommend installing these plugins:
+And for the best possible experience, we also recommend installing these optional but nice plugins:
 
- - [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) - optional, but nice
- - [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons) - optional, but nice
- - [MySQL](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-mysql-client2) - optional, but nice
- - [Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify) - optional, but nice
- - [Nunjucks Template Formatting](https://marketplace.visualstudio.com/items?itemName=eseom.nunjucks-template) - optional, but nice
+ - [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+ - [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
+ - [MySQL](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-mysql-client2)
+ - [Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify)
+ - [Nunjucks Template Formatting](https://marketplace.visualstudio.com/items?itemName=eseom.nunjucks-template)
