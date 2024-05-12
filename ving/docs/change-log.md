@@ -3,6 +3,10 @@ outline: deep
 ---
 # Change Log
 
+## 2024-05-12
+* Fixed: file uploads are broken after id switch #151
+* NOTE: Thumbnails now use a different URL scheme than previously, and thus will be in broken locations. Since we're pre-production, just reupload any images you had.
+
 ## 2024-05-11
 * VingRecord id's are now integers for better database performance. They are translated to encrypted strings on the API for better security. 
 * NOTE: You will likely want to recreate your database from scratch as all primary and foreign keys are changing from strings to integers, and doing a migration for that is going to be challenging.

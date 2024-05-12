@@ -42,26 +42,30 @@ export const sanitizeFilename = (nameIn) => {
 };
 
 /**
-     * Formats a UUID as series of folders to be used as an S3 key.
+     * Formats a string as a series of folders to be used as an S3 key.
      * 
-     * @param {string} input A v4 UUID.
-     * @returns {string} A string with slashes splitting the first few characters and all dashes replaced with slashes.
+     * @param {string} input The stringified version of the s3 files id.
+     * @returns {string} A string with slashes splitting every 2 characters.
      * @example
-     * const folder = formatS3FolderName('0467810a-5d75-4a91-a868-4f87281fbab9')
+     * formatS3FolderName('vxD31s') // vx/D3/1s
      */
 export const formatS3FolderName = (input) => {
-    return input.replace(/-/g, '/').replace(/^(.{4})(.+)$/, '$1/$2');
+    const chunks = [];
+    for (let i = 0; i < input.length; i += 2) {
+        chunks.push(input.substring(i, i + 2));
+    }
+    return chunks.join('/');
 }
 
 /**
-     * Generates a UUID and then formats it using `formatS3FolderName`.
+     * Generates a UUID and then turns the dashes into slashes to form a path.
      * 
      * @returns {string} A string with slashes splitting the first few characters and all dashes replaced with slashes.
      * @example
      * const folder = makeS3FolderName()
      */
 export const makeS3FolderName = () => {
-    return formatS3FolderName(v4());
+    return v4().replace(/-/g, '/').replace(/^(.{4})(.+)$/, '$1/$2');
 }
 
 /** A subclass of VingRecord that holds information about files in S3 for use by other Ving Records.
@@ -93,7 +97,7 @@ export class S3FileRecord extends VingRecord {
             case 'self':
                 return this.fileUrl();
             case 'thumbnail':
-                return `https://${process.env.VING_AWS_THUMBNAILS_BUCKET}.s3.amazonaws.com/${formatS3FolderName(this.get('id'))}.png`;
+                return `https://${process.env.VING_AWS_THUMBNAILS_BUCKET}.s3.amazonaws.com/${formatS3FolderName(this.idAsString())}.png`;
             case 'extension': {
                 const image = extensionMap[this.get('extension')] || 'unknown';
                 return `/img/filetype/${image}.png`;
@@ -144,7 +148,7 @@ export class S3FileRecord extends VingRecord {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     url: self.fileUrl(),
-                    thumbnailKey: formatS3FolderName(self.get('id')) + '.png',
+                    thumbnailKey: formatS3FolderName(self.idAsString()) + '.png',
                     fileType: self.get('extension'),
                 }),
             });
@@ -255,7 +259,7 @@ export class S3FileRecord extends VingRecord {
      */
     async deleteThumbnail() {
         if (this.get('icon') == 'thumbnail') {
-            const key = formatS3FolderName(this.get('id')) + '.png';
+            const key = formatS3FolderName(this.idAsString()) + '.png';
             ving.log('S3File').info(`Deleting thumbnail ${this.get('id')} at ${key}`);
             const command = new DeleteObjectCommand({
                 Bucket: process.env.VING_AWS_THUMBNAILS_BUCKET,
