@@ -11,19 +11,24 @@
 
 <script setup>
 const config = useRuntimeConfig();
-const message = ref('Please wait while we verify your email address.');
 const currentUser = useCurrentUser();
-const query = useRoute().query;
-await currentUser.verifyEmail(query.verify?.toString());
-if (currentUser.props?.verifiedEmail) {
-    message.value = 'Email address successfully verified.';
-    if (currentUser.meta?.redirectAfter)
-        await navigateTo(currentUser.meta.redirectAfter);
-    else
-        await navigateTo('/');
-
+if (await currentUser.isAuthenticated()) {
+    const message = ref('Please wait while we verify your email address.');
+    const query = useRoute().query;
+    await currentUser.verifyEmail(query.verify?.toString());
+    if (currentUser.props?.verifiedEmail) {
+        message.value = 'Email address successfully verified.';
+        if (currentUser.meta?.redirectAfter && !currentUser.meta?.redirectAfter?.match(/verify-email/))
+            await navigateTo(currentUser.meta.redirectAfter);
+        else
+           await navigateTo('/');
+    }
+    else {
+        message.value = 'Verification failed.';
+    }
 }
 else {
-    message.value = 'Verification failed.';
+    await navigateTo('/user/login')
 }
+
 </script>
