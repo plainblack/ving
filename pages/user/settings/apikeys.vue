@@ -47,13 +47,13 @@
                 <Dialog v-model:visible="dialog.visible" maximizable modal header="Header"
                     :style="{ width: '75vw' }">
 
-                    <FormInput name="name" type="text" v-model="dialog.current.props.name"
+                    <FormInput name="name" type="text" v-model="dialog.current.props.name" id="modal:name"
                         required label="Name" @change="dialog.current.save('name')" class="mb-4" />
 
-                    <FormInput name="url" type="text" v-model="dialog.current.props.url"
+                    <FormInput name="url" type="text" v-model="dialog.current.props.url" id="modal:url"
                     label="URL" @change="dialog.current.save('url')" class="mb-4" />
 
-                    <FormInput name="reason" type="textarea"
+                    <FormInput name="reason" type="textarea" id="modal:reason"
                     v-model="dialog.current.props.reason" label="Reason"
                     @change="dialog.current.save('reason');" class="mb-4" />
     
