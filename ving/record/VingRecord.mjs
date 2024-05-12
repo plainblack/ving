@@ -510,7 +510,7 @@ export class VingRecord {
 
         for (const field of schema.props) {
             const fieldName = field.name.toString();
-            const param = field.type == 'id' && !isNil(params[field.name]) ? parseId(params[field.name]) : params[field.name];
+            const param = field.type == 'id' && !isNil(params[field.name]) && !isNumber(params[field.name]) ? parseId(params[field.name]) : params[field.name];
             const roles = [...field.edit];
             const editable = (roles.includes('owner') && (isOwner || !this.isInserted)) || (currentUser?.isaRole(roles));
             if (!editable) { // skip it if the field isn't editable
