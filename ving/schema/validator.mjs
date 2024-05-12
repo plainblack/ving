@@ -161,6 +161,8 @@ export const validateRelationName = (prop, schema) => {
         throw ving.ouch(442, `${formatPropPath(prop, schema)}.relation.name must be a string.`);
     if (!/^[a-z]/.test(prop.relation.name))
         throw ving.ouch(442, `${formatPropPath(prop, schema)}.relation.name must start with a lower case letter.`);
+    if (schema.props.find(p => p.name == prop.relation.name))
+        throw ving.ouch(442, `${formatPropPath(prop, schema)}.relation.name collides with a prop named ${prop.relation.name}.`);
 }
 
 /**
