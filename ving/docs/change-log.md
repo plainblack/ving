@@ -7,6 +7,7 @@ outline: deep
 * Fixed: file uploads are broken after id switch #151
 * NOTE: Thumbnails now use a different URL scheme than previously, and thus will be in broken locations. Since we're pre-production, just reupload any images you had.
 * Added schema prop validation to not allow the relation name to conflict with a prop name.
+* Send user id as an encrypted string over message bus.
 
 ## 2024-05-11
 * VingRecord id's are now integers for better database performance. They are translated to encrypted strings on the API for better security. 

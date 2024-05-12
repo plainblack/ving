@@ -1,5 +1,5 @@
 import { useRedis } from '#ving/redis.mjs';
-
+import { stringifyId } from '#ving/utils/int2str.mjs';
 /**
  * Publishes a message to the user message bus
  * @param {string} userId The unique id of the user that should receive the message
@@ -9,7 +9,7 @@ import { useRedis } from '#ving/redis.mjs';
  */
 export const publish = async (userId, type = 'ping', data = {}) => {
     const pub = useRedis();
-    await pub.publish('notify:' + userId, JSON.stringify({ type, data }));
+    await pub.publish('notify:' + stringifyId(userId), JSON.stringify({ type, data }));
     return pub;
 }
 
