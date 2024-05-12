@@ -23,12 +23,19 @@ node -e "console.log('Running Node.js ' + process.version)"
 ```
 
 ## Ving Source Code
+Rather than acting as a library, Ving is considered to be a living code-base where your app is just a continued fork of ving, and thus you can upgrade to the latest version using git.
+
+### Fork the Repository
 
 You need to fork the Ving source code so you can choose to [sync](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) the changes from the main ving repo into your repository at any time in the future.
 
 [Fork the ving repo.](https://github.com/plainblack/ving/fork)
 
+### Clone the Repository
+
 After forking, [clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) your forked repo to your computer.
+
+### Rename your Repository
 
 Then rename the folder to whatever you are calling your project.
 
