@@ -22,32 +22,15 @@ nvm install --lts
 node -e "console.log('Running Node.js ' + process.version)"
 ```
 
-## Ving Installation Variants
+## Ving Source Code
 
-You need to choose whether you want to be able to get updates from future versions of ving or not.
-
-### If you want updates: FORK
-
-Choose this option so you can choose to [sync](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) the changes from the main ving repo into your repository at any time in the future.
-
+You need to fork the Ving source code so you can choose to [sync](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) the changes from the main ving repo into your repository at any time in the future.
 
 [Fork the ving repo.](https://github.com/plainblack/ving/fork)
 
-
 After forking, [clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) your forked repo to your computer.
 
-
-### If you don't want updates: DOWNLOAD
-
-Choose this option if you just want to use ving as a starter and don't care about what happens in the future.
-
-[Download a zip file of the repo.](https://github.com/plainblack/ving/archive/refs/heads/main.zip)
-
-Then unzip it.
-
-### Either way: RENAME
-
-Then feel free to rename the folder to whatever you are calling your project.
+Then rename the folder to whatever you are calling your project.
 
 ```bash
 mv ving my-cool-project
@@ -69,6 +52,7 @@ Go ahead and create your `.env` file now and we'll add to it in the next few sec
 
 ```bash
 echo "VING_SITE_URL=http://localhost:3000" >> .env
+echo "VING_SKIPJACK_KEY=\"$((RANDOM)),$((RANDOM)),$((RANDOM)),$((RANDOM)),$((RANDOM))\"" >> .env
 ```
 
 
