@@ -561,13 +561,12 @@ export class VingRecord {
             if (isNull(param)) { // skip it if the value is null
                 continue;
             }
+            this.set(field.name, param);
             if (field.relation && field.relation.type == 'parent') { // is this a parent relation
                 const parent = await this.parent(field.relation.name);
                 if (!field.relation.skipOwnerCheck) // skip check if schema says so
                     await parent.canEdit(currentUser); // error if not owner
             }
-            else
-                this.set(field.name, param);
         }
         return true;
     }
