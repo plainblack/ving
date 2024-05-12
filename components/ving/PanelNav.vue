@@ -11,14 +11,9 @@
         </li>
         <li v-if="links.length && buttons.length"><hr class="mt-2 mb-3 border-50 hidden lg:block"></li>
         <li v-for="item in buttons" :key="item.label" class="lg:mb-2 p-fluid">
-                <Button v-if="item.action" :severity="item.severity" :title="item.label">
-                    <Icon :name="item.icon" class="mr-1" /> <span class="hidden md:block white-space-nowrap">{{ item.label }}</span>
-                </Button>
-                <NuxtLink v-else :to="item.to" v-ripple>
-                    <Button :severity="item.severity" class="sm:w-auto md:w-full" :title="item.label">
-                        <Icon :name="item.icon" class="mr-1" /> <span class="hidden md:block white-space-nowrap">{{ item.label }}</span>
-                    </Button>
-                </NuxtLink>
+            <Button @click="takeAction($event, item)" :severity="item.severity" :title="item.label">
+                <Icon :name="item.icon" class="mr-1" /> <span class="hidden md:block white-space-nowrap">{{ item.label }}</span>
+            </Button>
         </li>
     </ul>
 </template>
@@ -48,4 +43,12 @@ const props = defineProps({
                 }).strict().array().safeParse(value).success,
     },
 });
+const takeAction = async (e,item) => {
+        if (item.to) {
+            await navigateTo(item.to);
+        }
+        else {
+            await item.action(e);
+        }
+    }
 </script>

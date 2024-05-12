@@ -10,6 +10,7 @@ outline: deep
 * Send user id as an encrypted string over message bus.
 * VingRecord now adds an entry to the log every time it throws an error.
 * Fixed order of operations lookup on parent after setPostedProps.
+* Refined click area of ManageButton and PanelNav buttons.
 
 ## 2024-05-11
 * VingRecord id's are now integers for better database performance. They are translated to encrypted strings on the API for better security. 
