@@ -346,13 +346,17 @@ export class VingRecord {
     /**
      * Returns the schema of the named parent prop, which can be useful for looking up special attributes.
      * @param {string} name The name of the parent prop to find.
+     * @throws 404 if prop can't be found.
      * @returns {object} A ving schema prop schema.
      * @example
      * user.parentPropSchema('avatar')
      */
     parentPropSchema(name) {
         const schema = findVingSchema(getTableName(this.table));
-        return ving.findObject(schema.props, obj => obj.relation?.name == name);
+        const found = schema.props.find(obj => obj.relation?.name == name);
+        if (isUndefined(found))
+            throw ving.ouch(404, `cannot find parent prop by ${name} in ving schema ${schema.kind}`);
+        return found;
     }
 
     /**
@@ -376,7 +380,9 @@ export class VingRecord {
      */
     async children(name) {
         const schema = findVingSchema(getTableName(this.table));
-        const prop = ving.findObject(schema.props, obj => obj.relation?.name == name);
+        const prop = schema.props.find(obj => obj.relation?.name == name);
+        if (isUndefined(prop))
+            throw ouch(404, `cannot find child prop by ${name} in ${schema.kind}`);
         const kind = await ving.useKind(prop.relation.kind);
         if (isUndefined(kind.table[prop.name]))
             ving.log('VingRecord').error(`${schema.kind} has an invalid virtual prop name called ${name}`);

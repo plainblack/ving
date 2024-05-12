@@ -16,10 +16,6 @@ Adds a number to the end of a string, or increments it if there's already one th
 
 Given an input, can generate an encoded string based upon A-Z, a-z, 0-9, and _.
 
-### findObject
-
-Provides light wrappers around the javascript `find()` function that throws an error if the object you're looking for isn't found.
-
 ### fs
 
 A bunch of wrappers around node's `fs` library to give you easy to use and terse filesystem functions for checking if a file/folder exists, or reading/writing JSON files, or sanitizing filenames, and more.

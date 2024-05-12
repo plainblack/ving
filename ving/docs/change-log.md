@@ -9,6 +9,7 @@ outline: deep
 * NOTE: You should add a VING_SKIPJACK_KEY to your .env file that takes the format of between 1 and 10 random numbers separated by commas. 
 * NOTE: You should run `npm i` as we've added skip32 as a new required module.
 * Fixed some email verification corner case problems.
+* Removed the findObject() utility as Array.prototype.find() essentially works the same way, and this forces better error handling.
 
 ## 2024-05-06
 * Updated useVingRecord() to allow for extended actions.

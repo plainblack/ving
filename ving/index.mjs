@@ -5,7 +5,6 @@ import { addJob } from '#ving/jobs/queue.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { sleep } from '#ving/utils/sleep.mjs';
 import { miniHash } from '#ving/utils/miniHash.mjs';
-import { findObject } from '#ving/utils/findObject.mjs';
 import { useKind } from '#ving/record/utils.mjs'
 import { useDB } from '#ving/drizzle/db.mjs'
 import { useRedis } from '#ving/redis.mjs'
@@ -23,7 +22,6 @@ import { getConfig } from '#ving/config.mjs';
  * sleep() - the same as `sleep` from '#ving/utils/sleep.mjs'
  * miniHash() - the same as `miniHash` from '#ving/utils/miniHash.mjs'
  * addJob() - the same as `addJob` from '#ving/jobs/queue.mjs'
- * findObject() - the same as `ouch` from '#ving/utils/findObject.mjs'
  * ouch() - the same as `ouch` from '#ving/utils/ouch.mjs'
  * getConfig() - the sames `getConfig` from '#ving/config.mjs'
  * useKind() - the same as `useKind` from '#ving/record/VingRecord.mjs'
@@ -37,7 +35,6 @@ export default {
     sleep,
     miniHash,
     addJob,
-    findObject,
     ouch,
     getConfig,
     useKind,
