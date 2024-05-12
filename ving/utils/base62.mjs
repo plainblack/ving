@@ -157,7 +157,6 @@ export const encode = (int) => {
  * decode('vDrKVRL') // 8
  */
 export const decode = (value) => {
-    ving.log('test').info(value);
     const str = value.slice(1);
     let res = 0;
     let length = str.length;
