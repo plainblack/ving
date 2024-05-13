@@ -5,11 +5,12 @@ import { isNumber, isString } from '#ving/utils/identify.mjs';
 /**
  * Generates an encrypted string from an integer. See the environment variable `VING_SKIPJACK_KEY`.
  * @param {number} int The number to be encrypted. If you pass a string it will not be encoded, but just return the string passed without encrypting becasue we're assuming it is already an encrypted string.
+ * @param {string} prefix Optional. It provides a way to disambiguate ids between various stores. VingRecords will use their Kind, such as 'User' as the prefix.
  * @returns {string} The resulting encrypted string. Note that this will be different for different sites based upon what is in `VING_SKIPJACK_KEY`.
  * @example
  * stringifyId(1) // vJH34sj3
  */
-export const stringifyId = (int) => isString(int) ? int : encode(encrypt(int));
+export const stringifyId = (int, prefix) => isString(int) ? int : encode(encrypt(int), prefix);
 
 /**
  * Unencrypts a string back to its original integer value. 

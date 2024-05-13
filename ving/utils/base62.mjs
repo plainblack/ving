@@ -133,12 +133,13 @@ const charset = {
 
 /**
  * Converts an integer into an encoded string. The string will always start with a `v` and can contain any of these characters: `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuwxyz9876543210_`. The output is chosen specifically to make the string easy to double-click and copy, as well as work as a CSS id, or an unquoted Javascript property name.
- * @param {number} int 
+ * @param {number} int The number to encode
+ * @param {string} prefix Optional. It provides a way to disambiguate ids between various stores. VingRecords will use their Kind, such as 'User' as the prefix.
  * @returns {string} An an encoded string.
  * @example
  * encode(8) // vDrKVRL
  */
-export const encode = (int) => {
+export const encode = (int, prefix) => {
     if (int === 0)
         return charset.byCode[0];
     let res = "";
@@ -146,7 +147,10 @@ export const encode = (int) => {
         res = charset.byCode[int % charset.length] + res;
         int = Math.floor(int / charset.length);
     }
-    return 'v' + res;
+    let out = 'v' + res;
+    if (prefix)
+        out = prefix + out;
+    return out;
 };
 
 /**
@@ -157,7 +161,8 @@ export const encode = (int) => {
  * decode('vDrKVRL') // 8
  */
 export const decode = (value) => {
-    const str = value.slice(1);
+    const found = value.match('.*v(.*)');
+    const str = found[1];
     let res = 0;
     let length = str.length;
     for (let i = 0; i < length; i++) {

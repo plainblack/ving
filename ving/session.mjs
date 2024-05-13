@@ -137,7 +137,7 @@ class ProtoSession {
         const out = {
             props: {
                 id: this.id,
-                userId: stringifyId(this.get('id')),
+                userId: stringifyId(this.get('id'), 'User'),
             }
         };
         if ('include' in params && !isUndefined(params.include)) {

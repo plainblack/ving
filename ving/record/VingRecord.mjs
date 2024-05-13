@@ -173,7 +173,7 @@ export class VingRecord {
         const include = params.include || {};
         const isOwner = !isUndefined(currentUser) && await this.isOwner(currentUser);
         const schema = findVingSchema(getTableName(this.table));
-        let out = { props: { id: this.idAsString() } };
+        let out = { props: { id: this.idAsString(schema.kind) } };
         if (include?.links) {
             const vingConfig = await ving.getConfig();
             out.links = { base: { href: `/api/${vingConfig.rest.version}/${schema.kind?.toLowerCase()}`, methods: ['GET', 'POST'] } };
@@ -217,7 +217,7 @@ export class VingRecord {
 
             // props
             if (field.type == 'id')
-                out.props[field.name] = stringifyId(this.#props[field.name]);
+                out.props[field.name] = stringifyId(this.#props[field.name], field.relation?.kind || schema.kind);
             else
                 out.props[field.name] = this.#props[field.name];
 
@@ -276,12 +276,18 @@ export class VingRecord {
 
     /**
      * Gets the encrypted stringified version of this record's ID, used in rest endpoints and other external places.
+     * @param {string} kind - Optional, it will use the kind of this record if not set.
      * @returns {string} encrypted id
      * @example
      * user.idAsString()
      */
-    idAsString() {
-        return stringifyId(this.get('id'));
+    idAsString(kind) {
+        let k = kind;
+        if (!k) {
+            const schema = findVingSchema(getTableName(this.table));
+            k = schema.kind;
+        }
+        return stringifyId(this.get('id'), k);
     }
 
     /**

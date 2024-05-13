@@ -5,6 +5,9 @@ outline: deep
 
 ## May 2024
 
+### 2024-05-13
+* Changed stringified VingRecord IDs to prefix themselves with their Kind so that they can be easily disambiguated from each other out in the wild. 
+
 ### 2024-05-12
 * Fixed: file uploads are broken after id switch #151
 * NOTE: Thumbnails now use a different URL scheme than previously, and thus will be in broken locations. Since we're pre-production, just reupload any images you had.

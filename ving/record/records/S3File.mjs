@@ -4,7 +4,7 @@ import sanitize from 'sanitize-filename';
 import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import ving from '#ving/index.mjs';
 import { extensionMap } from '#ving/schema/schemas/S3File.mjs';
-
+import { stringifyId } from '#ving/utils/int2str.mjs';
 
 /**
      * Gets a file extension.
@@ -45,7 +45,7 @@ export const sanitizeFilename = (nameIn) => {
      * Formats a string as a series of folders to be used as an S3 key.
      * 
      * @param {string} input The stringified version of the s3 files id.
-     * @returns {string} A string with slashes splitting every 2 characters.
+     * @returns {string} A string with slashes splitting every 3 characters.
      * @example
      * formatS3FolderName('vxD31s') // vx/D3/1s
      */
@@ -97,7 +97,7 @@ export class S3FileRecord extends VingRecord {
             case 'self':
                 return this.fileUrl();
             case 'thumbnail':
-                return `https://${process.env.VING_AWS_THUMBNAILS_BUCKET}.s3.amazonaws.com/${formatS3FolderName(this.idAsString())}.png`;
+                return `https://${process.env.VING_AWS_THUMBNAILS_BUCKET}.s3.amazonaws.com/${formatS3FolderName(stringifyId(this.get('id')))}.png`;
             case 'extension': {
                 const image = extensionMap[this.get('extension')] || 'unknown';
                 return `/img/filetype/${image}.png`;
@@ -148,7 +148,7 @@ export class S3FileRecord extends VingRecord {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     url: self.fileUrl(),
-                    thumbnailKey: formatS3FolderName(self.idAsString()) + '.png',
+                    thumbnailKey: formatS3FolderName(stringifyId(self.get('id'))) + '.png',
                     fileType: self.get('extension'),
                 }),
             });
@@ -259,7 +259,7 @@ export class S3FileRecord extends VingRecord {
      */
     async deleteThumbnail() {
         if (this.get('icon') == 'thumbnail') {
-            const key = formatS3FolderName(this.idAsString()) + '.png';
+            const key = formatS3FolderName(stringifyId(this.get('id'))) + '.png';
             ving.log('S3File').info(`Deleting thumbnail ${this.get('id')} at ${key}`);
             const command = new DeleteObjectCommand({
                 Bucket: process.env.VING_AWS_THUMBNAILS_BUCKET,
