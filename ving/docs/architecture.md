@@ -7,15 +7,15 @@ Ving's architecture is made up of many components in many different layers. It's
 
 ```
 Presentation:   PrimeVue
-                ------------------------
+                -----------------------------
 Client:         Nuxt Pages + Vue
-                ------------------------
-Server:         Nuxt SSR + Rest + Bull MQ
-                ------------------------
-Application:    Drizzle + Ving Record
-                ------------------------
-Foundation:     Ving Schema
-                ------------------------
+                -----------------------------
+Server:         Nuxt SSR + Rest + Job Workers
+                -----------------------------
+Application:    Drizzle + Ving Record + Jobs
+                -----------------------------
+Foundation:     Ving Schema + Bull MQ
+                -----------------------------
 Storage:        MySQL + Redis + S3
 ```
 
