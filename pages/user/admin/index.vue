@@ -1,4 +1,5 @@
 <template>
+    <Title>Users</Title>
     <PanelFrame section="Admin" title="Users">
         <template #left>
             <PanelNav :links="links" />
@@ -75,7 +76,7 @@
 <script setup>
 const notify = useNotify();
 definePageMeta({
-    middleware: ['auth', 'admin']
+    middleware: ['auth', 'admin'],
 });
 
 const users = useVingKind({

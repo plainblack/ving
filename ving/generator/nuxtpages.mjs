@@ -120,6 +120,7 @@ const newDefaults = (schema) => {
 
 const indexTemplate = ({ name, schema }) =>
     `<template>
+    <Title>${makeWords(name)}s</Title>
     <PanelFrame title="${makeWords(name)}s">
         <template #content>
             <PanelZone title="Existing ${makeWords(name)}s">
@@ -238,6 +239,7 @@ const nameOrId = (schema) => schema.props.find((prop) => prop.name == 'name') ? 
 
 const viewTemplate = ({ name, schema }) =>
     `<template>
+    <Title>{{${name.toLowerCase()}.props?.${nameOrId(schema)}}}</Title>
     <PanelFrame :title="${name.toLowerCase()}.props?.${nameOrId(schema)}" section="${makeWords(name)}s">
         <template #left>
             <PanelNav :links="[
@@ -323,6 +325,7 @@ const statProps = (schema) => {
 
 const editTemplate = ({ name, schema }) =>
     `<template>
+    <Title>Edit {{${name.toLowerCase()}.props?.${nameOrId(schema)}}}</Title>
     <PanelFrame :title="'Edit '+${name.toLowerCase()}.props?.${nameOrId(schema)}" section="${makeWords(name)}s">
         <template #left>
             <PanelNav :links="[

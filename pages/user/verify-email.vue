@@ -1,11 +1,12 @@
 <template>
+    <Title>Verify email for {{ config.public?.site?.name }}</Title>
     <div class="w-full lg:w-7 mx-auto">
         <div class="text-center mb-5">
             <img :src="config.public.site.logoUrl" :alt="config.public.site.name" height="50" class="mb-3">
         </div>
-        <div class="surface-card p-4 border-1 surface-border border-round ">
+        <PanelZone>
             {{ message }}
-        </div>
+        </PanelZone>
     </div>
 </template>
 

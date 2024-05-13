@@ -13,6 +13,8 @@ outline: deep
 * Refined click area of ManageButton and PanelNav buttons.
 * Added VueUse composables for reactive access to browser subsystems like keyboard, mouse, localStorage, etc.
 * NOTE: Run "npm i" because we've added vueuse as a prereq.
+* Added Title tags to every page and the page generator. 
+* NOTE: You should Title tags to your pages if you want titles.
 
 ## 2024-05-11
 * VingRecord id's are now integers for better database performance. They are translated to encrypted strings on the API for better security. 

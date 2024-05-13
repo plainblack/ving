@@ -1,4 +1,5 @@
 <template>
+    <Title>Edit User {{user.props?.username}}</Title>
     <PanelFrame section="Admin" :title="`Edit User ${user.props?.username}`">
         <template #left>
             <PanelNav :links="links" />

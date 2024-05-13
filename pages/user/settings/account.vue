@@ -1,4 +1,5 @@
 <template>
+    <Title>Account Settings</Title>
     <PanelFrame>
         <template #left>
             <PanelNav :links="links" :buttons="buttons" />

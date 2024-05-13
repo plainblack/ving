@@ -1,4 +1,5 @@
 <template>
+    <Title>{{ error?.statusCode || 500 }} {{ error?.statusMessage || "" }}</Title>
     <div class="surface-section px-4 py-8 md:px-6 lg:px-8">
         <div class="flex flex-column lg:flex-row justify-content-center align-items-center gap-7">
             <div class="text-center lg:text-right">
@@ -7,7 +8,7 @@
                 <p class="text-700 text-3xl mt-0 mb-6">{{ error?.message || "" }}</p>
                 <p class="text-700 text-3xl mt-0 mb-6">{{ error?.description || "" }}</p>
                 <NuxtLink to="/" v-slot="{ navigate }" custom>
-                    <Button @click="navigate" type="button" label="Go back to home page" class="p-button-outlined"></Button>
+                    <Button @click="navigate" type="button" label="Go back to home page"></Button>
                 </NuxtLink>
             </div>
             <div>

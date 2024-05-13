@@ -1,5 +1,6 @@
 <template>
-   <PanelFrame section="Admin" title="System Wide Alert">
+    <Title>System Wide Alert</Title>
+    <PanelFrame section="Admin" title="System Wide Alert">
         <template #left>
             <PanelNav :links="links" />
         </template>
@@ -42,7 +43,7 @@
 
 <script setup>
 definePageMeta({
-    middleware: ['auth', 'admin']
+    middleware: ['auth', 'admin'],
 });
 const ttlOptions = [
     { value: 1000 * 60 * 60, label: '1 hour' },

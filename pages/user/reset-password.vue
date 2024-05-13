@@ -1,11 +1,14 @@
 <template>
+    <Title>Send password reset for {{ config.public?.site?.name }}</Title>
     <div class="w-full lg:w-7 mx-auto">
         <div class="text-center mb-5">
             <img :src="config.public.site.logoUrl" :alt="config.public.site.name" height="50" class="mb-3">
+            <h1 class="text-900 text-3xl font-medium mb-3 mt-0">Send Password Reset</h1>
+            <span class="text-600 font-medium line-height-3">Remember your account?</span>
+            <NuxtLink to="/user/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in
+            </NuxtLink>
         </div>
-        <div class="surface-card p-4 border-1 surface-border border-round ">
-            <h1 class="mt-0">Reset Passsword</h1>
-            <p>Where should we send the password reset email?</p>
+        <PanelZone info="Where should we send the password reset email?">
             <Form :send="sendPasswordReset">
                 <div class="flex gap-5 flex-column-reverse md:flex-row">
                     <div class="flex-auto">
@@ -18,8 +21,7 @@
 
                 </div>
             </Form>
-        </div>
-
+        </PanelZone>
     </div>
 </template>
 

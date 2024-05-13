@@ -1,4 +1,5 @@
 <template>
+    <Title>API Key Settings</Title>
     <PanelFrame>
         <template #left>
             <PanelNav :links="links" :buttons="buttons" />

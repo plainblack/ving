@@ -1,16 +1,15 @@
 <template>
+    <Title>Create an Account for {{ config.public?.site?.name }}</Title>
     <div class="w-full lg:w-7 mx-auto">
         <div class="text-center mb-5">
             <img :src="config.public.site.logoUrl" :alt="config.public.site.name" height="50" class="mb-3">
-            <div class="text-900 text-3xl font-medium mb-3">Create an Account</div>
+            <h1 class="text-900 text-3xl font-medium mb-3 mt-0">Create an Account</h1>
             <span class="text-600 font-medium line-height-3">Already have an account?</span>
             <NuxtLink to="/user/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in
             </NuxtLink>
         </div>
-        <div class="surface-card p-4 border-1 surface-border border-round ">
-
+        <PanelZone>
             <Form :send="createAccount">
-
                 <FormInput name="username" v-model="newUser.username" required label="Username" autocomplete="username"
                     type="text" class="mb-3" />
 
@@ -51,7 +50,7 @@
                     <span>Sign in With Google</span>
                 </Button>
             </div>
-        </div>
+        </PanelZone>
     </div>
 </template>
 
