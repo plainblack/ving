@@ -3,7 +3,9 @@ outline: deep
 ---
 # Change Log
 
-## 2024-05-12
+## May 2024
+
+### 2024-05-12
 * Fixed: file uploads are broken after id switch #151
 * NOTE: Thumbnails now use a different URL scheme than previously, and thus will be in broken locations. Since we're pre-production, just reupload any images you had.
 * Added schema prop validation to not allow the relation name to conflict with a prop name.
@@ -16,7 +18,7 @@ outline: deep
 * Added Title tags to every page and the page generator. 
 * NOTE: You should Title tags to your pages if you want titles.
 
-## 2024-05-11
+### 2024-05-11
 * VingRecord id's are now integers for better database performance. They are translated to encrypted strings on the API for better security. 
 * NOTE: You will likely want to recreate your database from scratch as all primary and foreign keys are changing from strings to integers, and doing a migration for that is going to be challenging.
 * NOTE: You should add a VING_SKIPJACK_KEY to your .env file that takes the format of between 1 and 10 random numbers separated by commas. 
@@ -26,15 +28,15 @@ outline: deep
 * Removed the token CLI command.
 * Added the id CLI command.
 
-## 2024-05-06
+### 2024-05-06
 * Updated useVingRecord() to allow for extended actions.
 * Refactored useCurrentUser() to use useVingRecord()'s new extended actions feature.
 * Added some more docs to useVingRecord().
 
-## 2024-05-05
+### 2024-05-05
 * Fix a bug in the new coerce() logic in FormInput.
 
-## 2024-05-02
+### 2024-05-02
 * Moved the docs folder from ./docs to ./ving/docs to avoid collisions with downstream projects.
 * Created a utils folder for UI utility functions and moved enum2labels() into it since it was never a composable.
 * Renamed all composables to start with "use" per Nuxt convention.
@@ -58,10 +60,12 @@ outline: deep
 * Added a coerce attribute to the FormInput component.
 * Added ving util appendNumberToString().
 
-## 2024-04-29
+## April 2024
+
+### 2024-04-29
 * Implemented: reformat page generator to use panel components on view and edit #139
 
-## 2024-04-28
+### 2024-04-28
 * Added zod based validation to PanelNav, ManageButton, Crumbtrail components.
 * Implemented: Track and update dirty columns only #132
 * Fixed a problem where updating an api key wasn't saving.
@@ -72,7 +76,7 @@ outline: deep
 * NOTE: AdminNav component has been removed. Replaced with useAdminLinks() composable.
 * Implemented: reformat admin to use panel components #138
 
-## 2024-04-26
+### 2024-04-26
 * Removed all the client-only component tags as the hydration mismatches have been fixed.
 * Check to make sure a job handler exists before allowing a job to be created.
 * Implemented: CLI should let you search for jobs by handler name #125
@@ -92,7 +96,7 @@ outline: deep
 * Added PanelFrame component which dovetails nicely with PanelNav for building UIs.
 * Added PanelZone as a content area for PanelFrame.
 
-## 2024-04-25
+### 2024-04-25
 * Fixed a bug where ving record fields of type 'int' were not being initialized properly.
 * Removed unnecessary validation on Dropzone.
 * Upgraded to Nuxt 3.11.2 from 3.10.0.
@@ -104,7 +108,7 @@ outline: deep
 * Upgraded from mysql2 3.3.4 to 3.9.7.
 * NOTE: run "npm i"
 
-## 2024-04-24
+### 2024-04-24
 * Fixed a bug where an error when making calls on currentUserStore would destroy existing data.
 * Fixed a bug where you couldn't upload an avatar if you didn't already have one.
 * Added dxf to the known extension types.
@@ -121,7 +125,7 @@ outline: deep
 * Added CLI functions to list jobs in a queue and kill them.
 * Added uniqueQualifiers field to ving schema props to implement: allow unique indexes within set #114
 
-## 2024-04-23
+### 2024-04-23
 * Created SelectInput component to replace FormSelect. However, you should use FormInput with type select instead of using this directly in most cases.
 * NOTE: The FormSelect component no longer exists. Anywhere you are using it use FormInput with type 'select' instead.
 * Added size prop to CopyToClipboard button.
@@ -136,31 +140,31 @@ outline: deep
 * Implemented: replace Usage: with @example in jsdoc #121
 * Added more types to JSDoc.
 
-## 2024-04-22
+### 2024-04-22
 * Added MarkdownInput form control component for editing markdown text.
 * Added MarkdownView component for viewing markdown text.
 * Integrated MarkdownInput into FormInput component so you can just set "type" equal to "markdown" and display the input.
 * Added a `bio` field to the User that can be edited in their profile settings and displayed on their profile page.
 * NOTE: Due to the above change you should regenerate your drizzle tables and run a migration.
 
-## 2024-04-20
+### 2024-04-20
 * Fixed a bug where the rest generator would incorrectly generate child relationship api.
 * Added an empty layout.
 
-## 2024-04-19
+### 2024-04-19
 * Fixed a problem where the default values set by a parent on child records wasn't being respected.
 * Update lambda file upload function to handle CSV files and other file types by returning the file size.
 * Update S3File Record to allow SVG file uploads and sets the iconf type for files that aren't bitmaps.
 * Make useVingRecord aware of extra state.
 * Fix count() on VingRecord.
 
-## 2024-04-18
+### 2024-04-18
 * Cast result of sum() and avg() to number.
 
-## 2024-04-12
+### 2024-04-12
 * Moved copy() from VingKind to VingRecord as its easier to use and less fragile.
 
-## 2024-04-11
+### 2024-04-11
 * Made currentUserStore more fault tollerant.
 * Implemented: add required to FormSelect #95
 * Implemented: unify the use if [id] in urls #101
@@ -176,7 +180,7 @@ outline: deep
 * Added UserAvatar component.
 * Added min, max, sum, and avg methods to VingKind.
 
-## 2024-04-10
+### 2024-04-10
 * Implemented: filterQualifier: true should be in the examples for all relation ids #96
 * Implemented: add documentation to ving schema about filterQuery #87
 * Added recordsAsOptions() method to the useVingKind() composable.
@@ -185,7 +189,7 @@ outline: deep
 * Fix: int prop didn't generate number form field #92
 * Implemented: have page generator add an s3 drop zone if it detects an s3 relationship #100
 
-## 2024-04-09
+### 2024-04-09
 * Fixed: no type int example in ving schema #82
 * Fixed: record delete generator not generating correctly #81
 * Fixed: if you misspell a schema when running record -w or record -r it should say no schema, not create an error #80
@@ -199,7 +203,7 @@ outline: deep
 * Implemented: document the ving structure #84
 * Removed client-only wrapper from Datatables because the upgrade to PrimeVue 3.51.0 fixed the problem it was masking.
 
-## 2024-04-08
+### 2024-04-08
 * Breaking change: Refactored VingRecord isOwner(), canEdit(), and propsOptions() to be async.
 * Added skipOwnerCheck as a ving schema prop relation option.
 * Added a whole new section to the Ving Schema documentation defining all the fields that go into ving schema props.
@@ -207,14 +211,14 @@ outline: deep
 * Automatically link id/name in generated index pages.
 * Update page generator to mark enum options as optional.
 
-## 2024-04-07
+### 2024-04-07
 * Made the MenuBar in the default layout client only until PrimeVue fixes #5541.
 * useVingKind().mint() now carries forward the query params into the new record.
 * Updated zodString(), zodText(), and zodMediumText() schema helper to allow for 0 length strings.
 * Fixed useVingKind() not settings propsOptions.
 * Added enum2label() composable.
 
-## 2024-04-06
+### 2024-04-06
 * Added VING_SITE_URL to install instructions.
 * Fixed API generator missing a slash.
 * Fixed API options cassing problem.
@@ -222,21 +226,23 @@ outline: deep
 * Fixed undefined session in delete api.
 * Fixed record page generator capitalization.
 
-## 2024-04-05
+### 2024-04-05
 * Changed the way foreign keys are generated due to the possibility of creating keynames that were too long.
 * Added a migration status to the drizzle CLI.
 
-## 2024-04-04
+### 2024-04-04
 * Provided a little more documentation about virtual columns
 * Fixed camelCasing of schema names in the schema generator
 * Added mediumtext fields to schema and drizzle generation
 
-## 2024-03-16
+## March 2024
+
+### 2024-03-16
 * Created a function for fetching ving config in `ving/config.mjs`
 * Added a Rest versioning system for API breakages
 
-## 2024-03-15
+### 2024-03-15
 * Added pseudo props to Records so that in addition to `user.set('admin', true)` you can also do `user.admin = true` for both setters and getters.
 
-## 2024-03-12
+### 2024-03-12
 * Fixed a security bug where passwords created via the CLI were stored incorrectly.
