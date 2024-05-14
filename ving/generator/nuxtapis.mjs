@@ -111,7 +111,7 @@ export default defineEventHandler(async (event) => {
 
 const childDeleteTemplate = ({ name, prop }) =>
     `import { useKind } from '#ving/record/utils.mjs';
-import { describeListParams, describeListWhere } from '#ving/utils/rest.mjs';
+import { describeListParams, describeListWhere, obtainSession } from '#ving/utils/rest.mjs';
 import {defineEventHandler, getRouterParams} from 'h3';
 export default defineEventHandler(async (event) => {
     const ${name.toLowerCase()}s = await useKind('${name}');

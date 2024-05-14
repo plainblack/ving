@@ -229,6 +229,8 @@ export class VingRecord {
             ) {
                 let lower = field.relation.name.toLowerCase();
                 out.links[lower] = { href: `${out.links.self.href}/${lower}`, methods: ['GET'] };
+                if (field.relation.type == 'child')
+                    out.links[lower].methods.push('DELETE');
             }
 
             // relations
