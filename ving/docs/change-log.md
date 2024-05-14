@@ -5,6 +5,10 @@ outline: deep
 
 ## May 2024
 
+### 2024-05-14
+* Removed extraneous import from rest endpoint.
+* Added range() util.
+
 ### 2024-05-13
 * Changed stringified VingRecord IDs to prefix themselves with their Kind so that they can be easily disambiguated from each other out in the wild. 
 * Added a rest endpoint that easily allows deleting of all children of a record.

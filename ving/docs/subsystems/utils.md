@@ -36,6 +36,10 @@ Provides a function to give something similar to an MD5 hash, or a SHA1 hash, bu
 
 A way to throw standardized errors through-out ving. 
 
+### range
+
+Create an array of numbers to iterate over.
+
 ### rest
 
 A bunch of utilities that provide glue between Nuxt's rest system and Ving's records. 
