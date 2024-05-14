@@ -109,6 +109,24 @@ export default defineEventHandler(async (event) => {
     return await ${prop.relation.kind.toLowerCase()}s.describeList(describeListParams(event), describeListWhere(event, ${prop.relation.kind.toLowerCase()}s.describeListFilter()));
 });`;
 
+const childDeleteTemplate = ({ name, prop }) =>
+    `import { useKind } from '#ving/record/utils.mjs';
+import { describeListParams, describeListWhere } from '#ving/utils/rest.mjs';
+import {defineEventHandler, getRouterParams} from 'h3';
+export default defineEventHandler(async (event) => {
+    const ${name.toLowerCase()}s = await useKind('${name}');
+    const { id } = getRouterParams(event);
+    const ${name.toLowerCase()} = await ${name.toLowerCase()}s.findOrDie(id);
+    const ${prop.relation.kind.toLowerCase()}s = await ${name.toLowerCase()}.children('${prop.relation.name.toLowerCase()}');
+    const all = await ${prop.relation.kind.toLowerCase()}s.findMany();
+    const session = obtainSession(event);
+    for (const record of all) {
+        if (record.isOwner(session))
+            await record.delete();
+    }
+    return await ${prop.relation.kind.toLowerCase()}s.describeList(describeListParams(event, session), describeListWhere(event, ${prop.relation.kind.toLowerCase()}s.describeListFilter()));
+});`;
+
 const parentGetTemplate = ({ name, prop }) =>
     `import { useKind } from '#ving/record/utils.mjs';
 import { describeParams } from '#ving/utils/rest.mjs';
@@ -150,9 +168,14 @@ export const generateRest = async (params) => {
             gen = gen.then(renderTemplate(childGetTemplate({ name: context.name, prop }), toFile(filePath)));
         else if (prop?.relation?.type == 'parent' && !(params.skipExisting && fs.existsSync(filePath)))
             gen = gen.then(renderTemplate(parentGetTemplate({ name: context.name, prop }), toFile(filePath)));
+        if (prop?.relation?.name)
+            filePath = `${folderName}/[id]/${prop.relation.name.toLowerCase()}.delete.mjs`;
+        if (prop?.relation?.type == 'child' && !(params.skipExisting && fs.existsSync(filePath)))
+            gen = gen.then(renderTemplate(childDeleteTemplate({ name: context.name, prop }), toFile(filePath)));
         if (prop?.relation?.type == 'parent' && prop?.relation?.name && prop?.relation?.kind == 'S3File') {
             filePath = `${folderName}/[id]/import-${prop.relation.name.toLowerCase()}.put.mjs`;
-            gen = gen.then(renderTemplate(importFileTemplate({ name: context.name, prop }), toFile(filePath)));
+            if (!(params.skipExisting && fs.existsSync(filePath)))
+                gen = gen.then(renderTemplate(importFileTemplate({ name: context.name, prop }), toFile(filePath)));
         }
     }
     return gen;

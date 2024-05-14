@@ -7,6 +7,7 @@ outline: deep
 
 ### 2024-05-13
 * Changed stringified VingRecord IDs to prefix themselves with their Kind so that they can be easily disambiguated from each other out in the wild. 
+* Added a rest endpoint that easily allows deleting of all children of a record.
 
 ### 2024-05-12
 * Fixed: file uploads are broken after id switch #151
