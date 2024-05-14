@@ -7,5 +7,5 @@
  * @example
  * range(3,7) // [3,4,5,6,7]
  */
-const range = (start, stop, step = 1) =>
+export const range = (start, stop, step = 1) =>
     Array(Math.ceil((stop - start) / step)).fill(start).map((x, y) => x + y * step);
