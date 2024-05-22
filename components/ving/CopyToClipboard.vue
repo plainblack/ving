@@ -1,5 +1,5 @@
 <template>
-    <Button v-if="isSupported" :class="buttonClass" alt="copy to clipboard" title="Copy to Clipboard" @click="copyToClipboard(text)">
+    <Button v-if="isBrowserSupported" :class="buttonClass" alt="copy to clipboard" title="Copy to Clipboard" @click="copyToClipboard(text)">
         <Icon name="fa-regular:copy" />
     </Button>
 </template>
@@ -27,7 +27,9 @@ const buttonClass = computed(() => {
     }
     return out.join(' ');
 })
-const { copy, isSupported } = useClipboard()
+const { copy, isSupported } = useClipboard();
+
+const isBrowserSupported = computed(() => isSupported || false);// server side is always no
 
 function copyToClipboard(text) {
     copy(text);
