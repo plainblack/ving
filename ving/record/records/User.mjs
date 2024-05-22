@@ -5,6 +5,7 @@ import { useCache } from '#ving/cache.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { eq } from '#ving/drizzle/orm.mjs';
 import { isUndefined, isNil } from '#ving/utils/identify.mjs';
+import { stringifyId } from '#ving/utils/int2str.mjs';
 
 /** Management of individual Users.
  * @class
@@ -40,25 +41,25 @@ export class UserRecord extends RoleMixin(VingRecord) {
     async avatarUrl() {
         switch (this.get('avatarType')) {
             case 'robot': {
-                const id = this.get('id').toString();
+                const id = stringifyId(this.get('id'));
                 let url = `https://robohash.org/${id}/size_300x300`;
 
                 // foreground
-                if (id.match(/^[3-4]/)) {
+                if (id.match(/[A-M]$/)) {
                     url += '/set_set2'
                 }
-                else if (id.match(/^[5-7]/)) {
+                else if (id.match(/[a-m]$/)) {
                     url += '/set_set3'
                 }
-                else if (id.match(/^[6-9]/)) {
+                else if (id.match(/[N-Z]$/)) {
                     url += '/set_set4'
                 }
 
                 // background
-                if (id.match(/[0-4]$/)) {
+                if (id.match(/[A-Z]$/)) {
                     url += '/bgset_bg1'
                 }
-                else if (id.match(/[5-9]$/)) {
+                else if (id.match(/[a-z]$/)) {
                     url += '/bgset_bg2'
                 }
 
