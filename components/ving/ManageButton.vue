@@ -1,15 +1,15 @@
 <template>
-    <Button v-if="items.length == 1" @click="takeAction($event, firstItem)" :severity="severity" class="white-space-nowrap">
+    <Button v-if="items.length == 1" @mouseDown="takeAction($event, firstItem)" :severity="severity" class="white-space-nowrap">
         <Icon :name="firstItem.icon" class="mr-1 vertical-align-middle" />
         <span class="vertical-align-middle">{{ firstItem.label }}</span>
     </Button>
-    <SplitButton v-else-if="items.length > 1" :severity="severity" :model="otherItems" @click="takeAction($event, firstItem)" class="white-space-nowrap">
+    <SplitButton v-else-if="items.length > 1" :severity="severity" :model="otherItems" @mouseDown="takeAction($event, firstItem)" class="white-space-nowrap">
         <span>
             <Icon :name="firstItem.icon" :title="firstItem.label" class="mr-1 vertical-align-middle" />
             <span class="vertical-align-middle">{{ firstItem.label }}</span>
         </span>
         <template #item="{ item }">
-            <span @click="takeAction($event, item)" class="flex p-2 align-items-center" :title="item.label">
+            <span @mouseDown="takeAction($event, item)" class="flex p-2 align-items-center" :title="item.label">
                 <Icon :name="item.icon" class="mr-1" />
                 {{ item.label }}
             </span>

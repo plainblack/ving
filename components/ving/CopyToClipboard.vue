@@ -1,5 +1,5 @@
 <template>
-    <Button v-if="isBrowserSupported" :class="buttonClass" alt="copy to clipboard" title="Copy to Clipboard" @click="copyToClipboard(text)">
+    <Button v-if="isBrowserSupported" :class="buttonClass" alt="copy to clipboard" title="Copy to Clipboard" @mouseDown="copyToClipboard(text)">
         <Icon name="fa-regular:copy" />
     </Button>
 </template>

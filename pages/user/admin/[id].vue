@@ -62,9 +62,9 @@
                 </FieldsetItem>
 
                 <FieldsetItem name="Actions">
-                    <Button @click="user.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete User"><Icon
+                    <Button @mouseDown="user.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete User"><Icon
                             name="ph:trash" class="mr-1"/> Delete</Button>
-                    <Button @click="become" severity="warning" class="mr-2 mb-2" title="Become" alt="Become User">
+                    <Button @mouseDown="become" severity="warning" class="mr-2 mb-2" title="Become" alt="Become User">
                         <Icon name="bi:arrow-left-right" class="mr-1"/> Become</Button>
                     <NuxtLink :to="'/user/' + user.props.id + '/profile'" v-ripple>
                         <Button  severity="primary" class="mr-2 mb-2" title="View Profile">

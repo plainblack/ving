@@ -33,8 +33,8 @@
             </div>
         </div>
 
-        <Button @click="swa.post()" severity="success" class="mr-2">Save System Wide Alert</Button>
-        <Button v-if="swa.message" @click="swa.delete()" severity="danger" class="mr-2">Delete System Wide Alert</Button>
+        <Button @mouseDown="swa.post()" severity="success" class="mr-2">Save System Wide Alert</Button>
+        <Button v-if="swa.message" @mouseDown="swa.delete()" severity="danger" class="mr-2">Delete System Wide Alert</Button>
 
     </PanelZone>
         </template>
