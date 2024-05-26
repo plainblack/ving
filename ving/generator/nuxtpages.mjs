@@ -130,7 +130,7 @@ const indexTemplate = ({ name, schema }) =>
                     </InputGroupAddon>
                     <InputText type="text" placeholder="${makeWords(name)}s" class="w-full"
                         v-model="${schema.tableName}.query.search" @keydown.enter="${schema.tableName}.search()" />
-                    <Button label="Search" @mouseDown="${schema.tableName}.search()" />
+                    <Button label="Search" @mousedown="${schema.tableName}.search()" />
                 </InputGroup>
 
                 <DataTable :value="${schema.tableName}.records" stripedRows @sort="(e) => ${schema.tableName}.sortDataTable(e)">
@@ -254,7 +254,7 @@ const viewTemplate = ({ name, schema }) =>
                 <NuxtLink :to="\`/${name.toLowerCase()}/\${${name.toLowerCase()}.props?.id}/edit\`" class="no-underline mr-2 mb-2">
                     <Button severity="success" title="Edit" alt="Edit ${makeWords(name)}"><Icon name="ph:pencil" class="mr-1"/> Edit</Button>
                 </NuxtLink>
-                <Button @mouseDown="${name.toLowerCase()}.delete()" severity="danger" title="Delete" alt="Delete ${makeWords(name)}"><Icon name="ph:trash" class="mr-1"/> Delete</Button>
+                <Button @mousedown="${name.toLowerCase()}.delete()" severity="danger" title="Delete" alt="Delete ${makeWords(name)}"><Icon name="ph:trash" class="mr-1"/> Delete</Button>
             </div>
         </template>
     </PanelFrame>
@@ -346,7 +346,7 @@ const editTemplate = ({ name, schema }) =>
                     <NuxtLink :to="\`/${name.toLowerCase()}/\${${name.toLowerCase()}.props?.id}\`" class="no-underline">
                         <Button title="View" alt="View ${makeWords(name)}" class="mr-2 mb-2"><Icon name="ph:eye" class="mr-1"/> View</Button>
                     </NuxtLink>
-                    <Button @mouseDown="${name.toLowerCase()}.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete ${makeWords(name)}"><Icon name="ph:trash" class="mr-1"/> Delete</Button>
+                    <Button @mousedown="${name.toLowerCase()}.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete ${makeWords(name)}"><Icon name="ph:trash" class="mr-1"/> Delete</Button>
                 </FieldsetItem>
             </FieldsetNav>
         </template>

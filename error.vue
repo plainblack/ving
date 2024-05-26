@@ -8,7 +8,7 @@
                 <p class="text-700 text-3xl mt-0 mb-6">{{ error?.message || "" }}</p>
                 <p class="text-700 text-3xl mt-0 mb-6">{{ error?.description || "" }}</p>
                 <NuxtLink to="/" v-slot="{ navigate }" custom>
-                    <Button @mouseDown="navigate" type="button" label="Go back to home page"></Button>
+                    <Button @mousedown="navigate" type="button" label="Go back to home page"></Button>
                 </NuxtLink>
             </div>
             <div>

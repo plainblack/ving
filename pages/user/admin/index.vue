@@ -13,7 +13,7 @@
                     </InputGroupAddon>
                     <InputText type="text" placeholder="Search Users" class="w-full" v-model="users.query.search"
                         @keydown.enter="users.search()" />
-                    <Button label="Search" @mouseDown="users.search()" />
+                    <Button label="Search" @mousedown="users.search()" />
                 </InputGroup>
 
                 <DataTable :value="users.records" stripedRows @sort="users.sortDataTable">

@@ -1,7 +1,7 @@
 <template>
     <Title>{{ config.public?.site?.name }}</Title>
     homepage goes here
-    <Button @mouseDown="doit()">Doit</Button>
+    <Button @mousedown="doit()">Doit</Button>
 </template>
 
 <script setup>

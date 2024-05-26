@@ -12,7 +12,7 @@
                     </InputGroupAddon>
                     <InputText type="text" placeholder="Search API Keys" class="w-full"
                         v-model="apikeys.query.search" @keydown.enter="apikeys.search()" />
-                    <Button label="Search" @mouseDown="apikeys.search()" />
+                    <Button label="Search" @mousedown="apikeys.search()" />
                 </InputGroup>
 
                 <DataTable :value="apikeys.records" stripedRows

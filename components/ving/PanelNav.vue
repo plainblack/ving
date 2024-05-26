@@ -11,7 +11,7 @@
         </li>
         <li v-if="links.length && buttons.length"><hr class="mt-2 mb-3 border-50 hidden lg:block"></li>
         <li v-for="item in buttons" :key="item.label" class="lg:mb-2 p-fluid">
-            <Button @mouseDown="takeAction($event, item)" :severity="item.severity" :title="item.label">
+            <Button @mousedown="takeAction($event, item)" :severity="item.severity" :title="item.label">
                 <Icon :name="item.icon" class="mr-1" /> <span class="hidden md:block white-space-nowrap">{{ item.label }}</span>
             </Button>
         </li>

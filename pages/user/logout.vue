@@ -3,7 +3,7 @@
     <p>You are now logged out.</p>
 
     <NuxtLink to="/" v-slot="{ navigate }" custom>
-        <Button @mouseDown="navigate" type="button" label="Return to home page" class="p-button-outlined mt-5"></Button>
+        <Button @mousedown="navigate" type="button" label="Return to home page" class="p-button-outlined mt-5"></Button>
     </NuxtLink>
 </template>
 
