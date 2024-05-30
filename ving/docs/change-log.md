@@ -7,6 +7,8 @@ outline: deep
 
 ### 2024-05-30
 * Fixed and if-else-if bug in FormInput component that was causing fields to be displayed twice if it was an int.
+* Fixed translation of ids in Ving Record filters.
+* Fixed translation of ints in Ving Record filters.
 
 ### 2024-05-26
 * Implemented: @click should become @mousedown #154

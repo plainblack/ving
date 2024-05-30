@@ -2,26 +2,32 @@ import { like, eq, and, or, gt, lt, gte, lte, ne } from '#ving/drizzle/orm.mjs';
 import { getQuery, readBody } from 'h3';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { isObject, isArray, isString, isUndefined, isNil } from '#ving/utils/identify.mjs';
+import { parseId } from '#ving/utils/int2str.mjs';
 
 /**
  * Formatting of ingested data to make it match the SQL data where it will be stored. It 
  * turns strings of 'true' and 'false' into the equivalent boolean values. Properly formats
  * dates into something compatible with datetime or timestamp. And casts numbers that are
  * represented as strings into numbers.
- * @param {string} column the name of the column you're fixing data for
+ * @param {Object} column the name of the column you're fixing data for
+ * @param {Object} column.vingSchemaProp The prop definition from a Ving Schema
+ * @param {Object} column.drizzleColumn The drizzle schema for a column in a table
  * @param {*} data the data you wish to have formatted
  * @returns Fixed data
  */
 const fixColumnData = (column, data) => {
-    if (column.getSQLType() == 'datetime' || column.getSQLType() == 'timestamp') {
+    if (column.drizzleColumn.getSQLType() == 'datetime' || column.drizzleColumn.getSQLType() == 'timestamp') {
         if (!data.match(/^"/)) // make it JSON compatible
             data = '"' + data + '"';
         return JSON.parse(data);
     }
-    if (column.getSQLType() == 'boolean') {
+    if (column.drizzleColumn.getSQLType() == 'boolean') {
         return data == 'true' ? true : false;
     }
-    if (column.getSQLType() == 'number') {
+    if (column.vingSchemaProp.type == 'id') {
+        return parseId(data);
+    }
+    if (column.vingSchemaProp.type == 'int') {
         return Number(data);
     }
     return data;
@@ -40,10 +46,10 @@ export const describeListWhere = (event, filter) => {
     if (query.search) {
         for (const column of filter.queryable) {
             if (isUndefined(where)) {
-                where = like(column, `%${query.search}%`);
+                where = like(column.drizzleColumn, `%${query.search}%`);
             }
             else {
-                where = or(where, like(column, `%${query.search}%`));
+                where = or(where, like(column.drizzleColumn, `%${query.search}%`));
             }
         }
     }
@@ -52,18 +58,18 @@ export const describeListWhere = (event, filter) => {
         const value = query[key] || '';
         const matchRange = key.match(/^_(start|end)_(.*)$/);
         if (matchRange) {
-            const matchColumn = filter.ranged.find(col => col.name == matchRange[2]);
+            const matchColumn = filter.ranged.find(col => col.drizzleColumn.name == matchRange[2]);
             if (matchColumn) {
                 const data = fixColumnData(matchColumn, value);
                 if (matchRange[1] == 'start') {
-                    ands.push(gte(matchColumn, data));
+                    ands.push(gte(matchColumn.drizzleColumn, data));
                 }
                 else if (matchRange[1] == 'end') {
-                    ands.push(lte(matchColumn, data));
+                    ands.push(lte(matchColumn.drizzleColumn, data));
                 }
             }
         }
-        const matchColumn = filter.qualifiers.find(col => col.name == key);
+        const matchColumn = filter.qualifiers.find(col => col.drizzleColumn.name == key);
         if (matchColumn) {
             const matchOp = value.toString().match(/^(>|<|>=|<=|!=|<>)?(.+)$/);
             if (matchOp) {
@@ -71,27 +77,27 @@ export const describeListWhere = (event, filter) => {
                 switch (matchOp[1]) {
                     case '!=':
                     case '<>': {
-                        ands.push(ne(matchColumn, data));
+                        ands.push(ne(matchColumn.drizzleColumn, data));
                         break;
                     }
                     case '>': {
-                        ands.push(gt(matchColumn, data));
+                        ands.push(gt(matchColumn.drizzleColumn, data));
                         break;
                     }
                     case '<': {
-                        ands.push(lt(matchColumn, data));
+                        ands.push(lt(matchColumn.drizzleColumn, data));
                         break;
                     }
                     case '>=': {
-                        ands.push(gte(matchColumn, data));
+                        ands.push(gte(matchColumn.drizzleColumn, data));
                         break;
                     }
                     case '<=': {
-                        ands.push(lte(matchColumn, data));
+                        ands.push(lte(matchColumn.drizzleColumn, data));
                         break;
                     }
                     default: {
-                        ands.push(eq(matchColumn, data));
+                        ands.push(eq(matchColumn.drizzleColumn, data));
                     }
                 }
             }
