@@ -5,6 +5,9 @@ outline: deep
 
 ## May 2024
 
+### 2024-05-30
+* Fixed and if-else-if bug in FormInput component that was causing fields to be displayed twice if it was an int.
+
 ### 2024-05-26
 * Implemented: @click should become @mousedown #154
 

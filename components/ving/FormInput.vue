@@ -8,7 +8,7 @@
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" :step="step"
                 :incrementButtonClass="append ? 'border-noround' : ''" @change="emit('change')"
                 :decrementButtonClass="append ? 'border-noround' : ''" />
-            <InputSwitch v-if="type == 'switch' && (isBoolean(val) || isUndefined(val))"
+            <InputSwitch v-else-if="type == 'switch' && (isBoolean(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId"
                 :inputClass="fieldClass" @change="emit('change')"
                  />
