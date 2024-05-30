@@ -9,6 +9,7 @@ outline: deep
 * Fixed and if-else-if bug in FormInput component that was causing fields to be displayed twice if it was an int.
 * Fixed translation of ids in Ving Record filters.
 * Fixed translation of ints in Ving Record filters.
+* If determineDate() is passed an undefined value, it will return new Date().
 
 ### 2024-05-26
 * Implemented: @click should become @mousedown #154

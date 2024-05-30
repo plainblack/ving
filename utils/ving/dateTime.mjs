@@ -1,6 +1,6 @@
 import { format, parseISO, parseJSON, parse, getUnixTime } from 'date-fns';
 import { ouch } from '#ving/utils/ouch.mjs';
-import { isArray, isString } from '#ving/utils/identify.mjs';
+import { isArray, isString, isUndefined } from '#ving/utils/identify.mjs';
 
 
 /**
@@ -12,17 +12,20 @@ import { isArray, isString } from '#ving/utils/identify.mjs';
  * const date = determineDate("2012-04-23T18:25:43.511Z")
  */
 export const determineDate = (input) => {
+    if (isUndefined(input)) {
+        return new Date();
+    }
     if (isArray(input) && isString(input[0])) {
         // date + input pattern
         return parse(input[0], input[1], new Date());
     }
-    else if (input instanceof Date) {
+    if (input instanceof Date) {
         return input;
     }
-    else if (isString(input) && input.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/)) {
+    if (isString(input) && input.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/)) {
         return parseISO(input);
     }
-    else if (isString(input) && input.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+/)) {
+    if (isString(input) && input.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+/)) {
         return parseJSON(input);
     }
     console.error('Have no idea what type this date is: ', input);
