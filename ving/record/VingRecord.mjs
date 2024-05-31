@@ -608,6 +608,8 @@ export class VingRecord {
      * await user.update()
      */
     async update() {
+        if (this.#dirty.length == 0)
+            return; // nothing worth updating
         const schema = findVingSchema(getTableName(this.table));
         // auto-update auto-updating date fields
         for (const field of schema.props) {

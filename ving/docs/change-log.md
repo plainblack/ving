@@ -5,6 +5,9 @@ outline: deep
 
 ## May 2024
 
+### 2024-05-31
+* Don't do an update if no data has changed when the user calls update().
+
 ### 2024-05-30
 * Fixed and if-else-if bug in FormInput component that was causing fields to be displayed twice if it was an int.
 * Fixed translation of ids in Ving Record filters.
