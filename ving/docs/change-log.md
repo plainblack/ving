@@ -8,6 +8,7 @@ outline: deep
 ### 2024-05-31
 * Don't do an update if no data has changed when the user calls update().
 * Fix enum2labels problem when options list is undefined.
+* Added placeholder option to FormInput when type is select so that it autogenerates a default undefined option with the placeholder.
 
 ### 2024-05-30
 * Fixed and if-else-if bug in FormInput component that was causing fields to be displayed twice if it was an int.

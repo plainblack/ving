@@ -21,8 +21,8 @@
             <MarkdownInput v-else-if="type == 'markdown' && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :id="computedId" @change="emit('change')"
                 />
-            <Dropdown v-else-if="type == 'select'"
-                v-model="val" :name="name" :id="computedId" :options="options" :class="fieldClass" :required="required"
+            <Dropdown v-else-if="type == 'select'" :placeholder="placeholder"
+                v-model="val" :name="name" :id="computedId" :options="modifiedOptions" :class="fieldClass" :required="required"
                 @change="emit('change')" optionLabel="label" optionValue="value" />  
             <InputText
                 v-else-if="['text', 'email'].includes(type) && (isString(val) || isNull(val) || isUndefined(val))"
@@ -98,6 +98,16 @@ let subtext = ref(props.subtext);
 const invalidForm = inject('invalidForm', (a) => { });
 
 const empty = computed(() => isNil(props.modelValue));
+
+const modifiedOptions = computed(() => {
+    if ( props.placeholder ) {
+        return [
+            { value: undefined, label : props.placeholder },
+            ...props.options,
+        ]
+    }
+    return props.options;
+});
 
 const invalid = computed(() => {
     if (props.required && empty.value) {
