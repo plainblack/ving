@@ -7,6 +7,7 @@ outline: deep
 
 ### 2024-05-31
 * Don't do an update if no data has changed when the user calls update().
+* Fix enum2labels problem when options list is undefined.
 
 ### 2024-05-30
 * Fixed and if-else-if bug in FormInput component that was causing fields to be displayed twice if it was an int.
