@@ -333,6 +333,10 @@ The `enums` field is reqiured only if the prop type is `boolean` or `enum`. It i
 
 The `enums` field is reqiured only if the prop type is `boolean` or `enum`. It is an array containing the labels for the `enums` field values. Note that the labels should appear in the order to match the values in the `enums` array.
 
+##### noSetAll
+
+Boolean, optional, default `false`. If set to `true` then this attribute will be skipped on a VingRecord when `setAll()` is called. You will have to `set()` the field specifically in order to set its value.
+
 ##### length
 
 The `length` field is required when the prop is of type `string`. It can be greater than `1` and less than whatever the MySQL field type max length is: `256` for varchar, `65535` for Text, and `16777215` for MediumText. It is used for validating the length of the prop's value and also sets the prop field size in the database. 

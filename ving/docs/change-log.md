@@ -3,6 +3,9 @@ outline: deep
 ---
 # Change Log
 
+## June 2024
+* Documented noSetAll() attribute in Ving Schemas.
+
 ## May 2024
 
 ### 2024-05-31
