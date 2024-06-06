@@ -40,7 +40,7 @@ You can also enqueue jobs from the [CLI](cli).
 Jobs are run by job workers using handlers. The job worker system is run via the [CLI](cli).
 
 ```bash
-./ving.mjs --worker --ttl 60
+./ving.mjs jobs --worker --ttl 60
 ```
 
 The above would run a worker for 60 seconds afterwhich the worker would shut down. If you want to run it indefinitely just leave the `ttl` off.
