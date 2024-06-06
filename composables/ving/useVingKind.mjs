@@ -385,17 +385,22 @@ class VingKind {
      * 
      * @param {'props'|'meta'|'extra'} section One of the describe section names such as `props`, or `meta`, or `extra`.
      * @param {string} field The name of the field within the `section` that will serve as the labelf for this option list.
+     * @param {Function} filter An optional function that will be passed to an array filter to filter out any unwanted records from the current list of records.
      * @returns {object[]} An array of objects with `label` and `value` attributes.
      * @example
      * users.recordsAsOptions('meta','displayName')
      */
-    recordsAsOptions(section, field) {
-        return this.records.map(u => {
-            return {
-                value: u.props?.id,
-                label: u[section][field]
-            }
-        })
+    recordsAsOptions(section, field, filter = () => true) {
+        let out = [];
+        for (const record of this.records) {
+            if (!(filter(record)))
+                continue;
+            out.push({
+                value: record.props?.id,
+                label: record[section][field]
+            });
+        }
+        return out;
     }
 
     /**
