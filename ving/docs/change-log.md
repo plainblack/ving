@@ -4,6 +4,11 @@ outline: deep
 # Change Log
 
 ## June 2024
+
+### 2024-06-06
+* Fixed documentation for ving/utils/fs readJSON and writeJSON
+
+### 2024-06-01
 * Documented noSetAll() attribute in Ving Schemas.
 
 ## May 2024

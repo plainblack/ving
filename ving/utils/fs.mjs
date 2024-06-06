@@ -40,7 +40,7 @@ export const sanitize = (filename) => {
  * @param {String} path 
  * @returns {object}
  * @example
- * async readJSON('./ving.json')
+ * await readJSON('./ving.json')
  */
 export const readJSON = async (path) => {
     return JSON.parse(await fs.promises.readFile(path));
@@ -51,7 +51,7 @@ export const readJSON = async (path) => {
  * @param {string} path 
  * @param {object} data 
  * @example
- * async writeJSON('./ving.json')
+ * await writeJSON('./ving.json')
  */
 export const writeJSON = async (path, data) => {
     await fs.promises.writeFile(path, JSON.stringify(data, undefined, 2));
