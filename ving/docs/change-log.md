@@ -8,6 +8,8 @@ outline: deep
 ### 2024-06-06
 * Fixed documentation for ving/utils/fs readJSON and writeJSON
 * Added an optional function that will be passed to an array filter to filter out any unwanted records from the current list of records on useVingKind() records list.
+* Added cron listing to ving jobs list.
+* ving jobs list auto-scales to fit terminal size.
 
 ### 2024-06-01
 * Documented noSetAll() attribute in Ving Schemas.

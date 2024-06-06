@@ -41,6 +41,12 @@ export default defineCommand({
             alias: "L",
             default: false,
         },
+        repeatableList: {
+            type: "boolean",
+            description: "List the 100 oldest repeatable jobs in the queue.",
+            alias: "C",
+            default: false,
+        },
         listByHandler: {
             type: "string",
             description: "List jobs that match the specified handler name.",
@@ -165,6 +171,7 @@ export default defineCommand({
             }
             else {
                 await showUsage(cmd, { meta: { name: 'ving.mjs' } });
+                ving.close();
             }
         }
         catch (e) {
@@ -175,20 +182,40 @@ export default defineCommand({
 });
 
 function formatList(jobs) {
+    let widths = { handler: 0, data: 0, cron: 0, id: 0 };
+    for (const job of jobs) {
+        if (job.id.length > widths.id)
+            widths.id = job.id.length;
+        const data = JSON.stringify(job.data);
+        if (data.length > widths.data)
+            widths.data = data.length;
+        if (job.name.length > widths.handler)
+            widths.handler = job.name.length;
+        const cron = job.opts?.repeat?.pattern || '';
+        if (cron.length > widths.cron)
+            widths.cron = cron.length;
+    }
+    const total = widths.data + widths.handler + widths.cron + widths.id;
+    if (total > process.stdout.columns) {
+        widths.data = total - process.stdout.columns;
+        if (widths.data < 4)
+            widths.data = 4;
+    }
     console.log(
-        'Id'.padEnd(10),
-        'Handler'.padEnd(20),
-        'Data',
+        'Handler'.padEnd(widths.handler),
+        'Data'.padEnd(widths.data),
+        'Cron'.padEnd(widths.cron),
+        'Id'.padEnd(widths.id),
     )
 
     for (const job of jobs) {
         delete job.queue;
         delete job.scripts;
-        //console.log(job);
         console.log(
-            job.id.padEnd(10),
-            job.name.padEnd(20),
-            JSON.stringify(job.data).slice(0, 60),
+            job.name.padEnd(widths.handler),
+            JSON.stringify(job.data).slice(0, widths.data).padEnd(widths.data),
+            (job.opts?.repeat?.pattern || '').padEnd(widths.cron),
+            job.id.padEnd(widths.id),
         );
     }
     ving.log('cli').info(`There are ${jobs.length} jobs waiting.`);
