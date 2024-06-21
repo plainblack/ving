@@ -11,6 +11,7 @@ outline: deep
 * NOTE: All your UI stuff will need to be updated to work with Tailwind and PrimeVue 4. 
 * Added DarkModeSelector component.
 * Added ving-theme.
+* Fixed: fix documentation for createAndVerify #164
 
 ### 2024-06-06
 * Fixed documentation for ving/utils/fs readJSON and writeJSON

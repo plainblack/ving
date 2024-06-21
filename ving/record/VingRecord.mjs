@@ -800,11 +800,14 @@ export class VingKind {
      *
      * @param {Object} props A list of props
      * @param {Object} currentUser A `User` or `Session`
+     * @throws 441 if no currentUser is passed
      * @returns {VingRecord} A newly minted record or throws an error if validation fails
      * @example
-     * const record = await Users.createAndVerify({username: 'andy'})
+     * const record = await Users.createAndVerify({username: 'andy'}, currentUser)
      */
     async createAndVerify(props, currentUser) {
+        if (isUndefined(currentUser))
+            throw ving.ouch(441, `createAndVerify requires a user or session to test privileges against`);
         const obj = this.mint({});
         obj.testCreationProps(props);
         await obj.setPostedProps(props, currentUser);
