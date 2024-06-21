@@ -5,6 +5,13 @@ outline: deep
 
 ## June 2024
 
+### 2024-06-21
+* Replaced PrimeFlex with Tailwind.
+* Replaced PrimeVue 3 with PrimeVue 4.
+* NOTE: All your UI stuff will need to be updated to work with Tailwind and PrimeVue 4. 
+* Added DarkModeSelector component.
+* Added ving-theme.
+
 ### 2024-06-06
 * Fixed documentation for ving/utils/fs readJSON and writeJSON
 * Added an optional function that will be passed to an array filter to filter out any unwanted records from the current list of records on useVingKind() records list.

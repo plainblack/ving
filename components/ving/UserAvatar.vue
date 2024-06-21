@@ -1,7 +1,7 @@
 <template>
-    <span v-if="user" class="flex-inline align-items-center">
-        <Avatar :image="user.meta?.avatarUrl" alt="user avatar" shape="circle" class="vertical-align-middle" />
-        <span class="ml-2 vertical-align-middle">
+    <span v-if="user" class="flex-inline items-center">
+        <Avatar :image="user.meta?.avatarUrl" alt="user avatar" shape="circle" />
+        <span class="ml-2">
             {{ user.meta?.displayName }}
         </span>
     </span>

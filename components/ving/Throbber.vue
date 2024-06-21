@@ -1,7 +1,7 @@
 <template>
-    <div id="vingthrobber" style="z-index: 10000; position: fixed; top: 0px; width: 100%;">
+    <div id="vingthrobber" class="fixed z-[10000] top-0 w-full">
         <template v-if="throbber.counter > 0">
-            <ProgressBar id="throbberprogressbar" mode="indeterminate" style="height: 5px"></ProgressBar>
+            <ProgressBar id="throbberprogressbar" mode="indeterminate" class="h-0.5"></ProgressBar>
         </template>
     </div>
 </template>

@@ -1,15 +1,15 @@
 <template>
-    <Button v-if="items.length == 1" @mousedown="takeAction($event, firstItem)" :severity="severity" class="white-space-nowrap">
-        <Icon :name="firstItem.icon" class="mr-1 vertical-align-middle" />
-        <span class="vertical-align-middle">{{ firstItem.label }}</span>
+    <Button v-if="items.length == 1" @mousedown="takeAction($event, firstItem)" :severity="severity" class="text-nowrap">
+        <Icon :name="firstItem.icon" class="mr-1 align-middle" />
+        <span class="align-middle">{{ firstItem.label }}</span>
     </Button>
-    <SplitButton v-else-if="items.length > 1" :severity="severity" :model="otherItems" @mousedown="takeAction($event, firstItem)" class="white-space-nowrap">
+    <SplitButton v-else-if="items.length > 1" :severity="severity" :model="otherItems" @click="takeAction($event, firstItem)" class="text-nowrap">
         <span>
-            <Icon :name="firstItem.icon" :title="firstItem.label" class="mr-1 vertical-align-middle" />
-            <span class="vertical-align-middle">{{ firstItem.label }}</span>
+            <Icon :name="firstItem.icon" :title="firstItem.label" class="mr-1 align-middle" />
+            <span class="align-middle">{{ firstItem.label }}</span>
         </span>
         <template #item="{ item }">
-            <span @mousedown="takeAction($event, item)" class="flex p-2 align-items-center" :title="item.label">
+            <span @mousedown="takeAction($event, item)" class="flex p-2 items-center" :title="item.label">
                 <Icon :name="item.icon" class="mr-1" />
                 {{ item.label }}
             </span>

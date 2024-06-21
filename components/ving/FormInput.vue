@@ -1,14 +1,14 @@
 <template>
     <div :class="class">
         <FormLabel :label="label" :id="computedId" />
-        <div :class="append || prepend || $slots.prepend || $slots.append ? 'p-inputgroup flex-1' : 'flex-1'">
-            <span v-if="$slots.prepend || prepend" class="p-inputgroup-addon"><slot name="prepend">{{ prepend }}</slot></span>
+        <InputGroup class="flex-1">
+            <InputGroupAddon v-if="$slots.prepend || prepend"><slot name="prepend">{{ prepend }}</slot></InputGroupAddon>
             <InputNumber v-if="type == 'number' && (isNumber(val) || isNull(val) || isUndefined(val))"
                 v-model="val" showButtons :placeholder="placeholder" :name="name" :id="computedId"
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" :step="step"
-                :incrementButtonClass="append ? 'border-noround' : ''" @change="emit('change')"
-                :decrementButtonClass="append ? 'border-noround' : ''" />
-            <InputSwitch v-else-if="type == 'switch' && (isBoolean(val) || isUndefined(val))"
+                :incrementButtonClass="append ? 'rounded-none' : ''" @change="emit('change')"
+                :decrementButtonClass="append ? 'rounded-none' : ''" />
+            <ToggleSwitch v-else-if="type == 'switch' && (isBoolean(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId"
                 :inputClass="fieldClass" @change="emit('change')"
                  />
@@ -17,11 +17,11 @@
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" class="w-full" />
             <Textarea v-else-if="type == 'textarea' && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId" :autocomplete="autocomplete"
-                :class="fieldClass + ' border-round'" :required="required" autoResize @change="emit('change')" />
+                :class="fieldClass + ' rounded'" :required="required" autoResize @change="emit('change')" />
             <MarkdownInput v-else-if="type == 'markdown' && (isString(val) || isNull(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :id="computedId" @change="emit('change')"
                 />
-            <Dropdown v-else-if="type == 'select'" :placeholder="placeholder"
+            <Select v-else-if="type == 'select'" :placeholder="placeholder"
                 v-model="val" :name="name" :id="computedId" :options="modifiedOptions" :class="fieldClass" :required="required"
                 @change="emit('change')" optionLabel="label" optionValue="value" />  
             <InputText
@@ -32,8 +32,8 @@
                 Can't display {{ displayName }} Form Input
                 {{ val }}
             </Message>
-            <span v-if="$slots.append || append" class="p-inputgroup-addon"><slot name="append">{{ append }}</slot></span>
-        </div>
+            <InputGroupAddon v-if="$slots.append || append"><slot name="append">{{ append }}</slot></InputGroupAddon>
+        </InputGroup>
         <small :class="invalid && !empty ? 'text-red-500' : ''" v-if="subtext">{{ subtext }}</small>
     </div>
 </template>

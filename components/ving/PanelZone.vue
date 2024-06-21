@@ -3,7 +3,7 @@
         <slot name="header">
             <div v-if="title || info || $slots.title" class="mb-4">
                 <h2 v-if="title || $slots.title" class="text-900 font-semibold text-lg m-0 p-0"><slot name="title">{{ title }}</slot></h2>
-                <div v-if="info" class="mt-1 text-sm text-gray-500">{{ info }}</div>
+                <div v-if="info" class="mt-1 text-sm">{{ info }}</div>
             </div>
         </slot>
 
@@ -23,7 +23,7 @@ const props = defineProps({
     },
     look: {
         type: String,
-        default: 'surface-card border-1 surface-border border-round',
+        default: 'border bg-surface-50 dark:bg-surface-900 border-surface rounded',
     },
     padding: {
         type: String,

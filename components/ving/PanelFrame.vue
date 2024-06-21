@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-column lg:flex-row">
+    <div class="flex flex-col lg:flex-row">
         <div v-if="$slots.left" class="lg:pr-5 mb-1 lg:mb-0">        
             <div v-if="title" class="lg:mb-3 text-2xl text-color-secondary ml-1">{{section}}<template v-if="!section">&nbsp;</template></div>
             <slot name="left"></slot>

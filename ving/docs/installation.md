@@ -153,3 +153,4 @@ And for the best possible experience, we also recommend installing these optiona
  - [MySQL](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-mysql-client2)
  - [Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify)
  - [Nunjucks Template Formatting](https://marketplace.visualstudio.com/items?itemName=eseom.nunjucks-template)
+ - [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)

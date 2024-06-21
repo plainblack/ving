@@ -21,14 +21,14 @@
                                 :resizeWidth="300" resizeMethod="crop"></Dropzone>
                         </div>
                     </div>
-                    <div class="col text-center">
-                        <Avatar :image="currentUser.meta?.avatarUrl" alt="user avatar" class="h-10rem w-10rem" shape="circle" />
+                    <div class="col text-center mb-3">
+                        <Image :src="currentUser.meta?.avatarUrl" alt="user avatar" class="inline-block"/>
                     </div>
                 </div>
                 
                 <FormInput type="markdown" @change="currentUser.save('bio')" label="Bio"  v-model="currentUser.props.bio" name="bio" class="mb-4"  />
 
-                <NuxtLink :to="'/user/' + currentUser.props.id + '/profile'" v-ripple>
+                <NuxtLink :to="'/user/' + currentUser.props.id + '/profile'">
                     View your profile as others see it
                 </NuxtLink>
             </PanelZone>

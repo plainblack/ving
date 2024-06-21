@@ -1,7 +1,7 @@
 <template>
     <Title>{{ error?.statusCode || 500 }} {{ error?.statusMessage || "" }}</Title>
     <div class="surface-section px-4 py-8 md:px-6 lg:px-8">
-        <div class="flex flex-column lg:flex-row justify-content-center align-items-center gap-7">
+        <div class="flex flex-col lg:flex-row justify-content-center items-center gap-7">
             <div class="text-center lg:text-right">
                 <div class="mt-6 mb-3 font-bold text-7xl text-900">{{ error?.statusCode || 500 }}</div>
                 <div class="mt-6 mb-3 font-bold text-6xl text-900">{{ error?.statusMessage || "" }}</div>

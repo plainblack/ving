@@ -1,5 +1,5 @@
 <template>
-    <MdEditor v-model="val" @onChange="changed" :placeholder="placeholder" :showCodeRowNumber="true" :editorId="id" language="en-US" :toolbars="toolbars" noUploadImg previewTheme="github" />
+    <MdEditor :theme="colorScheme" v-model="val" @onChange="changed" :placeholder="placeholder" :showCodeRowNumber="true" :editorId="id" language="en-US" :toolbars="toolbars" noUploadImg previewTheme="github" />
 </template>
 
 <script setup>
@@ -33,7 +33,8 @@ const val = computed({
     }
 });
 
-
+const isDark = useDark();
+const colorScheme = computed(() => isDark.value == true ? 'dark' : 'light');
 
 
 const toolbars = [

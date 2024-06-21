@@ -21,7 +21,7 @@ const columns = (name, schema) => {
             out += `
             <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
                 <template #body="slotProps">
-                    <NuxtLink :to="\`/${name.toLowerCase()}/\${slotProps.data.props.id}\`" v-ripple>
+                    <NuxtLink :to="\`/${name.toLowerCase()}/\${slotProps.data.props.id}\`">
                         {{ slotProps.data.props.${prop.name} }}
                     </NuxtLink>
                 </template>

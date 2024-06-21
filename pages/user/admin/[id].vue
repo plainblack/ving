@@ -66,7 +66,7 @@
                             name="ph:trash" class="mr-1"/> Delete</Button>
                     <Button @mousedown="become" severity="warning" class="mr-2 mb-2" title="Become" alt="Become User">
                         <Icon name="bi:arrow-left-right" class="mr-1"/> Become</Button>
-                    <NuxtLink :to="'/user/' + user.props.id + '/profile'" v-ripple>
+                    <NuxtLink :to="'/user/' + user.props.id + '/profile'">
                         <Button  severity="primary" class="mr-2 mb-2" title="View Profile">
                             <Icon name="ph:user" class="mr-1"/> View Profile
                         </Button>

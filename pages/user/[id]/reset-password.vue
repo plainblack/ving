@@ -1,6 +1,6 @@
 <template>
     <Title>Create an Account for {{ config.public?.site?.name }}</Title>
-    <div class="w-full lg:w-7 mx-auto">
+    <div class="w-full lg:w-7/12 mx-auto">
         <div class="text-center mb-5">
             <img :src="config.public.site.logoUrl" :alt="config.public.site.name" height="50" class="mb-3">
             <h1 class="text-900 text-3xl font-medium mb-3 mt-0">Reset Password</h1>
@@ -10,7 +10,7 @@
         </div>
         <PanelZone>
             <Form :send="resetPassword">
-                <div class="flex gap-5 flex-column-reverse md:flex-row">
+                <div class="flex gap-5 flex-col-reverse md:flex-row">
                     <div class="flex-auto">
                         <FormInput name="code" type="text" v-model="newPassword.code" required readonly
                             label="Reset Code" class="mb-4" />

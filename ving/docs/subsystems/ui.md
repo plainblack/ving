@@ -2,10 +2,13 @@
 outline: deep
 ---
 # Web UI
-The web user interface of ving allows you to build out complex applications using Vue 3. It starts with automatically generating pages for your ving records. We use a component library suite called [PrimeVue](https://primevue.org/) that provides all kinds of amazing functionality and a styling library called [PrimeFlex](https://www.primefaces.org/primeflex/) that gives you rich power over CSS. We also provide access to all of the [VueUse composables](https://vueuse.org/functions.html) for things like reactivity within localStorage, mouse, keyboard, and other browser subsystems. But we've also got a bunch of custom [components](#components) and [composables](#composables) to help you build your app.
+The web user interface of ving allows you to build out complex applications using Vue 3. It starts with automatically generating pages for your ving records. We use a component library suite called [PrimeVue](https://primevue.org/) that provides all kinds of amazing functionality and a styling library called [Tailwind CSS](https://tailwindcss.com) that gives you rich power over CSS. We also provide access to all of the [VueUse composables](https://vueuse.org/functions.html) for things like reactivity within localStorage, mouse, keyboard, and other browser subsystems. But we've also got a bunch of custom [components](#components) and [composables](#composables) to help you build your app.
 
 ## Layouts
 The design of your site is created using [Nuxt Layouts](https://nuxt.com/docs/guide/directory-structure/layouts). You can find the default layout in `layouts/default.vue`.
+
+## Theme
+The color scheme of your site is handled through [PrimeVue styled themes](https://primevue.org/theming/styled/). You can see the existing ving theme in `/themes/ving-theme.mjs`. We recommend you create your own theme by copying that file to a new name, and then telling Nuxt that you want to use your theme in `/nuxt.config.mjs`.
 
 ## Pages
 ving is ultimately built on [Nuxt](https://nuxt.com/), so ving pages can do anything [Nuxt Pages](https://nuxt.com/docs/guide/directory-structure/pages) can do.
@@ -59,6 +62,13 @@ Props:
     - **label** - A string for the page name.
     - **to** - A string of the page to navigate to.
 
+
+### DarkModeSelector
+Allows the user to switch between light or dark mode.
+
+```html
+<DarkModeSelector/>
+```
 
 ### Dropzone
 Creates a user interface for uploading [S3Files](/rest/S3File). It handles the resizing of images on the client side, restriction of file types on the client side, requesting the presigned upload URL, uploading the file to S3. The only thing you need to do is specify via `afterUpload` what happens to the file after the user uploads it.
@@ -302,7 +312,7 @@ Slots:
 Props:
 - **title** - Display a title in the header.
 - **info** - Give the header a little subtext.
-- **look** - Override the PanelZone class, which defaults to `surface-card border-1 surface-border border-round`.
+- **look** - Override the PanelZone class, which defaults to `surface-card border border-surface rounded`.
 - **margin** - Override the PanelZone margin class which defaults to `mb-4`.
 - **padding** - Override the PanelZone margin class which defaults to `p-4 pt-3`.
 

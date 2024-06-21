@@ -19,7 +19,7 @@
                 <DataTable :value="users.records" stripedRows @sort="users.sortDataTable">
                     <Column field="props.username" header="Username" sortable>
                         <template #body="slotProps">
-                            <NuxtLink :to="`/user/admin/${slotProps.data.props.id}`" v-ripple>
+                            <NuxtLink :to="`/user/admin/${slotProps.data.props.id}`">
                                 {{ slotProps.data.props.username }}
                             </NuxtLink>
                         </template>

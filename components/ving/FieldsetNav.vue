@@ -1,9 +1,9 @@
 <template>
-    <div class="grid">
-        <div class="col-12 md:col-9 xl:col-10">
+    <div class="flex">
+        <div class="md:grow">
             <slot></slot>
         </div>
-        <div class="hidden md:block md:col-3 xl:col-2">
+        <div class="md:hidden lg:block ml-5">
             <ul class="list-none sticky m-0 p-0 pt-4 top-0">
                 <li class="mb-2" v-for="child in sortedChildren()" :key="child.id">
                     <a :href="`#${child.id}`">

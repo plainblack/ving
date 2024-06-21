@@ -1,18 +1,18 @@
 <template>
-    <ul class="list-none m-0 p-0 flex flex-wrap lg:flex-column justify-content-evenly md:justify-content-between">
+    <ul class="list-none m-0 p-0 flex flex-wrap lg:flex-col justify-evenly md:justify-between">
         <li v-for="item in links" :key="item.label" :title="item.label">
-            <NuxtLink :to="item.to" v-ripple
-                :class="[route.path == item.to ? 'text-primary hover:bg-primary-reverse hover:text-primary' : 'text-color-secondary hover:bg-primary-reverse hover:text-color', 'flex align-items-center cursor-pointer p-0 py-2 border-round text-800 hover:surface-hover transition-duration-150 transition-colors p-ripple']"
+            <NuxtLink :to="item.to"
+                :class="[route.path == item.to ? 'text-primary hover:bg-primary-reverse hover:text-primary' : 'text-color-secondary hover:bg-primary-reverse hover:text-color', 'flex items-center cursor-pointer p-0 py-2 rounded text-800 hover:surface-hover transition-duration-150 transition-colors p-ripple']"
                 :aria-current="route.path == item.to ? 'page' : undefined">
                 <Icon :name="item.icon" aria-hidden="true" 
                     :class="[route.path == item.to ? 'text-primary group-hover:text-primary' : 'text-color-secondary group-hover:text-color', 'md:mr-2']" />
-                <span class="font-medium hidden md:block white-space-nowrap">{{ item.label }}</span>
+                <span class="font-medium hidden md:block text-nowrap">{{ item.label }}</span>
             </NuxtLink>
         </li>
         <li v-if="links.length && buttons.length"><hr class="mt-2 mb-3 border-50 hidden lg:block"></li>
         <li v-for="item in buttons" :key="item.label" class="lg:mb-2 p-fluid">
             <Button @mousedown="takeAction($event, item)" :severity="item.severity" :title="item.label">
-                <Icon :name="item.icon" class="mr-1" /> <span class="hidden md:block white-space-nowrap">{{ item.label }}</span>
+                <Icon :name="item.icon" class="mr-1" /> <span class="hidden md:block text-nowrap">{{ item.label }}</span>
             </Button>
         </li>
     </ul>
