@@ -10,11 +10,11 @@ const kindCache = {};
  * const users = useKind('User');
  */
 export const useKind = async (kind) => {
-    if (kind in kindCache)
-        return kindCache[kind];
-    const kindTable = await import(`#ving/drizzle/schema/${kind}.mjs`);
-    const kindModule = await import(`#ving/record/records/${kind}.mjs`);
-    const instance = new kindModule[`${kind}Kind`](useDB(), kindTable[`${kind}Table`], kindModule[`${kind}Record`]);
-    kindCache[kind] = instance;
-    return instance;
+    if (!(kind in kindCache)) {
+        kindCache[kind] = {
+            table: await import(`#ving/drizzle/schema/${kind}.mjs`),
+            module: await import(`#ving/record/records/${kind}.mjs`),
+        }
+    }
+    return new kindCache[kind]['module'][`${kind}Kind`](useDB(), kindCache[kind]['table'][`${kind}Table`], kindCache[kind]['module'][`${kind}Record`]);
 }

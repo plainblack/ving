@@ -12,6 +12,7 @@ outline: deep
 * Added DarkModeSelector component.
 * Added ving-theme.
 * Fixed: fix documentation for createAndVerify #164
+* Fixed: useKind is treating the cache as if its a class not an instance #165
 
 ### 2024-06-06
 * Fixed documentation for ving/utils/fs readJSON and writeJSON
