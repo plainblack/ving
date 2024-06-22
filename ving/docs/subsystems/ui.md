@@ -8,7 +8,7 @@ The web user interface of ving allows you to build out complex applications usin
 The design of your site is created using [Nuxt Layouts](https://nuxt.com/docs/guide/directory-structure/layouts). You can find the default layout in `layouts/default.vue`.
 
 ## Theme
-The color scheme of your site is handled through [PrimeVue styled themes](https://primevue.org/theming/styled/). You can see the existing ving theme in `/themes/ving-theme.mjs`. We recommend you create your own theme by copying that file to a new name, and then telling Nuxt that you want to use your theme in `/nuxt.config.mjs`.
+The color scheme of your site is handled through [PrimeVue styled themes](https://primevue.org/theming/styled/). You can see the existing ving theme in `/app/themes/ving-theme.mjs`. We recommend you create your own theme by copying that file to a new name, and then telling Nuxt that you want to use your theme in `/nuxt.config.mjs`.
 
 ## Pages
 ving is ultimately built on [Nuxt](https://nuxt.com/), so ving pages can do anything [Nuxt Pages](https://nuxt.com/docs/guide/directory-structure/pages) can do.

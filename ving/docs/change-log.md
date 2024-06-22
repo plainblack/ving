@@ -15,6 +15,8 @@ outline: deep
 * Fixed: useKind is treating the cache as if its a class not an instance #165
 * Upgraded to Nuxt 3.12.
 * NOTE: `npm i` to get the new version of nuxt
+* Migrated to new Nuxt 4 folder structure.
+* NOTE: All of your pages, layouts, composables, components, utils, middleware, etc needs to move into the app folder.
 
 ### 2024-06-06
 * Fixed documentation for ving/utils/fs readJSON and writeJSON
