@@ -5,6 +5,9 @@ outline: deep
 
 ## June 2024
 
+### 2024-06-23
+* Fixed: examples in VingSchema need to differentiate between the able and the kind class #155
+
 ### 2024-06-21
 * Replaced PrimeFlex with Tailwind.
 * Replaced PrimeVue 3 with PrimeVue 4.
