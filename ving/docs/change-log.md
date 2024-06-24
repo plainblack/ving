@@ -5,6 +5,9 @@ outline: deep
 
 ## June 2024
 
+### 2024-06-24
+* Fixed: pager appears to be broken #167
+
 ### 2024-06-23
 * Fixed: examples in VingSchema need to differentiate between the able and the kind class #155
 * Implemented: add manifest.json file #162

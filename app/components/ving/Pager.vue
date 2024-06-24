@@ -13,7 +13,7 @@
 const props = defineProps(['kind']);
 
 function changePage(page) {
-    props.kind.query.page = page.page + 1
+    props.kind.query = {...props.kind.query, page };
     props.kind.search();
 }
 </script>

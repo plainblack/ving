@@ -20,7 +20,7 @@ class VingKind {
     })
 
     /**
-     * The object where new properties are stored awaiting being sent to the server to create the record for real.
+     * The object where new properties are stored awaiting being sent to the server to create the record for real. Note that this is generated `set`/`get` and thus you must set a full object if you set it.
      */
 
     get new() {
@@ -32,7 +32,7 @@ class VingKind {
     }
 
     /**
-     * The object containing paging data.
+     * The object containing paging data. Note that this is generated `set`/`get` and thus you must set a full object if you set it.
      */
     get paging() {
         return this.#state.paging;
@@ -43,7 +43,7 @@ class VingKind {
     }
 
     /**
-     * The object containing enumerated props options once `fetchPropsOptions` is called.
+     * The object containing enumerated props options once `fetchPropsOptions` is called. Note that this is generated `set`/`get` and thus you must set a full object if you set it.
      */
     get propsOptions() {
         return this.#state.propsOptions;
@@ -54,7 +54,7 @@ class VingKind {
     }
 
     /**
-     * An object containing the query parameters to send when interacting with endpoints for this kind.
+     * An object containing the query parameters to send when interacting with endpoints for this kind. Note that this is generated `set`/`get` and thus you must set a full object if you set it.
      */
 
     get query() {
@@ -66,7 +66,7 @@ class VingKind {
     }
 
     /**
-     * An array containing the list of records that have been fetched from the server.
+     * An array containing the list of records that have been fetched from the server. Note that this is generated `set`/`get` and thus you must set a full array if you set it.
      */
     get records() {
         return this.#state.records;

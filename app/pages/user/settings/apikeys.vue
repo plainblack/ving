@@ -94,7 +94,7 @@ const apikeys = useVingKind({
     listApi: currentUser.links?.apikeys.href,
     createApi: `/api/${useRestVersion()}/apikey`,
     query: { includeMeta: true, sortBy: 'name', sortOrder: 'asc' },
-    newDefaults: { name: '', reason: '', url: 'http://', userId: currentUser.props?.id },
+    newDefaults: { name: 'My New API Key', reason: '', url: 'http://', userId: currentUser.props?.id },
 });
 await apikeys.search();
 onBeforeRouteLeave(() => apikeys.dispose());
