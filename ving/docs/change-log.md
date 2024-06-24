@@ -7,6 +7,7 @@ outline: deep
 
 ### 2024-06-23
 * Fixed: examples in VingSchema need to differentiate between the able and the kind class #155
+* Implemented: add manifest.json file #162
 
 ### 2024-06-21
 * Replaced PrimeFlex with Tailwind.

@@ -35,6 +35,7 @@ export default defineConfig({
           { text: 'Message Bus', link: '/subsystems/messagebus' },
           { text: 'Pulumi', link: '/subsystems/pulumi' },
           { text: 'Rest', link: '/subsystems/rest' },
+          { text: 'Social Integration', link: '/subsystems/social' },
           { text: 'UI', link: '/subsystems/ui' },
           { text: 'Utilities', link: '/subsystems/utils' },
           { text: 'Ving Record', link: '/subsystems/ving-record' },

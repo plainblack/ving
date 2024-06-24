@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "version": "1.0",
+    "name": "Ving",
+    "short_name": "Ving",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff",
+    "theme_color": "#fff",
+    "icons": [
+        {
+            "src": "android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "default_locale": "en",
+    "description": "A Web and REST code generation tool and services framework."
+}
