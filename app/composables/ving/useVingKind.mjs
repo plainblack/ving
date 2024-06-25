@@ -90,46 +90,29 @@ class VingKind {
     }
 
     /**
-     * Recursively retreieves all the records for the given configuration.
+     * Retrieves all the records for the given configuration.
      * 
-     * @param {Object} options An object for modifying the the method's functionality.
-     * @param {Number} iterations For internal use only.
-     * @returns {Promise<boolean>} A promise that resolves when all the requests have been processed.
+     * @param {Object} options An object for modifying the the method's functionality. See `search` for more info.
+     * @param {Function} options.onAllDone An optional callback that will be called when all the requests have been processed.
      * @example
      * await Users.all();
      */
 
-    all(options = {}, iterations = 1) {
-        let self = this;
-        return new Promise((resolve, reject) =>
-            self
-                .search({
-                    ...options,
-                    accumulate: true,
-                    page: iterations,
-                })
-                .then(() => {
-                    if (self.paging.page < self.paging.totalPages) {
-                        if (iterations < 999) {
-                            self
-                                .all(options, iterations + 1)
-                                .then(resolve)
-                                .catch(reject);
-                        } else {
-                            const message = "infinite loop detected in all() for " + self.getListApi()
-                            this.#notify.error(message);
-                            throw ouch(400, message);
-                        }
-                    } else {
-                        if (options.onAllDone)
-                            options.onAllDone();
-                        if (self.#behavior.onAllDone)
-                            self.#behavior.onAllDone();
-                        resolve(undefined);
-                    }
-                })
-                .catch(reject)
-        );
+    async all(options = {}) {
+        let totalPages = 1;
+        for (let pageNo = 1; pageNo <= totalPages; pageNo++) {
+            console.log(pageNo)
+            await this.search({
+                ...options,
+                accumulate: true,
+                page: pageNo,
+            });
+            totalPages = this.paging.totalPages;
+        }
+        if (options.onAllDone)
+            options.onAllDone();
+        if (this.#behavior.onAllDone)
+            this.#behavior.onAllDone();
     }
 
 

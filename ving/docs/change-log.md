@@ -7,6 +7,7 @@ outline: deep
 
 ### 2024-06-24
 * Fixed: pager appears to be broken #167
+* Rewrote the `all` method in useVingKind to be more clear and simple.
 
 ### 2024-06-23
 * Fixed: examples in VingSchema need to differentiate between the able and the kind class #155
