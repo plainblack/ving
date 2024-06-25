@@ -92,6 +92,8 @@ class VingKind {
     /**
      * Retrieves all the records for the given configuration.
      * 
+     * NOTE: This method should not be called on a page that has no nuxt middleware such as `auth`. If you need to, then use the `all-workaround` middlware provided. See https://github.com/plainblack/ving/issues/168
+     * 
      * @param {Object} options An object for modifying the the method's functionality. See `search` for more info.
      * @param {Function} options.onAllDone An optional callback that will be called when all the requests have been processed.
      * @example
@@ -101,7 +103,6 @@ class VingKind {
     async all(options = {}) {
         let totalPages = 1;
         for (let pageNo = 1; pageNo <= totalPages; pageNo++) {
-            console.log(pageNo)
             await this.search({
                 ...options,
                 accumulate: true,

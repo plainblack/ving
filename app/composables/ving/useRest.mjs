@@ -25,7 +25,8 @@ export default async function (url, behavior = {}) {
         query: behavior.query,
         body: behavior.body,
         headers: {
-            ...useRequestHeaders(),
+            //...useRequestHeaders(),
+            cookie: useRequestHeader('cookie'), // see https://github.com/plainblack/ving/issues/168
             ...behavior.headers
         },
         async onRequest(context) {
