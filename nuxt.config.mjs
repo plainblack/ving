@@ -6,6 +6,7 @@ import Aura from '@primevue/themes/aura';
 ving.site.url = process.env.VING_SITE_URL;
 
 export default defineNuxtConfig({
+    devtools: false,
     future: {
         compatibilityVersion: 4,
     },
