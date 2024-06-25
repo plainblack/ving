@@ -20,7 +20,7 @@ class VingKind {
     })
 
     /**
-     * The object where new properties are stored awaiting being sent to the server to create the record for real. Note that this is generated `set`/`get` and thus you must set a full object if you set it.
+     * The object where new properties are stored awaiting being sent to the server to create the record for real.
      */
 
     get new() {
@@ -32,7 +32,7 @@ class VingKind {
     }
 
     /**
-     * The object containing paging data. Note that this is generated `set`/`get` and thus you must set a full object if you set it.
+     * The object containing paging data. 
      */
     get paging() {
         return this.#state.paging;
@@ -43,7 +43,7 @@ class VingKind {
     }
 
     /**
-     * The object containing enumerated props options once `fetchPropsOptions` is called. Note that this is generated `set`/`get` and thus you must set a full object if you set it.
+     * The object containing enumerated props options once `fetchPropsOptions` is called. 
      */
     get propsOptions() {
         return this.#state.propsOptions;
@@ -54,7 +54,7 @@ class VingKind {
     }
 
     /**
-     * An object containing the query parameters to send when interacting with endpoints for this kind. Note that this is generated `set`/`get` and thus you must set a full object if you set it.
+     * An object containing the query parameters to send when interacting with endpoints for this kind. 
      */
 
     get query() {
@@ -66,7 +66,7 @@ class VingKind {
     }
 
     /**
-     * An array containing the list of records that have been fetched from the server. Note that this is generated `set`/`get` and thus you must set a full array if you set it.
+     * An array containing the list of records that have been fetched from the server.
      */
     get records() {
         return this.#state.records;
@@ -149,7 +149,7 @@ class VingKind {
      */
     async call(method, url, query = {}, options = {}) {
         const response = await useRest(url, {
-            query: defu({}, this.query, query),
+            query: defu({}, query, this.query),
             method,
             suppressErrorNotifications: this.#behavior.suppressErrorNotifications,
         });
@@ -438,7 +438,7 @@ class VingKind {
             page: options?.page || this.paging.page || 1,
             itemsPerPage: this.paging.itemsPerPage || 10,
         };
-        const query = defu({}, pagination, options?.query, this.query);
+        const query = defu({}, options?.query, this.query, pagination);
 
         const response = await useRest(this.getListApi(), {
             query: query,

@@ -12,8 +12,8 @@
 <script setup>
 const props = defineProps(['kind']);
 
-function changePage(page) {
-    props.kind.query = {...props.kind.query, page };
+function changePage(pager) {
+    props.kind.query.page = pager.page;
     props.kind.search();
 }
 </script>
