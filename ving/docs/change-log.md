@@ -6,6 +6,7 @@ outline: deep
 ## July 2024
 
 * Added verifiedEmail field to the User CLI.
+* Fixed a problem with creating new users via the rest API.
 
 ## June 2024
 
