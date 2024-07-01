@@ -52,6 +52,14 @@ export default defineCommand({
             type: "boolean",
             description: "Should user NOT be admin",
         },
+        verifiedEmail: {
+            type: "boolean",
+            description: "Set users email verified",
+        },
+        notVerifiedEmail: {
+            type: "boolean",
+            description: "Set users email NOT verified",
+        },
     },
     async run({ args, cmd }) {
         try {
@@ -73,6 +81,7 @@ export default defineCommand({
                     realName: args.add,
                     email: args.email,
                     admin: args.admin,
+                    verifiedEmail: args.verifiedEmail,
                 });
                 await user.insert();
                 await user.setPassword(args.password);
@@ -90,6 +99,10 @@ export default defineCommand({
                         user.set('admin', true);
                     if (args.notAdmin)
                         user.set('admin', false);
+                    if (args.verifiedEmail)
+                        user.set('verifiedEmail', true);
+                    if (args.notVerifiedEmail)
+                        user.set('verifiedEmail', false);
                     await user.update();
                     formatList([user]);
                 }
@@ -111,13 +124,15 @@ function formatList(users) {
     console.log(
         'Username'.padEnd(30),
         'Email'.padEnd(60),
-        'Admin',
+        'Admin'.padEnd(10),
+        'Verified Email'.padEnd(10),
     )
     for (const user of users) {
         console.log(
             user.get('username').padEnd(30),
             user.get('email').padEnd(60),
-            user.get('admin').toString(),
+            user.get('admin').toString().padEnd(10),
+            user.get('verifiedEmail').toString().padEnd(10),
         )
     }
 }

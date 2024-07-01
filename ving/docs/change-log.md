@@ -3,6 +3,10 @@ outline: deep
 ---
 # Change Log
 
+## July 2024
+
+* Added verifiedEmail field to the User CLI.
+
 ## June 2024
 
 ### 2024-06-25
