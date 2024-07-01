@@ -50,7 +50,7 @@ Content-Type: application/json
 
 {
     "apiKey": "{{createKey.response.body.$.props.id}}", 
-    "apiSecret": "{{createKey.response.body.$.props.privateKey}}"
+    "privateKey": "{{createKey.response.body.$.props.privateKey}}"
 }
 
 ### get user using key

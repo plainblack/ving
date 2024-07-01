@@ -8,6 +8,7 @@ outline: deep
 ### 2024-07-01
 * Added verifiedEmail field to the User CLI.
 * Fixed a problem with creating new users via the rest API.
+* Fixed: Unable to create Session using the API and following instructions in docs #173
 
 ## June 2024
 

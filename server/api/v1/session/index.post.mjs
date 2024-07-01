@@ -22,10 +22,10 @@ export default defineEventHandler(async (event) => {
         setCookie(event, 'vingSessionId', session.id, { maxAge: 60 * 60 * 24 * 365 * 5, httpOnly: true });
         return await session.describe(describeParams(event, session));
     }
-    testRequired(['apiKey', 'apiSecret'], body);
+    testRequired(['apiKey', 'privateKey'], body);
     const apiKeys = await useKind('APIKey');
     let apiKey = await apiKeys.findOrDie(body.apiKey);
-    await apiKey.testSecret(body.apiSecret);
+    await apiKey.testSecret(body.privateKey);
     const session = await Session.start(await apiKey.parent('user'), 'apiKey', apiKey);
     setCookie(event, 'vingSessionId', session.id, { maxAge: 60 * 60 * 24 * 365 * 5, httpOnly: true });
     return await session.describe(describeParams(event, session));

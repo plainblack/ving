@@ -48,8 +48,8 @@ export const apikeySchema = {
             length: 39,
             default: () => 'pk_' + crypto.randomBytes(18).toString('hex'),
             db: (prop) => dbVarChar(prop),
-            view: [],
-            edit: ['owner'],
+            view: ['owner'],
+            edit: [],
         },
         {
             type: "id",
