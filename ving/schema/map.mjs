@@ -2,6 +2,7 @@ import { isUndefined } from '#ving/utils/identify.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { userSchema } from "#ving/schema/schemas/User.mjs";
 import { apikeySchema } from "#ving/schema/schemas/APIKey.mjs";
+import { cronJobSchema } from "#ving/schema/schemas/CronJob.mjs";
 import { s3fileSchema } from "#ving/schema/schemas/S3File.mjs";
 
 /**
@@ -10,6 +11,7 @@ import { s3fileSchema } from "#ving/schema/schemas/S3File.mjs";
 export const vingSchemas = [
     userSchema,
     apikeySchema,
+    cronJobSchema,
     s3fileSchema,
 ];
 

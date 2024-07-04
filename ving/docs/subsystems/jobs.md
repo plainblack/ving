@@ -65,3 +65,7 @@ To create a new job run:
 ./ving.mjs jobs -n MyNewHandler
 ```
 
+## Cron Jobs
+You can set up jobs with a `cron` style schedule via the javascript API or the [CLI](cli). However, 2 jobs cannot have the same schedule, and you cannot set them up via the REST API. To get around this you can use the `CronJob` VingRecord which is accessible via the [REST API](../rest/CronJob) or using the built-in Admin UI.
+
+This system works by storing the configuration of your repeating jobs in the `CronJob` VingRecord. When the `CronJob` handler is run it will look for any `CronJob` records that have the same schedule and execute them. When there are no more scheduled jobs that run at that schedule, the CronJob handler will automatically remove the schedule from BullMQ.
