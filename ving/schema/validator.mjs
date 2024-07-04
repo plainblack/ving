@@ -63,6 +63,7 @@ export const validateProps = (schema) => {
         validatePropView(prop, schema);
         validatePropEdit(prop, schema);
         validatePropRelation(prop, schema);
+        validatePropOptions(prop, schema);
         validatePropEnums(prop, schema);
         validatePropEnumLabels(prop, schema);
         validatePropLength(prop, schema);
@@ -269,6 +270,26 @@ export const validatePropUnique = (prop, schema) => {
         return
     if (!isBoolean(prop.unique))
         throw ving.ouch(442, `${formatPropPath(prop, schema)}.unique must be a boolean.`);
+}
+
+/**
+ * Validates the options field of a prop.
+ * @param {object} prop The prop schema to check against.
+ * @param {VingSchema} schema The schema to check against.
+ * @throws 442 if some attribute is outside of the normal definition
+ * @example
+ * validatePropOptions(prop, schema)
+ */
+export const validatePropOptions = (prop, schema) => {
+    if (!['string', 'int'].includes(prop.type)) {
+        if ('options' in prop)
+            throw ving.ouch(442, `${formatPropPath(prop, schema)}.options should not exist.`);
+        return;
+    }
+    if (!('options' in prop)) // optional
+        return
+    if (!isString(prop.options))
+        throw ving.ouch(442, `${formatPropPath(prop, schema)}.options must be a string.`);
 }
 
 /**

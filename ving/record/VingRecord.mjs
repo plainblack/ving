@@ -449,6 +449,9 @@ export class VingRecord {
             if ((prop.type == 'enum' || prop.type == 'boolean') && prop.enums && prop.enums.length > 0) {
                 options[prop.name] = enum2options(prop.enums, prop.enumLabels);
             }
+            else if (prop.options) {
+                options[prop.name] = await this[prop.options]();
+            }
         }
         return options;
     }
@@ -568,6 +571,14 @@ export class VingRecord {
             }
             if (isNull(param)) { // skip it if the value is null
                 continue;
+            }
+            if (field.options) {
+                const options = await this[field.options]();
+                const optionsValues = options.map(o => o.value);
+                if (!optionsValues.includes(param)) {
+                    ving.log('VingRecord').warn(`${field.name.toString()} was set to an invalid value`)
+                    throw ving.ouch(442, `${field.name.toString()} was set to an invalid value`, field.name)
+                }
             }
             this.set(field.name, param);
             if (field.relation && field.relation.type == 'parent') { // is this a parent relation

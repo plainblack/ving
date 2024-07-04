@@ -333,6 +333,10 @@ The `enums` field is reqiured only if the prop type is `boolean` or `enum`. It i
 
 The `enums` field is reqiured only if the prop type is `boolean` or `enum`. It is an array containing the labels for the `enums` field values. Note that the labels should appear in the order to match the values in the `enums` array.
 
+##### options
+
+The `options` field is an optional function name that returns an array of objects that can be used to populate the `options` in the [rest api](rest). It is a way to simulate an `enum` with dynamic values. However, the value set to the prop is only validated against the options in VingRecord's `setPostedProps()` method, not in `set()` or `setAll()`. Don't forget to define the named function in the VingRecord class.
+
 ##### noSetAll
 
 Boolean, optional, default `false`. If set to `true` then this attribute will be skipped on a VingRecord when `setAll()` is called. You will have to `set()` the field specifically in order to set its value.
