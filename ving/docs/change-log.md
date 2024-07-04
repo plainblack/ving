@@ -6,7 +6,8 @@ outline: deep
 ## July 2024
 
 ### 2024-07-04
-* Added `options` param to ving schemas.
+* Added `options` param to ving schema props.
+* Fixed generating pathing for pages.
 
 ### 2024-07-01
 * Added verifiedEmail field to the User CLI.

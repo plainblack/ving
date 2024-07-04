@@ -379,8 +379,8 @@ onBeforeRouteLeave(() => ${name.toLowerCase()}.dispose());
 export const generateWeb = (params) => {
     const context = { ...getContext({}), ...params };
     return Promise.resolve(context)
-        .then(renderTemplate(indexTemplate, toFile(`pages/${context.name.toLowerCase()}/index.vue`)))
-        .then(renderTemplate(viewTemplate, toFile(`pages/${context.name.toLowerCase()}/[id]/index.vue`)))
-        .then(renderTemplate(editTemplate, toFile(`pages/${context.name.toLowerCase()}/[id]/edit.vue`)))
+        .then(renderTemplate(indexTemplate, toFile(`app/pages/${context.name.toLowerCase()}/index.vue`)))
+        .then(renderTemplate(viewTemplate, toFile(`app/pages/${context.name.toLowerCase()}/[id]/index.vue`)))
+        .then(renderTemplate(editTemplate, toFile(`app/pages/${context.name.toLowerCase()}/[id]/edit.vue`)))
 }
 
