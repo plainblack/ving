@@ -5,6 +5,9 @@ outline: deep
 
 ## July 2024
 
+### 2024-07-08
+* Added CLI `drizzle` command to generate table definitions to the documentation.
+
 ### 2024-07-04
 * Added `options` param to ving schema props.
 * Fixed generating pathing for pages.

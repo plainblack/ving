@@ -7,6 +7,15 @@ The database layer is controlled by [Drizzle](https://github.com/drizzle-team/dr
 ## Migrations
 Migrations are files created to help you migrate changes from one version of your database to another. In some systems you have to manually write migrations. But in ving you don't, thanks to our use of Drizzle.
 
+### Generate Database Table Definitions
+
+Drizzle can automatically generate table definitions based upon your [ving schema](ving-schema). You run that command like this:
+
+```bash
+./ving.mjs drizzle --tables
+```
+
+
 ### Generate Database Migrations
 
 Drizzle can automatically generate database migrations based upon changes in the Drizzle table definitions. You run that command like this:
