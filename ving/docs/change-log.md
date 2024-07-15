@@ -5,6 +5,10 @@ outline: deep
 
 ## July 2024
 
+### 2024-07-15
+* No longer dynamically loading files for ving records, job handlers, and ving.json as it was causing problems with the Nuxt build process.
+* NOTE: Any references you had to ving.useKind() will need to be updated to use useKind() instead, along with an import of it from #ving/record/utils.mjs.
+
 ### 2024-07-08
 * Added CLI `drizzle` command to generate table definitions to the documentation.
 

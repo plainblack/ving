@@ -1,6 +1,7 @@
 import { useDB } from '#ving/drizzle/db.mjs';
+import { tableModules } from '#ving/drizzle/map.mjs';
+import { recordModules, kindModules } from '#ving/record/map.mjs';
 
-const kindCache = {};
 /**
  * Instanciates a VingKind by name. 
  * 
@@ -9,12 +10,7 @@ const kindCache = {};
  * @example
  * const users = useKind('User');
  */
+
 export const useKind = async (kind) => {
-    if (!(kind in kindCache)) {
-        kindCache[kind] = {
-            table: await import(`#ving/drizzle/schema/${kind}.mjs`),
-            module: await import(`#ving/record/records/${kind}.mjs`),
-        }
-    }
-    return new kindCache[kind]['module'][`${kind}Kind`](useDB(), kindCache[kind]['table'][`${kind}Table`], kindCache[kind]['module'][`${kind}Record`]);
+    return new kindModules[kind](useDB(), tableModules[kind], recordModules[kind]);
 }

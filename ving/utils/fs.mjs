@@ -2,6 +2,12 @@ import fs from 'fs';
 import sanitizeFilename from 'sanitize-filename';
 
 /**
+ * Note that any file you plan to read or write must get copied to the .output folder or be provided by an exteranl source
+ * as the Nuxt build process will not copy files from the root of the project.
+ */
+
+
+/**
  * Detects whether a path is a directory.
  * @param {string} path 
  * @returns {boolean}

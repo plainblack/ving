@@ -1,15 +1,13 @@
 import { Worker } from 'bullmq';
-import fs from 'fs';
 import ving from '#ving/index.mjs';
 import { useRedis } from '#ving/redis.mjs';
+import { jobHandlers } from '#ving/jobs/map.mjs';
 
 /** 
  * A class for running Ving jobs
  * @class
  */
 export class VingJobWorker {
-
-    #modules = {};
 
     #queueName = '';
 
@@ -31,24 +29,14 @@ export class VingJobWorker {
      */
 
     async start() {
-        try {
-            const sourcePath = './ving/jobs/handlers';
-            const files = fs.readdirSync(sourcePath);
-            for (const file of files) {
-                const name = file.replace(/^.*?(\w+)\.mjs$/, '$1');
-                const module = await import(`#ving/jobs/handlers/${file}`);
-                this.#modules[name] = module.default;
-            }
-        } catch (err) {
-            ving.log('jobs').error(err);
-        }
+
 
         this.worker = new Worker(
             this.#queueName,
             async (job) => {
                 ving.log('jobs').info(`got job ${job.id} ${job.name}`);
-                if (job.name in this.#modules) {
-                    this.#modules[job.name](job);
+                if (job.name in jobHandlers) {
+                    jobHandlers[job.name](job);
                 }
                 else {
                     const message = `No job handler for job ${job.id} ${job.name}`;

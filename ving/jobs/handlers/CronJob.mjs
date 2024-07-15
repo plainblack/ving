@@ -1,5 +1,6 @@
 import ving from '#ving/index.mjs';
 import { getJobsForHandler, killJob } from "#ving/jobs/queue.mjs";
+import { useKind } from '#ving/record/utils.mjs';
 
 /**
  * This handler executes all cron jobs at the same schedule in the CronJob VingRecord.
@@ -8,7 +9,7 @@ import { getJobsForHandler, killJob } from "#ving/jobs/queue.mjs";
  */
 export default async function (job) {
     ving.log('jobs').info(`Running CronJobs at schedule ${JSON.stringify(job.data.schedule)}`);
-    const cronJobs = await ving.useKind('CronJob');
+    const cronJobs = await useKind('CronJob');
     const records = await cronJobs.findMany({ schedule: job.data.schedule });
     if (records.length == 0) {
         ving.log('jobs').info(`No CronJobs found at schedule ${JSON.stringify(job.data.schedule)}. Removing schedule.`);

@@ -1,6 +1,7 @@
 import { defineCommand, showUsage } from "citty";
 import { like, or, eq } from '#ving/drizzle/orm.mjs';
 import ving from '#ving/index.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 
 export default defineCommand({
     meta: {
@@ -63,7 +64,7 @@ export default defineCommand({
     },
     async run({ args, cmd }) {
         try {
-            const users = await ving.useKind('User');
+            const users = await useKind('User');
             if (args.list) {
                 formatList(await users.findMany());
             }

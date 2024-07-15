@@ -5,7 +5,7 @@ import { addJob } from '#ving/jobs/queue.mjs';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { sleep } from '#ving/utils/sleep.mjs';
 import { miniHash } from '#ving/utils/miniHash.mjs';
-import { useKind } from '#ving/record/utils.mjs'
+//import { useKind } from '#ving/record/utils.mjs'
 import { useDB } from '#ving/drizzle/db.mjs'
 import { useRedis } from '#ving/redis.mjs'
 import { getConfig } from '#ving/config.mjs';
@@ -37,7 +37,7 @@ export default {
     addJob,
     ouch,
     getConfig,
-    useKind,
+    //useKind,
     close: async () => {
         await useDB().session.client.pool.end();
         await useCache().disconnect();

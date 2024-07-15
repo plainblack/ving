@@ -2,6 +2,8 @@ import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
 
 const jobHandlerTemplate = ({ name, prop }) =>
     `import ving from '#ving/index.mjs';
+import { useKind } from '#ving/record/utils.mjs';
+
 
 /**
  * This handler does something with SomeRecord. 
@@ -10,7 +12,7 @@ const jobHandlerTemplate = ({ name, prop }) =>
  */
 export default async function (job) {
     ving.log('jobs').info(\`Instanciating a record based upon \${job.data.id}\`);
-    const records = await ving.useKind('SomeRecord');
+    const records = await useKind('SomeRecord');
     const record = await records.findOrDie(job.data.id);
     // do something
     // throw ving.ouch(500, 'Some error');

@@ -4,6 +4,7 @@ import { sanitizeFilename, makeS3FolderName, getExtension } from '#ving/record/r
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { getBody, obtainSessionIfRole, describeParams } from '#ving/utils/rest.mjs';
 import { defineEventHandler } from 'h3';
+import { useKind } from '#ving/record/utils.mjs';
 
 export default defineEventHandler(async (event) => {
     const body = await getBody(event);
@@ -23,7 +24,7 @@ export default defineEventHandler(async (event) => {
         contentType: body.contentType,
         sizeInBytes: body.sizeInBytes,
     };
-    const s3files = await ving.useKind('S3File');
+    const s3files = await useKind('S3File');
     const s3file = await s3files.create(props);
     await ving.addJob('DeleteUnusedS3File', { id: s3file.get('id') }, { delay: 1000 * 60 * 60 });
     const putObjectParams = {

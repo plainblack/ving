@@ -2,6 +2,7 @@ import { defineCommand, showUsage } from "citty";
 import { publishUserToast } from '#ving/messagebus.mjs';
 import { eq } from '#ving/drizzle/orm.mjs';
 import ving from '#ving/index.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 
 export default defineCommand({
     meta: {
@@ -33,7 +34,7 @@ export default defineCommand({
     async run({ args, cmd }) {
         try {
             if (args.user) {
-                const users = await ving.useKind('User');
+                const users = await useKind('User');
                 const user = await users.findOne(eq(users.table.username, args.user));
                 if (user) {
                     const severity = args.severity == 'info' || 'danger' || 'success' || 'warning' ? args.type : 'info';

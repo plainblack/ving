@@ -1,7 +1,7 @@
 import { Queue } from 'bullmq';
 import ving from '#ving/index.mjs';
 import { useRedis } from '#ving/redis.mjs';
-import fs from 'fs';
+import { jobHandlers } from '#ving/jobs/map.mjs';
 
 /**
  * Get BullMQ queue object.
@@ -24,14 +24,7 @@ const handlerNames = [];
  * getHandlerNames();
  */
 export const getHandlerNames = () => {
-    if (handlerNames.length)
-        return handlerNames;
-    const sourcePath = './ving/jobs/handlers';
-    const files = fs.readdirSync(sourcePath);
-    for (const file of files) {
-        handlerNames.push(file.replace(/^.*?(\w+)\.mjs$/, '$1'));
-    }
-    return handlerNames;
+    return Object.keys(jobHandlers);
 }
 
 /**

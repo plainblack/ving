@@ -4,6 +4,7 @@ import { isObject, isUndefined, isNil, isNull, isNumber } from '#ving/utils/iden
 import { eq, asc, desc, and, ne, sql, getTableName, count, sum, avg, min, max } from '#ving/drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving/schema/helpers.mjs';
 import { parseId, stringifyId } from '#ving/utils/int2str.mjs';
+import { useKind } from '#ving/record/utils.mjs';
 
 /**
  * Creates a select list options datastructure from the `enums` and `enumLabels` on a ving schema.
@@ -135,7 +136,7 @@ export class VingRecord {
      */
     async copy() {
         const schema = findVingSchema(getTableName(this.table));
-        const kind = await ving.useKind(schema.kind);
+        const kind = await useKind(schema.kind);
         let props = { ...this.getAll() };
         delete props.id;
         delete props.createdAt;
@@ -360,7 +361,7 @@ export class VingRecord {
         if (name in this.#parentCache)
             return this.#parentCache[name];
         const prop = this.parentPropSchema(name);
-        return this.#parentCache[name] = await (await ving.useKind(prop.relation.kind)).findOrDie(this.get(prop.name));
+        return this.#parentCache[name] = await (await useKind(prop.relation.kind)).findOrDie(this.get(prop.name));
     }
 
     /**
@@ -405,7 +406,7 @@ export class VingRecord {
         const prop = schema.props.find(obj => obj.relation?.name == name);
         if (isUndefined(prop))
             throw ouch(404, `cannot find child prop by ${name} in ${schema.kind}`);
-        const kind = await ving.useKind(prop.relation.kind);
+        const kind = await useKind(prop.relation.kind);
         if (isUndefined(kind.table[prop.name]))
             ving.log('VingRecord').error(`${schema.kind} has an invalid virtual prop name called ${name}`);
         kind.propDefaults.push({
