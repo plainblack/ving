@@ -80,7 +80,6 @@ export const ${camelCase(name)}Schema = {
             type: "enum",
             name: 'size',
             required: true,
-            length: 20,
             filterQualifier: true,
             default: 'medium',
             db: (prop) => dbEnum(prop),
@@ -154,7 +153,6 @@ export const ${camelCase(name)}Schema = {
             type: "id",
             name: '${camelCase(name)}GroupId', // the name of the remote record's id in this table
             required: true,
-            length: 36,
             filterQualifier: true,
             db: (prop) => dbRelation(prop),
             relation: {
@@ -171,7 +169,6 @@ export const ${camelCase(name)}Schema = {
             type: "id",
             name: 'userId',
             required: true,
-            length: 36,
             filterQualifier: true,
             db: (prop) => dbRelation(prop),
             relation: {
@@ -191,5 +188,7 @@ export const generateSchema = (params) => {
     return Promise.resolve(context)
         .then(renderTemplate(schemaTemplate(context), toFile(`ving/schema/schemas/${context.name}.mjs`)))
         .then(inject(`import { ${camelCase(context.name)}Schema } from "#ving/schema/schemas/${context.name}.mjs";`, after('import { apikeySchema } from "#ving/schema/schemas/APIKey.mjs";'), toFile('ving/schema/map.mjs')))
-        .then(inject(`    ${camelCase(context.name)}Schema,`, after('    apikeySchema,'), toFile('ving/schema/map.mjs')));
+        .then(inject(`    ${camelCase(context.name)}Schema,`, after('    apikeySchema,'), toFile('ving/schema/map.mjs')))
+        .then(inject(`import { ${context.name}Table } from "#ving/drizzle/schema/${context.name}.mjs";`, after('import { UserTable } from "#ving/drizzle/schema/User.mjs";'), toFile('ving/drizzle/map.mjs')))
+        .then(inject(`    ${context.name}: ${context.name}Table,`, after('    User: UserTable,'), toFile('ving/drizzle/map.mjs')));
 }

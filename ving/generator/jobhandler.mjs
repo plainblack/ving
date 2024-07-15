@@ -1,4 +1,4 @@
-import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
+import { getContext, renderTemplate, toFile, inject, after } from '@featherscloud/pinion';
 
 const jobHandlerTemplate = ({ name, prop }) =>
     `import ving from '#ving/index.mjs';
@@ -23,6 +23,9 @@ export default async function (job) {
 export const generateJobHandler = async (params) => {
     const context = { ...getContext({}), ...params };
     let gen = Promise.resolve(context);
-    gen = gen.then(renderTemplate(jobHandlerTemplate, toFile(`ving/jobs/handlers/${context.name}.mjs`)));
+    gen = gen.then(renderTemplate(jobHandlerTemplate, toFile(`ving/jobs/handlers/${context.name}.mjs`)))
+        .then(inject(`import ${context.name} from "#ving/jobs/handlers/${context.name}.mjs";`, after('import Test from "#ving/jobs/handlers/Test.mjs";'), toFile('ving/jobs/map.mjs')))
+        .then(inject(`    ${context.name},`, after('    Test,'), toFile('ving/jobs/map.mjs')));
+
     return gen;
 }

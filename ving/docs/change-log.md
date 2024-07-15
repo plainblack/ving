@@ -8,6 +8,8 @@ outline: deep
 ### 2024-07-15
 * No longer dynamically loading files for ving records, job handlers, and ving.json as it was causing problems with the Nuxt build process.
 * NOTE: Any references you had to ving.useKind() will need to be updated to use useKind() instead, along with an import of it from #ving/record/utils.mjs.
+* Created map.mjs files for records, job handlers, and drizzle tables similar to the schema map. These will be updated automatically when you use the CLI generators.
+* NOTE: You will need to update the new map.mjs files to reflect any existing records, job handlers, or drizzle tables you have already created. 
 
 ### 2024-07-08
 * Added CLI `drizzle` command to generate table definitions to the documentation.

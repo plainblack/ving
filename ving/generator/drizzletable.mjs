@@ -1,4 +1,4 @@
-import { renderTemplate, toFile, getContext } from '@featherscloud/pinion';
+import { renderTemplate, toFile, getContext, inject, after } from '@featherscloud/pinion';
 import { miniHash } from '#ving/utils/miniHash.mjs';
 
 export const makeBaseTable = (schema) => {
@@ -54,5 +54,5 @@ ${makeBaseTable(schema)}
 export const makeTableFile = (params) => {
     const context = { ...getContext({}), ...params };
     return Promise.resolve(context)
-        .then(renderTemplate(makeTable, toFile(`ving/drizzle/schema/${context.schema.kind}.mjs`), { force: true }))
+        .then(renderTemplate(makeTable, toFile(`ving/drizzle/schema/${context.schema.kind}.mjs`), { force: true }));
 }

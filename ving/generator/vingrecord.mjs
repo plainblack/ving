@@ -1,4 +1,4 @@
-import { getContext, renderTemplate, toFile } from '@featherscloud/pinion';
+import { getContext, renderTemplate, toFile, inject, after } from '@featherscloud/pinion';
 
 function addRelationshipNames({ schema }) {
     const names = [];
@@ -111,5 +111,8 @@ export class ${name}Kind extends VingKind  {
 export const generateRecord = (params) => {
     const context = { ...getContext({}), ...params };
     return Promise.resolve(context)
-        .then(renderTemplate(recordTemplate, toFile(`ving/record/records/${context.name}.mjs`)));
+        .then(renderTemplate(recordTemplate, toFile(`ving/record/records/${context.name}.mjs`)))
+        .then(inject(`import { ${context.name}Record, ${context.name}Kind } from "#ving/record/records/${context.name}.mjs";`, after('import { UserRecord, UserKind } from "#ving/record/records/User.mjs";'), toFile('ving/record/map.mjs')))
+        .then(inject(`    ${context.name}: ${context.name}Record,`, after('    User: UserRecord,'), toFile('ving/record/map.mjs')))
+        .then(inject(`    ${context.name}: ${context.name}Kind,`, after('    User: UserKind,'), toFile('ving/record/map.mjs')));
 }
