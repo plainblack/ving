@@ -5,8 +5,7 @@ import * as pulumi from "@pulumi/pulumi";
 // this has to be its own file rather than each function updating itself, because of the paralleization of pulumi causing a race condition for the .env file
 
 export const updateEnv = (obj) => {
-    const stack = pulumi.getStack();
-    const env = new Env(stack == 'dev' ? '.env' : '.env.' + stack);
+    const env = new Env(obj.stack == 'dev' ? '.env' : '.env.' + obj.stack);
     aws.getRegion({}).then(region => env.set('AWS_REGION', region.id));
     obj.uploadsAccessKey.id.apply(id => env.set("VING_AWS_UPLOADS_KEY", id));
     obj.uploadsAccessKey.secret.apply(secret => env.set("VING_AWS_UPLOADS_SECRET", secret));

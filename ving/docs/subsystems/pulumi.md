@@ -44,5 +44,6 @@ pulumi stack select dev
 
 Prod does the following things differently than dev:
 - stores its AWS generated variables in .env.prod
-- provisions a database
-- provisions a hosting environment (EC2)
+- provisions a VPC
+- provisions an Aurora Serverless database
+- provisions an EC2 instance

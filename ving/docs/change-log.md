@@ -7,6 +7,7 @@ outline: deep
 
 ### 2024-08-02
 * Added Pulumi prod.
+* Pulumi prod creates a VPC.
 
 ## July 2024
 
