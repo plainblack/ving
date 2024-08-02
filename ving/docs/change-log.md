@@ -3,6 +3,11 @@ outline: deep
 ---
 # Change Log
 
+## August 2024
+
+### 2024-08-02
+* Added Pulumi prod.
+
 ## July 2024
 
 ### 2024-07-15

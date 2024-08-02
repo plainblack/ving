@@ -27,3 +27,22 @@ When it asks you about what stack you want, arrow down and hit enter on "create 
 
 ## Using Pulumi For Your Own Needs
 By editing `Pulumi.mjs` you can add your own infrastructure automations. And then use `pulumi up` to roll them out to the server. Just make sure you don't remove or change any of the pulumi code that we have there unless you understand the implications.
+
+
+## Pulumi Prod vs Dev
+The documentation above talks about Pulumi for dev deployments. But what about prod deployments? You can switch to prod by typing:
+
+```bash
+pulumi stack select prod
+```
+
+And then running `pulumi up` again. You can switch back to dev by typing:
+
+```bash
+pulumi stack select dev
+```
+
+Prod does the following things differently than dev:
+- stores its AWS generated variables in .env.prod
+- provisions a database
+- provisions a hosting environment (EC2)

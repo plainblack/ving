@@ -5,7 +5,7 @@ logs
 .nitro
 .cache
 .output
-.env
+.env*
 .DS_Store
 dist
 **/node_modules
