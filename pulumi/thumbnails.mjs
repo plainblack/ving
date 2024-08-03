@@ -2,7 +2,7 @@ import * as aws from "@pulumi/aws";
 import { prefix } from './utils.mjs';
 import * as pulumi from "@pulumi/pulumi";
 
-export const createThumbnails = () => {
+export const createThumbnails = async () => {
 
     const thumbnailsBucket = new aws.s3.BucketV2(prefix('thumbnails'), {});
 

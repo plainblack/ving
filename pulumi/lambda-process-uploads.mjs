@@ -4,7 +4,7 @@ import * as pulumi from "@pulumi/pulumi";
 import { execSync } from 'child_process';
 
 
-export const createLambdaProcessUploads = (thumbnailsBucket) => {
+export const createLambdaProcessUploads = async (thumbnailsBucket) => {
 
     execSync('./create.nodemods.layer.sh', { cwd: './pulumi/aws/lambda/layer/nodemods' });
 

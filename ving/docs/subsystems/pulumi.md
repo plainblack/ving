@@ -47,3 +47,12 @@ Prod does the following things differently than dev:
 - provisions a VPC
 - provisions an Aurora Serverless database
 - provisions an EC2 instance
+
+### Deploying Prod (or other stacks)
+After deploying prod, or other stacks, there are a few things you'll need to do to set it up:
+
+
+#### Database
+First by default it will create a database with the root user of `root` and the password `changeMeAfterTheFact`. You'll need to change this password in the AWS console. You can do this by going to the RDS console, clicking on the cluster, and then clicking on the "Modify" button. Then you can change the password.
+
+Second, you may also want to change the minimum and maximum capacity units of the Aurora cluster. You can do this by going to the RDS console, clicking on the cluster, and then clicking on the "Modify" button. Then you can change the minimum and maximum capacity units.
