@@ -5,6 +5,9 @@ outline: deep
 
 ## August 2024
 
+### 2024-08-05
+ * Added redis to Pulumi prod.
+
 ### 2024-08-02
 * Added Pulumi prod.
 * Pulumi prod creates a VPC.
