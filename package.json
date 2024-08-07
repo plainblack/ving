@@ -7,7 +7,7 @@
     "#ving/*": "./ving/*"
   },
   "scripts": {
-    "build": "nuxt build && cp ./ving.json .output/",
+    "build": "nuxt build",
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",

@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import ving from './ving.json';
-//import VingTheme from './themes/ving-theme.mjs';
-import Aura from '@primevue/themes/aura';
+import { cpSync } from 'node:fs';
+import path from 'node:path';
 
 ving.site.url = process.env.VING_SITE_URL;
 
@@ -75,4 +75,10 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: ving,
     },
+    hooks: {
+        'nitro:build:public-assets': (nitro) => {
+            const targetPath = path.join(nitro.options.output.dir, 'ving.json');
+            cpSync('./ving.json', targetPath, { recursive: true });
+        }
+    }
 })

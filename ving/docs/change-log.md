@@ -5,13 +5,16 @@ outline: deep
 
 ## August 2024
 
+### 2024-08-07
+* Switched to using hooks to copy ving.json to the build directory.
+
 ### 2024-08-05
- * Added redis to Pulumi prod.
+* Added redis to Pulumi prod.
 
 ### 2024-08-02
 * Added Pulumi prod.
 * Pulumi prod creates a VPC.
-* Pulumi prod creates a a database cluster.
+* Pulumi prod creates a database cluster.
 
 ## July 2024
 
