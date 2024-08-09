@@ -74,11 +74,15 @@ Above we always used the `dev` stage. This is what you want to use on your local
 
 
 ## Stacks
-Stacks are divisions of AWS resources in CDK. We divide them into areas of responsibility. For example, we have a `uploads` stack that generates the S3 buckets for uploads and thumbnails. We have a `database` stack that generates the Aurora Serverless database and Redis cluster. And we have a `server` stack that generates the EC2 instance that runs the Ving server.
+Stacks are divisions of AWS resources in CDK. We divide them into areas of responsibility. For example, we have a `uploads` stack that generates the S3 buckets for uploads and thumbnails. There is also a `network` stack for creating the virtual private cloud that all the hardware will be connected to. We have a `database` stack that generates the Aurora Serverless database and Redis cluster. And in the future we will have a `server` stack that generates the EC2/lambda instances that run the Ving web and jobs servers.
 
 You can create your own stacks as well by following the instructions in the [CDK documentation](https://docs.aws.amazon.com/cdk/v2/guide/stacks.html#stacks).
 
 ### Special Needs of the Databsae Stack
-First by default it will create a database with the root user of `root` and the password `changeMeAfterTheFact`. You'll need to change this password in the AWS console. You can do this by going to the RDS console, clicking on the cluster, and then clicking on the "Modify" button. Then you can change the password.
+First, by default it will create a database with the root user of `root` and no password. You'll need to set the password in the AWS console. You can do this by going to the RDS console, clicking on the cluster, and then clicking on the "Modify" button. Then you can change the password.
 
 Second, you may also want to change the minimum and maximum capacity units of the Aurora cluster. You can do this in the `cdk/lib/constants.mjs` file.
+
+Third, the stack does not create or deploy your ving database schema. It simply creates the cluster that the database will run on. Follow the [Drizzle](drizzle) documentation to create and deploy your schema.
+
+*Note:* If you ever want to delete your database, you should change `RETAIN_ON_UPDATE_OR_DELETE` to `DESTROY` in the `DatabaseStack` class first. Then deploy it. And then destroy it.

@@ -9,6 +9,7 @@ outline: deep
 * Started replacing Pulumi with CDK.
 * Added a CDK stack for uploads.
 * NOTE: Pulumi will be removed in a near future release. Do a `pulumi down; pulumi destroy` to remove the stacks, and then follow the CDK instructions to create recreate the stacks. 
+* Added a CDK stack for the database and network.
 
 ### 2024-08-07
 * Switched to using hooks to copy ving.json to the build directory.

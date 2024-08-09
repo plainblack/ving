@@ -18,8 +18,14 @@ export default {
                 memorySize: 512, // megabytes
                 timeout: 60, // seconds
             },
-            uploadsBucketNameOverride: 'uploads.ving.com',
-            thumbnailsBucketNameOverride: 'thumbnails.ving.com',
+            auroraSettings: {
+                adminUser: 'root',
+                minCapacity: 0.5,
+                maxCapacity: 2,
+                backupRetention: 7, // days
+            },
+            uploadsBucketNameOverride: 'uploads.somedomainthattotallyexists.com',
+            thumbnailsBucketNameOverride: 'thumbnails.somedomainthattotallyexists.com',
         },
     }
 };

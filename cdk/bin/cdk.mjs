@@ -2,6 +2,8 @@
 
 import cdk from 'aws-cdk-lib';
 import { UploadStack } from '../lib/upload-stack.mjs';
+import { NetworkStack } from '../lib/network-stack.mjs';
+import { DatabaseStack } from '../lib/database-stack.mjs';
 import { generatePrefix, generateSuffix } from '../lib/utils.mjs';
 import constants from '../lib/constants.mjs';
 
@@ -27,3 +29,23 @@ new UploadStack(app, `${prefix}-UploadStack${suffix}`, {
   env: { account: constants.stages[stage].account, region: constants.stages[stage].region },
 });
 
+if (stage != 'dev') {
+
+  const network = new NetworkStack(app, `${prefix}-NetworkStack${suffix}`, {
+    stage,
+    constants,
+    stageConfig: constants.stages[stage],
+    formatName: (name) => `${prefix}-${name}${suffix}`,
+    env: { account: constants.stages[stage].account, region: constants.stages[stage].region },
+  });
+
+  new DatabaseStack(app, `${prefix}-DatabaseStack${suffix}`, {
+    vpc: network.vpc,
+    stage,
+    constants,
+    stageConfig: constants.stages[stage],
+    formatName: (name) => `${prefix}-${name}${suffix}`,
+    env: { account: constants.stages[stage].account, region: constants.stages[stage].region },
+  });
+
+}

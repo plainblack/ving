@@ -82,7 +82,7 @@ export class UploadStack extends Stack {
     // create the bucket
     const thumbnailsName = props.formatName(props.constants.thumbnailsBucketName);
     const thumbnailsBucket = new s3.Bucket(this, thumbnailsName, {
-      bucketName: props.stageConfig.uploadsBucketNameOverride || thumbnailsName,
+      bucketName: props.stageConfig.thumbnailsBucketNameOverride || thumbnailsName,
       removalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE,
       cors: [
         {
@@ -149,8 +149,8 @@ export class UploadStack extends Stack {
       code: lambda.Code.fromAsset('./lib/lambda/func/processUpload'),
       layers: [nodemodsLayer],
       role: iamForLambda,
-      timeout: props.constants.stages[props.stage].uploadsLambdaSettings.timeout,
-      memorySize: props.constants.stages[props.stage].uploadsLambdaSettings.memorySize,
+      timeout: Duration.seconds(props.stageConfig.uploadsLambdaSettings.timeout || 60),
+      memorySize: props.stageConfig.uploadsLambdaSettings.memorySize || 128,
       environment: {
         VING_AWS_THUMBNAILS_BUCKET: thumbnailsBucket.bucketName,
       },
