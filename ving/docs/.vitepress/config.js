@@ -27,13 +27,13 @@ export default defineConfig({
         text: 'Subsystems',
         items: [
           { text: 'Cache', link: '/subsystems/cache' },
+          { text: 'CDK', link: '/subsystems/cdk' },
           { text: 'CLI', link: '/subsystems/cli' },
           { text: 'Drizzle', link: '/subsystems/drizzle' },
           { text: 'Email', link: '/subsystems/email' },
           { text: 'Jobs', link: '/subsystems/jobs' },
           { text: 'Logging', link: '/subsystems/logging' },
           { text: 'Message Bus', link: '/subsystems/messagebus' },
-          { text: 'Pulumi', link: '/subsystems/pulumi' },
           { text: 'Rest', link: '/subsystems/rest' },
           { text: 'Social Integration', link: '/subsystems/social' },
           { text: 'UI', link: '/subsystems/ui' },
@@ -46,6 +46,7 @@ export default defineConfig({
         text: 'Rest APIs',
         items: [
           { text: 'APIKey', link: '/rest/APIKey' },
+          { text: 'CronJob', link: '/rest/CronJob' },
           { text: 'S3File', link: '/rest/S3File' },
           { text: 'Session', link: '/rest/Session' },
           { text: 'Test', link: '/rest/Test' },

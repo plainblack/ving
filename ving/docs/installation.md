@@ -139,7 +139,7 @@ npm run dev
 To make full use of all of Ving's features, there are other things you'll need to configure:
 
 - Ving offers [email sending and templating](subsystems/email), but you need to configure an SMTP server first.
-- If you want to make use of AWS for things like storing file uploads in S3, then you'll also want to check out our [Pulumi](subsystems/pulumi) integration.
+- If you want to make use of AWS for things like storing file uploads in S3, then you'll also want to check out our [CDK](subsystems/cdk) integration.
 
 
 ## VS code
