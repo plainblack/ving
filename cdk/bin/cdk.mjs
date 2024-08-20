@@ -4,6 +4,7 @@ import cdk from 'aws-cdk-lib';
 import { UploadStack } from '../lib/upload-stack.mjs';
 import { NetworkStack } from '../lib/network-stack.mjs';
 import { DatabaseStack } from '../lib/database-stack.mjs';
+import { WebStack } from '../lib/web-stack.mjs';
 import { generatePrefix, generateSuffix } from '../lib/utils.mjs';
 import constants from '../lib/constants.mjs';
 
@@ -47,5 +48,14 @@ if (stage != 'dev') {
     formatName: (name) => `${prefix}-${name}${suffix}`,
     env: { account: constants.stages[stage].account, region: constants.stages[stage].region },
   });
-
+  /*
+    new WebStack(app, `${prefix}-WebStack${suffix}`, {
+      vpc: network.vpc,
+      stage,
+      constants,
+      stageConfig: constants.stages[stage],
+      formatName: (name) => `${prefix}-${name}${suffix}`,
+      env: { account: constants.stages[stage].account, region: constants.stages[stage].region },
+    });
+  */
 }

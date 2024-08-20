@@ -3,6 +3,7 @@ import elasticache from 'aws-cdk-lib/aws-elasticache';
 import cdk from 'aws-cdk-lib';
 import rds from 'aws-cdk-lib/aws-rds';
 import ec2 from 'aws-cdk-lib/aws-ec2';
+import secrets from 'aws-cdk-lib/aws-secretsmanager';
 
 export class DatabaseStack extends Stack {
     /**
@@ -22,9 +23,9 @@ export class DatabaseStack extends Stack {
             allowAllOutbound: true,
         });
 
-        // will need to close thse down once we have servers connecting to the database and can use better rules
-        securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306));
-        securityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(6379));
+        securityGroup.addIngressRule(ec2.Peer.ipv4(vpc.vpcCidrBlock), ec2.Port.tcp(3306));
+        securityGroup.addIngressRule(ec2.Peer.ipv4(vpc.vpcCidrBlock), ec2.Port.tcp(6379));
+
 
 
         /*
@@ -52,10 +53,25 @@ export class DatabaseStack extends Stack {
          *  Aurora
         */
 
+        const dbSecretName = props.formatName('MySQLCredentialsSecret');
+        const databaseCredentialsSecret = new secrets.Secret(
+            this,
+            dbSecretName,
+            {
+                secretName: dbSecretName,
+                description: 'Credentials to access MYSQL Database on RDS',
+                generateSecretString: {
+                    secretStringTemplate: JSON.stringify({ username: props.stageConfig.auroraSettings.adminUser || 'root' }),
+                    excludePunctuation: true,
+                    includeSpace: false,
+                    generateStringKey: 'password',
+                },
+            }
+        );
 
         const clusterParameterGroup = new rds.ParameterGroup(this, props.formatName('mysql8params'), {
             engine: rds.DatabaseClusterEngine.auroraMysql({ version: rds.AuroraMysqlEngineVersion.VER_3_07_0 }),
-            description: 'Custom parameter group for MySLQ 8 on ving',
+            description: 'Custom parameter group for MySQL 8 on ving',
             parameters: {
                 'character_set_server': 'utf8',
                 'collation_server': 'utf8_unicode_ci',
@@ -69,9 +85,7 @@ export class DatabaseStack extends Stack {
         const auroraCluster = new rds.DatabaseCluster(this, auroraName, {
             engine: rds.DatabaseClusterEngine.auroraMysql({ version: rds.AuroraMysqlEngineVersion.VER_3_07_0 }),
             vpc,
-            credentials: {
-                username: props.stageConfig.auroraSettings.adminUser || 'root',
-            },
+            credentials: rds.Credentials.fromSecret(databaseCredentialsSecret),
             clusterIdentifier: auroraName,
             serverlessV2MinCapacity: props.stageConfig.auroraSettings.minCapacity || 1,
             serverlessV2MaxCapacity: props.stageConfig.auroraSettings.maxCapacity || 2,
