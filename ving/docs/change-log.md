@@ -5,6 +5,9 @@ outline: deep
 
 ## August 2024
 
+### 2024-08-28
+* Added a note about TLS for Redis to the environment variables documentation.
+
 ### 2024-08-19
 * Started working on the web stack for CDK.
 * Updated the database stack to use the secrets manager for the database credentials.

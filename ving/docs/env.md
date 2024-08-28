@@ -51,6 +51,8 @@ Can also include username and password like this:
 VING_REDIS="redis://user:pass@localhost:6379"
 ```
 
+Note that if you're hosting on AWS, all Redis instances there have TLS enabled by default, so the URL prefix will have 2 's' at the end like this: `rediss://`.
+
 ### AWS_ACCESS_KEY_ID
 The access key that will be used to deploy resources and access S3.
 ```bash
