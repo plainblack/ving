@@ -1,0 +1,27 @@
+{
+    "apps": [
+        {
+            "name": "ving",
+            "port": "3000",
+            "exec_mode": "cluster",
+            "instances": "max",
+            "script": "./.output/server/index.mjs",
+            "env": {
+                "NITRO_PRESET": "node_cluster"
+            },
+            "max_memory_restart": "300M",
+            "out_file": "./logs/pm2/out.log",
+            "error_file": "./logs/pm2/error.log",
+            "merge_logs": true,
+            "log_date_format": "YYYY-MM-DD HH:mm:ss Z",
+            "log_type": "json",
+            "node_args": "--env-file=.env"
+        },
+        {
+            "name": "ving-worker",
+            "exec_mode": "fork",
+            "instances": 2,
+            "script": "./ving.mjs jobs -w"
+        }
+    ]
+}
