@@ -34,6 +34,7 @@ export default defineConfig({
           { text: 'Jobs', link: '/subsystems/jobs' },
           { text: 'Logging', link: '/subsystems/logging' },
           { text: 'Message Bus', link: '/subsystems/messagebus' },
+          { text: 'PM2', link: '/subsystems/pm2' },
           { text: 'Rest', link: '/subsystems/rest' },
           { text: 'Social Integration', link: '/subsystems/social' },
           { text: 'UI', link: '/subsystems/ui' },

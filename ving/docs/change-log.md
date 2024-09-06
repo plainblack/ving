@@ -4,6 +4,11 @@ outline: deep
 # Change Log
 
 ## September 2024
+
+### 2024-09-06
+* Added documentation for PM2.
+
+### 2024-09-01
 * Created process.json for PM2.
 
 ## August 2024
