@@ -855,11 +855,18 @@ export class VingKind {
         where
     ) {
         const sortMethod = (params.sortOrder == 'desc') ? desc : asc;
-        let orderBy = [sortMethod(this.table.createdAt)];
+        let orderBy = [sortMethod(this.table.createdAt), sortMethod(this.table.id)];
         if (params.sortBy) {
             const cols = [];
+            let hasIdSortField = false;
             for (const field of params.sortBy) {
+                if (field == 'id') {
+                    hasIdSortField = true;
+                }
                 cols.push(sortMethod(this.table[field]));
+            }
+            if (!hasIdSortField) {
+                cols.push(sortMethod(this.table.id));
             }
             orderBy = cols;
         }
