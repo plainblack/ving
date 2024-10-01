@@ -3,6 +3,12 @@ outline: deep
 ---
 # Change Log
 
+## October 2024
+
+### 2024-10-01
+ * Added colin's patch for mysql pagination.
+ * Disabled winston log rotation as it's not compatible with AWS Amplify.
+
 ## September 2024
 
 ### 2024-09-06
