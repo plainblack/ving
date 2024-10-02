@@ -1,6 +1,6 @@
 import Keyv from 'keyv';
 import { ouch } from '#ving/utils/ouch.mjs';
-import { log } from '#ving/utils/log.mjs';
+import { log } from '#ving/log.mjs';
 let cache = undefined;
 
 /**
@@ -20,7 +20,7 @@ export const useCache = () => {
     if (process.env.NODE_ENV !== 'production')
         log('cache').info('got here, this could be the problem');
     log('cache').debug(JSON.stringify(cache));
-    log('cache').debug(JSON.stringify(globalForKeyv));
+    log('cache').debug(JSON.stringify(globalForKeyv.keyv));
     globalForKeyv.keyv = cache;
 
     cache.on('error', () => {
