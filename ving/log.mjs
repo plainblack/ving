@@ -1,5 +1,6 @@
 import { createLogger, format, transports } from 'winston';
 //import DailyRotateFile from 'winston-daily-rotate-file';
+import WinstonCloudWatch from 'winston-cloudwatch';
 
 /**
  * Creates a `winston` logger and returns it
@@ -7,7 +8,7 @@ import { createLogger, format, transports } from 'winston';
  */
 export const mainlog = createLogger({
     level: 'info',
-    format: format.combine(format.timestamp(), format.json()),
+    //format: format.combine(format.timestamp(), format.json()),
     /* transports: [
          new DailyRotateFile({
              dirname: './logs',
@@ -18,6 +19,16 @@ export const mainlog = createLogger({
              maxFiles: '14d'
          })
      ],*/
+    format: winston.format.json(),
+    transports: [
+        new winston.transports.Console(),
+        new WinstonCloudWatch({
+            logGroupName: 'ving-log-group', // Replace with your CloudWatch log group name
+            logStreamName: 'ving-log-stream', // Replace with your CloudWatch log stream name
+            awsRegion: 'us-east-1', // Update to your region
+            jsonMessage: true
+        })
+    ]
 });
 
 /**
