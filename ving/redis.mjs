@@ -6,7 +6,11 @@ import Redis from 'ioredis';
  * @returns an  `IORedis` connection
  */
 export const spawnRedis = () => {
-    return new Redis(process.env.VING_REDIS || '', { maxRetriesPerRequest: null });
+    const redisUrl = process.env.VING_REDIS || '';
+    if (!redisUrl) {
+        throw new Error('VING_REDIS environment variable is not set');
+    }
+    return new Redis(redisUrl, { maxRetriesPerRequest: null });
 }
 
 let redis = undefined;

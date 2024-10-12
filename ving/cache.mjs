@@ -13,9 +13,13 @@ export const useCache = () => {
     }
     console.log('Connecting to cache');
     const globalForKeyv = global;
-    console.log('redis url' + process.env.VING_REDIS);
+    const redisUrl = process.env.VING_REDIS || '';
+    if (!redisUrl) {
+        throw new Error('VING_REDIS environment variable is not set');
+    }
+    console.log('redis url' + redisUrl);
 
-    cache = globalForKeyv.keyv || new Keyv(process.env.VING_REDIS);
+    cache = globalForKeyv.keyv || new Keyv(redisUrl);
 
     if (process.env.NODE_ENV !== 'production')
         console.log('got here, this could be the problem');
@@ -24,7 +28,7 @@ export const useCache = () => {
     globalForKeyv.keyv = cache;
 
     cache.on('error', () => {
-        console.log('Error connecting to Cache' + process.env.VING_REDIS);
+        console.log('Error connecting to Cache' + redisUrl);
         throw ouch(504, 'Error connecting to Cache');
     });
 
