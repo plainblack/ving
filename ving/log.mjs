@@ -8,7 +8,7 @@ import { createLogger, format, transports } from 'winston';
  */
 export const mainlog = createLogger({
     level: 'info',
-    //format: format.combine(format.timestamp(), format.json()),
+    format: format.combine(format.timestamp(), format.json()),
     /* transports: [
          new DailyRotateFile({
              dirname: './logs',
@@ -19,7 +19,7 @@ export const mainlog = createLogger({
              maxFiles: '14d'
          })
      ],*/
-    format: winston.format.json(),
+    //format: winston.format.json(),
     transports: [
         new winston.transports.Console(),
         /*   new WinstonCloudWatch({
