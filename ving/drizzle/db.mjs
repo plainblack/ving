@@ -1,6 +1,7 @@
 import mysql from 'mysql2/promise';
 import { drizzle } from '#ving/drizzle/orm.mjs';
 import { log } from '#ving/log.mjs';
+import 'dotenv/config';
 
 const dbUrl = process.env.VING_MYSQL || '';
 if (!dbUrl) {
