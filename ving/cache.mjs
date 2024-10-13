@@ -2,6 +2,7 @@ import Keyv from 'keyv';
 import { ouch } from '#ving/utils/ouch.mjs';
 import { log } from '#ving/log.mjs';
 import 'dotenv/config';
+import '@keyv/redis';
 let cache = undefined;
 
 /**
