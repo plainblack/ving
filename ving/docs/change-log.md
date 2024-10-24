@@ -5,6 +5,10 @@ outline: deep
 
 ## October 2024
 
+### 2024-10-24
+ * Using dotenv for environment variables.
+ * NOTE: You will need to run `npm i` to get the new modules.
+
 ### 2024-10-01
  * Added colin's patch for mysql pagination.
  * Disabled winston log rotation as it's not compatible with AWS Amplify.
