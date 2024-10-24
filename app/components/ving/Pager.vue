@@ -5,7 +5,6 @@
             '1300px': 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink',
             default: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink JumpToPageDropdown'
         }"
-        :first="1" 
         :rowsPerPageOptions="[10, 20, 50, 100]" :alwaysShow="false" :totalRecords="kind.paging.totalItems"
         :rows="kind.paging.itemsPerPage" :pageCount="kind.paging.totalPages" :page="kind.paging.page" @page="changePage">
     </Paginator>
@@ -15,7 +14,7 @@
 const props = defineProps(['kind']);
 
 function changePage(pager) {
-    props.kind.query.page = pager.page;
+    props.kind.query.page = pager.page + 1;
     props.kind.search();
 }
 </script>
