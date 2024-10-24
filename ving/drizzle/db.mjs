@@ -1,8 +1,14 @@
 import mysql from 'mysql2/promise';
 import { drizzle } from '#ving/drizzle/orm.mjs';
 import { log } from '#ving/log.mjs';
+import dotenv from 'dotenv';
 
-const dbConfig = new URL(process.env.VING_MYSQL || '');
+dotenv.config({ debug: true });
+const dbUrl = process.env.VING_MYSQL || '';
+if (!dbUrl) {
+    throw new Error('VING_MYSQL environment variable is not set');
+}
+const dbConfig = new URL(dbUrl);
 
 class VingDrizzleLogger {
     logQuery(query, params) {

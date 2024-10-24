@@ -9,7 +9,9 @@ outline: deep
  * Using dotenv for environment variables.
  * NOTE: You will need to run `npm i` to get the new modules.
  * Updated the redis client to use dotenv to get the connection string.
- * Updated the redis client to use trap bad connection strings with an error message.
+ * Updated the redis client to trap bad connection strings with an error message.
+ * Updated the drizzle client to use dotenv to get the connection string.
+ * Updated the drizzle client to trap bad connection strings with an error message.
 
 ### 2024-10-01
  * Added colin's patch for mysql pagination.
