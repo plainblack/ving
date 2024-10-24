@@ -1,5 +1,7 @@
 import { readJSON } from '#ving/utils/fs.mjs';
 import { isUndefined } from '#ving/utils/identify.mjs';
+import dotenv from 'dotenv';
+dotenv.config({ encoding: 'utf8' });
 
 let config = undefined;
 /**

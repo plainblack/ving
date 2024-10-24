@@ -1,9 +1,8 @@
 import mysql from 'mysql2/promise';
 import { drizzle } from '#ving/drizzle/orm.mjs';
 import { log } from '#ving/log.mjs';
-import dotenv from 'dotenv';
+import '#ving/config.mjs';
 
-dotenv.config({ debug: true });
 const dbUrl = process.env.VING_MYSQL || '';
 if (!dbUrl) {
     throw new Error('VING_MYSQL environment variable is not set');

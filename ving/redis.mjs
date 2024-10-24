@@ -1,5 +1,5 @@
 import Redis from 'ioredis';
-import 'dotenv/config';
+import '#ving/config.mjs';
 
 /**
  * Spawns a new connection to redis

@@ -1,6 +1,6 @@
 import Keyv from 'keyv';
 import { ouch } from '#ving/utils/ouch.mjs';
-import 'dotenv/config';
+import '#ving/config.mjs';
 import '@keyv/redis';
 
 let cache = undefined;
