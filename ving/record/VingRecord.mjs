@@ -871,7 +871,7 @@ export class VingKind {
             orderBy = cols;
         }
         const itemsPerPage = isUndefined(params?.itemsPerPage) || params?.itemsPerPage > 100 || params?.itemsPerPage < 1 ? 10 : params.itemsPerPage;
-        const page = params.page || 1;
+        const page = typeof params.page == 'undefined' || params.page < 1 ? 1 : params.page;
         const maxItems = params.maxItems || 100000000000;
         const itemsUpToThisPage = itemsPerPage * page;
         const fullPages = Math.floor(maxItems / itemsPerPage);

@@ -12,6 +12,7 @@ outline: deep
  * Updated the redis client to trap bad connection strings with an error message.
  * Updated the drizzle client to use dotenv to get the connection string.
  * Updated the drizzle client to trap bad connection strings with an error message.
+ * Fix potential bug where someone enters a negative page number into the paginator.
 
 ### 2024-10-01
  * Added colin's patch for mysql pagination.
