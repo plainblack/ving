@@ -50,6 +50,7 @@ Can also include username and password like this:
 ```bash
 VING_REDIS="redis://user:pass@localhost:6379"
 ```
+If you're using Redis Cluster, you can add `?cluster=yes` to the end of the URL.
 
 Note that if you're hosting on AWS, all Redis instances there have TLS enabled by default, so the URL prefix will have 2 's' at the end like this: `rediss://`.
 

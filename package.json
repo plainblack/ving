@@ -58,6 +58,7 @@
     "email-templates": "^11.1.1",
     "ioredis": "^5.3.2",
     "keyv": "^4.5.4",
+    "keyv-anyredis": "^3.3.0",
     "lodash": "^4.17.21",
     "md-editor-v3": "^4.13.2",
     "mysql2": "^3.9.7",

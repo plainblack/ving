@@ -14,6 +14,7 @@ outline: deep
  * Updated the drizzle client to trap bad connection strings with an error message.
  * Fixed a potential bug where someone enters a negative page number into the paginator.
  * Fixed a bug in the Pager component introduced with the upgrade to PrimeVue 4 where the default page was 0 rather than 1.
+ * Updated the redis client to allow for cluster. 
 
 ### 2024-10-01
  * Added colin's patch for mysql pagination.
