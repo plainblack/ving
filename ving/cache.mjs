@@ -1,7 +1,7 @@
 import Keyv from 'keyv';
 import { ouch } from '#ving/utils/ouch.mjs';
-import '#ving/config.mjs';
-import '@keyv/redis';
+import { useRedis } from '#ving/redis.mjs';
+import { KeyvAnyRedis } from 'keyv-anyredis';
 
 let cache = undefined;
 
@@ -14,11 +14,8 @@ export const useCache = () => {
         return cache
     }
     const globalForKeyv = global;
-    const redisUrl = process.env.VING_REDIS || '';
-    if (!redisUrl) {
-        throw new Error('VING_REDIS environment variable is not set');
-    }
-    cache = globalForKeyv.keyv || new Keyv(redisUrl);
+    const store = new KeyvAnyRedis(useRedis());
+    cache = globalForKeyv.keyv || new Keyv({ store });
 
     if (process.env.NODE_ENV !== 'production')
         globalForKeyv.keyv = cache;
