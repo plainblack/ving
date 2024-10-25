@@ -12,6 +12,7 @@ outline: deep
  * Added error handling to verifyExtension() in S3File.
  * Added validation for acceptedFileExtensions in ving schemas being in the wrong place.
  * Make ioredis quit gracefully.
+ * useVingKind().reset() is removed. Use .dispose() instead.
 
 ### 2024-10-24
  * Installed dotenv for environment variables.

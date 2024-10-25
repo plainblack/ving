@@ -216,6 +216,7 @@ class VingKind {
 
     /**
      * Frees the memory associated with the list of records
+     * @returns {object} The current instance of this kind.
      * @example
      * onBeforeRouteLeave(() => users.dispose());
      */
@@ -223,7 +224,8 @@ class VingKind {
         for (const record of this.records) {
             record.dispose();
         }
-        this.reset();
+        this.records.splice(0);
+        return this;
     }
 
     /**
@@ -405,18 +407,6 @@ class VingKind {
     }
 
     /**
-     * Locally empties the `records` array.
-     * 
-     * @returns {object} A reference to this object for chaining
-     * @example
-     * users.reset()
-     */
-    reset() {
-        this.records.splice(0);
-        return this;
-    }
-
-    /**
      * Sets the `new` property back to its default state. Something you usually want to do after you create a new record.
      * @example
      * Users.resetNew()
@@ -448,7 +438,7 @@ class VingKind {
         if (!response.error) {
             const data = response.data;
             if (options.accumulate != true) {
-                this.reset();
+                this.dispose();
             }
             for (let index = 0; index < data.items.length; index++) {
                 this.append({ id: data.items[index].props.id, ...data.items[index] }, options);
