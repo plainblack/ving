@@ -24,7 +24,12 @@ export const spawnRedis = () => {
         redisOptions.username = redisConfig.username;
     }
     if (redisConfig.protocol === 'rediss:') {
-        redisOptions.tls = {};
+        redisOptions.tls = {
+            checkServerIdentity: (servername, cert) => {
+                // skip certificate hostname validation
+                return undefined;
+            },
+        };
     }
     if (redisConfig.searchParams.get('cluster') === 'yes') {
         return new Redis.Cluster([redisNode], {

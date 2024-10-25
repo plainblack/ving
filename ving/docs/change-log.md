@@ -5,6 +5,9 @@ outline: deep
 
 ## October 2024
 
+### 2024-10-25
+ * Fix a bug in redis client where it wouldn't connect to the AWS valkey/redis cluster.
+
 ### 2024-10-24
  * Installed dotenv for environment variables.
  * Updated the redis client to use dotenv to get the connection string.
