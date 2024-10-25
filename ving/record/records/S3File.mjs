@@ -221,6 +221,8 @@ export class S3FileRecord extends VingRecord {
          * await s3file.verifyExtension(['png','gif','jpeg','jpg'])
          */
     async verifyExtension(whitelist, errorOnly = false) {
+        if (!isArray(whitelist))
+            throw ving.ouch(500, 'The whitelist must be an array of allowed file extensions defined in the ving schema.');
         if (!whitelist.includes(this.get('extension')))
             await this.markVerifiyFailed(`${this.get('filename')} needs to be one of ${whitelist.join(', ')}.`, errorOnly);
         return true;

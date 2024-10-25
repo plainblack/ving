@@ -9,6 +9,7 @@ outline: deep
  * Fix a bug in redis client where it wouldn't connect to the AWS valkey/redis cluster.
  * Fix a hydration mismatch in form inputs subtext.
  * Fix a hydration mismatch in markdown inputs.
+ * Added error hanlding to verifyExtension() in S3File.
 
 ### 2024-10-24
  * Installed dotenv for environment variables.
