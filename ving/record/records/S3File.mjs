@@ -5,6 +5,7 @@ import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import ving from '#ving/index.mjs';
 import { extensionMap } from '#ving/schema/schemas/S3File.mjs';
 import { stringifyId } from '#ving/utils/int2str.mjs';
+import { isArray } from '#ving/utils/identify.mjs';
 
 /**
      * Gets a file extension.
