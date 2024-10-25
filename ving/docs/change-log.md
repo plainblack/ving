@@ -7,6 +7,7 @@ outline: deep
 
 ### 2024-10-25
  * Fix a bug in redis client where it wouldn't connect to the AWS valkey/redis cluster.
+ * Fix a hydration mismatch in form inputs where subtext wasn't being hydrated.
 
 ### 2024-10-24
  * Installed dotenv for environment variables.

@@ -34,7 +34,7 @@
             </Message>
             <InputGroupAddon v-if="$slots.append || append"><slot name="append">{{ append }}</slot></InputGroupAddon>
         </InputGroup>
-        <small :class="invalid && !empty ? 'text-red-500' : ''" v-if="subtext">{{ subtext }}</small>
+        <client-only><small :class="invalid && !empty ? 'text-red-500' : ''" v-if="subtext">{{ subtext }}</small></client-only>
     </div>
 </template>
 
