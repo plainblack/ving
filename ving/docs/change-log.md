@@ -11,6 +11,7 @@ outline: deep
  * Fix a hydration mismatch in markdown inputs.
  * Added error handling to verifyExtension() in S3File.
  * Added validation for acceptedFileExtensions in ving schemas being in the wrong place.
+ * Make ioredis quit gracefully.
 
 ### 2024-10-24
  * Installed dotenv for environment variables.

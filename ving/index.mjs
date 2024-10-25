@@ -40,7 +40,6 @@ export default {
     //useKind,
     close: async () => {
         await useDB().session.client.pool.end();
-        await useCache().disconnect();
-        await useRedis().disconnect();
+        await useRedis().quit();
     }
 }
