@@ -1,5 +1,5 @@
 <template>
-    <MdEditor :theme="colorScheme" v-model="val" @onChange="changed" :placeholder="placeholder" :showCodeRowNumber="true" :editorId="id" language="en-US" :toolbars="toolbars" noUploadImg previewTheme="github" />
+    <client-only><MdEditor :theme="colorScheme" v-model="val" @onChange="changed" :placeholder="placeholder" :showCodeRowNumber="true" :editorId="id" language="en-US" :toolbars="toolbars" noUploadImg previewTheme="github" /></client-only>
 </template>
 
 <script setup>
