@@ -116,6 +116,8 @@ export const validateRelationAcceptedFileExtensions = (prop, schema) => {
             throw ving.ouch(442, `${formatPropPath(prop, schema)}.relation.acceptedFileExtensions should not exist.`);
         return;
     }
+    if (('acceptedFileExtensions' in prop)) // should not be a prop, if it exists it should be on relation
+        throw ving.ouch(442, `${formatPropPath(prop, schema)}.acceptedFileExtensions should be in the relation object, not the prop object.`);
     if (!('acceptedFileExtensions' in prop.relation)) // optional
         return;
     if (!isArray(prop.relation.acceptedFileExtensions))
