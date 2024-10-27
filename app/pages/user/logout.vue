@@ -16,7 +16,7 @@ definePageMeta({
 const config = useRuntimeConfig();
 const currentUser = useCurrentUser();
 await currentUser.logout();
-await sleep(1000 * 5);
+await sleep(1000);
 await navigateTo('/');
 
 </script>
