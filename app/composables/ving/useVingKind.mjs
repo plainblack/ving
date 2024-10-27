@@ -216,7 +216,6 @@ class VingKind {
 
     /**
      * Frees the memory associated with the list of records
-     * @returns {object} The current instance of this kind.
      * @example
      * onBeforeRouteLeave(() => users.dispose());
      */
@@ -225,7 +224,6 @@ class VingKind {
             record.dispose();
         }
         this.records.splice(0);
-        return this;
     }
 
     /**
