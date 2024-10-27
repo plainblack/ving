@@ -16,7 +16,7 @@
                         <FormInput type="select" @change="currentUser.save('avatarType')" v-model="currentUser.props.avatarType"
                             :options="currentUser.options?.avatarType" name="avatarType" label="Avatar" class="mb-4" />
                         <div v-if="currentUser.props.avatarType == 'uploaded'" class="mb-4">
-                            <Dropzone id="avatar" :acceptedFiles="currentUser.meta?.acceptedFileExtensions?.avatar"
+                            <Dropzone id="avatar" :acceptedFiles="currentUser.options?.avatar"
                                 :afterUpload="currentUser.importAvatar" :maxFiles="1" :resizeHeight="300"
                                 :resizeWidth="300" resizeMethod="crop"></Dropzone>
                         </div>

@@ -429,7 +429,7 @@ const user = apikey.parent('user');
 ```
 
 #### propOptions
-Returns a list of enumeration options for this record.
+Returns a list of validation options for fields in this record.
 
 ```js
 const options = await user.propOptions(params, false);
@@ -442,6 +442,7 @@ const options = await user.propOptions(params, false);
         { label : 'Username', value : 'username' },
         ...
     ],
+    avatar : [ 'png', 'jpg' ],
     ...
 }
 ```

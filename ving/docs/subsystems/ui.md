@@ -79,10 +79,10 @@ Creates a user interface for uploading [S3Files](/rest/S3File). It handles the r
       
 Props:
 
-- **acceptedFiles** - An array of file extensions that S3File should accept. Defaults to `['png','jpg']`. This can and should be automatically filled by a `meta.acceptedFileExtensions` property from a [Ving Record](ving-record) when dealing with S3Files. It is set by the `relation.acceptedFileExtensions` attribute in a [Ving Schema](ving-schema). For example:
+- **acceptedFiles** - An array of file extensions that S3File should accept. Defaults to `['png','jpg']`. This can and should be automatically filled by property such as `options.avatar` which will be generated when enabling `options` on a [Ving Record](ving-record) when dealing with S3Files. It is set by the `relation.acceptedFileExtensions` attribute in a [Ving Schema](ving-schema). For example:
 
 ```html
-<Dropzone :acceptedFiles="user.meta?.acceptedFileExtensions?.avatar" />
+<Dropzone :acceptedFiles="user.options?.avatar" />
 ```
 - **afterUpload** - Required. A function that will be executed after upload. This function should then call the appropriate import endpoint to post process and verify the file.
 - **info** - A string that will be displayed inside the dropzone box. Useful to give the user some insights about the nature of the files you will allow such as size or dimension contstraints. 

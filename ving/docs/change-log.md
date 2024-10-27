@@ -7,6 +7,9 @@ outline: deep
 
 ### 2024-10-27
 * Added ego behavior to useVingRecord() and useVingKind() to allow disambiguation of multiple copies of the same record with different views.
+* VingRecord.propOptions() now returns validation options S3File relations in the form of acceptedFileExtensions.
+* VingRecord.describe().meta no longer includes the acceptedFileExtensions on S3File relations.
+* NOTE: If you are using `record.meta.acceptedFileExtensions` in your UI, you will need to change it to `record.options.relationName` instead. For example `record.meta.acceptedFileExtensions.avatar` would become `record.options.avatar`.
 
 ### 2024-10-25
  * Fix a bug in redis client where it wouldn't connect to the AWS valkey/redis cluster.

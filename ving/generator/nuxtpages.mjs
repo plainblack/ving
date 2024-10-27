@@ -286,7 +286,7 @@ const editProps = (schema) => {
             else if (prop.type == 'id' && prop?.relation?.type == 'parent' && prop.relation?.kind == 'S3File') {
                 out += `
                     <div class="mb-4">
-                        <Dropzone id="${prop?.relation?.name}" :acceptedFiles="${schema.kind.toLowerCase()}.meta?.acceptedFileExtensions?.${prop?.relation?.name}" :afterUpload="(s3file) => ${schema.kind.toLowerCase()}.importS3File('${prop?.relation?.name}', s3file.props?.id)"
+                        <Dropzone id="${prop?.relation?.name}" :acceptedFiles="${schema.kind.toLowerCase()}.options?.${prop?.relation?.name}" :afterUpload="(s3file) => ${schema.kind.toLowerCase()}.importS3File('${prop?.relation?.name}', s3file.props?.id)"
                             :maxFiles="1" :resizeHeight="300" :resizeWidth="300" resizeMethod="crop"></Dropzone>
                     </div>`;
             }

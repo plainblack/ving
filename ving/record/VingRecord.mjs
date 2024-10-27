@@ -242,11 +242,6 @@ export class VingRecord {
                     const parent = await this.parent(field.relation.name);
                     out.related[field.relation.name] = await parent.describe(params);
                 }
-                if (isObject(out.meta) && 'acceptedFileExtensions' in field.relation) {
-                    if (!('acceptedFileExtensions' in out.meta))
-                        out.meta.acceptedFileExtensions = {};
-                    out.meta.acceptedFileExtensions[field.relation.name] = field.relation.acceptedFileExtensions;
-                }
             }
 
         }
@@ -418,7 +413,7 @@ export class VingRecord {
     }
 
     /**
-     * Returns a list of the enumerated prop options available to the current user
+     * Returns a list of the enumerated prop options available to the current user. These options can be used to validate the data submitted to this field. 
      * 
      * @param {Object} params A list of params to change the output of the describe. Defaults to `{}`
      * @param {Object} params.currentUser The `User` or `Session` instance to test ownership against
@@ -452,6 +447,12 @@ export class VingRecord {
             }
             else if (prop.options) {
                 options[prop.name] = await this[prop.options]();
+            }
+            else if (prop.relation
+                && ['parent', 'sibling'].includes(prop.relation.type)
+                && 'acceptedFileExtensions' in prop.relation
+            ) {
+                options[prop.relation.name] = prop.relation.acceptedFileExtensions;
             }
         }
         return options;
