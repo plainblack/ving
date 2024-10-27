@@ -12,6 +12,14 @@ Follow the [CDK install instructions](https://docs.aws.amazon.com/cdk/v2/guide/g
 ### Setup AWS Credentials
 If you have not already set up an [AWS credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) file in `~/.aws/credentials` then you'll want to do that now as pulumi will use that to log in to AWS.
 
+### Install CDK Libraries
+You'll need to install the CDK libraries.
+
+```bash
+cd cdk
+npm i
+```
+
 ### Edit CDK Constants
 In the `cdk/lib/constants.mjs` file you'll need to make the following changes:
 
