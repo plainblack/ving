@@ -5,6 +5,9 @@ outline: deep
 
 ## October 2024
 
+### 2024-10-27
+* Added ego behavior to useVingRecord() and useVingKind() to allow disambiguation of multiple copies of the same record with different views.
+
 ### 2024-10-25
  * Fix a bug in redis client where it wouldn't connect to the AWS valkey/redis cluster.
  * Fix a hydration mismatch in form inputs subtext.

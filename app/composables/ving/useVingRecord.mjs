@@ -28,6 +28,7 @@ import { isObject, isUndefined } from '#ving/utils/identify.mjs';
  * @param {object} behavior.links - Any default link objects. Defaults to `{}`. Usually no reason to ever specify this.
  * @param {object} behavior.related - Any default related objects. Defaults to `{}`. Usually no reason to ever specify this.
  * @param {object[]} behavior.warnings - An array of warning objects. Defaults to `[]`. Usually no reason to ever specify this.
+ * @param {string} behavior.ego An optional string that will be prepended to the id of fetched records in Pinia so that they can be distinguished from other instances of the same record. Useful if you're loading multiple instances of the same object on the same page.
  * @returns {VingRecordStore} - A Pinia store.
  * @example
  * const user = useVingRecord({
@@ -42,8 +43,7 @@ import { isObject, isUndefined } from '#ving/utils/identify.mjs';
 
 export default (behavior) => {
     const notify = useNotify();
-
-    const generate = defineStore(behavior.id || v4(), {
+    const generate = defineStore(behavior.id ? (behavior.ego ? behavior.ego + '-' + behavior.id : behavior.id) : v4(), {
         state: () => ({
             props: behavior.props || {},
             meta: behavior.meta || {},
