@@ -78,7 +78,7 @@ Stacks are divisions of AWS resources in CDK. We divide them into areas of respo
 
 You can create your own stacks as well by following the instructions in the [CDK documentation](https://docs.aws.amazon.com/cdk/v2/guide/stacks.html#stacks).
 
-### Special Needs of the Databsae Stack
+### Special Needs of the Database Stack
 First, by default it will create a database with the root user of `root` and no password. You'll need to set the password in the AWS console. You can do this by going to the RDS console, clicking on the cluster, and then clicking on the "Modify" button. Then you can change the password.
 
 Second, you may also want to change the minimum and maximum capacity units of the Aurora cluster. You can do this in the `cdk/lib/constants.mjs` file.
