@@ -5,6 +5,9 @@ outline: deep
 
 ## October 2024
 
+### 2024-10-28
+ * Switched jobs to use redis from a remote cluster.
+
 ### 2024-10-27
 * Added ego behavior to useVingRecord() and useVingKind() to allow disambiguation of multiple copies of the same record with different views.
 * VingRecord.propOptions() now returns validation options S3File relations in the form of acceptedFileExtensions.
