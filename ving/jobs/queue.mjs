@@ -12,7 +12,11 @@ import { jobHandlers } from '#ving/jobs/map.mjs';
  * getQueue();
  */
 export const getQueue = (options = {}) => {
-    const queue = new Queue(options?.queueName || 'jobs', { connection: useRedis() });
+    const params = { connection: useRedis() };
+    if (params.connection.isCluster) {
+        params.prefix = 'vingjobs';
+    }
+    const queue = new Queue(options?.queueName || 'jobs', params);
     return queue;
 }
 
@@ -47,7 +51,6 @@ export const addJob = async (type, data = {}, options = { queueName: 'jobs' }) =
         throw ving.ouch(404, `Job handler ${type} is not available.`);
     const queue = getQueue(options);
     const jobOptions = {
-        // connection: useRedis(),
         removeOnComplete: {
             age: 3600, // keep up to 1 hour
             count: 1000, // keep up to 1000 jobs
