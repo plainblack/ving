@@ -14,7 +14,7 @@ import { jobHandlers } from '#ving/jobs/map.mjs';
 export const getQueue = (options = {}) => {
     const params = { connection: useRedis() };
     if (params.connection.isCluster) {
-        params.prefix = 'vingjobs';
+        params.prefix = '{vingjobs}';
     }
     const queue = new Queue(options?.queueName || 'jobs', params);
     return queue;
