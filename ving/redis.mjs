@@ -16,7 +16,7 @@ export const spawnRedis = () => {
         port: parseInt(redisConfig.port || 6379),
         host: redisConfig.hostname,
     };
-    const redisOptions = { maxRetriesPerRequest: null, keyPrefix: process.env.NODE_ENV };
+    const redisOptions = { maxRetriesPerRequest: null };
     if (redisConfig.password) {
         redisOptions.password = redisConfig.password;
     }
