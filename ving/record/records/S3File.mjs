@@ -98,7 +98,7 @@ export class S3FileRecord extends VingRecord {
             case 'self':
                 return this.fileUrl();
             case 'thumbnail':
-                return `https://${process.env.VING_AWS_THUMBNAILS_BUCKET}.s3.amazonaws.com/${formatS3FolderName(stringifyId(this.get('id')))}.png`;
+                return `https://s3.amazonaws.com/${process.env.VING_AWS_THUMBNAILS_BUCKET}/${formatS3FolderName(stringifyId(this.get('id')))}.png`;
             case 'extension': {
                 const image = extensionMap[this.get('extension')] || 'unknown';
                 return `/img/filetype/${image}.png`;
