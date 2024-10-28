@@ -83,7 +83,7 @@ export class S3FileRecord extends VingRecord {
          */
 
     fileUrl() {
-        return `https://${process.env.VING_AWS_UPLOADS_BUCKET}.s3.amazonaws.com/${this.get('s3folder')}/${this.get('filename')}`;
+        return `https://s3.amazonaws.com/${process.env.VING_AWS_UPLOADS_BUCKET}/${this.get('s3folder')}/${this.get('filename')}`;
     }
 
     /**

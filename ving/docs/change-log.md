@@ -7,6 +7,7 @@ outline: deep
 
 ### 2024-10-28
  * Switched jobs to use redis from a remote cluster.
+ * Switched S3File bucket url from app.domain.com.s3.amazonaws.com to s3.amazonaws.com/app.domain.com.
 
 ### 2024-10-27
 * Added ego behavior to useVingRecord() and useVingKind() to allow disambiguation of multiple copies of the same record with different views.
