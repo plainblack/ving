@@ -30,7 +30,10 @@ export class VingJobWorker {
 
     async start() {
 
-
+        const params = { connection: useRedis() };
+        if (params.connection.isCluster) {
+            params.prefix = '{vingjobs}';
+        }
         this.worker = new Worker(
             this.#queueName,
             async (job) => {
@@ -44,9 +47,7 @@ export class VingJobWorker {
                     throw ving.ouch(501, message);
                 }
             },
-            {
-                connection: useRedis(),
-            }
+            { ...params }
         );
 
         this.worker.on('completed', job => {
