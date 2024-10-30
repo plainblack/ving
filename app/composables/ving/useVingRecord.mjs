@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { defu } from "defu";
 import { v4 } from 'uuid';
-import { ouch } from '#ving/utils/ouch.mjs';
 import { isObject, isUndefined } from '#ving/utils/identify.mjs';
 
 /**
@@ -240,7 +239,7 @@ export default (behavior) => {
                     return this.links.base?.href;
                 }
                 notify.error('No createApi');
-                throw ouch(401, 'No createApi');
+                throw createError({ statusCode: 401, message: 'No createApi' });
             },
 
             /**
@@ -258,7 +257,7 @@ export default (behavior) => {
                     return this.links.self?.href;
                 }
                 notify.error('No fetchApi');
-                throw ouch(401, 'No fetchApi');
+                throw createError({ statusCode: 401, message: 'No fetchApi' });
             },
 
             /**
@@ -273,7 +272,7 @@ export default (behavior) => {
                     return this.links.self?.href;
                 }
                 notify.error('No links.self');
-                throw ouch(400, 'No links.self');
+                throw createError({ statusCode: 400, message: 'No links.self' });
             },
 
             /**

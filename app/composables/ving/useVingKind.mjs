@@ -1,6 +1,5 @@
 import { defu } from "defu";
 import { debounce } from 'perfect-debounce';
-import { ouch } from '#ving/utils/ouch.mjs';
 class VingKind {
     #notify = useNotify();
 
@@ -265,7 +264,7 @@ class VingKind {
             return this.records[index];
         }
         else {
-            throw ouch(404, `cannot find "${id}" in record list`);
+            throw createError({ statusCode: 404, message: `cannot find "${id}" in record list` });
         }
     }
 
@@ -293,7 +292,7 @@ class VingKind {
             return this.#behavior.createApi;
         }
         this.#notify.error('No createApi');
-        throw ouch(401, 'No createApi');
+        throw createError({ statusCode: 401, message: 'No createApi' });
     }
 
     /**
@@ -308,7 +307,7 @@ class VingKind {
             return this.#behavior.listApi;
         }
         this.#notify.error('No listApi');
-        throw ouch(401, 'No listApi');
+        throw createError({ statusCode: 401, message: 'No listApi' });
     }
 
     /**

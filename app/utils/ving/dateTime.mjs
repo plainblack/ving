@@ -1,5 +1,4 @@
 import { format, parseISO, parseJSON, parse, getUnixTime } from 'date-fns';
-import { ouch } from '#ving/utils/ouch.mjs';
 import { isArray, isString, isUndefined } from '#ving/utils/identify.mjs';
 
 
@@ -29,7 +28,7 @@ export const determineDate = (input) => {
         return parseJSON(input);
     }
     console.error('Have no idea what type this date is: ', input);
-    throw ouch(400, 'bad date object', input);
+    throw createError({ statusCode: 400, message: 'Have no idea what type this date is: ' + input });
 }
 
 /**
