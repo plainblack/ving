@@ -17,6 +17,6 @@
 </template>
 
 <script setup>
-const error = useError();
+const props = defineProps(['error']);
 const config = useRuntimeConfig();
 </script>
