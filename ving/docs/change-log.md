@@ -7,6 +7,8 @@ outline: deep
 
 ### 2024-10-30
  * Fixed: Instead of ouching middleware should call abortNavigation() to prevent navigation.
+ * Moved error.vue to app/error.vue.
+ * NOTE: If you customized error.vue you'll need to move it to app/error.vue.
 
 ### 2024-10-28
  * Switched jobs to use redis from a remote cluster.
