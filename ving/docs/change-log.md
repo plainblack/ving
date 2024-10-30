@@ -5,6 +5,9 @@ outline: deep
 
 ## October 2024
 
+### 2024-10-30
+ * Fixed: Instead of ouching middleware should call abortNavigation() to prevent navigation.
+
 ### 2024-10-28
  * Switched jobs to use redis from a remote cluster.
  * Switched S3File bucket url from app.domain.com.s3.amazonaws.com to s3.amazonaws.com/app.domain.com. And the same for the thumbnail bucket.
