@@ -6,7 +6,7 @@
             <InputNumber v-if="type == 'number' && (isNumber(val) || isNull(val) || isUndefined(val))"
                 v-model="val" showButtons :placeholder="placeholder" :name="name" :id="computedId"
                 :autocomplete="autocomplete" :required="required" :inputClass="fieldClass" :step="step"
-                :incrementButtonClass="append ? 'rounded-none' : ''" @change="emit('change')"
+                :incrementButtonClass="append ? 'rounded-none' : ''" @update:modelValue="emit('change')"
                 :decrementButtonClass="append ? 'rounded-none' : ''" />
             <ToggleSwitch v-else-if="type == 'switch' && (isBoolean(val) || isUndefined(val))"
                 v-model="val" :placeholder="placeholder" :name="name" :id="computedId"
