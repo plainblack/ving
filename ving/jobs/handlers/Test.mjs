@@ -6,6 +6,6 @@ import ving from '#ving/index.mjs';
  * @returns {boolean} `true`
  */
 export default async function (job) {
-    ving.log('jobs').debug(`Test ran with data: ${JSON.stringify(job.data)}`);
+    ving.log('jobs').debug(`Test ran with data: ${JSON.stringify(job.data)} which is a ${typeof job.data}`);
     return true;
 }

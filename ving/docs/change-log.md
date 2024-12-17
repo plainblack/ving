@@ -3,6 +3,11 @@ outline: deep
 ---
 # Change Log
 
+## December 2024
+
+### 2024-12-17
+ * Added validation to addJob() in jobs/queue.mjs to ensure that data is an object.
+
 ## October 2024
 
 ### 2024-10-30
