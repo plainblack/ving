@@ -7,6 +7,7 @@ outline: deep
 
 ### 2025-01-12
  * Removed pulumi from the project.
+ * Fixed: Documentation: useVingRecord findOne docs are wrong #201
 
 ## December 2024
 

@@ -146,14 +146,14 @@ const record = await Users.find('xxx');
 Locates and returns a list of [record](#record-api)s by a drizzle where clause or an empty array if no records are found.
 
 ```js
-const listOfFredRecords = await Users.findMany(like(Users.realName, 'Fred%'));
+const listOfFredRecords = await Users.findMany(like(Users.table.realName, 'Fred%'));
 ```
 
 #### findAll
 Does the same thing as `findMany` except with an iterator so not all records are loaded into memory at the same time.
 
 ```js
-const allFreds = await Users.findMany(like(Users.realName, 'Fred%'));
+const allFreds = await Users.findMany(like(Users.table.realName, 'Fred%'));
 for await (const fred of allFreds) { 
     console.log(fred.get('id'));
 }
@@ -163,7 +163,7 @@ for await (const fred of allFreds) {
 Locates and returns a single [record](#record-api) by a drizzle where clause or `undefined` if no record is found.
 
 ```js
-const fredRecord = await Users.findOne(eq(Users.username, 'Fred'));
+const fredRecord = await Users.findOne(eq(Users.table.username, 'Fred'));
 ```
 
 #### findOrDie
@@ -177,7 +177,7 @@ const record = await Users.findOrDie('xxx');
 Write your own custom select function. Returns a drizzle result set, not a list of records.
 
 ```js
-const results = await Users.select.where(like(Users.realName, 'Fred%'));
+const results = await Users.select.where(like(Users.table.realName, 'Fred%'));
 ```
 
 ### Updating Records
@@ -187,7 +187,7 @@ Updating existing records.
 Update records already in the database without first selecting them by writing your own custom query.
 
 ```js
-const results = await Users.update.set({admin: false}).where(like(Users.realName, 'Fred%'))
+const results = await Users.update.set({admin: false}).where(like(Users.table.realName, 'Fred%'))
 ```
 
 > Note that this where clause is raw. To use it safeley you should wrap the `like(Users.realName, 'Fred%')` portion in the `calcWhere()` method below.
@@ -200,7 +200,7 @@ See also the `update()` method in the [Record API](#record-api) for updating a r
 Delete records by writing your own custom query. 
 
 ```js
-const results = await Users.delete.where(like(Users.realName, 'Fred%'));
+const results = await Users.delete.where(like(Users.table.realName, 'Fred%'));
 ```
 
 > Note that this where clause is raw. To use it safeley you should wrap the `like(Users.realName, 'Fred%')` portion in the `calcWhere()` method below.
@@ -211,7 +211,7 @@ See also the `delete()` method in the [Record API](#record-api) for deleting a r
 A safer version of `delete` above as it uses `calcWhere()`.
 
 ```js
-await Users.deleteMany(like(Users.realName, 'Fred%'));
+await Users.deleteMany(like(Users.table.realName, 'Fred%'));
 ```
 
 ### Utility Methods
@@ -220,14 +220,14 @@ await Users.deleteMany(like(Users.realName, 'Fred%'));
 Adds `propDefaults` (if any) into a where clause to limit the scope of affected records. As long as you're using the built in queries you don't need to use this method. But you might want to use it if you're using `create`, `select`, `update`, or `delete` directly.
 
 ```js
-const results = await Users.delete.where(Users.calcWhere(like(Users.realName, 'Fred%')));
+const results = await Users.delete.where(Users.calcWhere(like(Users.table.realName, 'Fred%')));
 ```
 
 #### count
 Returns an integer representing how many records match a given where clause.
 
 ```ts
-const usersNamedFred = await Users.count(like(Users.realName, 'Fred%'));
+const usersNamedFred = await Users.count(like(Users.table.realName, 'Fred%'));
 ```
 
 ### Properties
