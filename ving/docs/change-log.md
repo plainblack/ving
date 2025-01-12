@@ -3,6 +3,11 @@ outline: deep
 ---
 # Change Log
 
+## January 2025
+
+### 2025-01-12
+ * Removed pulumi from the project.
+
 ## December 2024
 
 ### 2024-12-17
