@@ -10,6 +10,7 @@ outline: deep
  * Fixed: Documentation: useVingRecord findOne docs are wrong #201
  * refactored to use Intl instead of date-fns #204
  * NOTE: If you are using the date formating strings in dateTime.mjs you will need to update them to use Intl instead of date-fns.
+ * Fixed: note in docs how to reference drizzle schema #174
 
 ## December 2024
 

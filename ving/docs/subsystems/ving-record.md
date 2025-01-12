@@ -43,6 +43,13 @@ import {useKind} from '#ving/record/VingKind.mjs';
 const users = await useKind('User');
 ```
 
+### Access to Drizzle Schema
+You can access the drizzle schema for a kind by calling `.table` on the kind. For example, if you wanted to get the schema for the `username` field on the `User` kind you could do this:
+
+```js
+const schema = Users.table.username;
+```
+
 ### Creating Records
 You can create records many different ways. In all three methods you'll pass in a list of `props` which is an object containing the values (or columns) to set on the record.
 
