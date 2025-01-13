@@ -474,6 +474,12 @@ You can filter the list of records by passing in values to the query object. For
 ```js
 users.query.id = 'xxx';
 ```
+
+or filter by a keyword:
+
+```js
+users.query.search = 'foo';
+```
 For more on filtering see the [rest api](rest#filters) documentation.
 
 

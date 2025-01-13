@@ -389,7 +389,7 @@ An optional boolean that if true will allow searching via the [rest api](rest) f
 
 An optional boolean that if true will do 2 things if added to an `id` prop `type`: 
 
-* Allows searching via the [rest api](rest) for exact match filtering against this id using its integer value in addiont to the encrypted string assuming `filterQualifier` is true. 
+* Allows searching via the [rest api](rest) for exact match filtering against this id using its integer value in addiont to the encrypted string assuming `filterQualifier` or `filterQuery` is true. 
 * Adds the real id to the `meta.realId` object in the [rest api](rest) response.
 
 ##### autoUpdate
