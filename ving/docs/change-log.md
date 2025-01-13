@@ -31,6 +31,9 @@ Also don't forget to update the imports in your schema files.
 * Set filterQualifier to true for the baseSchemaId.
 * Added better error handling for int2str parseId().
 * Added stringToNumber option to int2str parseId().
+* Added allowRealPubicId to ving schema props.
+* Fixed: filter on id #203
+* Fixed: How to do a search for hardware ticket by ticket number? #29
 
 ## December 2024
 

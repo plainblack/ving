@@ -203,6 +203,17 @@ export class VingRecord {
         }
 
         for (const field of schema.props) {
+
+            // meta 
+            if (isObject(out.meta)
+                && include.meta
+            ) {
+                if (field.allowRealPubicId) {
+                    if (!isObject(out.meta.realId)) out.meta.realId = {};
+                    out.meta.realId[field.name] = this.#props[field.name];
+                }
+            }
+
             if (field.name == 'id') // already done
                 continue;
 
@@ -213,8 +224,6 @@ export class VingRecord {
                 || (roles.includes('owner') && isOwner)
                 || (currentUser?.isaRole(roles));
             if (!visible) continue;
-
-            const fieldName = field.name.toString();
 
             // props
             if (field.type == 'id')

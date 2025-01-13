@@ -72,6 +72,7 @@ export const validateProps = (schema) => {
         validatePropFilterQuery(prop, schema);
         validatePropFilterQualifier(prop, schema);
         validatePropAutoUpdate(prop, schema);
+        validatePropAllowRealPubicId(prop, schema);
     }
 }
 
@@ -508,7 +509,7 @@ export const validatePropFilterQualifier = (prop, schema) => {
         return;
     if (!isBoolean(prop.filterQualifier))
         throw ving.ouch(442, `${formatPropPath(prop, schema)}.filterQualifier must be a boolean.`);
-    if (prop.type == 'id' && prop.relation?.type != 'parent')
+    if (prop.type == 'id' && prop.relation && prop.relation?.type != 'parent')
         throw ving.ouch(442, `${formatPropPath(prop, schema)}.filterQualifier can only exist on type id if the relation.type is parent.`);
 }
 
@@ -530,6 +531,26 @@ export const validatePropFilterRange = (prop, schema) => {
         return;
     if (!isBoolean(prop.filterRange))
         throw ving.ouch(442, `${formatPropPath(prop, schema)}.filterRange must be a boolean.`);
+}
+
+/**
+ * Validates the allowRealPubicId field of a prop.
+ * @param {object} prop The prop schema to check against.
+ * @param {VingSchema} schema The schema to check against.
+ * @throws 442 if some attribute is outside of the normal definition
+ * @example
+ * validatePropAllowRealPubicId(prop, schema)
+ */
+export const validatePropAllowRealPubicId = (prop, schema) => {
+    if (!['id'].includes(prop.type)) {
+        if ('allowRealPubicId' in prop)
+            throw ving.ouch(442, `${formatPropPath(prop, schema)}.allowRealPubicId should not exist.`);
+        return;
+    }
+    if (!('allowRealPubicId' in prop)) // not required
+        return;
+    if (!isBoolean(prop.allowRealPubicId))
+        throw ving.ouch(442, `${formatPropPath(prop, schema)}.allowRealPubicId must be a boolean.`);
 }
 
 /**

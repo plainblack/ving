@@ -25,7 +25,7 @@ const fixColumnData = (column, data) => {
         return data == 'true' ? true : false;
     }
     if (column.vingSchemaProp.type == 'id') {
-        return parseId(data);
+        return parseId(data, { stringToNumber: column.vingSchemaProp.allowRealPubicId ? true : false });
     }
     if (column.vingSchemaProp.type == 'int') {
         return Number(data);

@@ -385,6 +385,13 @@ An optional boolean that if true will allow searching via the [rest api](rest) f
 An optional boolean that if true will allow searching via the [rest api](rest) for range matching against this field. This is an alternative to overriding the `describeListFilter()` method in [VingRecord](ving-record). Only use on `int` and `date` type props.
 
 
+##### allowRealPubicId
+
+An optional boolean that if true will do 2 things if added to an `id` prop `type`: 
+
+* Allows searching via the [rest api](rest) for exact match filtering against this id using its integer value in addiont to the encrypted string assuming `filterQualifier` is true. 
+* Adds the real id to the `meta.realId` object in the [rest api](rest) response.
+
 ##### autoUpdate
 
 The `autoUpdate` field is an optional boolean that is only used on a prop with type `date`. If `true` the date will automatically get set every time `update()` is called on the record. This is generally never needed by anything other than the built in `dateUpdated` record that every record already has.

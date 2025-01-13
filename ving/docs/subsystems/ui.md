@@ -467,6 +467,16 @@ await users.search();
 onBeforeRouteLeave(() => users.dispose());
 ```
 
+#### Filtering
+
+You can filter the list of records by passing in values to the query object. For example, to filter by an exact value:
+
+```js
+users.query.id = 'xxx';
+```
+For more on filtering see the [rest api](rest#filters) documentation.
+
+
 ### useVingRecord()
 A client for interacting with [server-side ving records](ving-record#record-api) through the [Rest API](rest).
 
