@@ -218,7 +218,7 @@ export const dbUuid = (prop) => {
 }
 
 /**
- * Generates a drizzle schema field definition for a primary key prop. This is included in the `baseSchemaProps` and likely won't be used by you.
+ * Generates a drizzle schema field definition for a primary key prop. This is included in the `baseSchemaId` and likely won't be used by you.
  * @param {Object} prop An object containing the properties of this prop
  * @returns a drizzle field schema definition
  */
@@ -243,37 +243,41 @@ export const dbRelation = (prop) => {
 }
 
 /**
- * The base set of props that all Ving schemas share. It includes an `id`, `createdAt`, and `updatedAt`.
+ * The base set of props that all Ving schemas share.
  */
-export const baseSchemaProps = [
-    {
-        type: "id",
-        name: "id",
-        required: false,
-        default: undefined,
-        db: (prop) => dbPk(prop),
-        view: ['public'],
-        edit: [],
-    },
-    {
-        type: "date",
-        name: "createdAt",
-        filterRange: true,
-        required: true,
-        default: () => new Date(),
-        db: (prop) => dbTimestamp(prop),
-        view: ['public'],
-        edit: [],
-    },
-    {
-        type: "date",
-        name: "updatedAt",
-        filterRange: true,
-        required: true,
-        autoUpdate: true,
-        default: () => new Date(),
-        db: (prop) => dbTimestamp(prop),
-        view: ['public'],
-        edit: [],
-    },
-];
+
+// The Schema's unique identifier.
+export const baseSchemaId = {
+    type: "id",
+    name: "id",
+    required: false,
+    default: undefined,
+    db: (prop) => dbPk(prop),
+    view: ['public'],
+    edit: [],
+};
+
+// The Schema's creation timestamp.
+export const baseSchemaCreatedAt = {
+    type: "date",
+    name: "createdAt",
+    filterRange: true,
+    required: true,
+    default: () => new Date(),
+    db: (prop) => dbTimestamp(prop),
+    view: ['public'],
+    edit: [],
+};
+
+// The Schema's last update timestamp.
+export const baseSchemaUpdatedAt = {
+    type: "date",
+    name: "updatedAt",
+    filterRange: true,
+    required: true,
+    autoUpdate: true,
+    default: () => new Date(),
+    db: (prop) => dbTimestamp(prop),
+    view: ['public'],
+    edit: [],
+};

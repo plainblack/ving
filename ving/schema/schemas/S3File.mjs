@@ -1,11 +1,13 @@
-import { baseSchemaProps, dbVarChar, zodString, dbEnum, dbBoolean, dbText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject } from '../helpers.mjs';
+import { baseSchemaId, baseSchemaCreatedAt, baseSchemaUpdatedAt, dbVarChar, zodString, dbEnum, dbBoolean, dbText, dbRelation, dbDateTime, dbTimestamp, dbInt, dbJson, zodNumber, zodJsonObject } from '../helpers.mjs';
 
 export const s3fileSchema = {
     kind: 'S3File',
     tableName: 's3files',
     owner: ['$userId', 'admin'],
     props: [
-        ...baseSchemaProps,
+        { ...baseSchemaId },
+        { ...baseSchemaCreatedAt },
+        { ...baseSchemaUpdatedAt },
         {
             type: "string",
             name: "filename",

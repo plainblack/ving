@@ -1,11 +1,13 @@
-import { baseSchemaProps, dbVarChar, zodString, dbBoolean, dbText, dbJson, zodJsonObject } from '../helpers.mjs';
+import { baseSchemaId, baseSchemaCreatedAt, baseSchemaUpdatedAt, dbVarChar, zodString, dbBoolean, dbText, dbJson, zodJsonObject } from '../helpers.mjs';
 
 export const cronJobSchema = {
     kind: 'CronJob',
     tableName: 'cronjobs',
     owner: ['admin'],
     props: [
-        ...baseSchemaProps,
+        { ...baseSchemaId },
+        { ...baseSchemaCreatedAt },
+        { ...baseSchemaUpdatedAt },
         {
             type: "string",
             name: "schedule",

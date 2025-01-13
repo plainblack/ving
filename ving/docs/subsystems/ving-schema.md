@@ -10,7 +10,9 @@ You'll find the schemas in `#ving/schema/schemas`. A schema looks like this:
     tableName: 'users',
     owner: ['$id', 'admin'],
     props: [
-        ...baseSchemaProps,
+        { ...baseSchemaId },
+        { ...baseSchemaCreatedAt },
+        { ...baseSchemaUpdatedAt },
         {
             type: "string",
             name: "username",
@@ -69,7 +71,7 @@ It can also contain any number of roles. By default there are 3 roles: `admin`, 
 It can also defer to a parent object. So let's say you had a record called Invoice and another called LineItem. Each LineItem would have a parent relation to the Invoice called `invoice`. So you could then use `^invoice` (notice the carat) to indicate that you'd like to ask the Invoice if the User owns it, and if the answer is yes, then the LineItem will be considered to also be owned by that user. The carat means "look for a parent relation in the schema" and whatever comes after the carat is the name of that relation.
 
 ### props
-All schemas should have the base props of `id`, `createdAt`, and `updatedAt` by using `...baseSchemaProps`. After that it's up to you to add your own props to the list. There are many different types of props for different field types.
+All schemas should have the base props of `id`, `createdAt`, and `updatedAt` by using `{...baseSchemaId}`, `{...baseSchemaCreatedAt}`, and `{...baseSchemaUpdatedAt}`. After that it's up to you to add your own props to the list. There are many different types of props for different field types.
 
 Props all have the fields `type`, `name`, `required`, `default`, `db`, `zod`, `view`, and `edit`, but can have more or less fields from there.
 

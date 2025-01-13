@@ -1,4 +1,4 @@
-import { baseSchemaProps, dbVarChar, zodString, dbText, dbRelation } from '../helpers.mjs';
+import { baseSchemaId, baseSchemaCreatedAt, baseSchemaUpdatedAt, dbVarChar, zodString, dbText, dbRelation } from '../helpers.mjs';
 import crypto from 'crypto';
 
 export const apikeySchema = {
@@ -6,7 +6,9 @@ export const apikeySchema = {
     tableName: 'apikeys',
     owner: ['$userId', 'admin'],
     props: [
-        ...baseSchemaProps,
+        { ...baseSchemaId },
+        { ...baseSchemaCreatedAt },
+        { ...baseSchemaUpdatedAt },
         {
             type: "string",
             name: 'name',

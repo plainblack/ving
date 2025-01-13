@@ -11,6 +11,22 @@ outline: deep
  * refactored to use Intl instead of date-fns #204
  * NOTE: If you are using the date formating strings in dateTime.mjs you will need to update them to use Intl instead of date-fns.
  * Fixed: note in docs how to reference drizzle schema #174
+ * Removed the ving schema helper `baseSchemaProps` in favor of the new exports `baseSchemaId`, `baseSchemaCreatedAt`, and `baseSchemaUpdatedAt`. This is a breaking change that allows you to modify the base schema props in your schema.
+ * NOTE: Update your Ving Schemas to use the new baseSchemaId, baseSchemaCreatedAt, and baseSchemaUpdatedAt exports in place of the baseSchemaProps array. In each of your ving schemas replace this:
+
+```js
+        ...baseSchemaProps,
+```
+
+With this:
+
+```js
+        { ...baseSchemaId },
+        { ...baseSchemaCreatedAt },
+        { ...baseSchemaUpdatedAt },
+```
+
+Also don't forget to update the imports in your schema files.
 
 ## December 2024
 

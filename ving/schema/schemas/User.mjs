@@ -1,11 +1,13 @@
-import { baseSchemaProps, dbVarChar, zodString, dbEnum, dbBoolean, dbRelation, dbMediumText } from '../helpers.mjs';
+import { baseSchemaId, baseSchemaCreatedAt, baseSchemaUpdatedAt, dbVarChar, zodString, dbEnum, dbBoolean, dbRelation, dbMediumText } from '../helpers.mjs';
 
 export const userSchema = {
     kind: 'User',
     tableName: 'users',
     owner: ['$id', 'admin'],
     props: [
-        ...baseSchemaProps,
+        { ...baseSchemaId },
+        { ...baseSchemaCreatedAt },
+        { ...baseSchemaUpdatedAt },
         {
             type: "string",
             name: "username",

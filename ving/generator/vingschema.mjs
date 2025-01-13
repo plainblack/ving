@@ -2,14 +2,16 @@ import { getContext, renderTemplate, toFile, after, inject } from '@feathersclou
 import { camelCase } from 'scule';
 
 const schemaTemplate = ({ name }) =>
-    `import { baseSchemaProps, dbVarChar, zodString, dbEnum, dbBoolean, dbText, dbRelation, dbDateTime, dbTimestamp, dbBigInt, dbInt, dbUuid, dbJson, zodNumber, zodJsonObject, dbMediumText } from '../helpers.mjs';
+    `import { baseSchemaId, baseSchemaCreatedAt, baseSchemaUpdatedAt, dbVarChar, zodString, dbEnum, dbBoolean, dbText, dbRelation, dbDateTime, dbTimestamp, dbBigInt, dbInt, dbUuid, dbJson, zodNumber, zodJsonObject, dbMediumText } from '../helpers.mjs';
 
 export const ${camelCase(name)}Schema = {
     kind: '${name}',
     tableName: '${name.toLowerCase()}s',
     owner: ['$userId', 'admin'],
     props: [
-        ...baseSchemaProps,
+        { ...baseSchemaId },
+        { ...baseSchemaCreatedAt },
+        { ...baseSchemaUpdatedAt },
         // name field
         {
             type: "string",
