@@ -252,6 +252,7 @@ export const baseSchemaId = {
     name: "id",
     required: false,
     default: undefined,
+    filterQualifier: true,
     db: (prop) => dbPk(prop),
     view: ['public'],
     edit: [],

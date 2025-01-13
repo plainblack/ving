@@ -28,6 +28,8 @@ With this:
 
 Also don't forget to update the imports in your schema files.
 
+* Set filterQualifier to true for the baseSchemaId.
+
 ## December 2024
 
 ### 2024-12-17
