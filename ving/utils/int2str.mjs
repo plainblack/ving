@@ -1,6 +1,7 @@
 import { encode, decode } from './base62.mjs';
 import { encrypt, decrypt } from './skipjack.mjs';
 import { isNumber, isString } from '#ving/utils/identify.mjs';
+import { ouch } from '#ving/utils/ouch.mjs';
 
 /**
  * Generates an encrypted string from an integer. See the environment variable `VING_SKIPJACK_KEY`.
@@ -19,4 +20,16 @@ export const stringifyId = (int, prefix) => isString(int) ? int : encode(encrypt
  * @example
  * parseId('vJH34sj3') // 1
  */
-export const parseId = (str) => isNumber(str) ? str : decrypt(decode(str));
+export const parseId = (str) => {
+    if (isNumber(str)) {
+        return str
+    }
+    else {
+        try {
+            return decrypt(decode(str))
+        }
+        catch {
+            throw ouch(400, `Invalid id: ${str} trying to parse encrypted string as number.`);
+        }
+    }
+}
