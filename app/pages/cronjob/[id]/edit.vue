@@ -49,7 +49,7 @@ const cronjob = useVingRecord({
         notify.success('Updated Cron Job.');
     },
     async onDelete() {
-        await navigateTo('/cronjob');
+       await navigateTo(cronjob.links.list.href);
     },
 });
 await cronjob.fetch()

@@ -21,7 +21,7 @@ const columns = (name, schema) => {
             out += `
             <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
                 <template #body="slotProps">
-                    <NuxtLink :to="\`/${name.toLowerCase()}/\${slotProps.data.props.id}\`">
+                    <NuxtLink :to="slotProps.data.links?.view?.href">
                         {{ slotProps.data.props.${prop.name} }}
                     </NuxtLink>
                 </template>
@@ -138,8 +138,8 @@ const indexTemplate = ({ name, schema }) =>
                     <Column header="Manage">
                         <template #body="slotProps">
                             <ManageButton severity="primary" :items="[
-                                { icon:'ph:eye', label:'View', to:\`/${name.toLowerCase()}/\${slotProps.data.props.id}\`},
-                                { icon:'ph:pencil', label:'Edit', to:\`/${name.toLowerCase()}/\${slotProps.data.props.id}/edit\`},
+                                { icon:'ph:eye', label:'View', to:slotProps.data.links?.view?.href },
+                                { icon:'ph:pencil', label:'Edit', to:slotProps.data.links?.edit?.href },
                                 { icon:'ph:trash', label:'Delete', action:slotProps.data.delete}
                                 ]" /> 
                         </template>
@@ -243,7 +243,7 @@ const viewTemplate = ({ name, schema }) =>
     <PanelFrame :title="${name.toLowerCase()}.props?.${nameOrId(schema)}" section="${makeWords(name)}s">
         <template #left>
             <PanelNav :links="[
-                { label: '${makeWords(name)}s', to: '/${name.toLowerCase()}', icon: 'ep:back' },
+                { label: '${makeWords(name)}s', to: ${name.toLowerCase()}.links?.list?.href, icon: 'ep:back' },
             ]" />
         </template>
         <template #content>
@@ -251,7 +251,7 @@ const viewTemplate = ({ name, schema }) =>
                 ${viewProps(schema)}
             </PanelZone>
             <div v-if="${name.toLowerCase()}.meta?.isOwner">
-                <NuxtLink :to="\`/${name.toLowerCase()}/\${${name.toLowerCase()}.props?.id}/edit\`" class="no-underline mr-2 mb-2">
+                <NuxtLink :to="${name.toLowerCase()}.links?.edit?.href" class="no-underline mr-2 mb-2">
                     <Button severity="success" title="Edit" alt="Edit ${makeWords(name)}"><Icon name="ph:pencil" class="mr-1"/> Edit</Button>
                 </NuxtLink>
                 <Button @mousedown="${name.toLowerCase()}.delete()" severity="danger" title="Delete" alt="Delete ${makeWords(name)}"><Icon name="ph:trash" class="mr-1"/> Delete</Button>
@@ -268,7 +268,7 @@ const ${name.toLowerCase()} = useVingRecord({
     fetchApi: \`/api/\${useRestVersion()}/${name.toLowerCase()}/\${id}\`,
     query: { includeMeta: true, includeOptions: true ${includeRelatedTemplate(schema)} },
     async onDelete() {
-        await navigateTo('/${name.toLowerCase()}');
+        await navigateTo(${name.toLowerCase()}.links.list.href);
     },
 });
 await ${name.toLowerCase()}.fetch();
@@ -329,7 +329,7 @@ const editTemplate = ({ name, schema }) =>
     <PanelFrame :title="'Edit '+${name.toLowerCase()}.props?.${nameOrId(schema)}" section="${makeWords(name)}s">
         <template #left>
             <PanelNav :links="[
-                { label: '${makeWords(name)}s', to: '/${name.toLowerCase()}', icon: 'ep:back' },
+                { label: '${makeWords(name)}s', to: ${name.toLowerCase()}.links?.list?.href, icon: 'ep:back' },
             ]" />
         </template>
         <template #content>
@@ -343,7 +343,7 @@ const editTemplate = ({ name, schema }) =>
                 </FieldsetItem>
 
                 <FieldsetItem name="Actions">
-                    <NuxtLink :to="\`/${name.toLowerCase()}/\${${name.toLowerCase()}.props?.id}\`" class="no-underline">
+                    <NuxtLink :to="${name.toLowerCase()}.links?.view?.href" class="no-underline">
                         <Button title="View" alt="View ${makeWords(name)}" class="mr-2 mb-2"><Icon name="ph:eye" class="mr-1"/> View</Button>
                     </NuxtLink>
                     <Button @mousedown="${name.toLowerCase()}.delete()" severity="danger" class="mr-2 mb-2" title="Delete" alt="Delete ${makeWords(name)}"><Icon name="ph:trash" class="mr-1"/> Delete</Button>
@@ -369,7 +369,7 @@ const ${name.toLowerCase()} = useVingRecord({
         notify.success('Updated ${makeWords(name)}.');
     },
     async onDelete() {
-        await navigateTo('/${name.toLowerCase()}');
+        await navigateTo(${name.toLowerCase()}.links.list.href);
     },
 });
 await ${name.toLowerCase()}.fetch()

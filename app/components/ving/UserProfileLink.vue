@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink v-if="user" :to="`/user/${user.props.id}/profile`">
+    <NuxtLink v-if="user" :to="user.links?.profile?.href">
         <UserAvatar :user="user" />
     </NuxtLink>
     <Message v-else severity="error">You may need to <i>includeRelated:['user']</i> to view this.</Message>

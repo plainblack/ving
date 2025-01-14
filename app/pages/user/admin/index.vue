@@ -19,7 +19,7 @@
                 <DataTable :value="users.records" stripedRows @sort="users.sortDataTable">
                     <Column field="props.username" header="Username" sortable>
                         <template #body="slotProps">
-                            <NuxtLink :to="`/user/admin/${slotProps.data.props.id}`">
+                            <NuxtLink :to="slotProps.data.links.edit.href">
                                 {{ slotProps.data.props.username }}
                             </NuxtLink>
                         </template>
@@ -39,7 +39,7 @@
                     <Column header="Manage">
                         <template #body="slotProps">
                             <ManageButton severity="success" :items="[
-                                { icon:'ph:pencil', label:'Edit', to:`/user/admin/${slotProps.data.props.id}`},
+                                { icon:'ph:pencil', label:'Edit', to:slotProps.data.links.edit.href},
                                 { icon:'ph:trash', label:'Delete', action:slotProps.data.delete}
                                 ]" /> 
                         </template>

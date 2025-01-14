@@ -17,13 +17,13 @@
 
             </div>
             <div class="flex flex-col items-center flex-or">
-                <Avatar :image="user.meta?.avatarUrl" alt="user avatar" size="xlarge" shape="circle" />
+                <Avatar :image="user.links?.avatarImage?.href" alt="user avatar" size="xlarge" shape="circle" />
             </div>
         </div>
 
     </div>
     <div class="mt-3">
-        <NuxtLink v-if="currentUser.props?.admin" :to="`/user/admin/${user.props?.id}`" class="no-underline">
+        <NuxtLink v-if="currentUser.props?.admin" :to="user.links?.edit?.href" class="no-underline">
             <Button>Edit this User</Button>
         </NuxtLink>
     </div>

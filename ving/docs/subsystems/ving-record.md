@@ -305,6 +305,41 @@ const description = await record.describe(params)
    - **private** - A boolean that if `true` will ignore the privileges of the `currentUser` passed in and include all private information.
 
 
+#### describeLinks
+
+Called by `describe()` to generate the links for this record. Links are used to generate URL links to pages in the UI and to API endpoints. 
+    
+There are several links that are always generated:
+- `base` is the base URL of the API endpoint for this VingKind.
+- `self` is the URL of the VingRecord itself.
+- There are also links for each relation defined in the VingSchema. For example, if you have a VingSchema with a`userId` relation, then there will be a link called `user` that points to the API endpoint for the User VingKind.
+
+You can also add your own links by overriding this method in the VingRecord subclass.
+
+```js
+    async describeLinks(idString, restVersion, schema, params = {}) {
+        const links = await super.describeLinks(idString, restVersion, schema, params);
+        links.view = { href: `/cronjob/${idString}`, methods: ['GET'], usage: 'page' };
+        links.edit = { href: `/cronjob/${idString}/edit`, methods: ['GET'], usage: 'page' };
+        links.list = { href: '/cronjob', methods: ['GET'], usage: 'page' };
+        return links;
+    }
+```
+The above example links are automatically generated when you generate your Ving Record, but you can modify them as needed for your application.
+    
+##### href
+    
+The `href` is the actual URL that will be generated for this link.
+
+##### methods
+
+The `methods` field is an array of HTTP methods that the link is valid for.
+
+##### usage
+
+The `usage` field is a string that can be `page`, `rest`, `file`, or `image`, but you can also use your own custom strings if you need to. It is simply an identifier for the type of link so that automatic tools reading the links can know what to do with them.
+
+
 #### get
 Returns the value of a single prop on this record using the name of the prop.
 

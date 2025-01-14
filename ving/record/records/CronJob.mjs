@@ -54,6 +54,18 @@ export class CronJobRecord extends VingRecord {
         if (this.get('enabled') == true)
             await addJob(this.get('handler'), this.get('params'));
     }
+
+    /**
+     * Extends `describeLinks()` in `VingRecord`.
+     * @see VingRecord.describeLinks()
+     */
+    async describeLinks(idString, restVersion, schema, params = {}) {
+        const links = await super.describeLinks(idString, restVersion, schema, params);
+        links.edit = { href: `/cronjob/${idString}/edit`, methods: ['GET'], usage: 'page' };
+        links.list = { href: '/cronjob', methods: ['GET'], usage: 'page' };
+        return links;
+    }
+
 }
 
 /** Management of all CronJobs.

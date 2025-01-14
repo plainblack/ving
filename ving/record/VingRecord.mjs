@@ -1,6 +1,6 @@
 import { findVingSchema } from '#ving/schema/map.mjs';
 import ving from '#ving/index.mjs';
-import { isObject, isUndefined, isNil, isNull, isNumber } from '#ving/utils/identify.mjs';
+import { isObject, isUndefined, isNil, isNull, isNumber, isFunction } from '#ving/utils/identify.mjs';
 import { eq, asc, desc, and, ne, sql, getTableName, count, sum, avg, min, max } from '#ving/drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving/schema/helpers.mjs';
 import { parseId, stringifyId } from '#ving/utils/int2str.mjs';
@@ -177,8 +177,7 @@ export class VingRecord {
         let out = { props: { id: this.idAsString(schema.kind) } };
         if (include?.links) {
             const vingConfig = await ving.getConfig();
-            out.links = { base: { href: `/api/${vingConfig.rest.version}/${schema.kind?.toLowerCase()}`, methods: ['GET', 'POST'] } };
-            out.links.self = { href: `${out.links.base.href}/${out.props.id}`, methods: ['GET', 'PUT', 'DELETE'] };
+            out.links = await this.describeLinks(out.props.id, vingConfig.rest.version, schema, params);
         }
         if (include?.options) {
             out.options = await this.propOptions(params);
@@ -238,7 +237,7 @@ export class VingRecord {
                 && isObject(out.links.self)
             ) {
                 let lower = field.relation.name.toLowerCase();
-                out.links[lower] = { href: `${out.links.self.href}/${lower}`, methods: ['GET'] };
+                out.links[lower] = { href: `${out.links.self.href}/${lower}`, methods: ['GET'], usage: 'rest' };
                 if (field.relation.type == 'child')
                     out.links[lower].methods.push('DELETE');
             }
@@ -256,6 +255,35 @@ export class VingRecord {
         }
 
         return out;
+    }
+
+    /**
+     * Describe links for this record. This is called by `describe()`.
+     * 
+     * The `describe()` method will also add links for the record's relations after it calls this method.
+     * 
+     *
+     * @async
+     * @param idString {string} The id of the record represented as a string
+     * @param restVersion {string} The version of the REST API.
+     * @param schema {VingSchema} The schema for this record.
+     * @param params {Object} Same as `describe()`
+     * @returns {object} A list of links. It generates these links for now, and is meant to be overridden by subclasses to add more links.
+     * 
+     *```js
+     * {
+     *     base: { href: '/api/v1/user', methods: ['GET','POST'], usage: 'rest' }, // the base URL for the REST API for this kind
+     *     self: { href: '/api/v1/user/xxx', methods: ['GET','PUT','DELETE'], usage: 'rest' }, // the URL for this instance of this record
+     * ```
+     * @example
+     * const links = await user.describeLinks(params)
+     * 
+     * 
+     */
+    async describeLinks(idString, restVersion, schema, params = {}) {
+        const links = { base: { href: `/api/${restVersion}/${schema.kind?.toLowerCase()}`, methods: ['GET', 'POST'], usage: 'rest' } };
+        links.self = { href: `${links.base.href}/${idString}`, methods: ['GET', 'PUT', 'DELETE'], usage: 'rest' };
+        return links;
     }
 
     /**
@@ -305,7 +333,7 @@ export class VingRecord {
     async insert() {
         if (this.#inserted) {
             const schema = findVingSchema(getTableName(this.table));
-            ving.log('VingRecord').error(`${schema.kind} already inserted as ${this.get('id')}`)
+            ving.log('VingRecord').error(`${schema.kind} already inserted as ${this.get('id')} `)
             throw ving.ouch(409, `${schema.kind} already inserted`);
         }
         this.#inserted = true;
@@ -380,8 +408,8 @@ export class VingRecord {
         const schema = findVingSchema(getTableName(this.table));
         const found = schema.props.find(obj => obj.relation?.name == name);
         if (isUndefined(found)) {
-            ving.log('VingRecord').error(`cannot find parent prop by ${name} in ving schema ${schema.kind}`);
-            throw ving.ouch(404, `cannot find parent prop by ${name} in ving schema ${schema.kind}`);
+            ving.log('VingRecord').error(`cannot find parent prop by ${name} in ving schema ${schema.kind} `);
+            throw ving.ouch(404, `cannot find parent prop by ${name} in ving schema ${schema.kind} `);
         }
         return found;
     }
@@ -409,10 +437,10 @@ export class VingRecord {
         const schema = findVingSchema(getTableName(this.table));
         const prop = schema.props.find(obj => obj.relation?.name == name);
         if (isUndefined(prop))
-            throw ouch(404, `cannot find child prop by ${name} in ${schema.kind}`);
+            throw ouch(404, `cannot find child prop by ${name} in ${schema.kind} `);
         const kind = await useKind(prop.relation.kind);
         if (isUndefined(kind.table[prop.name]))
-            ving.log('VingRecord').error(`${schema.kind} has an invalid virtual prop name called ${name}`);
+            ving.log('VingRecord').error(`${schema.kind} has an invalid virtual prop name called ${name} `);
         kind.propDefaults.push({
             prop: prop.name,
             field: kind.table[prop.name],
@@ -424,7 +452,7 @@ export class VingRecord {
     /**
      * Returns a list of the enumerated prop options available to the current user. These options can be used to validate the data submitted to this field. 
      * 
-     * @param {Object} params A list of params to change the output of the describe. Defaults to `{}`
+     * @param {Object} params A list of params to change the output of the describe. Defaults to `{ } `
      * @param {Object} params.currentUser The `User` or `Session` instance to test ownership against
      * @param {Object} params.include An object containing which things to be included in the description beyond the props
      * @param {boolean} params.include.links If `true` will add a list of API links to the description
@@ -576,7 +604,7 @@ export class VingRecord {
                 }
                 let count = (await query.where(where))[0].count
                 if (count > 0) { // error if we find any duplicates
-                    ving.log('VingRecord').warn(`${isNil(this.get('id')) ? 'new record' : this.get('id').toString()} unique check failed on ${field.name.toString()}`)
+                    ving.log('VingRecord').warn(`${isNil(this.get('id')) ? 'new record' : this.get('id').toString()} unique check failed on ${field.name.toString()} `)
                     throw ving.ouch(409, `${field.name.toString()} must be unique, but ${params[field.name]} has already been used.`, field.name)
                 }
             }
@@ -707,7 +735,7 @@ export class VingKind {
     }
 
     /**
-     * Adds `propDefaults` (if any) into a where clause to limit the scope of affected records. As long as you're using the built in queries you don't need to use this method. But you might want to use it if you're using `create`, `select`, `update`, or `delete` directly.
+     * Adds `propDefaults` (if any) into a where clause to limit the scope of affected records. As long as you're using the built in queries you don't need to use this method. But you might want to use it if you're using `create`, `select`, `update`, or `delete ` directly.
      * 
      * @param {Object} where A drizzle where clause
      * @returns {object} A drizzle where clause
@@ -840,7 +868,7 @@ export class VingKind {
     /**
      * Format a privilege safe paginated list of records
      * 
-     * @param {Object} params A list of params to change the output of the describe. Defaults to `{}`
+     * @param {Object} params A list of params to change the output of the describe. Defaults to `{ } `
      * @param {string} params.sortOrder Either `desc` or `asc` for descending order or ascending order. Defaults to `asc`
      * @param {string[]} params.sortBy An array of prop names to sort by. Defaults to `createdAt`
      * @param {number} params.itemsPerPage How many items to include in 1 page of results, defaults to `10`, must be between `1` and `100`.
@@ -921,7 +949,7 @@ export class VingKind {
     }
 
     /**
-     * A safer version of `delete` above as it uses `calcWhere()`.
+     * A safer version of `delete ` above as it uses `calcWhere()`.
      * 
      * 
      * @param {Object} where a Drizzle where clause
@@ -977,7 +1005,7 @@ export class VingKind {
      * Locates and returns a list of records by a drizzle where clause or an empty array if no records are found.
      * 
      * @param {Object} where A drizzle where clause
-     * @param {Object} options Modify the sorting and pagination of the results. Defaults to `{}`
+     * @param {Object} options Modify the sorting and pagination of the results. Defaults to `{ } `
      * @param {number} options.limit The max number of records to to return
      * @param {number} options.offset The number of records to skip before returning results
      * @param {Object[]} options.orderBy An array of drizzle table fields to sort by with `asc()` or `desc()` function wrappers
@@ -1004,7 +1032,7 @@ export class VingKind {
      * Locates and returns an iterator of records by a drizzle where clause or an empty array if no records are found. This is identical to `findMany`, but returns an iterator rather than a list. Iterators are better for huge datasets.
      * 
      * @param {Object} where A drizzle where clause
-     * @param {Object} options Modify the sorting and pagination of the results. Defaults to `{}`
+     * @param {Object} options Modify the sorting and pagination of the results. Defaults to `{ } `
      * @param {number} options.limit The max number of records to to return
      * @param {number} options.offset The number of records to skip before returning results
      * @param {Object[]} options.orderBy An array of drizzle table fields to sort by with `asc()` or `desc()` function wrappers

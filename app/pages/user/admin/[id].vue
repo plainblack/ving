@@ -66,7 +66,7 @@
                             name="ph:trash" class="mr-1"/> Delete</Button>
                     <Button @mousedown="become" severity="warning" class="mr-2 mb-2" title="Become" alt="Become User">
                         <Icon name="bi:arrow-left-right" class="mr-1"/> Become</Button>
-                    <NuxtLink :to="'/user/' + user.props.id + '/profile'">
+                    <NuxtLink :to="user.links.profile.href">
                         <Button  severity="primary" class="mr-2 mb-2" title="View Profile">
                             <Icon name="ph:user" class="mr-1"/> View Profile
                         </Button>
@@ -95,7 +95,7 @@ const user = useVingRecord({
         notify.success('Updated user.');
     },
     async onDelete() {
-        await navigateTo('/user/admin');
+        await navigateTo(user.links.list.href);
     },
 });
 await user.fetch()

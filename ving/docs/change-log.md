@@ -5,6 +5,10 @@ outline: deep
 
 ## January 2025
 
+### 2025-01-14
+ * Added VingRecord.describeLinks() to generate links for the UI rather than having to manually code them in a describe() override. They are automatically generated for all VingRecords via the CLI, and then pages that are generated also use the exposed links. #179
+ * NOTE: You'll need to add a describeLinks() override to classes generated before now.
+
 ### 2025-01-12
  * Removed pulumi from the project.
  * Fixed: Documentation: useVingRecord findOne docs are wrong #201

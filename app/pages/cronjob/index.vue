@@ -19,7 +19,7 @@
                     <Column header="Manage">
                         <template #body="slotProps">
                             <ManageButton severity="primary" :items="[
-                                { icon:'ph:pencil', label:'Edit', to:`/cronjob/${slotProps.data.props.id}/edit`},
+                                { icon:'ph:pencil', label:'Edit', to:slotProps.data.links.edit.href },
                                 { icon:'ph:trash', label:'Delete', action:slotProps.data.delete}
                                 ]" /> 
                         </template>

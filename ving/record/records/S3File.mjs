@@ -130,6 +130,19 @@ export class S3FileRecord extends VingRecord {
     }
 
     /**
+     * Extends `describeLinks()` in `VingRecord`.
+     * @see VingRecord.describeLinks()
+     */
+    async describeLinks(idString, restVersion, schema, params = {}) {
+        const links = await super.describeLinks(idString, restVersion, schema, params);
+        if (await this.isOwner(params?.currentUser)) {
+            links.file = { href: this.fileUrl(), methods: ['GET'], usage: 'file' };
+        }
+        links.thumbnail = { href: this.thumbnailUrl(), methods: ['GET'], usage: 'image' };
+        return links;
+    }
+
+    /**
          * Makes a call out to an AWS Lambda function to do post processing 
          * of the file after upload. It includes collecting metadata, verifying
          * file size, and generating thumbnails as necessary.
