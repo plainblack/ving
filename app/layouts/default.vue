@@ -29,7 +29,7 @@
                     </InputGroup>
                     <SplitButton v-if="currentUser.props?.id" :model="userMenu" text>
                         <NuxtLink to="/user/settings" class="flex items-center">
-                            <Avatar :image="currentUser.meta?.avatarUrl" alt="user avatar" shape="circle" />
+                            <Avatar :image="currentUser.links?.avatarImage?.href" alt="user avatar" shape="circle" />
                             <span class="ml-2">
                                 {{ currentUser.meta?.displayName }}
                             </span>

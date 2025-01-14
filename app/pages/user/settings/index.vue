@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="col text-center mb-3">
-                        <Image :src="currentUser.meta?.avatarUrl" alt="user avatar" class="inline-block"/>
+                        <Image :src="currentUser.links?.avatarImage?.href" alt="user avatar" class="inline-block"/>
                     </div>
                 </div>
                 

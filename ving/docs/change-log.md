@@ -9,6 +9,7 @@ outline: deep
  * Added VingRecord.describeLinks() to generate links for the UI rather than having to manually code them in a describe() override. They are automatically generated for all VingRecords via the CLI, and then pages that are generated also use the exposed links. #179
  * NOTE: You'll need to add a describeLinks() override to classes generated before now.
  * NOTE: S3File's describe() now exposes the links for the file and thumbnail in links.file.href and links.thumbnail.href respectively instead of meta.fileUrl and meta.thumbnailUrl. This is a breaking change.
+ * NOTE: User's describe() now exposes the link for the avatar in links.avatarImage.href instead of meta.avatarUrl. This is a breaking change.
 
 ### 2025-01-12
  * Removed pulumi from the project.
