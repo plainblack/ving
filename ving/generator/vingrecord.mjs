@@ -79,9 +79,9 @@ const describeLinks = ({ name }) => {
    */
     async describeLinks(idString, restVersion, schema, params = {}) {
         const links = await super.describeLinks(idString, restVersion, schema, params);
-        links.view = { href: \`/${name.toLowerCase()}/\${idString}\`, methods: ['GET'], usage: 'page' };
-        links.edit = { href: \`/${name.toLowerCase()}/\${idString}/edit\`, methods: ['GET'], usage: 'page' };
-        links.list = { href: '/${name.toLowerCase()}', methods: ['GET'], usage: 'page' };
+        links.view = { href: \`/${name.toLowerCase()}s/\${idString}\`, methods: ['GET'], usage: 'page' };
+        links.edit = { href: \`/${name.toLowerCase()}s/\${idString}/edit\`, methods: ['GET'], usage: 'page' };
+        links.list = { href: '/${name.toLowerCase()}s', methods: ['GET'], usage: 'page' };
         return links;
     }
   `;

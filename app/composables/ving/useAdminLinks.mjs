@@ -8,9 +8,9 @@
 export default () => {
     const links = computed(() => {
         const out = [
-            { label: 'Cron Jobs', to: '/cronjob', icon: 'ph:clock' },
+            { label: 'Cron Jobs', to: '/cronjobs', icon: 'ph:clock' },
             { label: 'System Wide Alert', to: '/system-wide-alert', icon: 'ph:megaphone' },
-            { label: 'Users', to: '/user/admin', icon: 'ph:users' },
+            { label: 'Users', to: '/users/admin', icon: 'ph:users' },
         ];
         return out;
     });

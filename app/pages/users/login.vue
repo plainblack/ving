@@ -5,7 +5,7 @@
             <img :src="config.public.site.logoUrl" :alt="config.public.site.name" class="inline-block h-16 mb-3">
             <h1 class="text-900 text-3xl font-medium mb-3 mt-0">Welcome Back</h1>
             <span class="text-600 font-medium line-height-3">Don't have an account?</span>
-            <NuxtLink to="/user/create" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create one today!
+            <NuxtLink to="/users/create" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create one today!
             </NuxtLink>
         </div>
         <PanelZone>
@@ -22,7 +22,7 @@
 
             <div class="mt-3">
                 <span class="text-600 font-medium line-height-3">Forgot your password?</span>
-                <NuxtLink to="/user/reset-password" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Reset
+                <NuxtLink to="/users/reset-password" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Reset
                     your
                     password.
                 </NuxtLink>

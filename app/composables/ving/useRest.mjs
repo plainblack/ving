@@ -14,7 +14,7 @@
  *
  * The `error` is `null` unless there is an error, and the `data` contains an object response from the endpoint.
  * @example
- * const response = await useRest('/api/v1/user/xxx')
+ * const response = await useRest('/api/v1/users/xxx')
  */
 export default async function (url, behavior = {}) {
     const notify = useNotify();

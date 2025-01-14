@@ -80,10 +80,13 @@ definePageMeta({
 });
 
 const users = useVingKind({
-    listApi: `/api/${useRestVersion()}/user`,
-    createApi: `/api/${useRestVersion()}/user`,
+    listApi: `/api/${useRestVersion()}/users`,
+    createApi: `/api/${useRestVersion()}/users`,
     query: { includeMeta: true, sortBy: 'username', sortOrder: 'asc' },
     newDefaults: { username: '', realName: '', email: '' },
+    onCreate(props) {
+        navigateTo(props.links.edit.href)
+    },
 });
 await users.search();
 

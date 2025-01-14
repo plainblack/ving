@@ -42,8 +42,8 @@ const notify = useNotify();
 const id = route.params.id.toString();
 const cronjob = useVingRecord({
     id,
-    fetchApi: `/api/${useRestVersion()}/cronjob/${id}`,
-    createApi: `/api/${useRestVersion()}/cronjob`,
+    fetchApi: `/api/${useRestVersion()}/cronjobs/${id}`,
+    createApi: `/api/${useRestVersion()}/cronjobs`,
     query: { includeMeta: true, includeOptions: true  },
     onUpdate() {
         notify.success('Updated Cron Job.');

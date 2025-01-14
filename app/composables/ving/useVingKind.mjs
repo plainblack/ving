@@ -145,7 +145,7 @@ class VingKind {
      * @param {object} options Modify the behavior of this call.
      * @returns {Promise<object>} A promise containing the response to the call.
      * @example
-     * const result = Users.call('post', '/user/xxx/send-reset-password', {os:'Windows'});
+     * const result = Users.call('post', '/users/xxx/send-reset-password', {os:'Windows'});
      */
     async call(method, url, query = {}, options = {}) {
         const response = await useRest(url, {

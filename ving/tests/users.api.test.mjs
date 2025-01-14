@@ -11,7 +11,7 @@ const base = `http://localhost:3000/api/${vingConfig.rest.version}/`;
 describe('User API', async () => {
     await Users.delete.where(eq(Users.table.username, 'brooks'));
     const user = (await ofetch(
-        base + 'user?includeMeta=true',
+        base + 'users?includeMeta=true',
         {
             method: "POST",
             body: {
@@ -38,7 +38,7 @@ describe('User API', async () => {
 
     test('get user', async () => {
         const result = (await ofetch(
-            `${base}user/${user.props.id}?includeLinks=true&includeMeta=true&includeOptions=true`,
+            `${base}users/${user.props.id}?includeLinks=true&includeMeta=true&includeOptions=true`,
             { headers: { Cookie: `vingSessionId=${session.props.id}` } }
         ));
         expect(result.props.username).toBe('brooks');
@@ -48,7 +48,7 @@ describe('User API', async () => {
 
     test('get options', async () => {
         const result = (await ofetch(
-            `${base}user/options`,
+            `${base}users/options`,
             { headers: { Cookie: `vingSessionId=${session.props.id}` } }
         ));
         expect(result.useAsDisplayName.length).toBe(3);
@@ -56,7 +56,7 @@ describe('User API', async () => {
 
     test('put user', async () => {
         const result = (await ofetch(
-            `${base}user/${user.props.id}?includeMeta=true`,
+            `${base}users/${user.props.id}?includeMeta=true`,
             {
                 method: 'put',
                 body: { useAsDisplayName: 'email' },
@@ -68,7 +68,7 @@ describe('User API', async () => {
 
     test('delete user', async () => {
         const result = (await ofetch(
-            `${base}user/${user.props.id}?includeMeta=true`,
+            `${base}users/${user.props.id}?includeMeta=true`,
             { method: 'delete', headers: { Cookie: `vingSessionId=${session.props.id}` } }
         ));
         expect(result.meta.deleted).toBe(true);

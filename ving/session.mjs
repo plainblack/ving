@@ -149,11 +149,11 @@ class ProtoSession {
             if (params.include.links) {
                 out.links = {
                     base: {
-                        href: `/api/${rest.version}/user/session`,
+                        href: `/api/${rest.version}/users/session`,
                         methods: ["GET", "POST"],
                     },
                     self: {
-                        href: `/api/${rest.version}/user/session/${this.id}`,
+                        href: `/api/${rest.version}/users/session/${this.id}`,
                         methods: ["GET", "PUT", "DELETE"],
                     },
                 }

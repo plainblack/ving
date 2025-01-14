@@ -5,7 +5,7 @@
             <img :src="config.public.site.logoUrl" :alt="config.public.site.name" class="inline-block h-16 mb-3">
             <h1 class="text-900 text-3xl font-medium mb-3 mt-0">Create an Account</h1>
             <span class="text-600 font-medium line-height-3">Already have an account?</span>
-            <NuxtLink to="/user/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in
+            <NuxtLink to="/users/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in
             </NuxtLink>
         </div>
         <PanelZone>

@@ -3,12 +3,12 @@ import { isUndefined } from '#ving/utils/identify.mjs';
 
 export const useCurrentUser = () => useVingRecord({
     id: 'currentUser',
-    fetchApi: `/api/${useRestVersion()}/user/whoami`,
-    createApi: `/api/${useRestVersion()}/user`,
+    fetchApi: `/api/${useRestVersion()}/users/whoami`,
+    createApi: `/api/${useRestVersion()}/users`,
     query: { includeOptions: true, includeMeta: true, includeLinks: true },
     extendedActions: {
         async login(login, password) {
-            const response = await useRest(`/api/${useRestVersion()}/session`, {
+            const response = await useRest(`/api/${useRestVersion()}/sessions`, {
                 method: 'post',
                 body: {
                     login,
@@ -24,7 +24,7 @@ export const useCurrentUser = () => useVingRecord({
         },
 
         async logout() {
-            const response = await useRest(`/api/${useRestVersion()}/session`, {
+            const response = await useRest(`/api/${useRestVersion()}/sessions`, {
                 method: 'delete',
             });
             this.setState({});

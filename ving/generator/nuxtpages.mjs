@@ -163,10 +163,13 @@ const indexTemplate = ({ name, schema }) =>
 
 <script setup>
 const ${schema.tableName} = useVingKind({
-    listApi: \`/api/\${useRestVersion()}/${name.toLowerCase()}\`,
-    createApi: \`/api/\${useRestVersion()}/${name.toLowerCase()}\`,
+    listApi: \`/api/\${useRestVersion()}/${name.toLowerCase()}s\`,
+    createApi: \`/api/\${useRestVersion()}/${name.toLowerCase()}s\`,
     query: { includeMeta: true, sortBy: 'createdAt', sortOrder: 'desc' ${includeRelatedTemplate(schema)} },
     newDefaults: { ${newDefaults(schema)} },
+    onCreate(props) {
+        navigateTo(props.links.edit.href)
+    },
 });
 await Promise.all([
     ${schema.tableName}.search(),
@@ -265,7 +268,7 @@ const route = useRoute();
 const id = route.params.id.toString();
 const ${name.toLowerCase()} = useVingRecord({
     id,
-    fetchApi: \`/api/\${useRestVersion()}/${name.toLowerCase()}/\${id}\`,
+    fetchApi: \`/api/\${useRestVersion()}/${name.toLowerCase()}s/\${id}\`,
     query: { includeMeta: true, includeOptions: true ${includeRelatedTemplate(schema)} },
     async onDelete() {
         await navigateTo(${name.toLowerCase()}.links.list.href);
@@ -362,8 +365,8 @@ const notify = useNotify();
 const id = route.params.id.toString();
 const ${name.toLowerCase()} = useVingRecord({
     id,
-    fetchApi: \`/api/\${useRestVersion()}/${name.toLowerCase()}/\${id}\`,
-    createApi: \`/api/\${useRestVersion()}/${name.toLowerCase()}\`,
+    fetchApi: \`/api/\${useRestVersion()}/${name.toLowerCase()}s/\${id}\`,
+    createApi: \`/api/\${useRestVersion()}/${name.toLowerCase()}s\`,
     query: { includeMeta: true, includeOptions: true ${includeRelatedTemplate(schema)} },
     onUpdate() {
         notify.success('Updated ${makeWords(name)}.');
@@ -379,8 +382,8 @@ onBeforeRouteLeave(() => ${name.toLowerCase()}.dispose());
 export const generateWeb = (params) => {
     const context = { ...getContext({}), ...params };
     return Promise.resolve(context)
-        .then(renderTemplate(indexTemplate, toFile(`app/pages/${context.name.toLowerCase()}/index.vue`)))
-        .then(renderTemplate(viewTemplate, toFile(`app/pages/${context.name.toLowerCase()}/[id]/index.vue`)))
-        .then(renderTemplate(editTemplate, toFile(`app/pages/${context.name.toLowerCase()}/[id]/edit.vue`)))
+        .then(renderTemplate(indexTemplate, toFile(`app/pages/${context.name.toLowerCase()}s/index.vue`)))
+        .then(renderTemplate(viewTemplate, toFile(`app/pages/${context.name.toLowerCase()}s/[id]/index.vue`)))
+        .then(renderTemplate(editTemplate, toFile(`app/pages/${context.name.toLowerCase()}s/[id]/edit.vue`)))
 }
 

@@ -48,10 +48,13 @@ definePageMeta({
     middleware: ['auth', 'admin']
 });
 const cronjobs = useVingKind({
-    listApi: `/api/${useRestVersion()}/cronjob`,
-    createApi: `/api/${useRestVersion()}/cronjob`,
+    listApi: `/api/${useRestVersion()}/cronjobs`,
+    createApi: `/api/${useRestVersion()}/cronjobs`,
     query: { includeMeta: true, sortBy: 'schedule', sortOrder: 'asc'  },
     newDefaults: { schedule: '* * * * *', handler: 'Test', enabled: true },
+    onCreate(props) {
+        navigateTo(props.links.edit.href)
+    },
 });
 await Promise.all([
     cronjobs.search(),

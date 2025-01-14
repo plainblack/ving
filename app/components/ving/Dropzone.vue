@@ -16,7 +16,7 @@ import '../node_modules/dropzone/dist/dropzone.css'
 Dropzone.autoDiscover = false;
 
 const getSignedURL = async (file) => {
-    const response = await useRest(`/api/${useRestVersion()}/s3file?includeMeta=true`, {
+    const response = await useRest(`/api/${useRestVersion()}/s3files?includeMeta=true`, {
         method: 'POST', body: {
             contentType: file.type,
             filename: file.name,

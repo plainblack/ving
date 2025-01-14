@@ -61,8 +61,8 @@ export class CronJobRecord extends VingRecord {
      */
     async describeLinks(idString, restVersion, schema, params = {}) {
         const links = await super.describeLinks(idString, restVersion, schema, params);
-        links.edit = { href: `/cronjob/${idString}/edit`, methods: ['GET'], usage: 'page' };
-        links.list = { href: '/cronjob', methods: ['GET'], usage: 'page' };
+        links.edit = { href: `/cronjobs/${idString}/edit`, methods: ['GET'], usage: 'page' };
+        links.list = { href: '/cronjobs', methods: ['GET'], usage: 'page' };
         return links;
     }
 

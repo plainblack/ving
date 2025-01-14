@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
         await useCache().set('verifyEmail-' + verifyKey, { userId: id, redirectAfter: query.redirectAfter }, 1000 * 60 * 60 * 24);
         await sendMail('verify-email', {
             options: { to: user.get('email') }, vars: {
-                action_url: config.public.site.url + '/user/verify-email?verify=' + verifyKey,
+                action_url: config.public.site.url + '/users/verify-email?verify=' + verifyKey,
                 operating_system: query.os,
                 browser_name: query.browser,
             }

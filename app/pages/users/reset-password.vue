@@ -5,7 +5,7 @@
             <img :src="config.public.site.logoUrl" :alt="config.public.site.name" class="inline-block h-16 mb-3">
             <h1 class="text-900 text-3xl font-medium mb-3 mt-0">Send Password Reset</h1>
             <span class="text-600 font-medium line-height-3">Remember your account?</span>
-            <NuxtLink to="/user/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in
+            <NuxtLink to="/users/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in
             </NuxtLink>
         </div>
         <PanelZone info="Where should we send the password reset email?">
@@ -33,7 +33,7 @@ const email = ref('')
 const notify = useNotify();
 async function sendPasswordReset() {
     const parser = new ua(navigator.userAgent);
-    const response = await useRest(`/api/${useRestVersion()}/user/send-password-reset`, {
+    const response = await useRest(`/api/${useRestVersion()}/users/send-password-reset`, {
         method: 'post',
         query: { includeOptions: true },
         body: { browser: parser.getBrowser().name, os: parser.getOS().name, email: email.value }

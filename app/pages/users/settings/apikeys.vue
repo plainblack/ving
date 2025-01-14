@@ -92,7 +92,7 @@ const links = useUserSettingsLinks();
 const buttons = useUserSettingsButtons();
 const apikeys = useVingKind({
     listApi: currentUser.links?.apikeys.href,
-    createApi: `/api/${useRestVersion()}/apikey`,
+    createApi: `/api/${useRestVersion()}/apikeys`,
     query: { includeMeta: true, sortBy: 'name', sortOrder: 'asc' },
     newDefaults: { name: 'My New API Key', reason: '', url: 'http://', userId: currentUser.props?.id },
 });

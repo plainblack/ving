@@ -10,6 +10,8 @@ outline: deep
  * NOTE: You'll need to add a describeLinks() override to classes generated before now.
  * NOTE: S3File's describe() now exposes the links for the file and thumbnail in links.file.href and links.thumbnail.href respectively instead of meta.fileUrl and meta.thumbnailUrl. This is a breaking change.
  * NOTE: User's describe() now exposes the link for the avatar in links.avatarImage.href instead of meta.avatarUrl. This is a breaking change.
+ * Implemented: apis should use plurals #183
+ * NOTE: rest endpoints and pages use plurals like /users instead of /user now. This is a breaking change. Update your APIs and pages to use plurals.
 
 ### 2025-01-12
  * Removed pulumi from the project.

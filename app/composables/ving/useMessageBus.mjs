@@ -29,7 +29,7 @@ export default async function useMessageBus() {
     const reconnect = () => setTimeout(tryToSetup, wait);
 
     const setupBusHandler = () => {
-        bus = new EventSource(`/api/${useRestVersion()}/user/messagebus`);
+        bus = new EventSource(`/api/${useRestVersion()}/users/messagebus`);
         bus.onmessage = (event) => {
             const message = JSON.parse(event.data);
             switch (message.type) {

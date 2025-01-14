@@ -15,7 +15,7 @@ Your Rest endpoints will be generated from your [Ving Schema](ving-schema) by us
 
 > Note that you will need a [Ving Schema](ving-schema) and [Ving Record](ving-record) for `Foo` before the rest interface can function.
 
-These will be placed in the `server/api/v1/foo` folder and can be modified by you after the fact.
+These will be placed in the `server/api/v1/foos` folder and can be modified by you after the fact.
 
 
 ## Conventions
@@ -49,7 +49,7 @@ To make a request to a Wing web service you need nothing more than a command lin
 ### Create a record
 
 ```
-POST http://ving.example.com/api/v1/article
+POST http://ving.example.com/api/v1/articles
 Content-Type: application/json
 
 { 
@@ -73,7 +73,7 @@ Response:
 ### Read a record
 
 ```
-GET http://wing.example.com/api/v1/article/xxx
+GET http://wing.example.com/api/v1/articles/xxx
 ```
 
 Response:
@@ -91,7 +91,7 @@ Response:
 ### Update a record
 
 ```
-PUT http://ving.example.com/api/v1/article/xxx
+PUT http://ving.example.com/api/v1/articles/xxx
 Content-Type: application/json
 
 {
@@ -113,7 +113,7 @@ Response:
 
 ### Delete a record
 ```
-DELETE http://ving.example.com/api/v1/article/xxx?includeMeta=true
+DELETE http://ving.example.com/api/v1/articles/xxx?includeMeta=true
 ```
 
 Response
@@ -134,7 +134,7 @@ Response
 
 ### Get a list of records
 ```
-GET http://ving.example.com/api/v1/article
+GET http://ving.example.com/api/v1/articles
 ```
 
 Response:
@@ -172,7 +172,7 @@ request information about your user account without specifying a `vingSessionId`
 then all you'd get back is an ID and some other basic information, like this:
 
 ```
-GET http://wing.example.com/api/v1/user/xxx?includeMeta=true
+GET http://wing.example.com/api/v1/users/xxx?includeMeta=true
 ```
 
 Response:
@@ -195,7 +195,7 @@ But if you request your account information with your `vingSessionId`, then you'
 get a result set with everything we know about you:
 
 ```
-GET http://wing.example.com/api/v1/user/xxx?includeMeta=true
+GET http://wing.example.com/api/v1/users/xxx?includeMeta=true
 Cookie: vingSessionId="yyy"
 ```
 
@@ -379,7 +379,7 @@ In addition to exceptions there can be less severe issues that come up. These ar
 All objects can have relationships to each other. When you fetch an object, you can pass `includeLinks=true` as a parameter if you want to get the relationship data as well.
 
 ```
-GET /api/v1/article/xxx?includeLinks=true
+GET /api/v1/articles/xxx?includeLinks=true
 ```
 
 Response:
@@ -391,17 +391,31 @@ Response:
     },
     "links" : {
         "base" : {
-          "href": "/api/v1/user",
-          "methods": ["GET","POST"]
+          "href": "/api/v1/users",
+          "methods": ["GET","POST"],
+          "usage" : "rest"
         }, 
         "self" : {
-          "href": "/api/v1/user/xxx",
-          "methods": ["GET","PUT","DELETE"]
+          "href": "/api/v1/users/xxx",
+          "methods": ["GET","PUT","DELETE"],
+          "usage" : "rest"
         },
         "articles" : {
-          "href": "/api/v1/user/xxx/articles",
-          "methods": ["GET"]
+          "href": "/api/v1/users/xxx/articles",
+          "methods": ["GET"],
+          "usage" : "rest"
         },
+        "list" : {
+          "href": "/users/admin",
+          "methods": ["GET"],
+          "usage" : "page"
+        },
+         "profile" : {
+          "href": "/users/xxx/profile",
+          "methods": ["GET"],
+          "usage" : "page"
+        },
+        ...
      }
    }
  }
@@ -414,7 +428,7 @@ You can then in-turn call the URI provided by each relationship to fetch the ite
 Likewise you can request related objects (those with relationship type of parent) be included directly in the result by adding the name of the related record relationship like `includeRelated=user as a parameter:
 
 ```
-GET /article/xxx?includeRelated=user
+GET /articles/xxx?includeRelated=user
 ```
 
 Response:
@@ -450,14 +464,14 @@ Filters allow you to modify the result set when querying a list of records.
 Some relationships will allow you to use a `search` parameter on the URL that will allow you to search the result set. The documentation will tell you when this is the case and which fields will be searched to provide you with a result set.
 
 ```
-GET /api/v1/article/xxx/related-articles?search=prison
+GET /api/v1/articles/xxx/related-articles?search=prison
 ```
 
 #### Qualifiers
 In search engines these are sometimes called facets. They are criteria that allow you to filter the result set by specific values of a specfic field. The documentation will tell you when a relationship has a qualifier. To use it you'd add a parameter of the name of the qualifier to the URL along with the value you want to search for.
 
 ```
-GET /api/v1/article/xxx/related-articles?userId=xxx
+GET /api/v1/articles/xxx/related-articles?userId=xxx
 ```
 
 That will search for all related articles with a `userId` of `xxx`.
@@ -465,7 +479,7 @@ That will search for all related articles with a `userId` of `xxx`.
 You can also modify the qualifier by prepending operators such as `>`, `>=`, `<=`, and `<>` (or `!=`) onto the value. For example:
 
 ```
- GET /api/v1/article/xxx/related-articles?wordCount=>=100
+ GET /api/v1/articles/xxx/related-articles?wordCount=>=100
 ```
 
 Get all related articles with a word count greater than or equal to `100`.
@@ -473,7 +487,7 @@ Get all related articles with a word count greater than or equal to `100`.
 You can also request that a qualifier be limited to a `null` value.
 
 ```
-GET /api/v1/article/xxx/related-articles?userId=null
+GET /api/v1/articles/xxx/related-articles?userId=null
 ```
 
 If you did this with an empty `''` or `undefined` value rather than specifically `null` then this qualifier will be skipped.
@@ -482,7 +496,7 @@ If you did this with an empty `''` or `undefined` value rather than specifically
 You can also use ranged filters to limit data that must fall between 2 values by prepending `_start_` or `_end_` to the name of the prop you wish to filter on range.
 
 ```
-GET /api/v1/article/xxx/related-articles \
+GET /api/v1/articles/xxx/related-articles \
   ?_start_createdAt=2012-04-23T18:25:43.511Z \
   &_end_createdAt=2023-04-25T08:13:10.001Z
 ```
@@ -492,7 +506,7 @@ GET /api/v1/article/xxx/related-articles \
 Some records will allow for extra includes, and will show this in the documenation. Extra includes are extra bits of data you can pull back when you request the record, that are unique to that record.
 
 ```
-GET /api/v1/article/xxx/related-articles?includeExtra=foo
+GET /api/v1/articles/xxx/related-articles?includeExtra=foo
 ```
 
 The result will then have `foo` in an `extras` block like:
@@ -516,7 +530,7 @@ Sometimes a record will have fields that require you to choose an option from an
 This way would be most often used when you need the list of options in order to create a record.
 
 ```
-GET /api/v1/article/options
+GET /api/v1/articles/options
 ```
 
 Response:
@@ -533,7 +547,7 @@ Response:
 This way would be most often used when you need the list of options to update an object, because you can get the properties of the object and the options in one call.
 
 ```
-GET http://ving.example.com/api/v1/article/xxx?includeOptions=true
+GET http://ving.example.com/api/v1/articles/xxx?includeOptions=true
 ```
 
 ```json
@@ -564,14 +578,14 @@ There is a composable built into ving called [useVingKind](ui#usevingkind()) tha
 ```
 curl -X POST -d '{"title":"Ethics in Prisons","author":"Andy Dufresne"}' \
   -H Content-Type: application/json \
-  -H Cookie: vingSessionId=yyy http://ving.example.com/api/v1/article
+  -H Cookie: vingSessionId=yyy http://ving.example.com/api/v1/articles
 ```
 
 ### VS Code Rest Client
 [VS Code Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
 
 ```
-POST http://ving.example.com/api/v1/article
+POST http://ving.example.com/api/v1/articles
 Content-Type: application/json
 Cookie: vingSessionId=yyy
 

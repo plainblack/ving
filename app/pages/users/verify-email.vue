@@ -29,7 +29,7 @@ if (await currentUser.isAuthenticated()) {
     }
 }
 else {
-    await navigateTo('/user/login')
+    await navigateTo('/users/login')
 }
 
 </script>

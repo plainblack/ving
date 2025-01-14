@@ -142,14 +142,14 @@ export class UserRecord extends RoleMixin(VingRecord) {
      */
     async describeLinks(idString, restVersion, schema, params = {}) {
         const links = await super.describeLinks(idString, restVersion, schema, params);
-        links.profile = { href: `/user/${idString}/profile`, methods: ['GET'], usage: 'page' };
-        links.logout = { href: '/user/logout', methods: ['GET'], usage: 'page' };
-        links.list = { href: '/user/admin', methods: ['GET'], usage: 'page' };
-        links.edit = { href: `/user/admin/${idString}`, methods: ['GET'], usage: 'page' };
-        links.settings = { href: '/user/settings', methods: ['GET'], usage: 'page' };
-        links.preferences = { href: '/user/settings/preferences', methods: ['GET'], usage: 'page' };
-        links.listApikeys = { href: '/user/settings/apikeys', methods: ['GET'], usage: 'page' };
-        links.account = { href: '/user/settings/account', methods: ['GET'], usage: 'page' };
+        links.profile = { href: `/users/${idString}/profile`, methods: ['GET'], usage: 'page' };
+        links.logout = { href: '/users/logout', methods: ['GET'], usage: 'page' };
+        links.list = { href: '/users/admin', methods: ['GET'], usage: 'page' };
+        links.edit = { href: `/users/admin/${idString}`, methods: ['GET'], usage: 'page' };
+        links.settings = { href: '/users/settings', methods: ['GET'], usage: 'page' };
+        links.preferences = { href: '/users/settings/preferences', methods: ['GET'], usage: 'page' };
+        links.listApikeys = { href: '/users/settings/apikeys', methods: ['GET'], usage: 'page' };
+        links.account = { href: '/users/settings/account', methods: ['GET'], usage: 'page' };
         links.messagebus = { href: `${links.base.href}/messagebus`, methods: ['GET'], usage: 'rest' };
         links.avatarImage = { href: await this.avatarUrl(), methods: ['GET'], usage: 'image' };
         links.describeAvatar = { href: `${links.self.href}/avatar`, methods: ['GET'], usage: 'rest' };

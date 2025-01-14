@@ -28,7 +28,7 @@
                 
                 <FormInput type="markdown" @change="currentUser.save('bio')" label="Bio"  v-model="currentUser.props.bio" name="bio" class="mb-4"  />
 
-                <NuxtLink :to="'/user/' + currentUser.props.id + '/profile'">
+                <NuxtLink :to="currentUser.links.profile.href">
                     View your profile as others see it
                 </NuxtLink>
             </PanelZone>

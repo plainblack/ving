@@ -18,30 +18,30 @@ Run background [jobs](../subsystems/jobs) on a set schedule.
 ### List
 
 ```
-GET /api/v1/cronjob
+GET /api/v1/cronjobs
 ```
 
 ### Create
 ```
-POST /api/v1/cronjob
+POST /api/v1/cronjobs
 ```
 
 ### Read
 ```
-GET /api/v1/cronjob/:id
+GET /api/v1/cronjobs/:id
 ```
 
 ### Update
 ```
-PUT /api/v1/cronjob/:id
+PUT /api/v1/cronjobs/:id
 ```
 
 ### Delete
 ```
-DELETE /api/v1/cronjob/:id
+DELETE /api/v1/cronjobs/:id
 ```
 
 ### Options
 ```
-GET /api/v1/cronjob/options
+GET /api/v1/cronjobs/options
 ```

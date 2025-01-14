@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event);
     await sendMail('password-reset', {
         options: { to: user.get('email') }, vars: {
-            action_url: config.public.site.url + '/user/' + user.get('id') + '/reset-password?code=' + resetKey,
+            action_url: config.public.site.url + '/users/' + user.get('id') + '/reset-password?code=' + resetKey,
             operating_system: query.os,
             browser_name: query.browser,
         }

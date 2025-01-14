@@ -11,7 +11,7 @@ const base = `http://localhost:3000/api/${vingConfig.rest.version}/`;
 describe('Session API', async () => {
     await Users.delete.where(eq(Users.table.username, 'rita'));
     const user = (await ofetch(
-        base + 'user?includeMeta=true',
+        base + 'users?includeMeta=true',
         {
             method: "POST",
             body: { username: 'rita', realName: 'Rita Hayworth', email: 'rita@shawshank.jail', password: 'poster' },
@@ -23,7 +23,7 @@ describe('Session API', async () => {
     });
 
     const session = (await ofetch(
-        base + 'session',
+        base + 'sessions',
         {
             method: "POST",
             body: { login: 'rita', password: 'poster', sessionType: 'native' },
@@ -36,7 +36,7 @@ describe('Session API', async () => {
 
     test('get session', async () => {
         const result = (await ofetch(
-            `${base}session/${session.props.id}?includeRelated=user`,
+            `${base}sessions/${session.props.id}?includeRelated=user`,
             { headers: { Cookie: `vingSessionId=${session.props.id}` } }
         ));
         expect(result.related.user.props.username).toBe('rita');
@@ -45,7 +45,7 @@ describe('Session API', async () => {
 
     test('logout', async () => {
         const result = (await ofetch(
-            `${base}session`,
+            `${base}sessions`,
             { method: 'DELETE', headers: { Cookie: `vingSessionId=${session.props.id}` } }
         ));
         expect(result.props.id).toBe(session.props.id);

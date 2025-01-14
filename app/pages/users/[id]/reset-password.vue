@@ -5,7 +5,7 @@
             <img :src="config.public.site.logoUrl" :alt="config.public.site.name" height="50" class="mb-3">
             <h1 class="text-900 text-3xl font-medium mb-3 mt-0">Reset Password</h1>
             <span class="text-600 font-medium line-height-3">Remember your account?</span>
-            <NuxtLink to="/user/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in
+            <NuxtLink to="/users/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Sign in
             </NuxtLink>
         </div>
         <PanelZone>
@@ -41,14 +41,14 @@ const config = useRuntimeConfig();
 const notify = useNotify();
 async function resetPassword() {
     notify.info('Please wait while we reset your password...');
-    const response = await useRest(`/api/${useRestVersion()}/user/${route.params.id}/reset-password`, {
+    const response = await useRest(`/api/${useRestVersion()}/users/${route.params.id}/reset-password`, {
         method: 'post',
         query: { includeOptions: true },
         body: { code: newPassword.code, password: newPassword.password },
     });
     if (!response.error) {
         notify.success('Password changed.');
-        await navigateTo('/user/login');
+        await navigateTo('/users/login');
     }
 }
 </script>

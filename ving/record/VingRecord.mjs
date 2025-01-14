@@ -1,6 +1,6 @@
 import { findVingSchema } from '#ving/schema/map.mjs';
 import ving from '#ving/index.mjs';
-import { isObject, isUndefined, isNil, isNull, isNumber, isFunction } from '#ving/utils/identify.mjs';
+import { isObject, isUndefined, isNil, isNull, isNumber } from '#ving/utils/identify.mjs';
 import { eq, asc, desc, and, ne, sql, getTableName, count, sum, avg, min, max } from '#ving/drizzle/orm.mjs';
 import { stringDefault, booleanDefault, numberDefault, dateDefault } from '#ving/schema/helpers.mjs';
 import { parseId, stringifyId } from '#ving/utils/int2str.mjs';
@@ -281,7 +281,7 @@ export class VingRecord {
      * 
      */
     async describeLinks(idString, restVersion, schema, params = {}) {
-        const links = { base: { href: `/api/${restVersion}/${schema.kind?.toLowerCase()}`, methods: ['GET', 'POST'], usage: 'rest' } };
+        const links = { base: { href: `/api/${restVersion}/${schema.kind?.toLowerCase()}s`, methods: ['GET', 'POST'], usage: 'rest' } };
         links.self = { href: `${links.base.href}/${idString}`, methods: ['GET', 'PUT', 'DELETE'], usage: 'rest' };
         return links;
     }

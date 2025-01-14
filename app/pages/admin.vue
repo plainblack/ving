@@ -2,5 +2,5 @@
     
 </template>
 <script setup>
-navigateTo('/user/admin');
+navigateTo('/users/admin');
 </script>

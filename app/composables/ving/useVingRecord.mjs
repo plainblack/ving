@@ -32,8 +32,8 @@ import { isObject, isUndefined } from '#ving/utils/identify.mjs';
  * @example
  * const user = useVingRecord({
  *  id : 'xxx',
- *  fetchApi: '/api/v1/user/xxx',
- *  createApi: '/api/v1/user',
+ *  fetchApi: '/api/v1/users/xxx',
+ *  createApi: '/api/v1/users',
  *  query : { includeMeta : true },
  * });
  * await user.fetch();
