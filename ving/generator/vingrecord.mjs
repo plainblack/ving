@@ -71,9 +71,7 @@ const describeExample = ({ bare }) => {
   `;
 }
 
-const describeLinksExample = ({ bare, name }) => {
-    if (bare)
-        return '';
+const describeLinks = ({ name }) => {
     return `
   /**
    * Extends \`describeLinks()\` in \`VingRecord\` 
@@ -115,7 +113,7 @@ ${bare ? '' : "import { isUndefined } from '#ving/utils/identify.mjs';"}
 export class ${name}Record extends VingRecord {
     // add custom Record code here
     ${describeExample({ bare })}
-    ${describeLinksExample({ bare, name })}
+    ${describeLinks({ bare, name })}
     ${addRelationshipDelete({ schema })}
 }
 
