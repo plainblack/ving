@@ -108,26 +108,6 @@ export class S3FileRecord extends VingRecord {
         }
     }
 
-    /**
-     * Generates a description of this S3File beyond the normal VingRecord
-     * description. This includes the `meta` fields `fileUrl` and `thumbnailUrl`.
-     * 
-     * @see VingRecord.describe()
-     * @param {Object} params See VingRecord describe for details.
-     * @returns {object} An object with the description. See VingRecord for details.
-     * @example
-     * const description = await s3file.describe()
-     */
-    async describe(params = {}) {
-        const out = await super.describe(params);
-        if (params?.include?.meta && out.meta) {
-            if (await this.isOwner(params?.currentUser)) {
-                out.meta.fileUrl = this.fileUrl();
-            }
-            out.meta.thumbnailUrl = this.thumbnailUrl();
-        }
-        return out;
-    }
 
     /**
      * Extends `describeLinks()` in `VingRecord`.

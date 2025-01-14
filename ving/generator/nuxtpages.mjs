@@ -47,7 +47,7 @@ const columns = (name, schema) => {
             out += `
         <Column field="props.${prop.name}" header="${makeLabel(prop.name)}" sortable>
             <template #body="slotProps">
-                <Image size="50" :src="slotProps.data.related?.${prop.relation?.name}?.meta?.thumbnailUrl" alt="thumbnail" :title="slotProps.data.related?.${prop.relation?.name}?.props?.filename + ' thumbnail'"/>
+                <Image size="50" :src="slotProps.data.related?.${prop.relation?.name}?.links?.thumbnail?.href" alt="thumbnail" :title="slotProps.data.related?.${prop.relation?.name}?.props?.filename + ' thumbnail'"/>
             </template>
         </Column>`;
         }
@@ -197,9 +197,9 @@ const viewProps = (schema) => {
             else if (prop.relation?.kind == 'S3File' && prop.relation.type == 'parent') {
                 out += `
             <div><b>${makeLabel(prop.name)}</b>: 
-                <Image size="100" :src="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.meta?.thumbnailUrl" alt="thumbnail" :title="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.props?.filename + ' thumbnail'">
+                <Image size="100" :src="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.links?.thumbnail?.href" alt="thumbnail" :title="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.props?.filename + ' thumbnail'">
                     <template v-if="['png','jpg','gif'].includes(${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.props?.extension)" #image>
-                        <img :src="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.meta?.fileUrl" alt="file" :title="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.props?.filename + ' full size image'" />
+                        <img :src="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.links?.file?.href" alt="file" :title="${schema.kind.toLowerCase()}.related?.${prop.relation?.name}?.props?.filename + ' full size image'" />
                     </template>
                 </Image>
             </div>
