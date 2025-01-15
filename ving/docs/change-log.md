@@ -13,6 +13,7 @@ outline: deep
  * Implemented: apis should use plurals #183
  * NOTE: rest endpoints and pages use plurals like /users instead of /user now. This is a breaking change. Update your APIs and pages to use plurals.
  * Implemented: page generator should link to parent objects in the statistics section #158
+ * Implemented useCurrentUser() now has isRole() and isaRole() #202
 
 ### 2025-01-12
  * Removed pulumi from the project.

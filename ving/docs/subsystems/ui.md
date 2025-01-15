@@ -377,6 +377,28 @@ It also triggers 2 window events for when the user logs in or out.
     });
 ```
 
+#### Extended Functionality
+`useCurrentUser()` as all the same functionality as the `useVingRecord()` composable, but also has a few extra methods:
+
+##### login()
+Logs in a user.
+
+##### logout()
+Logs out a user.
+
+##### isRole(role)
+Returns `true` if the current user has the specified role.
+
+##### isaRole(roles)
+Returns `true` if the current user has any of the specified roles.
+
+##### sendVerifyEmail(redirectAfter)
+Sends a verification email to the user. If `redirectAfter` is passed in, then the user will be redirected to that URL after they verify their email.
+
+##### verifyEmail(verify)
+Verifies a user's email. If `verify` is passed in, then the user will be redirected to that URL after they verify their email.
+
+
 
 ### useMessageBus()
 Connects the browser to the server's [message bus](messagebus). It establishes a connection between your browser and the server, so it needs to be installed in an `onMounted()` handler in your layouts.

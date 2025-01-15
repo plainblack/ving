@@ -1,5 +1,6 @@
 import ua from 'ua-parser-js';
 import { isUndefined } from '#ving/utils/identify.mjs';
+import { RoleOptions } from '#ving/schema/schemas/User.mjs';
 
 export const useCurrentUser = () => useVingRecord({
     id: 'currentUser',
@@ -30,6 +31,22 @@ export const useCurrentUser = () => useVingRecord({
             this.setState({});
             window.dispatchEvent(new Event('ving-logout'));
             return response;
+        },
+
+        isRole(role) {
+            if (role in this.props) {
+                return this.props[role] || this.props.admin || false;
+            }
+            return false;
+        },
+
+        isaRole(roles) {
+            for (const role of roles) {
+                if (this.isRole(role)) {
+                    return true;
+                }
+            }
+            return false;
         },
 
         async sendVerifyEmail(redirectAfter) {
