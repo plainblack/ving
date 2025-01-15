@@ -65,6 +65,10 @@ To create a new job run:
 ./ving.mjs jobs -n MyNewHandler
 ```
 
+## Error Handling
+
+If a job throws an `Error` it will be retried up to 3 times at 1, 2, and 4 minute intervals. If after 3 attempts it still fails, it will be aborted, logged, an an email will be sent to all admins.
+
 ## Cron Jobs
 You can set up jobs with a `cron` style schedule via the javascript API or the [CLI](cli). However, 2 jobs cannot have the same schedule, and you cannot set them up via the REST API. To get around this you can use the `CronJob` VingRecord which is accessible via the [REST API](../rest/CronJob) or using the built-in Admin UI.
 
