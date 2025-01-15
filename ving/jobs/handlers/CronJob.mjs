@@ -4,7 +4,9 @@ import { useKind } from '#ving/record/utils.mjs';
 
 /**
  * This handler executes all cron jobs at the same schedule in the CronJob VingRecord.
- * @param {Object} A `BullMQ` job.
+ * @param {Object} job A `BullMQ` job.
+ * @param {Object} job.data An object with data needed for this job.
+ * @param {string} job.data.schedule A cron string representing the schedule for this job.
  * @returns {boolean} `true`
  */
 export default async function (job) {

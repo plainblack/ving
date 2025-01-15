@@ -1,10 +1,9 @@
 import ving from '#ving/index.mjs';
 
 /**
- * This handler does nothing other that write to the log with whatever data was passed in. 
+ * This handler looks up all users with a specified role and sends them an email.
  * @param {Object} job A `BullMQ` job.
  * @param {Object} job.data An object with data needed for this job.
- * @param {string} job.data.error If this exists the handler will throw that message in an Error object.
  * @returns {boolean} `true`
  */
 export default async function (job) {

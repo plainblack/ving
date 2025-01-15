@@ -7,7 +7,9 @@ import { useKind } from '#ving/record/utils.mjs';
 
 /**
  * This handler does something with SomeRecord. 
- * @param {Object} A \`BullMQ\` job.
+ * @param {Object} job A \`BullMQ\` job.
+ * @param {Object} job.data An object with data needed for this job.
+ * @param {string|integer} job.data.id The id needed to look up a Ving Record.
  * @returns {boolean} \`true\`
  */
 export default async function (job) {

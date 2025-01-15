@@ -3,7 +3,8 @@ import { useKind } from '#ving/record/utils.mjs';
 
 /**
  * This handler deletes a S3File if it does not achieve a ready state by the time this job runs. 
- * @param {Object} A `BullMQ` job.
+ * @param {Object} job A `BullMQ` job.
+ * @param {Object} job.data An object with data needed for this job.
  * @returns {boolean} `true`
  */
 export default async function (job) {
