@@ -21,7 +21,7 @@ export const generateTemplates = (params) => {
     const context = { ...getContext({}), ...params };
     const folderName = kebabCase(context.name);
     return Promise.resolve(context)
-        .then(renderTemplate(htmlTemplate, toFile(`server/email/templates/${folderName}/html.njk`)))
-        .then(renderTemplate(subjectTemplate, toFile(`server/email/templates/${folderName}/subject.njk`)))
-        .then(renderTemplate(textTemplate, toFile(`server/email/templates/${folderName}/text.njk`)));
+        .then(renderTemplate(htmlTemplate, toFile(`ving/email/templates/${folderName}/html.njk`)))
+        .then(renderTemplate(subjectTemplate, toFile(`ving/email/templates/${folderName}/subject.njk`)))
+        .then(renderTemplate(textTemplate, toFile(`ving/email/templates/${folderName}/text.njk`)));
 }
