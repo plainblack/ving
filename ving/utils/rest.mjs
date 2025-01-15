@@ -71,7 +71,7 @@ export const describeListWhere = (event, filter) => {
         }
         const matchColumn = filter.qualifiers.find(col => col.drizzleColumn.name == key);
         if (matchColumn) {
-            const matchOp = value.toString().match(/^(>|<|>=|<=|!=|<>)?(.+)$/);
+            const matchOp = value.toString().match(/^(|>=|<=|!=|<>|>|<)?(.+)$/);
             if (matchOp) {
                 const data = fixColumnData(matchColumn, matchOp[2]);
                 switch (matchOp[1]) {
