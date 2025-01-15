@@ -9,6 +9,11 @@ outline: deep
  * Jobs now automatically retry 3 times and then are aborted.
  * Fixed: job runner not gracefully erroring #198
  * Added better documentation for the job handlers.
+ * Added generic email template.
+ * Added EmailRole job handler.
+ * Aborted jobs now automatically use the EmailRole job handler to email all admins.
+ * Fixed CLI docs for email.
+ * Fixed the generator deployment location for email templates.
 
 ### 2025-01-14
  * Added VingRecord.describeLinks() to generate links for the UI rather than having to manually code them in a describe() override. They are automatically generated for all VingRecords via the CLI, and then pages that are generated also use the exposed links. #179

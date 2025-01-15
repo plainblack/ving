@@ -57,10 +57,20 @@ export class VingJobWorker {
             ving.log('jobs').info(`${job.id} ${job.name} has completed`);
         });
 
-        this.worker.on('failed', (job, err) => {
+        this.worker.on('failed', async (job, err) => {
             ving.log('jobs').error(`${job.id} ${job.name} has errored with ${err.message} using data ${JSON.stringify(job.data)}`);
             if (job.attemptsMade >= job.opts.attempts) {
                 ving.log('jobs').error(`CRITICAL: ${job.id} ${job.name} aborted after ${job.attemptsMade} attempts`);
+                await ving.addJob('EmailRole', {
+                    role: 'admin',
+                    subject: `Job ${job.name} aborted`,
+                    message: `Job ${job.name} aborted after ${job.attemptsMade} attempts.
+                    
+                    Job Id: ${job.id}
+                    Error: ${err.message}
+                    Data: 
+                    ${JSON.stringify(job.data)}`,
+                });
             }
         });
         ving.log('jobs').info(`worker started`);
