@@ -60,7 +60,7 @@ export class VingJobWorker {
         this.worker.on('failed', (job, err) => {
             ving.log('jobs').error(`${job.id} ${job.name} has errored with ${err.message} using data ${JSON.stringify(job.data)}`);
             if (job.attemptsMade >= job.opts.attempts) {
-                ving.log('jobs').error(`CRITICAL: ${job.id} ${job.name} has died after ${job.attemptsMade} attempts`);
+                ving.log('jobs').error(`CRITICAL: ${job.id} ${job.name} aborted after ${job.attemptsMade} attempts`);
             }
         });
         ving.log('jobs').info(`worker started`);

@@ -5,6 +5,10 @@ outline: deep
 
 ## January 2025
 
+### 2025-01-15
+ * Jobs now automatically retry 3 times and then are aborted.
+ * Fixed: job runner not gracefully erroring #198
+
 ### 2025-01-14
  * Added VingRecord.describeLinks() to generate links for the UI rather than having to manually code them in a describe() override. They are automatically generated for all VingRecords via the CLI, and then pages that are generated also use the exposed links. #179
  * NOTE: You'll need to add a describeLinks() override to classes generated before now.
