@@ -19,7 +19,6 @@ export default defineCommand({
             type: "string",
             description: "Template name",
             default: 'test',
-            alias: "n",
         },
         preview: {
             type: "boolean",
@@ -30,6 +29,7 @@ export default defineCommand({
         create: {
             type: "string",
             description: "Create an email template set with a given name.",
+            valueHint: "name",
             alias: 'c',
         },
     },
