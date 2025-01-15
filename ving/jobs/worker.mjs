@@ -2,7 +2,7 @@ import { Worker } from 'bullmq';
 import ving from '#ving/index.mjs';
 import { useRedis } from '#ving/redis.mjs';
 import { jobHandlers } from '#ving/jobs/map.mjs';
-
+import { addJob } from '#ving/jobs/queue.mjs';
 /** 
  * A class for running Ving jobs
  * @class
@@ -38,8 +38,11 @@ export class VingJobWorker {
             this.#queueName,
             async (job) => {
                 ving.log('jobs').info(`got job ${job.id} ${job.name}`);
+                ving.log('jobs').debug(`job ${job.id} parameters: ${JSON.stringify(job.data)
+
+                    }`);
                 if (job.name in jobHandlers) {
-                    jobHandlers[job.name](job);
+                    await jobHandlers[job.name](job);
                 }
                 else {
                     const message = `No job handler for job ${job.id} ${job.name}`;
@@ -55,9 +58,11 @@ export class VingJobWorker {
         });
 
         this.worker.on('failed', (job, err) => {
-            ving.log('jobs').error(`${job.id} ${job.name} has failed with ${err.message}`);
+            ving.log('jobs').error(`${job.id} ${job.name} has errored with ${err.message} using data ${JSON.stringify(job.data)}`);
+            if (job.attemptsMade >= job.opts.attempts) {
+                ving.log('jobs').error(`CRITICAL: ${job.id} ${job.name} has died after ${job.attemptsMade} attempts`);
+            }
         });
-
         ving.log('jobs').info(`worker started`);
     }
 

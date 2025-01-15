@@ -60,9 +60,14 @@ export const addJob = async (type, data = {}, options = { queueName: 'jobs' }) =
             count: 1000, // keep up to 1000 jobs
         },
         removeOnFail: {
-            age: 24 * 3600, // keep up to 24 hours
+            age: 24 * 3600 * 3, // keep up to 72 hours
         },
-        priority: 2097152
+        priority: 2097152,
+        attempts: 3,
+        backoff: {
+            type: 'exponential',
+            delay: 1000 * 60, // 1 minute
+        },
     }
     if (options?.delay)
         jobOptions.delay = options?.delay;
