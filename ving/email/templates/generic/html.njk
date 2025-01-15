@@ -1,0 +1,7 @@
+{% extends "html-wrapper.njk" %}
+{% block summary %}
+  {{ summary | escape }}
+{% endblock %}
+{% block content %}
+  {{ message | escape | nl2br }}
+{% endblock %}
