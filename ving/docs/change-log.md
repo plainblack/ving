@@ -9,6 +9,7 @@ outline: deep
  * Fixed a bug where undefined tables were added to the drizzle map due to yesterday's fix.
  * Updated to latest drizzle and mysql2 modules.
  * NOTE: Run `npm i` to update your modules.
+ * Fixed: replace db.session.client.pool.end() with db.$client.pool.end() #195
 
 ### 2025-01-20
  * Fixed a problem where CLI would try to update the drizzle map when creating a new ving schema.
