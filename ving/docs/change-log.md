@@ -5,6 +5,9 @@ outline: deep
 
 ## January 2025
 
+### 2025-01-21
+ * Fixed a bug where undefined tables were added to the drizzle map due to yesterday's fix.
+
 ### 2025-01-20
  * Fixed a problem where CLI would try to update the drizzle map when creating a new ving schema.
 
