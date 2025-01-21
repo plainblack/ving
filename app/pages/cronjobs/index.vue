@@ -28,7 +28,7 @@
                 <Pager :kind="cronjobs" />
             </PanelZone>
             <PanelZone title="Create Cron Job">
-                <Form :send="() => cronjobs.create()">
+                <VForm :send="() => cronjobs.create()">
                     
                     <FormInput name="schedule" type="text" v-model="cronjobs.new.schedule" required label="Schedule" class="mb-4" />
                     <FormInput name="handler" type="select" v-model="cronjobs.new.handler" :options="cronjobs.propsOptions?.handler" required label="Handler" class="mb-4" />
@@ -37,7 +37,7 @@
                             <Icon name="ph:plus" class="mr-1"/> Create Cron Job
                         </Button>
                     </div>
-                </Form>
+                </VForm>
             </PanelZone>
         </template>
     </PanelFrame>

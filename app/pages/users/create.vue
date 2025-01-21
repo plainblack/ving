@@ -9,7 +9,7 @@
             </NuxtLink>
         </div>
         <PanelZone>
-            <Form :send="createAccount">
+            <VForm :send="createAccount">
                 <FormInput name="username" v-model="newUser.username" required label="Username" autocomplete="username"
                     type="text" class="mb-3" />
 
@@ -27,7 +27,7 @@
                     class="mb-3" />
 
                     <Button type="submit" class="w-full"><span class="text-center w-full"><Icon name="ph:user" class="mr-1"/><span class="align-middle">Create Account</span></span></Button>
-            </Form>
+            </VForm>
 
             <Divider align="center" class="my-4">
                 <span >OR</span>

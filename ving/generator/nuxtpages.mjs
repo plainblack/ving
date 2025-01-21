@@ -148,14 +148,14 @@ const indexTemplate = ({ name, schema }) =>
                 <Pager :kind="${schema.tableName}" />
             </PanelZone>
             <PanelZone title="Create ${makeWords(name)}">
-                <Form :send="() => ${schema.tableName}.create()">
+                <VForm :send="() => ${schema.tableName}.create()">
                     ${createProps(schema)}
                     <div>
                         <Button type="submit" class="w-auto" severity="success">
                             <Icon name="ph:plus" class="mr-1"/> Create ${makeWords(name)}
                         </Button>
                     </div>
-                </Form>
+                </VForm>
             </PanelZone>
         </template>
     </PanelFrame>

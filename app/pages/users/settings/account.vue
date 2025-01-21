@@ -16,7 +16,7 @@
                 autocomplete="name" @change="currentUser.save('realName')" class="mb-4" />
             </PanelZone>
             <PanelZone title="Change Password" info="Alter your credentials.">
-                <Form :send="changePassword">
+                <VForm :send="changePassword">
                     <FormInput name="password" type="password" v-model="newPassword.password" required
                         label="New Password" autocomplete="new-password" class="mb-4" />
 
@@ -28,7 +28,7 @@
                         Change Password
                     </Button>
 
-                </Form>
+                </VForm>
             </PanelZone>
 
         </template>

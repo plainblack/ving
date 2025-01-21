@@ -10,7 +10,7 @@
         </div>
         <PanelZone>
 
-            <Form :send="tryLogin">
+            <VForm :send="tryLogin">
                 <FormInput name="login" v-model="login" id="login1" required label="Email or Username" autocomplete="email"
                     class="mb-3" />
 
@@ -18,7 +18,7 @@
                     type="password" class="mb-3" />
 
                     <Button type="submit" class="w-full"><span class="text-center w-full"><Icon name="ph:user" class="mr-1"/><span class="align-middle">Sign in with Password</span></span></Button>
-            </Form>
+            </VForm>
 
             <div class="mt-3">
                 <span class="text-600 font-medium line-height-3">Forgot your password?</span>

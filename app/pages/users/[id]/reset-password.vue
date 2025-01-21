@@ -9,7 +9,7 @@
             </NuxtLink>
         </div>
         <PanelZone>
-            <Form :send="resetPassword">
+            <VForm :send="resetPassword">
                 <div class="flex gap-5 flex-col-reverse md:flex-row">
                     <div class="flex-auto">
                         <FormInput name="code" type="text" v-model="newPassword.code" required readonly
@@ -28,7 +28,7 @@
                     </div>
 
                 </div>
-            </Form>
+            </VForm>
         </PanelZone>
     </div>
 </template>

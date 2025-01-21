@@ -7,9 +7,11 @@ ving.site.url = process.env.VING_SITE_URL;
 
 export default defineNuxtConfig({
     devtools: false,
+
     future: {
         compatibilityVersion: 4,
     },
+
     modules: [
         '@pinia/nuxt',
         'nuxt-icon',
@@ -17,21 +19,25 @@ export default defineNuxtConfig({
         '@primevue/nuxt-module',
         '@vueuse/nuxt',
     ],
+
     primevue: {
         importTheme: { from: "@/themes/ving-theme.mjs" },
     },
+
     imports: {
         dirs: [
             'composables/**',
             'utils/**',
         ],
     },
+
     components: [
         {
             path: '~/components',
             pathPrefix: false,
         },
     ],
+
     app: {
         head: {
             link: [
@@ -69,16 +75,21 @@ export default defineNuxtConfig({
             ]
         },
     },
+
     css: [
         'primeicons/primeicons.css',
     ],
+
     runtimeConfig: {
         public: ving,
     },
+
     hooks: {
         'nitro:build:public-assets': (nitro) => {
             const targetPath = path.join(nitro.options.output.dir, 'ving.json');
             cpSync('./ving.json', targetPath, { recursive: true });
         }
-    }
+    },
+
+    compatibilityDate: '2025-01-21'
 })

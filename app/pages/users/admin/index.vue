@@ -53,7 +53,7 @@
             </PanelZone>
         <PanelZone title="Create User">
 
-                <Form :send="() => users.create()">
+                <VForm :send="() => users.create()">
                 
                     <FormInput name="nausernameme" type="text" v-model="users.new.username" required
                         label="Username" class="mb-4" />
@@ -67,7 +67,7 @@
                         <Icon name="ph:plus" class="mr-1"/> Create User
                     </Button>
                     
-                </Form>
+                </VForm>
             </PanelZone>
         </template>
     </PanelFrame>

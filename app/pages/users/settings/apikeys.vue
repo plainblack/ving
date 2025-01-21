@@ -62,7 +62,7 @@
             </PanelZone>
             
             <PanelZone title="Create API Key" info="Make a new API Key.">
-                <Form :send="() => apikeys.create()">
+                <VForm :send="() => apikeys.create()">
                   
                     <FormInput name="name" type="text" v-model="apikeys.new.name" required
                         label="Name" class="mb-4" />
@@ -76,7 +76,7 @@
                         <Icon name="ph:plus" class="mr-1"/> Create API Key
                     </Button>
                       
-                </Form>
+                </VForm>
             </PanelZone>
                
         </template>

@@ -120,10 +120,10 @@ An inline page nav for a large scrollable form to be divided up into sections us
 </FieldsetNav>
 ```
 
-### Form
+### VForm
 A form element to allow coordination of validation of inputs.
 ```html
-<Form :send="someFunc()">...</Form>
+<VForm :send="someFunc()">...</VForm>
 ```
 
 Props:

@@ -9,7 +9,7 @@
             </NuxtLink>
         </div>
         <PanelZone info="Where should we send the password reset email?">
-            <Form :send="sendPasswordReset">
+            <VForm :send="sendPasswordReset">
                 <div class="flex gap-5 flex-col-reverse md:flex-row">
                     <div class="flex-auto">
                         <FormInput name="email" type="email" v-model="email" required label="Email Address" class="mb-4" />
@@ -20,7 +20,7 @@
                     </div>
 
                 </div>
-            </Form>
+            </VForm>
         </PanelZone>
     </div>
 </template>
