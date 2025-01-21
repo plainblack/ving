@@ -54,5 +54,7 @@ ${makeBaseTable(schema)}
 export const makeTableFile = (params) => {
     const context = { ...getContext({}), ...params };
     return Promise.resolve(context)
-        .then(renderTemplate(makeTable, toFile(`ving/drizzle/schema/${context.schema.kind}.mjs`), { force: true }));
+        .then(renderTemplate(makeTable, toFile(`ving/drizzle/schema/${context.schema.kind}.mjs`), { force: true }))
+        .then(inject(`import { ${context.name}Table } from "#ving/drizzle/schema/${context.name}.mjs";`, after('import { UserTable } from "#ving/drizzle/schema/User.mjs";'), toFile('ving/drizzle/map.mjs')))
+        .then(inject(`    ${context.name}: ${context.name}Table,`, after('    User: UserTable,'), toFile('ving/drizzle/map.mjs')));
 }

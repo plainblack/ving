@@ -190,7 +190,5 @@ export const generateSchema = (params) => {
     return Promise.resolve(context)
         .then(renderTemplate(schemaTemplate(context), toFile(`ving/schema/schemas/${context.name}.mjs`)))
         .then(inject(`import { ${camelCase(context.name)}Schema } from "#ving/schema/schemas/${context.name}.mjs";`, after('import { apikeySchema } from "#ving/schema/schemas/APIKey.mjs";'), toFile('ving/schema/map.mjs')))
-        .then(inject(`    ${camelCase(context.name)}Schema,`, after('    apikeySchema,'), toFile('ving/schema/map.mjs')))
-        .then(inject(`import { ${context.name}Table } from "#ving/drizzle/schema/${context.name}.mjs";`, after('import { UserTable } from "#ving/drizzle/schema/User.mjs";'), toFile('ving/drizzle/map.mjs')))
-        .then(inject(`    ${context.name}: ${context.name}Table,`, after('    User: UserTable,'), toFile('ving/drizzle/map.mjs')));
+        .then(inject(`    ${camelCase(context.name)}Schema,`, after('    apikeySchema,'), toFile('ving/schema/map.mjs')));
 }

@@ -5,6 +5,9 @@ outline: deep
 
 ## January 2025
 
+### 2025-01-20
+ * Fixed a problem where CLI would try to update the drizzle map when creating a new ving schema.
+
 ### 2025-01-15
  * Jobs now automatically retry 3 times and then are aborted.
  * Fixed: job runner not gracefully erroring #198
