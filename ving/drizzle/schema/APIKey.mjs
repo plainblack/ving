@@ -13,8 +13,8 @@ export const APIKeyTable = mysqlTable('apikeys',
 		privateKey: varchar('privateKey', { length: 39 }).notNull().default(''),
 		userId: bigint('userId', {mode:'number', unsigned: true}).notNull()
     }, 
-    (table) => ({
-        apikeys_user_90ada4_fk: foreignKey({ name: "apikeys_user_90ada4_fk", columns: [table.userId], foreignColumns: [UserTable.id]}).onDelete("cascade").onUpdate("cascade")
-    })
+    (table) => ([
+        foreignKey({ name: "apikeys_user_90ada4_fk", columns: [table.userId], foreignColumns: [UserTable.id]}).onDelete("cascade").onUpdate("cascade")
+    ])
 );
 

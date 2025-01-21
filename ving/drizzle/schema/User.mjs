@@ -20,10 +20,10 @@ export const UserTable = mysqlTable('users',
 		bio: mediumText('bio').notNull(),
 		avatarId: bigint('avatarId', {mode:'number', unsigned: true}).default(null)
     }, 
-    (table) => ({
-        usernameIndex: uniqueIndex('usernameIndex').on(table.username),
-		emailIndex: uniqueIndex('emailIndex').on(table.email),
-		users_avatar_39d62890_fk: foreignKey({ name: "users_avatar_39d62890_fk", columns: [table.avatarId], foreignColumns: [S3FileTable.id]}).onDelete("set null").onUpdate("no action")
-    })
+    (table) => ([
+        uniqueIndex('usernameIndex').on(table.username),
+		uniqueIndex('emailIndex').on(table.email),
+		foreignKey({ name: "users_avatar_39d62890_fk", columns: [table.avatarId], foreignColumns: [S3FileTable.id]}).onDelete("set null").onUpdate("no action")
+    ])
 );
 

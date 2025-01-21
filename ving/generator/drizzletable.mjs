@@ -13,16 +13,16 @@ export const makeBaseTable = (schema) => {
                     const fields = [prop.name, ...prop.uniqueQualifiers];
                     const composite = fields.join('_');
                     const key = composite.substring(0, 48) + '_' + miniHash(composite) + '_uq';
-                    specialConstraints.push(`${key}: unique('${key}').on(table.${fields.join(', table.')})`);
+                    specialConstraints.push(`unique('${key}').on(table.${fields.join(', table.')})`);
                 }
                 else {
-                    specialConstraints.push(`${prop.name}Index: uniqueIndex('${prop.name}Index').on(table.${prop.name})`);
+                    specialConstraints.push(`uniqueIndex('${prop.name}Index').on(table.${prop.name})`);
                 }
             }
             if (prop.relation && ['parent', 'sibling'].includes(prop.relation.type)) {
                 const composite = [schema.tableName, prop.relation.name].join('_');
                 const key = composite.substring(0, 48) + '_' + miniHash(composite) + '_fk';
-                specialConstraints.push(`${key}: foreignKey({ name: "${key}", columns: [table.${prop.name}], foreignColumns: [${prop.relation?.kind}Table.id]}).onDelete(${prop.required ? '"cascade"' : '"set null"'}).onUpdate(${prop.required ? '"cascade"' : '"no action"'})`);
+                specialConstraints.push(`foreignKey({ name: "${key}", columns: [table.${prop.name}], foreignColumns: [${prop.relation?.kind}Table.id]}).onDelete(${prop.required ? '"cascade"' : '"set null"'}).onUpdate(${prop.required ? '"cascade"' : '"no action"'})`);
             }
         }
     }
@@ -31,9 +31,9 @@ export const ${schema.kind}Table = mysqlTable('${schema.tableName}',
     {
         ${columns.join(",\n\t\t")}
     }, 
-    (table) => ({
+    (table) => ([
         ${specialConstraints.join(",\n\t\t")}
-    })
+    ])
 );
 `;
 }

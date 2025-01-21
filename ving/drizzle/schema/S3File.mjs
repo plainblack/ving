@@ -17,8 +17,8 @@ export const S3FileTable = mysqlTable('s3files',
 		icon: mysqlEnum('icon', ['pending','thumbnail','extension','self']).notNull().default('pending'),
 		userId: bigint('userId', {mode:'number', unsigned: true}).notNull()
     }, 
-    (table) => ({
-        s3files_user_40cb3d4d_fk: foreignKey({ name: "s3files_user_40cb3d4d_fk", columns: [table.userId], foreignColumns: [UserTable.id]}).onDelete("cascade").onUpdate("cascade")
-    })
+    (table) => ([
+        foreignKey({ name: "s3files_user_40cb3d4d_fk", columns: [table.userId], foreignColumns: [UserTable.id]}).onDelete("cascade").onUpdate("cascade")
+    ])
 );
 

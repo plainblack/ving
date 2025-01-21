@@ -13,8 +13,8 @@ export const CronJobTable = mysqlTable('cronjobs',
 		enabled: boolean('enabled').notNull().default(true),
 		note: text('note').notNull()
     }, 
-    (table) => ({
+    (table) => ([
         
-    })
+    ])
 );
 
