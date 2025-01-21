@@ -77,7 +77,7 @@ export default defineCommand({
                 runMigrations();
             }
             else if (args.prepare) {
-                spawn('npx drizzle-kit generate:mysql --out ./ving/drizzle/migrations --schema ving/drizzle/schema', [], { stdio: 'inherit', shell: true });
+                spawn('npx drizzle-kit generate --dialect mysql --out ./ving/drizzle/migrations --schema ving/drizzle/schema', [], { stdio: 'inherit', shell: true });
             }
             else {
                 await showUsage(cmd, { meta: { name: 'ving.mjs' } });
