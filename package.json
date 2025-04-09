@@ -42,6 +42,7 @@
     "@aws-sdk/s3-request-presigner": "^3.504.0",
     "@keyv/redis": "^2.8.5",
     "@pinia/nuxt": "^0.4.11",
+    "@primevue/forms": "^4.3.3",
     "@primevue/themes": "^4.0.0-rc.1",
     "bcryptjs": "^2.4.3",
     "bullmq": "^5.34.10",

@@ -3,6 +3,12 @@ outline: deep
 ---
 # Change Log
 
+## April 2025
+
+### 2025-04-09
+ * Added @primevue/forms
+ * NOTE: Run `npm i`
+
 ## January 2025
 
 ### 2025-01-21
